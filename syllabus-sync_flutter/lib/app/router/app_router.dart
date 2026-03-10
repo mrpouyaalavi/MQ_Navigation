@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:syllabus_sync/app/router/app_shell.dart';
+import 'package:syllabus_sync/app/router/route_guard.dart';
 import 'package:syllabus_sync/app/router/route_names.dart';
 import 'package:syllabus_sync/core/config/env_config.dart';
 import 'package:syllabus_sync/features/auth/presentation/pages/login_page.dart';
+import 'package:syllabus_sync/features/auth/presentation/pages/mfa_page.dart';
+import 'package:syllabus_sync/features/auth/presentation/pages/reset_password_page.dart';
+import 'package:syllabus_sync/features/auth/presentation/pages/signup_page.dart';
 import 'package:syllabus_sync/features/auth/presentation/pages/splash_page.dart';
+import 'package:syllabus_sync/features/auth/presentation/pages/verify_email_page.dart';
 import 'package:syllabus_sync/features/calendar/presentation/pages/calendar_page.dart';
 import 'package:syllabus_sync/features/feed/presentation/pages/feed_page.dart';
 import 'package:syllabus_sync/features/home/presentation/pages/home_page.dart';
 import 'package:syllabus_sync/features/map/presentation/pages/map_page.dart';
+import 'package:syllabus_sync/features/profiles/data/repositories/profile_repository.dart';
+import 'package:syllabus_sync/features/profiles/presentation/pages/profile_edit_page.dart';
 import 'package:syllabus_sync/features/settings/presentation/pages/settings_page.dart';
 import 'package:syllabus_sync/shared/providers/auth_provider.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-/// Application router with auth guards and shell-based navigation.
-///
-/// Uses [AuthRefreshNotifier] as a `refreshListenable` so the single
-/// [GoRouter] instance re-evaluates redirects on auth state changes
-/// without being rebuilt.
 final appRouterProvider = Provider<GoRouter>((ref) {
   final refreshNotifier = AuthRefreshNotifier(ref);
   ref.onDispose(refreshNotifier.dispose);
@@ -29,36 +32,63 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/splash',
     debugLogDiagnostics: EnvConfig.isDevelopment,
     refreshListenable: refreshNotifier,
-    redirect: (context, state) {
+    redirect: (context, state) async {
       final authState = ref.read(authProvider);
-      final isLoading = authState.isLoading;
-      final session = authState.value;
-      final isLoggedIn = session != null;
       final currentPath = state.matchedLocation;
 
-      // While loading, stay on splash.
-      if (isLoading) {
-        return currentPath == '/splash' ? null : '/splash';
+      if (authState.isLoading) {
+        return resolveRouteRedirect(
+          currentPath: currentPath,
+          isLoading: true,
+          isAuthenticated: false,
+          isEmailVerified: false,
+          requiresMfa: false,
+          needsOnboarding: false,
+          isInPasswordRecovery: false,
+        );
       }
 
-      // Auth-gated routes.
-      final isAuthRoute =
-          currentPath == '/login' ||
-          currentPath == '/signup' ||
-          currentPath == '/reset-password' ||
-          currentPath == '/verify-email';
+      final session = authState.value;
+      final isAuthenticated = session != null;
+      var isEmailVerified = false;
+      var requiresMfa = false;
+      var needsOnboarding = false;
 
-      if (!isLoggedIn) {
-        // Not logged in -> allow auth routes, redirect everything else to login.
-        return isAuthRoute || currentPath == '/splash' ? null : '/login';
+      if (session != null) {
+        isEmailVerified = session.user.emailConfirmedAt != null;
+
+        if (isEmailVerified) {
+          final factors = await Supabase.instance.client.auth.mfa.listFactors();
+          final aal = Supabase.instance.client.auth.mfa
+              .getAuthenticatorAssuranceLevel();
+          requiresMfa =
+              factors.all.any(
+                (factor) => factor.status == FactorStatus.verified,
+              ) &&
+              aal.currentLevel != AuthenticatorAssuranceLevels.aal2;
+
+          if (!requiresMfa) {
+            final profile = await ref
+                .read(profileRepositoryProvider)
+                .fetchCurrentProfile();
+            needsOnboarding = profile == null || !profile.isComplete;
+          }
+        }
       }
 
-      // Logged in but on auth route or splash -> go home.
-      if (isAuthRoute || currentPath == '/splash') {
-        return '/home';
-      }
+      final lastEvent = ref.read(lastAuthChangeEventProvider);
+      final isInPasswordRecovery =
+          lastEvent == AuthChangeEvent.passwordRecovery;
 
-      return null;
+      return resolveRouteRedirect(
+        currentPath: currentPath,
+        isLoading: false,
+        isAuthenticated: isAuthenticated,
+        isEmailVerified: isEmailVerified,
+        requiresMfa: requiresMfa,
+        needsOnboarding: needsOnboarding,
+        isInPasswordRecovery: isInPasswordRecovery,
+      );
     },
     routes: [
       GoRoute(
@@ -71,8 +101,39 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: RouteNames.login,
         builder: (context, state) => const LoginPage(),
       ),
-
-      // -- Main Shell (bottom nav) --
+      GoRoute(
+        path: '/signup',
+        name: RouteNames.signup,
+        builder: (context, state) => const SignupPage(),
+      ),
+      GoRoute(
+        path: '/verify-email',
+        name: RouteNames.verifyEmail,
+        builder: (context, state) =>
+            VerifyEmailPage(email: state.uri.queryParameters['email']),
+      ),
+      GoRoute(
+        path: '/reset-password',
+        name: RouteNames.resetPassword,
+        builder: (context, state) => ResetPasswordPage(
+          forceRecoveryMode: state.uri.queryParameters['mode'] == 'recovery',
+        ),
+      ),
+      GoRoute(
+        path: '/mfa',
+        name: RouteNames.mfa,
+        builder: (context, state) => const MfaPage(),
+      ),
+      GoRoute(
+        path: '/onboarding',
+        name: RouteNames.onboarding,
+        builder: (context, state) => const ProfileEditPage(isOnboarding: true),
+      ),
+      GoRoute(
+        path: '/profile/edit',
+        name: RouteNames.profileEdit,
+        builder: (context, state) => const ProfileEditPage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),

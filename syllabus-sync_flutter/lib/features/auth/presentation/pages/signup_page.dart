@@ -11,52 +11,54 @@ import 'package:syllabus_sync/shared/extensions/context_extensions.dart';
 import 'package:syllabus_sync/shared/widgets/mq_button.dart';
 import 'package:syllabus_sync/shared/widgets/mq_input.dart';
 
-class LoginPage extends ConsumerStatefulWidget {
-  const LoginPage({super.key});
+class SignupPage extends ConsumerStatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  ConsumerState<LoginPage> createState() => _LoginPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureConfirmation = true;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  Future<void> _signIn() async {
+  Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
     final message = await ref
         .read(authActionControllerProvider.notifier)
-        .signIn(
+        .signUp(
           email: _emailController.text,
           password: _passwordController.text,
         );
 
-    if (!mounted || message == null) {
+    if (!mounted) {
       return;
     }
-    context.showSnackBar(message, isError: true);
-  }
 
-  Future<void> _signInWithGoogle() async {
-    final message = await ref
-        .read(authActionControllerProvider.notifier)
-        .signInWithGoogle();
-    if (!mounted || message == null) {
+    if (message != null) {
+      context.showSnackBar(message, isError: true);
       return;
     }
-    context.showSnackBar(message, isError: true);
+
+    context.goNamed(
+      RouteNames.verifyEmail,
+      queryParameters: {'email': _emailController.text.trim()},
+    );
   }
 
   @override
@@ -65,12 +67,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final isLoading = ref.watch(authActionControllerProvider).isLoading;
 
     return AuthScaffold(
-      title: 'Welcome to Syllabus Sync',
+      title: 'Create your account',
       subtitle:
-          'Sign in to manage your Macquarie University workload, events, and campus schedule.',
+          'Register with your university email, then verify it before continuing.',
       footer: TextButton(
-        onPressed: isLoading ? null : () => context.goNamed(RouteNames.signup),
-        child: Text('${l10n.signUp} instead'),
+        onPressed: isLoading ? null : () => context.goNamed(RouteNames.login),
+        child: Text('${l10n.signIn} instead'),
       ),
       child: Form(
         key: _formKey,
@@ -91,7 +93,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               controller: _passwordController,
               prefixIcon: Icons.lock_outline,
               obscureText: _obscurePassword,
-              autofillHints: const [AutofillHints.password],
+              autofillHints: const [AutofillHints.newPassword],
               validator: Validators.password,
               suffixIcon: IconButton(
                 onPressed: () {
@@ -106,26 +108,33 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
               ),
             ),
-            Align(
-              alignment: AlignmentDirectional.centerEnd,
-              child: TextButton(
-                onPressed: isLoading
-                    ? null
-                    : () => context.goNamed(RouteNames.resetPassword),
-                child: Text(l10n.forgotPassword),
+            const SizedBox(height: MqSpacing.space4),
+            MqInput(
+              label: 'Confirm Password',
+              controller: _confirmPasswordController,
+              prefixIcon: Icons.lock_reset_outlined,
+              obscureText: _obscureConfirmation,
+              autofillHints: const [AutofillHints.newPassword],
+              validator: (value) =>
+                  Validators.confirmation(value, _passwordController.text),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _obscureConfirmation = !_obscureConfirmation;
+                  });
+                },
+                icon: Icon(
+                  _obscureConfirmation
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                ),
               ),
             ),
+            const SizedBox(height: MqSpacing.space6),
             MqButton(
-              label: l10n.signIn,
+              label: l10n.signUp,
               isLoading: isLoading,
-              onPressed: _signIn,
-            ),
-            const SizedBox(height: MqSpacing.space3),
-            MqButton(
-              label: 'Continue with Google',
-              icon: Icons.open_in_new,
-              variant: MqButtonVariant.outlined,
-              onPressed: isLoading ? null : _signInWithGoogle,
+              onPressed: _signUp,
             ),
           ],
         ),

@@ -123,3 +123,10 @@ Raouf: 2026-03-10 (AEDT) — Context7 Docs Compliance
 - Fixed: Added FlutterError.presentError call for debug console output
 - Confirmed: 12/12 other patterns match latest docs (M3, AsyncNotifier, refreshListenable, PKCE, etc.)
 - Status: 0 analysis issues, 78/78 tests passing
+
+Raouf: 2026-03-11 (AEDT) — Phase 2 + Phase 3 Implementation
+- Scope: Delivered the mobile auth/profile/settings stack and the dashboard/calendar core from the migration blueprint.
+- Summary: Replaced placeholder Phase 2 screens with controller-backed Supabase auth flows for login, signup, password recovery, verification, onboarding/profile completion, MFA, and a settings shell with theme, locale, notification, and biometric lock controls. Replaced placeholder Phase 3 home/calendar screens with repository-backed dashboard insights, stress metrics, XP summary, agenda/day/week calendar views, and quick-add CRUD sheets for deadlines, exams, events, and to-dos.
+- Files changed: `lib/app/router/*`, `lib/app/syllabus_sync_app.dart`, `lib/shared/providers/auth_provider.dart`, `lib/shared/models/*`, `lib/core/utils/validators.dart`, `lib/features/auth/**`, `lib/features/profiles/**`, `lib/features/settings/**`, `lib/features/home/**`, `lib/features/calendar/**`, `test/app/route_guard_test.dart`, `test/features/auth/**`, `test/features/home/**`, `test/features/calendar/**`, `README.md`, `route_matrix.md`.
+- Verification: `flutter analyze` → no issues, `flutter test` → 91/91 passing, `scripts/check.sh --quick` → all 5 checks passed.
+- Follow-ups: detail routes for unit/deadline/event pages can be expanded further if the product wants dedicated screens beyond the new in-place editors; map/feed phases remain separate milestones.

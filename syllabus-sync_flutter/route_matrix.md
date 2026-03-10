@@ -7,22 +7,22 @@ Maps every web route to its Flutter equivalent.
 | Web Route | Flutter Route | go_router Name | Status | Phase |
 |-----------|--------------|----------------|--------|-------|
 | `/` | `/splash` → redirect | `splash` | Done | 1 |
-| `/login` | `/login` | `login` | Done (placeholder) | 2 |
-| `/signup` | `/signup` | `signup` | Planned | 2 |
-| `/verify` | `/verify-email` | `verify-email` | Planned | 2 |
-| `/reset-password` | `/reset-password` | `reset-password` | Planned | 2 |
-| `/onboarding` | `/onboarding` | `onboarding` | Planned | 2 |
-| `/home` | `/home` | `home` | Done (placeholder) | 3 |
-| `/calendar` | `/calendar` | `calendar` | Done (placeholder) | 3 |
+| `/login` | `/login` | `login` | Done | 2 |
+| `/signup` | `/signup` | `signup` | Done | 2 |
+| `/verify` | `/verify-email` | `verify-email` | Done | 2 |
+| `/reset-password` | `/reset-password` | `reset-password` | Done | 2 |
+| `/onboarding` | `/onboarding` | `onboarding` | Done | 2 |
+| `/home` | `/home` | `home` | Done | 3 |
+| `/calendar` | `/calendar` | `calendar` | Done | 3 |
 | `/map` | `/map` | `map` | Done (placeholder) | 5 |
 | `/feed` | `/feed` | `feed` | Done (placeholder) | 4 |
-| `/settings` | `/settings` | `settings` | Done (placeholder) | 2 |
-| `/settings/general` | `/settings` (section) | — | Planned | 2 |
-| `/settings/appearance` | `/settings` (section) | — | Planned | 2 |
-| `/settings/experience` | `/settings` (section) | — | Planned | 2 |
-| `/settings/security` | `/settings` (section) | — | Planned | 2 |
-| `/settings/about` | `/settings` (section) | — | Planned | 2 |
-| `/manage-profiles` | `/profile/edit` | `profile-edit` | Planned | 2 |
+| `/settings` | `/settings` | `settings` | Done | 2 |
+| `/settings/general` | `/settings` (section) | — | Done | 2 |
+| `/settings/appearance` | `/settings` (section) | — | Done | 2 |
+| `/settings/experience` | `/settings` (section) | — | Done | 2 |
+| `/settings/security` | `/settings` (section) | — | Done | 2 |
+| `/settings/about` | `/settings` (section) | — | Done | 2 |
+| `/manage-profiles` | `/profile/edit` | `profile-edit` | Done | 2 |
 | `/about` | In settings | — | Planned | 2 |
 | `/contact` | In settings | — | Planned | 2 |
 | `/privacy` | In settings (webview) | — | Planned | 6 |

@@ -4,6 +4,39 @@ All notable changes to the Syllabus Sync Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-11 (AEDT) — Phase 2 + Phase 3 Delivery
+
+**Scope:** Implement the migration blueprint’s mobile auth/profile/settings stack and home/calendar core inside the Flutter client.
+
+**Summary:**
+Replaced the placeholder Phase 2 experience with production-backed routes and screens for login, signup, email verification, password reset, MFA challenge/enrollment, onboarding, profile editing, and settings management. Added Supabase-backed repositories and Riverpod controllers for auth, profile, user preferences, and MFA state. Wired app-level theme, locale, and biometric lock behavior into `MaterialApp.router` and routing guards.
+
+Replaced the placeholder Phase 3 experience with a repository-backed dashboard and calendar. Added shared academic models for units, deadlines, events, todos, gamification, dashboard stress metrics, and calendar entries. Implemented agenda/day/week calendar views, unit filters, quick-add/edit/delete sheets for deadlines, exams, events, and todos, plus dashboard cards for deadlines, events, units, XP, streaks, and workload pressure.
+
+**Files changed:**
+- `lib/app/router/app_router.dart` and `lib/app/router/route_guard.dart` — Added Phase 2 routes and multi-step auth/onboarding/MFA recovery guards
+- `lib/app/syllabus_sync_app.dart` — Wired settings-driven theme/locale plus biometric app lock overlay
+- `lib/shared/providers/auth_provider.dart` — Added auth event tracking for password recovery and router refreshes
+- `lib/shared/models/*` — Added profile, preference, and academic domain models
+- `lib/core/utils/validators.dart` — Added reusable form validation helpers
+- `lib/features/auth/**` — Added auth repository, controllers, reusable scaffold, biometric lock gate, and real auth pages
+- `lib/features/profiles/**` — Added profile repository, controller, and edit/onboarding page
+- `lib/features/settings/**` — Added settings repository, controller, and settings shell implementation
+- `lib/features/home/**` — Added dashboard repository/controller and production dashboard page
+- `lib/features/calendar/**` — Added calendar repository/controller and production calendar page with CRUD editors
+- `test/app/route_guard_test.dart` — Added redirect/guard coverage
+- `test/features/auth/auth_flow_controller_test.dart` — Added auth controller coverage
+- `test/features/home/academic_models_test.dart` — Added dashboard/stress/gamification model coverage
+- `test/features/calendar/calendar_state_test.dart` — Added calendar state/filter coverage
+- `README.md` and `route_matrix.md` — Updated migration status to reflect completed Phase 2 and Phase 3 core slices
+
+**Verification:**
+- `flutter analyze` → No issues found
+- `flutter test` → 91/91 tests passed
+- `scripts/check.sh --quick` → 5/5 checks passed (All checks passed!)
+
+---
+
 ### Raouf: 2026-03-10 (AEDT) — Context7 Docs Compliance Fixes
 
 **Scope:** Compare codebase against latest 2026 Flutter/Riverpod/GoRouter/Supabase/local_auth docs via Context7; fix deviations.

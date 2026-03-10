@@ -175,8 +175,8 @@ GitHub Actions runs on every push and PR to `main`:
 
 - [x] **Phase 0** -- Foundation: project scaffold, inventories, CI/CD
 - [x] **Phase 1** -- App Shell: theme, routing, design system, i18n, core services
-- [ ] **Phase 2** -- Auth: login, signup, MFA, OAuth, profile
-- [ ] **Phase 3** -- Home & Calendar: dashboard widgets, academic calendar
+- [x] **Phase 2** -- Auth, onboarding, profile, settings, MFA, biometric lock
+- [x] **Phase 3** -- Dashboard + calendar core with agenda/day/week views and CRUD quick-add flows
 - [ ] **Phase 4** -- Feed & Notifications: events, push notifications
 - [ ] **Phase 5** -- Map: Google Maps integration, building search, routing
 - [ ] **Phase 6** -- Polish: performance, accessibility audit, store release

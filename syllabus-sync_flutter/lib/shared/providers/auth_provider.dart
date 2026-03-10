@@ -5,22 +5,37 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:syllabus_sync/core/logging/app_logger.dart';
 
+class AuthChangeEventNotifier extends Notifier<AuthChangeEvent?> {
+  @override
+  AuthChangeEvent? build() => null;
+
+  void setEvent(AuthChangeEvent? event) {
+    state = event;
+  }
+}
+
+final lastAuthChangeEventProvider =
+    NotifierProvider<AuthChangeEventNotifier, AuthChangeEvent?>(
+      AuthChangeEventNotifier.new,
+    );
+
 /// Reactive auth state notifier backed by Supabase auth events.
-///
-/// Emits `AsyncData<Session?>` — a non-null [Session] when authenticated,
-/// `null` when signed out, and `AsyncLoading` during initial resolution.
 class AuthNotifier extends AsyncNotifier<Session?> {
-  StreamSubscription<AuthState>? _sub;
+  StreamSubscription<AuthState>? _subscription;
 
   @override
   Future<Session?> build() async {
     final client = Supabase.instance.client;
-    unawaited(_sub?.cancel());
-    _sub = client.auth.onAuthStateChange.listen((data) {
+    await _subscription?.cancel();
+    _subscription = client.auth.onAuthStateChange.listen((data) {
       AppLogger.info('Auth event', data.event.name);
+      ref.read(lastAuthChangeEventProvider.notifier).setEvent(data.event);
       state = AsyncData(data.session);
     });
-    ref.onDispose(() => _sub?.cancel());
+    ref.onDispose(() => _subscription?.cancel());
+    ref
+        .read(lastAuthChangeEventProvider.notifier)
+        .setEvent(AuthChangeEvent.initialSession);
     return client.auth.currentSession;
   }
 
@@ -28,17 +43,15 @@ class AuthNotifier extends AsyncNotifier<Session?> {
 
   bool get isAuthenticated => state.value != null;
 
-  /// Check if email is verified.
   bool get isEmailVerified => currentUser?.emailConfirmedAt != null;
 
-  /// Check if MFA is enrolled (AAL2).
   Future<bool> get isMfaVerified async {
     try {
       final aal = Supabase.instance.client.auth.mfa
           .getAuthenticatorAssuranceLevel();
       return aal.currentLevel == AuthenticatorAssuranceLevels.aal2;
-    } catch (e, s) {
-      AppLogger.warning('MFA assurance level check failed', e, s);
+    } catch (error, stackTrace) {
+      AppLogger.warning('MFA assurance level check failed', error, stackTrace);
       return false;
     }
   }
@@ -48,26 +61,18 @@ class AuthNotifier extends AsyncNotifier<Session?> {
   }
 }
 
-/// The primary auth state provider.
-///
-/// Returns `AsyncLoading` during initial session resolution, then
-/// `AsyncData<Session?>` — non-null when authenticated, `null` when signed out.
-/// All route guards and feature screens should depend on this provider.
 final authProvider = AsyncNotifierProvider<AuthNotifier, Session?>(
   AuthNotifier.new,
 );
 
-/// Convenience provider: the currently signed-in [User], or `null`.
 final currentUserProvider = Provider<User?>((ref) {
   final session = ref.watch(authProvider).value;
   return session?.user;
 });
 
-/// A [ChangeNotifier] that fires whenever [authProvider] changes,
-/// allowing [GoRouter.refreshListenable] to re-evaluate redirects
-/// without rebuilding the entire router.
 class AuthRefreshNotifier extends ChangeNotifier {
   AuthRefreshNotifier(Ref ref) {
     ref.listen(authProvider, (_, _) => notifyListeners());
+    ref.listen(lastAuthChangeEventProvider, (_, _) => notifyListeners());
   }
 }
