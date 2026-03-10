@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:syllabus_sync/core/error/app_exception.dart' as app_exception;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:syllabus_sync/core/logging/app_logger.dart';
 import 'package:syllabus_sync/features/auth/data/repositories/auth_repository.dart';
@@ -70,6 +71,10 @@ class AuthActionController extends AsyncNotifier<void> {
       await action();
       state = const AsyncData(null);
       return null;
+    } on app_exception.AppException catch (error, stackTrace) {
+      AppLogger.warning('App auth flow failed', error, stackTrace);
+      state = AsyncError(error, stackTrace);
+      return error.message;
     } on AuthException catch (error, stackTrace) {
       AppLogger.warning('Auth flow failed', error, stackTrace);
       state = AsyncError(error, stackTrace);

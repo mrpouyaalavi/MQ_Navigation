@@ -4,6 +4,35 @@ All notable changes to the Syllabus Sync Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-11 (AEDT) — Context7 Audit Hardening for Phase 2 + Phase 3
+
+**Scope:** Re-audit the completed Phase 2 and Phase 3 migration slices against current Flutter, go_router, and Supabase docs fetched via Context7, then correct any concrete deviations.
+
+**Summary:**
+Confirmed that the project’s core 2026 patterns are still correct: `MaterialApp.router`, `ErrorWidget.builder`, async `go_router` redirects, `refreshListenable`, and Supabase `onAuthStateChange` usage match current guidance. Tightened the implementation in the places where the audit found real runtime risks.
+
+Auth routing now handles upstream Supabase failures safely by logging and falling back instead of throwing from the router redirect. Email verification refresh now guards the no-session state so the action does not fail before the verification deep link completes. Google OAuth sign-in now reports browser-launch failures instead of silently acting like the flow started. Biometric unlock now recovers when biometric support disappears after the preference was enabled by bypassing the lock for the session and turning the setting off. Calendar timeline state also now excludes undated or out-of-range to-dos and events from agenda/day/week views, and anonymous users now leave `/splash` for `/login` once auth loading completes.
+
+**Files changed:**
+- `lib/app/router/app_router.dart` — wrapped async MFA/profile guard reads with safe error handling
+- `lib/app/router/route_guard.dart` — corrected post-loading anonymous redirect behavior from splash
+- `lib/features/auth/data/repositories/auth_repository.dart` — surfaced Google OAuth launch failure as an app exception
+- `lib/features/auth/presentation/controllers/auth_flow_controller.dart` — returned app exception messages to the UI
+- `lib/features/auth/presentation/pages/verify_email_page.dart` — guarded verification refresh when no session exists yet
+- `lib/features/auth/presentation/widgets/biometric_lock_gate.dart` — handled unsupported biometrics without leaving the app stuck behind the lock overlay
+- `lib/features/calendar/presentation/controllers/calendar_controller.dart` — constrained timeline entries to the focused week
+- `lib/shared/models/academic_models.dart` — excluded undated to-dos from `CalendarEntry` timelines
+- `test/app/route_guard_test.dart` — added anonymous splash redirect coverage
+- `test/features/auth/auth_flow_controller_test.dart` — added Google OAuth launch failure coverage
+- `test/features/calendar/calendar_state_test.dart` — added undated/out-of-range to-do timeline coverage
+
+**Verification:**
+- `flutter analyze` → No issues found
+- `flutter test` → 94/94 tests passed
+- `scripts/check.sh --quick` → 5/5 checks passed (All checks passed!)
+
+---
+
 ### Raouf: 2026-03-11 (AEDT) — Phase 2 + Phase 3 Delivery
 
 **Scope:** Implement the migration blueprint’s mobile auth/profile/settings stack and home/calendar core inside the Flutter client.

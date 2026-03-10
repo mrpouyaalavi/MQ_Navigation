@@ -548,6 +548,7 @@ class AcademicBundle {
       ...deadlines.map(CalendarEntry.fromDeadline),
       ...events.map(CalendarEntry.fromEvent),
       ...todos
+          .where((item) => item.dueDate != null)
           .where((item) => includeCompletedTodos || !item.completed)
           .map(CalendarEntry.fromTodo),
     ];

@@ -63,5 +63,32 @@ void main() {
       expect(state.entries, hasLength(1));
       expect(state.entries.first.id, 'keep');
     });
+
+    test('excludes undated and out-of-range todos from the timeline', () {
+      final state = CalendarState(
+        viewMode: CalendarViewMode.agenda,
+        focusedDate: DateTime(2026, 3, 11),
+        units: const [],
+        deadlines: const [],
+        events: const [],
+        todos: [
+          TodoItem(
+            id: 'visible',
+            title: 'Visible',
+            dueDate: DateTime(2026, 3, 13, 9),
+          ),
+          const TodoItem(id: 'undated', title: 'Undated'),
+          TodoItem(
+            id: 'outside-range',
+            title: 'Outside',
+            dueDate: DateTime(2026, 4, 1, 9),
+          ),
+        ],
+        gamification: const GamificationProfile(),
+      );
+
+      expect(state.entries, hasLength(1));
+      expect(state.entries.single.id, 'visible');
+    });
   });
 }

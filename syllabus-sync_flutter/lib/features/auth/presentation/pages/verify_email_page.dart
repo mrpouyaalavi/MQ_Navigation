@@ -43,7 +43,26 @@ class VerifyEmailPage extends ConsumerWidget {
     }
 
     Future<void> refreshStatus() async {
-      await Supabase.instance.client.auth.refreshSession();
+      final auth = Supabase.instance.client.auth;
+      final currentSession = auth.currentSession;
+      if (currentSession == null) {
+        context.showSnackBar(
+          'Open the verification link on this device to complete sign-in first.',
+          isError: true,
+        );
+        return;
+      }
+
+      try {
+        await auth.refreshSession();
+      } on AuthException catch (error) {
+        if (!context.mounted) {
+          return;
+        }
+        context.showSnackBar(error.message, isError: true);
+        return;
+      }
+
       ref.invalidate(authProvider);
       if (context.mounted) {
         context.goNamed(RouteNames.splash);

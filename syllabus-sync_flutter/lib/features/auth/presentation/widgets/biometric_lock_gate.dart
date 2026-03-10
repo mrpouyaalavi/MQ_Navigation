@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syllabus_sync/app/theme/mq_spacing.dart';
+import 'package:syllabus_sync/core/error/app_exception.dart' as app_exception;
 import 'package:syllabus_sync/core/security/biometric_service.dart';
 import 'package:syllabus_sync/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:syllabus_sync/shared/extensions/context_extensions.dart';
 import 'package:syllabus_sync/shared/providers/auth_provider.dart';
 import 'package:syllabus_sync/shared/widgets/mq_button.dart';
 
@@ -19,6 +21,7 @@ class _BiometricLockGateState extends ConsumerState<BiometricLockGate>
     with WidgetsBindingObserver {
   bool _isLocked = false;
   bool _isUnlocking = false;
+  bool _hasBypassedUnavailableProtection = false;
   bool _wasProtectionEnabled = false;
 
   @override
@@ -45,7 +48,9 @@ class _BiometricLockGateState extends ConsumerState<BiometricLockGate>
   bool get _shouldProtect {
     final preferences = ref.read(settingsControllerProvider).value;
     final session = ref.read(authProvider).value;
-    return session != null && (preferences?.biometricLockEnabled ?? false);
+    return !_hasBypassedUnavailableProtection &&
+        session != null &&
+        (preferences?.biometricLockEnabled ?? false);
   }
 
   Future<void> _unlock() async {
@@ -56,18 +61,46 @@ class _BiometricLockGateState extends ConsumerState<BiometricLockGate>
       _isUnlocking = true;
     });
 
-    final success = await ref
-        .read(biometricServiceProvider)
-        .authenticate(reason: 'Unlock Syllabus Sync');
+    try {
+      final success = await ref
+          .read(biometricServiceProvider)
+          .authenticate(reason: 'Unlock Syllabus Sync');
 
-    if (!mounted) {
-      return;
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isUnlocking = false;
+        _isLocked = !success;
+      });
+    } on app_exception.UnsupportedException catch (error) {
+      final saveMessage = await ref
+          .read(settingsControllerProvider.notifier)
+          .updateBiometricLockEnabled(false);
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _hasBypassedUnavailableProtection = true;
+        _isUnlocking = false;
+        _isLocked = false;
+        _wasProtectionEnabled = false;
+      });
+      context.showSnackBar(
+        saveMessage ??
+            '${error.message} Biometric lock has been disabled for this session.',
+        isError: true,
+      );
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        _isUnlocking = false;
+      });
     }
-
-    setState(() {
-      _isUnlocking = false;
-      _isLocked = !success;
-    });
   }
 
   @override
@@ -75,9 +108,14 @@ class _BiometricLockGateState extends ConsumerState<BiometricLockGate>
     final preferences = ref.watch(settingsControllerProvider).value;
     final session = ref.watch(authProvider).value;
     final shouldProtect =
-        session != null && (preferences?.biometricLockEnabled ?? false);
+        !_hasBypassedUnavailableProtection &&
+        session != null &&
+        (preferences?.biometricLockEnabled ?? false);
 
     if (!shouldProtect) {
+      if (session == null || !(preferences?.biometricLockEnabled ?? false)) {
+        _hasBypassedUnavailableProtection = false;
+      }
       _wasProtectionEnabled = false;
       if (_isLocked) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -91,8 +129,10 @@ class _BiometricLockGateState extends ConsumerState<BiometricLockGate>
       return widget.child;
     }
 
+    var showLockedOverlay = _isLocked;
     if (!_wasProtectionEnabled) {
       _wasProtectionEnabled = true;
+      showLockedOverlay = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           setState(() {
@@ -102,7 +142,7 @@ class _BiometricLockGateState extends ConsumerState<BiometricLockGate>
       });
     }
 
-    if (!_isLocked) {
+    if (!showLockedOverlay) {
       return widget.child;
     }
 

@@ -33,6 +33,24 @@ void main() {
       );
     });
 
+    test(
+      'redirects anonymous users away from splash once loading finishes',
+      () {
+        expect(
+          resolveRouteRedirect(
+            currentPath: '/splash',
+            isLoading: false,
+            isAuthenticated: false,
+            isEmailVerified: false,
+            requiresMfa: false,
+            needsOnboarding: false,
+            isInPasswordRecovery: false,
+          ),
+          '/login',
+        );
+      },
+    );
+
     test('redirects password recovery sessions to reset route', () {
       expect(
         resolveRouteRedirect(

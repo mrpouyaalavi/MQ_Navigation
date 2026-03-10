@@ -66,14 +66,24 @@ class CalendarState {
 
   DateTime get weekEnd => weekStart.add(const Duration(days: 6, hours: 23));
 
+  DateTime get weekEndExclusive => weekStart.add(const Duration(days: 7));
+
   List<CalendarEntry> get entries {
+    bool isVisible(DateTime value) =>
+        !value.isBefore(weekStart) && value.isBefore(weekEndExclusive);
+
     final entries = <CalendarEntry>[
       ...deadlines
           .where((item) => _matchesUnit(item.unitId))
+          .where((item) => isVisible(item.dueDate))
           .map(CalendarEntry.fromDeadline),
-      ...events.map(CalendarEntry.fromEvent),
+      ...events
+          .where((item) => isVisible(item.startAt))
+          .map(CalendarEntry.fromEvent),
       ...todos
+          .where((item) => item.dueDate != null)
           .where((item) => includeCompletedItems || !item.completed)
+          .where((item) => isVisible(item.dueDate!))
           .map(CalendarEntry.fromTodo),
     ]..sort((a, b) => a.startAt.compareTo(b.startAt));
     return entries;

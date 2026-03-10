@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:syllabus_sync/core/error/app_exception.dart';
 
 const mobileAuthRedirectUri = 'io.syllabussync://callback';
 
@@ -14,7 +15,7 @@ abstract interface class AuthRepository {
     required String password,
   });
 
-  Future<bool> signInWithGoogle();
+  Future<void> signInWithGoogle();
 
   Future<void> sendPasswordReset(String email);
 
@@ -55,11 +56,16 @@ class SupabaseAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<bool> signInWithGoogle() {
-    return _client.auth.signInWithOAuth(
+  Future<void> signInWithGoogle() async {
+    final launched = await _client.auth.signInWithOAuth(
       OAuthProvider.google,
       redirectTo: mobileAuthRedirectUri,
     );
+    if (!launched) {
+      throw const UnsupportedException(
+        'Unable to open the Google sign-in flow on this device.',
+      );
+    }
   }
 
   @override

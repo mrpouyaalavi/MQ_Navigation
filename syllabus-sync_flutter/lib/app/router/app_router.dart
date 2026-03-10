@@ -6,6 +6,7 @@ import 'package:syllabus_sync/app/router/app_shell.dart';
 import 'package:syllabus_sync/app/router/route_guard.dart';
 import 'package:syllabus_sync/app/router/route_names.dart';
 import 'package:syllabus_sync/core/config/env_config.dart';
+import 'package:syllabus_sync/core/logging/app_logger.dart';
 import 'package:syllabus_sync/features/auth/presentation/pages/login_page.dart';
 import 'package:syllabus_sync/features/auth/presentation/pages/mfa_page.dart';
 import 'package:syllabus_sync/features/auth/presentation/pages/reset_password_page.dart';
@@ -58,20 +59,37 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         isEmailVerified = session.user.emailConfirmedAt != null;
 
         if (isEmailVerified) {
-          final factors = await Supabase.instance.client.auth.mfa.listFactors();
-          final aal = Supabase.instance.client.auth.mfa
-              .getAuthenticatorAssuranceLevel();
-          requiresMfa =
-              factors.all.any(
-                (factor) => factor.status == FactorStatus.verified,
-              ) &&
-              aal.currentLevel != AuthenticatorAssuranceLevels.aal2;
+          try {
+            final factors = await Supabase.instance.client.auth.mfa
+                .listFactors();
+            final aal = Supabase.instance.client.auth.mfa
+                .getAuthenticatorAssuranceLevel();
+            requiresMfa =
+                factors.all.any(
+                  (factor) => factor.status == FactorStatus.verified,
+                ) &&
+                aal.currentLevel != AuthenticatorAssuranceLevels.aal2;
+          } catch (error, stackTrace) {
+            AppLogger.warning(
+              'Failed to evaluate MFA guard state',
+              error,
+              stackTrace,
+            );
+          }
 
           if (!requiresMfa) {
-            final profile = await ref
-                .read(profileRepositoryProvider)
-                .fetchCurrentProfile();
-            needsOnboarding = profile == null || !profile.isComplete;
+            try {
+              final profile = await ref
+                  .read(profileRepositoryProvider)
+                  .fetchCurrentProfile();
+              needsOnboarding = profile == null || !profile.isComplete;
+            } catch (error, stackTrace) {
+              AppLogger.warning(
+                'Failed to evaluate onboarding guard state',
+                error,
+                stackTrace,
+              );
+            }
           }
         }
       }

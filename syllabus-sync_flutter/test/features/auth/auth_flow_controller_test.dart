@@ -1,20 +1,31 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:syllabus_sync/core/error/app_exception.dart' as app_exception;
 import 'package:syllabus_sync/features/auth/data/repositories/auth_repository.dart';
 import 'package:syllabus_sync/features/auth/presentation/controllers/auth_flow_controller.dart';
 
 class _FakeAuthRepository implements AuthRepository {
-  _FakeAuthRepository({this.errorToThrow});
+  _FakeAuthRepository({this.errorToThrow, this.googleLaunchResult = true});
 
   final Object? errorToThrow;
+  final bool googleLaunchResult;
   int signInCalls = 0;
 
   @override
   Future<void> sendPasswordReset(String email) async {}
 
   @override
-  Future<bool> signInWithGoogle() async => true;
+  Future<void> signInWithGoogle() async {
+    if (errorToThrow != null) {
+      throw errorToThrow!;
+    }
+    if (!googleLaunchResult) {
+      throw const app_exception.UnsupportedException(
+        'Unable to open the Google sign-in flow on this device.',
+      );
+    }
+  }
 
   @override
   Future<AuthResponse> signIn({
@@ -89,6 +100,20 @@ void main() {
       );
 
       expect(message, 'Invalid credentials');
+      expect(container.read(authActionControllerProvider).hasError, isTrue);
+    });
+
+    test('surfaces Google OAuth launch failures', () async {
+      final fakeRepository = _FakeAuthRepository(googleLaunchResult: false);
+      final container = ProviderContainer(
+        overrides: [authRepositoryProvider.overrideWithValue(fakeRepository)],
+      );
+      addTearDown(container.dispose);
+
+      final notifier = container.read(authActionControllerProvider.notifier);
+      final message = await notifier.signInWithGoogle();
+
+      expect(message, 'Unable to open the Google sign-in flow on this device.');
       expect(container.read(authActionControllerProvider).hasError, isTrue);
     });
   });

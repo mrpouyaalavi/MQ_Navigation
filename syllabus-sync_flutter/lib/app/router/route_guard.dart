@@ -29,9 +29,10 @@ String? resolveRouteRedirect({
   }
 
   if (!isAuthenticated) {
-    return authPaths.contains(currentPath) || currentPath == '/splash'
-        ? null
-        : '/login';
+    if (authPaths.contains(currentPath)) {
+      return null;
+    }
+    return '/login';
   }
 
   if (!isEmailVerified) {
