@@ -22,7 +22,7 @@ class AuthException extends AppException {
 /// Server returned an unexpected response.
 class ServerException extends AppException {
   const ServerException(String message, {this.statusCode, Object? cause})
-      : super(message, cause);
+    : super(message, cause);
 
   final int? statusCode;
 }

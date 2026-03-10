@@ -43,7 +43,9 @@ class Building {
       name: json['name'] as String,
       description: json['description'] as String?,
       address: json['address'] as String?,
-      category: BuildingCategory.fromString(json['category'] as String? ?? 'other'),
+      category: BuildingCategory.fromString(
+        json['category'] as String? ?? 'other',
+      ),
       latitude: (location?['lat'] as num?)?.toDouble(),
       longitude: (location?['lng'] as num?)?.toDouble(),
       entranceLatitude: (entrance?['lat'] as num?)?.toDouble(),
@@ -58,22 +60,22 @@ class Building {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'description': description,
-        'address': address,
-        'category': category.name,
-        'location': latitude != null ? {'lat': latitude, 'lng': longitude} : null,
-        'entranceLocation': entranceLatitude != null
-            ? {'lat': entranceLatitude, 'lng': entranceLongitude}
-            : null,
-        'googlePlaceId': googlePlaceId,
-        'levels': levels,
-        'wheelchair': wheelchair,
-        'tags': tags,
-        'aliases': aliases,
-        'gridRef': gridRef,
-      };
+    'id': id,
+    'name': name,
+    'description': description,
+    'address': address,
+    'category': category.name,
+    'location': latitude != null ? {'lat': latitude, 'lng': longitude} : null,
+    'entranceLocation': entranceLatitude != null
+        ? {'lat': entranceLatitude, 'lng': entranceLongitude}
+        : null,
+    'googlePlaceId': googlePlaceId,
+    'levels': levels,
+    'wheelchair': wheelchair,
+    'tags': tags,
+    'aliases': aliases,
+    'gridRef': gridRef,
+  };
 
   /// Best coordinate for routing: entrance if available, otherwise building center.
   double? get routingLatitude => entranceLatitude ?? latitude;

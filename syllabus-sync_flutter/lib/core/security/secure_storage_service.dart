@@ -6,7 +6,7 @@ import 'package:syllabus_sync/core/logging/app_logger.dart';
 /// Encrypted key-value storage backed by Keychain (iOS) / Keystore (Android).
 class SecureStorageService {
   SecureStorageService([FlutterSecureStorage? storage])
-      : _storage = storage ?? const FlutterSecureStorage();
+    : _storage = storage ?? const FlutterSecureStorage();
 
   final FlutterSecureStorage _storage;
 

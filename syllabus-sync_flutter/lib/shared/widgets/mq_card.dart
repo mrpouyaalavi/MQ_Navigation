@@ -3,12 +3,7 @@ import 'package:syllabus_sync/app/theme/mq_spacing.dart';
 
 /// Standard MQ-styled card with consistent padding and shape.
 class MqCard extends StatelessWidget {
-  const MqCard({
-    super.key,
-    required this.child,
-    this.onTap,
-    this.padding,
-  });
+  const MqCard({super.key, required this.child, this.onTap, this.padding});
 
   final Widget child;
   final VoidCallback? onTap;

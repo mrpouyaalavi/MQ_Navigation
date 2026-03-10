@@ -34,7 +34,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       }
 
       // Auth-gated routes.
-      final isAuthRoute = currentPath == '/login' ||
+      final isAuthRoute =
+          currentPath == '/login' ||
           currentPath == '/signup' ||
           currentPath == '/reset-password' ||
           currentPath == '/verify-email';

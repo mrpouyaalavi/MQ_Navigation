@@ -4,6 +4,30 @@ All notable changes to the Syllabus Sync Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-10 (AEDT) — Comprehensive Test Suite & Check Script
+
+**Scope:** Full test coverage for Phase 0+1 deliverables, CI-ready check script.
+
+**Summary:**
+Created comprehensive test suite covering all Phase 0+1 components: theme tokens (colors, spacing, typography, ThemeData), env config defaults, exception hierarchy, Result type, route name constants, Building entity model (JSON round-trips, search, routing), and shared widget tests (MqButton variants/loading/icons, MqCard tapping, MqInput obscure/disabled). Built `scripts/check.sh` mirroring the web app's `npm run check` (pub get → format:check → analyze → test → gen-l10n → build). All 78 tests pass, all 5 checks green.
+
+**Files created/changed:**
+- `test/widget_test.dart` — Theme token smoke tests (4 tests)
+- `test/core/env_config_test.dart` — EnvConfig defaults (7 tests)
+- `test/core/app_exception_test.dart` — Exception hierarchy (7 tests)
+- `test/core/result_test.dart` — Result type switching (6 tests)
+- `test/app/mq_theme_test.dart` — Colors, spacing, typography, theme (21 tests)
+- `test/app/route_names_test.dart` — Route name constants (3 tests)
+- `test/features/map/building_test.dart` — Building entity model (12 tests)
+- `test/shared/mq_widgets_test.dart` — MqButton, MqCard, MqInput widget tests (18 tests)
+- `scripts/check.sh` — Flutter check script (format, analyze, test, gen-l10n, build)
+
+**Verification:**
+- `flutter test` → 78/78 tests passed
+- `scripts/check.sh --quick` → 5/5 checks passed (All checks passed!)
+
+---
+
 ### Raouf: 2026-03-10 (AEDT) — Phase 0+1 Completion Pass
 
 **Scope:** Close all Phase 0+1 gaps — inventories, full l10n, building registry, deep links.

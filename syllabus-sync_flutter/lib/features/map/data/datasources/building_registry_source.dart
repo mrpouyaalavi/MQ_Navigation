@@ -11,9 +11,7 @@ const _cacheKey = 'building_registry';
 /// Data source for the campus building registry.
 /// Fetches from Supabase and caches locally in secure storage.
 class BuildingRegistrySource {
-  BuildingRegistrySource({
-    required this.secureStorage,
-  });
+  BuildingRegistrySource({required this.secureStorage});
 
   final SecureStorageService secureStorage;
 
@@ -30,7 +28,10 @@ class BuildingRegistrySource {
     try {
       final buildings = await _fetchFromSupabase();
       await _saveToCache(buildings);
-      AppLogger.info('Building registry fetched from Supabase', buildings.length);
+      AppLogger.info(
+        'Building registry fetched from Supabase',
+        buildings.length,
+      );
       return buildings;
     } catch (e, s) {
       AppLogger.error('Failed to fetch building registry', e, s);

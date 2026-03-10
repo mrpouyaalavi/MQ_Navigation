@@ -33,15 +33,71 @@ String convertInterpolation(String value) {
 
 /// Dart reserved keywords that cannot be used as ARB identifiers.
 const dartReservedWords = {
-  'abstract', 'as', 'assert', 'async', 'await', 'break', 'case', 'catch',
-  'class', 'const', 'continue', 'covariant', 'default', 'deferred', 'do',
-  'dynamic', 'else', 'enum', 'export', 'extends', 'extension', 'external',
-  'factory', 'false', 'final', 'finally', 'for', 'function', 'get', 'hide',
-  'if', 'implements', 'import', 'in', 'interface', 'is', 'late', 'library',
-  'mixin', 'new', 'null', 'on', 'operator', 'part', 'required', 'rethrow',
-  'return', 'sealed', 'set', 'show', 'static', 'super', 'switch', 'sync',
-  'this', 'throw', 'true', 'try', 'typedef', 'var', 'void', 'when', 'while',
-  'with', 'yield',
+  'abstract',
+  'as',
+  'assert',
+  'async',
+  'await',
+  'break',
+  'case',
+  'catch',
+  'class',
+  'const',
+  'continue',
+  'covariant',
+  'default',
+  'deferred',
+  'do',
+  'dynamic',
+  'else',
+  'enum',
+  'export',
+  'extends',
+  'extension',
+  'external',
+  'factory',
+  'false',
+  'final',
+  'finally',
+  'for',
+  'function',
+  'get',
+  'hide',
+  'if',
+  'implements',
+  'import',
+  'in',
+  'interface',
+  'is',
+  'late',
+  'library',
+  'mixin',
+  'new',
+  'null',
+  'on',
+  'operator',
+  'part',
+  'required',
+  'rethrow',
+  'return',
+  'sealed',
+  'set',
+  'show',
+  'static',
+  'super',
+  'switch',
+  'sync',
+  'this',
+  'throw',
+  'true',
+  'try',
+  'typedef',
+  'var',
+  'void',
+  'when',
+  'while',
+  'with',
+  'yield',
 };
 
 /// Sanitise a JSON key to be a valid Dart identifier for ARB.
@@ -89,7 +145,9 @@ void main() async {
       .map(sanitiseKey)
       .toList();
 
-  stdout.writeln('Template has ${templateKeys.length} keys (excluding building keys)');
+  stdout.writeln(
+    'Template has ${templateKeys.length} keys (excluding building keys)',
+  );
 
   var convertedCount = 0;
 
@@ -106,12 +164,11 @@ void main() async {
 
     try {
       final json =
-          jsonDecode(translationsFile.readAsStringSync()) as Map<String, dynamic>;
+          jsonDecode(translationsFile.readAsStringSync())
+              as Map<String, dynamic>;
 
       // Build ARB map
-      final arb = <String, dynamic>{
-        '@@locale': langCode,
-      };
+      final arb = <String, dynamic>{'@@locale': langCode};
 
       for (final entry in json.entries) {
         if (shouldExclude(entry.key)) continue;
@@ -133,6 +190,8 @@ void main() async {
     }
   }
 
-  stdout.writeln('\nDone! Converted $convertedCount locale(s) to $arbOutputDir/');
+  stdout.writeln(
+    '\nDone! Converted $convertedCount locale(s) to $arbOutputDir/',
+  );
   stdout.writeln('Run "flutter gen-l10n" to regenerate localisation classes.');
 }

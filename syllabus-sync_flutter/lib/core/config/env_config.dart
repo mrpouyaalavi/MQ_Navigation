@@ -34,7 +34,10 @@ class EnvConfig {
   static bool get isDevelopment => appEnv == 'development';
 
   static void validate() {
-    assert(supabaseUrl.isNotEmpty, 'SUPABASE_URL must be set via --dart-define');
+    assert(
+      supabaseUrl.isNotEmpty,
+      'SUPABASE_URL must be set via --dart-define',
+    );
     assert(
       supabaseAnonKey.isNotEmpty,
       'SUPABASE_ANON_KEY must be set via --dart-define',

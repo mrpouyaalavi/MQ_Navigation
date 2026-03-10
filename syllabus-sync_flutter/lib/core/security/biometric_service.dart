@@ -6,7 +6,7 @@ import 'package:syllabus_sync/core/logging/app_logger.dart';
 /// Wrapper around `local_auth` for biometric authentication gates.
 class BiometricService {
   BiometricService([LocalAuthentication? auth])
-      : _auth = auth ?? LocalAuthentication();
+    : _auth = auth ?? LocalAuthentication();
 
   final LocalAuthentication _auth;
 

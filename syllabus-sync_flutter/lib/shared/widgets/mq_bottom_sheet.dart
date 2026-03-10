@@ -40,7 +40,9 @@ Future<T?> showMqBottomSheet<T>({
               if (title != null) ...[
                 const SizedBox(height: MqSpacing.space4),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: MqSpacing.space4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: MqSpacing.space4,
+                  ),
                   child: Text(
                     title,
                     style: Theme.of(context).textTheme.titleLarge,

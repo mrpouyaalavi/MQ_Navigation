@@ -87,3 +87,9 @@ Raouf: 2026-03-10 (AEDT) — Phase 0+1 Completion
 - Added: Building entity model + cache data source, deep link config (Android + iOS)
 - Wired: AppLocalizations delegates in SyllabusSyncApp
 - Status: flutter analyze clean (0 issues), 4/4 tests passing
+
+Raouf: 2026-03-10 (AEDT) — Comprehensive Test Suite & Check Script
+- Scope: 78 unit/widget tests + scripts/check.sh (mirrors web's npm run check)
+- Tests: theme tokens, env config, exceptions, Result, routes, Building entity, MqButton/MqCard/MqInput
+- check.sh: pub get → format:check → analyze → test → gen-l10n → build (--quick skips build)
+- Status: 78/78 tests passing, 5/5 checks green

@@ -10,10 +10,12 @@ abstract final class MqTypography {
   static const String _fontSecondary = 'SourceSerifPro';
 
   // ── Light theme text styles ────────────────────────────
-  static TextTheme get lightTextTheme => _buildTextTheme(MqColors.contentPrimary);
+  static TextTheme get lightTextTheme =>
+      _buildTextTheme(MqColors.contentPrimary);
 
   // ── Dark theme text styles ─────────────────────────────
-  static TextTheme get darkTextTheme => _buildTextTheme(MqColors.contentPrimaryDark);
+  static TextTheme get darkTextTheme =>
+      _buildTextTheme(MqColors.contentPrimaryDark);
 
   static TextTheme _buildTextTheme(Color baseColor) {
     return TextTheme(

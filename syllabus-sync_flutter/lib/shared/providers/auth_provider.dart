@@ -25,13 +25,13 @@ class AuthNotifier extends AsyncNotifier<Session?> {
   bool get isAuthenticated => state.value != null;
 
   /// Check if email is verified.
-  bool get isEmailVerified =>
-      currentUser?.emailConfirmedAt != null;
+  bool get isEmailVerified => currentUser?.emailConfirmedAt != null;
 
   /// Check if MFA is enrolled (AAL2).
   Future<bool> get isMfaVerified async {
     try {
-      final aal = Supabase.instance.client.auth.mfa.getAuthenticatorAssuranceLevel();
+      final aal = Supabase.instance.client.auth.mfa
+          .getAuthenticatorAssuranceLevel();
       return aal.currentLevel == AuthenticatorAssuranceLevels.aal2;
     } catch (_) {
       return false;

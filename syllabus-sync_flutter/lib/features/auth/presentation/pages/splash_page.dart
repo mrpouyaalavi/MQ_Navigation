@@ -23,9 +23,9 @@ class SplashPage extends StatelessWidget {
             Text(
               'Syllabus Sync',
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                    color: MqColors.red,
-                    fontWeight: FontWeight.w700,
-                  ),
+                color: MqColors.red,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: 32),
             const SizedBox(

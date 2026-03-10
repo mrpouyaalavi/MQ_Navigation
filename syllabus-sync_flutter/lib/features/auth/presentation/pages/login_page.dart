@@ -32,8 +32,8 @@ class LoginPage extends StatelessWidget {
               Text(
                 'Sign in to manage your Macquarie University experience',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: MqColors.contentTertiary,
-                    ),
+                  color: MqColors.contentTertiary,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: MqSpacing.space8),
