@@ -162,7 +162,7 @@ flutter test test/features/map/building_test.dart
 
 ## Repository Links
 
-- **Web App**: https://github.com/mrpouyaalavi/syllabus-sync
+- **Web App**: https://github.com/Raoof128/Pouya-Raouf-COMP3130
 - **Mobile App**: This repository (`MQ_Navigation/` directory)
 
 ## Timeline
