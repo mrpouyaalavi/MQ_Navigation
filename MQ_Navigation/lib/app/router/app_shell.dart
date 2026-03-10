@@ -29,19 +29,9 @@ class AppShell extends StatelessWidget {
             label: l10n.home,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.calendar_month_outlined),
-            selectedIcon: const Icon(Icons.calendar_month),
-            label: l10n.calendar,
-          ),
-          NavigationDestination(
             icon: const Icon(Icons.map_outlined),
             selectedIcon: const Icon(Icons.map),
             label: l10n.map,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.feed_outlined),
-            selectedIcon: const Icon(Icons.feed),
-            label: l10n.feed,
           ),
           NavigationDestination(
             icon: const Icon(Icons.settings_outlined),

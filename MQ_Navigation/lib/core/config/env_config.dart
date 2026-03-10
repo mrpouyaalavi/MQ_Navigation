@@ -38,15 +38,17 @@ class EnvConfig {
   static bool get isStaging => appEnv == 'staging';
   static bool get isDevelopment => appEnv == 'development';
 
-  /// Throws [StateError] if required env vars are missing.
+  /// Whether Supabase credentials are configured.
+  static bool get hasSupabase =>
+      supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty;
+
+  /// Logs warnings for missing env vars instead of crashing.
   ///
-  /// Unlike `assert`, this check runs in **all** build modes including release.
+  /// In production, missing Supabase credentials are fatal.
+  /// In development, the app runs in demo mode with sample data.
   static void validate() {
-    if (supabaseUrl.isEmpty) {
-      throw StateError('SUPABASE_URL must be set via --dart-define');
-    }
-    if (supabaseAnonKey.isEmpty) {
-      throw StateError('SUPABASE_ANON_KEY must be set via --dart-define');
+    if (!hasSupabase && isProduction) {
+      throw StateError('SUPABASE_URL and SUPABASE_ANON_KEY must be set via --dart-define');
     }
   }
 }

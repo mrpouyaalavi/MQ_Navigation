@@ -55,6 +55,9 @@ lib/app/l10n/generated/
 .env.*
 !.env.example
 
+# Dart define secrets (copy dart_defines.json.example → dart_defines.json and fill in real values)
+dart_defines.json
+
 # Firebase config (contains project-specific keys)
 google-services.json
 GoogleService-Info.plist

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:mq_navigation/core/config/env_config.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:mq_navigation/core/security/secure_storage_service.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
@@ -10,13 +11,18 @@ const _cacheKey = 'building_registry';
 
 /// Data source for the campus building registry.
 /// Fetches from Supabase and caches locally in secure storage.
+/// Returns empty list in demo mode (no Supabase credentials).
 class BuildingRegistrySource {
   BuildingRegistrySource({required this.secureStorage});
 
   final SecureStorageService secureStorage;
 
   /// Load buildings: try cache first, then fetch from Supabase.
+  /// Returns empty list in demo mode so [allBuildingsProvider] falls back
+  /// to sample data.
   Future<List<Building>> getBuildings({bool forceRefresh = false}) async {
+    if (!EnvConfig.hasSupabase) return [];
+
     if (!forceRefresh) {
       final cached = await _loadFromCache();
       if (cached != null && cached.isNotEmpty) {

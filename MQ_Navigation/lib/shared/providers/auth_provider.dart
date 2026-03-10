@@ -3,17 +3,22 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:mq_navigation/core/config/env_config.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
 
 /// Reactive auth state notifier backed by Supabase auth events.
 ///
 /// Emits `AsyncData<Session?>` — a non-null [Session] when authenticated,
 /// `null` when signed out, and `AsyncLoading` during initial resolution.
+/// Returns `null` immediately in demo mode (no Supabase credentials).
 class AuthNotifier extends AsyncNotifier<Session?> {
   StreamSubscription<AuthState>? _sub;
 
   @override
   Future<Session?> build() async {
+    // Demo mode: no Supabase, so no session.
+    if (!EnvConfig.hasSupabase) return null;
+
     final client = Supabase.instance.client;
     unawaited(_sub?.cancel());
     _sub = client.auth.onAuthStateChange.listen((data) {
@@ -24,7 +29,8 @@ class AuthNotifier extends AsyncNotifier<Session?> {
     return client.auth.currentSession;
   }
 
-  User? get currentUser => Supabase.instance.client.auth.currentUser;
+  User? get currentUser =>
+      EnvConfig.hasSupabase ? Supabase.instance.client.auth.currentUser : null;
 
   bool get isAuthenticated => state.value != null;
 
