@@ -1,7 +1,12 @@
-# Only track syllabus-sync_flutter in this repo
+# Only track syllabus-sync_flutter and root docs in this repo
 # Ignore everything else at the top level
 /*
 
-# Allow the Flutter app directory and this gitignore
+# Allow root-level project files
 !/.gitignore
+!/README.md
+!/LICENSE
+!/CONTRIBUTING.md
+!/CODE_OF_CONDUCT.md
+!/SECURITY.md
 !/syllabus-sync_flutter/
