@@ -31,7 +31,7 @@ Future<void> bootstrap(Widget Function() appBuilder) async {
 
       AppLogger.info('Supabase initialised', EnvConfig.appEnv);
 
-      runApp(ProviderScope(child: appBuilder()));
+      runApp(ProviderScope(child: ErrorBoundary(child: appBuilder())));
     },
     (error, stack) {
       AppLogger.error('Unhandled zone error', error, stack);

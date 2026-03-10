@@ -11,6 +11,8 @@ enum ConnectivityStatus { online, offline }
 class ConnectivityService {
   ConnectivityService() {
     _subscription = Connectivity().onConnectivityChanged.listen(_update);
+    // Perform an immediate check so status is accurate from the start.
+    unawaited(check());
   }
 
   final _controller = StreamController<ConnectivityStatus>.broadcast();

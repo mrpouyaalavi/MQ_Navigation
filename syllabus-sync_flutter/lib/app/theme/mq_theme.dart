@@ -5,7 +5,7 @@ import 'package:syllabus_sync/app/theme/mq_typography.dart';
 
 /// Builds the [ThemeData] for the Syllabus Sync app.
 abstract final class MqTheme {
-  // ── Light theme ────────────────────────────────────────
+  // -- Light theme --
   static ThemeData get light {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: MqColors.red,
@@ -30,17 +30,17 @@ abstract final class MqTheme {
         elevation: 0,
         scrolledUnderElevation: 1,
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      navigationBarTheme: NavigationBarThemeData(
         backgroundColor: MqColors.alabasterLight,
-        selectedItemColor: MqColors.red,
-        unselectedItemColor: MqColors.charcoal600,
-        type: BottomNavigationBarType.fixed,
-        elevation: 8,
-        selectedLabelStyle: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
+        indicatorColor: MqColors.red.withAlpha(30),
+        elevation: 3,
+        labelTextStyle: const WidgetStatePropertyAll(
+          TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: MqColors.charcoal600,
+          ),
         ),
-        unselectedLabelStyle: const TextStyle(fontSize: 12),
       ),
       cardTheme: CardThemeData(
         color: Colors.white,
@@ -107,7 +107,7 @@ abstract final class MqTheme {
     );
   }
 
-  // ── Dark theme ─────────────────────────────────────────
+  // -- Dark theme --
   static ThemeData get dark {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: MqColors.brightRed,
@@ -134,17 +134,17 @@ abstract final class MqTheme {
         elevation: 0,
         scrolledUnderElevation: 1,
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      navigationBarTheme: NavigationBarThemeData(
         backgroundColor: MqColors.charcoal900,
-        selectedItemColor: MqColors.brightRed,
-        unselectedItemColor: MqColors.slate500,
-        type: BottomNavigationBarType.fixed,
-        elevation: 8,
-        selectedLabelStyle: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
+        indicatorColor: MqColors.brightRed.withAlpha(30),
+        elevation: 3,
+        labelTextStyle: const WidgetStatePropertyAll(
+          TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: MqColors.slate500,
+          ),
         ),
-        unselectedLabelStyle: const TextStyle(fontSize: 12),
       ),
       cardTheme: CardThemeData(
         color: MqColors.charcoal700,

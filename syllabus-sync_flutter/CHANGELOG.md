@@ -4,6 +4,51 @@ All notable changes to the Syllabus Sync Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-10 (AEDT) — Production-Grade Audit & Polish
+
+**Scope:** Comprehensive audit fixing critical bugs, adding professional docs, hardening configs.
+
+**Summary:**
+Full production-grade audit identified and fixed 14 code issues: EnvConfig.validate() now throws StateError in release builds (was assert-only, invisible in production); GoRouter rebuilt to use a single stable instance with AuthRefreshNotifier/refreshListenable pattern (was recreating on every auth state change, destroying navigator); ErrorBoundary now mounted in widget tree; debugLogDiagnostics gated behind isDevelopment; ConnectivityService performs initial check on construction; MFA check logs errors instead of silent catch; biometric service removed deprecated param; nav bar labels localised; login page uses MqInput; Building entity has ==/hashCode; MqTheme switched from dead BottomNavigationBarTheme to NavigationBarTheme; Result<T> unsafe getters removed; splash magic numbers replaced with tokens; pubspec pinned all `any` deps.
+
+Added full professional documentation suite: README.md, LICENSE (MIT), CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, docs/ARCHITECTURE.md. Hardened analysis_options.yaml with 20+ lint rules. Added .editorconfig, .vscode/settings.json, .vscode/extensions.json.
+
+**Files created:**
+- `README.md` — comprehensive project documentation with tech stack, setup, design system
+- `LICENSE` — MIT License
+- `CONTRIBUTING.md` — contribution guidelines, branch naming, commit conventions
+- `CODE_OF_CONDUCT.md` — Contributor Covenant v2.1
+- `SECURITY.md` — security policy, vulnerability reporting, security practices
+- `docs/ARCHITECTURE.md` — full system architecture, state management, routing, design system
+- `.editorconfig` — editor-agnostic formatting rules
+- `.vscode/settings.json` — VS Code workspace settings
+- `.vscode/extensions.json` — recommended extensions
+
+**Files changed:**
+- `lib/core/config/env_config.dart` — assert() -> StateError throws in all build modes
+- `lib/app/router/app_router.dart` — stable GoRouter with AuthRefreshNotifier
+- `lib/app/router/app_shell.dart` — localised nav bar labels
+- `lib/app/bootstrap/bootstrap.dart` — ErrorBoundary wrapping widget tree
+- `lib/core/network/connectivity_service.dart` — initial check() on construction
+- `lib/shared/providers/auth_provider.dart` — MFA error logging, AuthRefreshNotifier, doc comments
+- `lib/core/security/biometric_service.dart` — removed persistAcrossBackgrounding
+- `lib/features/auth/presentation/pages/splash_page.dart` — MqSpacing tokens
+- `lib/features/auth/presentation/pages/login_page.dart` — MqInput, const constructors
+- `lib/features/map/domain/entities/building.dart` — @immutable, ==/hashCode
+- `lib/app/theme/mq_theme.dart` — NavigationBarTheme, const fixes
+- `lib/core/utils/result.dart` — removed unsafe .value/.error getters
+- `pubspec.yaml` — pinned intl ^0.20.2, geolocator ^13.0.0, flutter_local_notifications ^18.0.0
+- `analysis_options.yaml` — hardened with prefer_const, unawaited_futures, prefer_final_locals, etc.
+- `test/core/result_test.dart` — adapted to Result API changes
+- `test/app/mq_theme_test.dart` — removed unnecessary dart:ui import
+
+**Verification:**
+- `flutter analyze` -> No issues found
+- `flutter test` -> 78/78 tests passed
+- `scripts/check.sh --quick` -> 5/5 checks passed (All checks passed!)
+
+---
+
 ### Raouf: 2026-03-10 (AEDT) — Comprehensive Test Suite & Check Script
 
 **Scope:** Full test coverage for Phase 0+1 deliverables, CI-ready check script.

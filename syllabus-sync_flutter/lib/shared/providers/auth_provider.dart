@@ -1,17 +1,21 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:syllabus_sync/core/logging/app_logger.dart';
 
 /// Reactive auth state notifier backed by Supabase auth events.
+///
+/// Emits `AsyncData<Session?>` — a non-null [Session] when authenticated,
+/// `null` when signed out, and `AsyncLoading` during initial resolution.
 class AuthNotifier extends AsyncNotifier<Session?> {
   StreamSubscription<AuthState>? _sub;
 
   @override
   Future<Session?> build() async {
     final client = Supabase.instance.client;
-    _sub?.cancel();
+    unawaited(_sub?.cancel());
     _sub = client.auth.onAuthStateChange.listen((data) {
       AppLogger.info('Auth event', data.event.name);
       state = AsyncData(data.session);
@@ -33,7 +37,8 @@ class AuthNotifier extends AsyncNotifier<Session?> {
       final aal = Supabase.instance.client.auth.mfa
           .getAuthenticatorAssuranceLevel();
       return aal.currentLevel == AuthenticatorAssuranceLevels.aal2;
-    } catch (_) {
+    } catch (e, s) {
+      AppLogger.warning('MFA assurance level check failed', e, s);
       return false;
     }
   }
@@ -43,12 +48,26 @@ class AuthNotifier extends AsyncNotifier<Session?> {
   }
 }
 
+/// The primary auth state provider.
+///
+/// Returns `AsyncLoading` during initial session resolution, then
+/// `AsyncData<Session?>` — non-null when authenticated, `null` when signed out.
+/// All route guards and feature screens should depend on this provider.
 final authProvider = AsyncNotifierProvider<AuthNotifier, Session?>(
   AuthNotifier.new,
 );
 
-/// Convenience: current user or null.
+/// Convenience provider: the currently signed-in [User], or `null`.
 final currentUserProvider = Provider<User?>((ref) {
   final session = ref.watch(authProvider).value;
   return session?.user;
 });
+
+/// A [ChangeNotifier] that fires whenever [authProvider] changes,
+/// allowing [GoRouter.refreshListenable] to re-evaluate redirects
+/// without rebuilding the entire router.
+class AuthRefreshNotifier extends ChangeNotifier {
+  AuthRefreshNotifier(Ref ref) {
+    ref.listen(authProvider, (_, _) => notifyListeners());
+  }
+}

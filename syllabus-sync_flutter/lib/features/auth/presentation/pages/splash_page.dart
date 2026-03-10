@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syllabus_sync/app/theme/mq_colors.dart';
+import 'package:syllabus_sync/app/theme/mq_spacing.dart';
 
 /// Shown on launch while the session is being resolved.
 class SplashPage extends StatelessWidget {
@@ -13,13 +14,13 @@ class SplashPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            const Icon(
               Icons.school_rounded,
               size: 80,
               color: MqColors.red,
               semanticLabel: 'Syllabus Sync logo',
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: MqSpacing.space6),
             Text(
               'Syllabus Sync',
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
@@ -27,7 +28,7 @@ class SplashPage extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: MqSpacing.space8),
             const SizedBox(
               width: 24,
               height: 24,

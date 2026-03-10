@@ -50,7 +50,6 @@ class BiometricService {
       return await _auth.authenticate(
         localizedReason: reason,
         biometricOnly: false,
-        persistAcrossBackgrounding: true,
       );
     } catch (e, s) {
       AppLogger.error('Biometric authentication failed', e, s);

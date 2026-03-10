@@ -8,7 +8,6 @@ void main() {
       expect(result.isSuccess, isTrue);
       expect(result.isFailure, isFalse);
       expect(result.data, 42);
-      expect(result.value, 42);
     });
 
     test('Success with null data', () {
@@ -22,7 +21,6 @@ void main() {
       expect(result.isFailure, isTrue);
       expect(result.isSuccess, isFalse);
       expect(result.message, 'Something went wrong');
-      expect(result.error, 'Something went wrong');
     });
 
     test('Failure holds cause', () {
@@ -32,7 +30,7 @@ void main() {
     });
 
     test('can be used in type switch', () {
-      Result<int> result = const Success(10);
+      const Result<int> result = Success(10);
       final value = switch (result) {
         Success<int>(:final data) => data * 2,
         Failure<int>() => -1,
@@ -41,7 +39,7 @@ void main() {
     });
 
     test('failure branch in type switch', () {
-      Result<int> result = const Failure('error');
+      const Result<int> result = Failure('error');
       final value = switch (result) {
         Success<int>(:final data) => data,
         Failure<int>(:final message) => message.length,

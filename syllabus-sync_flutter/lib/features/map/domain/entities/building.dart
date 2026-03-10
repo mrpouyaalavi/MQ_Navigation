@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
+
 /// A campus building with its metadata and GPS coordinates.
+@immutable
 class Building {
   const Building({
     required this.id,
@@ -91,6 +94,17 @@ class Building {
         aliases.any((a) => a.toLowerCase().contains(q)) ||
         tags.any((t) => t.toLowerCase().contains(q));
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Building && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  String toString() => 'Building($id, $name)';
 }
 
 enum BuildingCategory {

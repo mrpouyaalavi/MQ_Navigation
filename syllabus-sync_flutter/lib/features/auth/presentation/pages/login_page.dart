@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syllabus_sync/app/theme/mq_colors.dart';
 import 'package:syllabus_sync/app/theme/mq_spacing.dart';
+import 'package:syllabus_sync/shared/widgets/mq_input.dart';
 
 /// Placeholder login page — full implementation in Phase 2.
 class LoginPage extends StatelessWidget {
@@ -16,7 +17,7 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Icon(
+              const Icon(
                 Icons.school_rounded,
                 size: 64,
                 color: MqColors.red,
@@ -37,20 +38,16 @@ class LoginPage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: MqSpacing.space8),
-              const TextField(
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: Icon(Icons.email_outlined),
-                ),
+              const MqInput(
+                label: 'Email',
+                prefixIcon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: [AutofillHints.email],
               ),
               const SizedBox(height: MqSpacing.space4),
-              const TextField(
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock_outline),
-                ),
+              const MqInput(
+                label: 'Password',
+                prefixIcon: Icons.lock_outline,
                 obscureText: true,
                 autofillHints: [AutofillHints.password],
               ),

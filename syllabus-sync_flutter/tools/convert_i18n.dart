@@ -180,7 +180,7 @@ void main() async {
 
       // Write ARB file
       final arbFile = File('$arbOutputDir/app_$langCode.arb');
-      final encoder = JsonEncoder.withIndent('  ');
+      const encoder = JsonEncoder.withIndent('  ');
       arbFile.writeAsStringSync('${encoder.convert(arb)}\n');
 
       convertedCount++;

@@ -93,3 +93,25 @@ Raouf: 2026-03-10 (AEDT) — Comprehensive Test Suite & Check Script
 - Tests: theme tokens, env config, exceptions, Result, routes, Building entity, MqButton/MqCard/MqInput
 - check.sh: pub get → format:check → analyze → test → gen-l10n → build (--quick skips build)
 - Status: 78/78 tests passing, 5/5 checks green
+
+Raouf: 2026-03-10 (AEDT) — Production-Grade Audit & Polish
+- Scope: Full audit, critical bug fixes, professional documentation, config hardening
+- Fixed: EnvConfig.validate() now throws StateError in release (was assert-only)
+- Fixed: GoRouter stability — single instance with AuthRefreshNotifier (was rebuilt on every auth change)
+- Fixed: ErrorBoundary now mounted in widget tree via bootstrap.dart
+- Fixed: debugLogDiagnostics conditional on EnvConfig.isDevelopment
+- Fixed: ConnectivityService does initial check() on construction
+- Fixed: MFA check now logs errors instead of silent catch(_)
+- Fixed: biometric_service removed deprecated persistAcrossBackgrounding param
+- Fixed: Nav bar labels now localised via AppLocalizations
+- Fixed: Login page now uses MqInput (was raw TextField)
+- Fixed: Building entity has == / hashCode
+- Fixed: MqTheme uses NavigationBarTheme (was dead BottomNavigationBarTheme)
+- Fixed: Result<T> removed unsafe .value/.error getters (use pattern matching)
+- Fixed: Splash page magic numbers replaced with MqSpacing tokens
+- Fixed: pubspec.yaml pinned all `any` deps (intl ^0.20.2, geolocator ^13.0.0, flutter_local_notifications ^18.0.0)
+- Added: README.md (full project docs), LICENSE (MIT), CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md
+- Added: docs/ARCHITECTURE.md — full system architecture overview
+- Added: analysis_options.yaml — hardened with 20+ lint rules
+- Added: .editorconfig, .vscode/settings.json, .vscode/extensions.json
+- Status: 0 analysis issues, 78/78 tests passing, 5/5 checks green

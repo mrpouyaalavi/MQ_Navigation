@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:syllabus_sync/app/router/app_shell.dart';
 import 'package:syllabus_sync/app/router/route_names.dart';
+import 'package:syllabus_sync/core/config/env_config.dart';
 import 'package:syllabus_sync/features/auth/presentation/pages/login_page.dart';
 import 'package:syllabus_sync/features/auth/presentation/pages/splash_page.dart';
 import 'package:syllabus_sync/features/calendar/presentation/pages/calendar_page.dart';
@@ -15,14 +16,21 @@ import 'package:syllabus_sync/shared/providers/auth_provider.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 /// Application router with auth guards and shell-based navigation.
+///
+/// Uses [AuthRefreshNotifier] as a `refreshListenable` so the single
+/// [GoRouter] instance re-evaluates redirects on auth state changes
+/// without being rebuilt.
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final authState = ref.watch(authProvider);
+  final refreshNotifier = AuthRefreshNotifier(ref);
+  ref.onDispose(refreshNotifier.dispose);
 
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/splash',
-    debugLogDiagnostics: true,
+    debugLogDiagnostics: EnvConfig.isDevelopment,
+    refreshListenable: refreshNotifier,
     redirect: (context, state) {
+      final authState = ref.read(authProvider);
       final isLoading = authState.isLoading;
       final session = authState.value;
       final isLoggedIn = session != null;
@@ -41,11 +49,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           currentPath == '/verify-email';
 
       if (!isLoggedIn) {
-        // Not logged in → allow auth routes, redirect everything else to login.
+        // Not logged in -> allow auth routes, redirect everything else to login.
         return isAuthRoute || currentPath == '/splash' ? null : '/login';
       }
 
-      // Logged in but on auth route or splash → go home.
+      // Logged in but on auth route or splash -> go home.
       if (isAuthRoute || currentPath == '/splash') {
         return '/home';
       }
@@ -64,7 +72,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const LoginPage(),
       ),
 
-      // ── Main Shell (bottom nav) ──────────────────────────
+      // -- Main Shell (bottom nav) --
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),

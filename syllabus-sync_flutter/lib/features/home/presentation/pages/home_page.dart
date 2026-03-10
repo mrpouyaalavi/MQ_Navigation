@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(title: const Text('Home')),
       body: ListView(
         padding: const EdgeInsets.all(MqSpacing.space4),
-        children: [
+        children: const [
           _PlaceholderCard(
             title: 'Upcoming Deadlines',
             icon: Icons.assignment_outlined,
