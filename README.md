@@ -151,7 +151,8 @@ GitHub Actions runs on every push and PR to `main`:
 
 ## Authors
 
-- **Pouya Raouf** — COMP3130, Macquarie University
+- **Raouf Abedini** (47990805) — COMP3130, Macquarie University
+- **Pouya Alavi** (48160202) — COMP3130, Macquarie University
 
 ## License
 

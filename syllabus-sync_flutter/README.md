@@ -181,6 +181,11 @@ GitHub Actions runs on every push and PR to `main`:
 - [ ] **Phase 5** -- Map: Google Maps integration, building search, routing
 - [ ] **Phase 6** -- Polish: performance, accessibility audit, store release
 
+## Authors
+
+- **Raouf Abedini** (47990805) — COMP3130, Macquarie University
+- **Pouya Alavi** (48160202) — COMP3130, Macquarie University
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
