@@ -48,9 +48,9 @@ All checks must pass before a PR will be reviewed.
 Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-feat: add MFA enrolment screen
-fix: resolve calendar date picker crash on RTL locales
-chore: pin intl dependency to ^0.19.0
+feat: add building detail photo gallery
+fix: resolve map marker tap on RTL locales
+chore: pin intl dependency to ^0.20.2
 test: add widget tests for MqInput validation
 ```
 

@@ -68,7 +68,6 @@ lib/
   features/
     auth/       # Splash, login pages
     home/       # Navigation-focused home screen
-    calendar/   # Placeholder (Phase 3)
     map/
       data/
         datasources/    # BuildingRegistrySource, sample_buildings
@@ -78,7 +77,6 @@ lib/
       presentation/
         pages/          # MapPage, BuildingDetailPage, DirectionsPage
         providers/      # buildings_provider (category filter, search)
-    feed/       # Placeholder (Phase 4)
     settings/   # App settings
 ```
 

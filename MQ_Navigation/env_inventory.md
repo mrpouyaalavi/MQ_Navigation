@@ -1,6 +1,6 @@
 # Environment Variable Inventory
 
-All environment variables used by MQ Navigation, categorised by client/server exposure.
+All environment variables used by the MQ Navigation Flutter app.
 
 ## Client-Side (--dart-define in Flutter)
 
@@ -8,24 +8,20 @@ All environment variables used by MQ Navigation, categorised by client/server ex
 |----------|----------|---------|-------|
 | `SUPABASE_URL` | Yes | — | Supabase project URL |
 | `SUPABASE_ANON_KEY` | Yes | — | Public anon key (RLS enforced) |
-| `GOOGLE_MAPS_API_KEY` | Yes | — | Client-side Maps SDK key (restricted to app bundle ID) |
+| `GOOGLE_MAPS_API_KEY` | No | — | Client-side Maps SDK key (restricted to app bundle ID) |
+| `ORS_API_KEY` | No | — | OpenRouteService API key for walking directions |
 | `APP_ENV` | No | `development` | development / staging / production |
 
-## Server-Only (Edge Functions env / Supabase dashboard)
+## Server-Only (Edge Functions / Supabase dashboard)
+
+These variables exist in the Supabase backend but are **not** used by the Flutter app:
 
 | Variable | Service | Notes |
 |----------|---------|-------|
 | `SUPABASE_SERVICE_ROLE_KEY` | Edge Functions | Bypasses RLS — never in client code |
-| `GOOGLE_ROUTES_API_KEY` | Edge Functions | Google Routes API billing key |
-| `GOOGLE_WEATHER_API_KEY` | Edge Functions | Google Weather API |
-| `ORS_API_KEY` | Edge Functions | OpenRouteService fallback |
-| `RESEND_API_KEY` | Edge Functions | Email delivery |
-| `VERIFICATION_EMAIL_FROM` | Edge Functions | From address for verification emails |
-| `VERIFICATION_EMAIL_NAME` | Edge Functions | Display name for verification emails |
-| `CRON_SECRET` | Edge Functions | Protects cron endpoints |
-| `FCM_SERVER_KEY` | Edge Functions | Firebase Cloud Messaging push delivery |
-| `UPSTASH_REDIS_REST_URL` | Edge Functions | Rate limiting (production) |
-| `UPSTASH_REDIS_REST_TOKEN` | Edge Functions | Rate limiting (production) |
+| `GOOGLE_ROUTES_API_KEY` | Edge Functions | Google Routes API (web app only) |
+| `GOOGLE_WEATHER_API_KEY` | Edge Functions | Google Weather API (web app only) |
+| `RESEND_API_KEY` | Edge Functions | Email delivery (web app only) |
 
 ## Web-Only (Not Needed in Flutter)
 
@@ -33,17 +29,6 @@ All environment variables used by MQ Navigation, categorised by client/server ex
 |----------|--------|
 | `NEXT_PUBLIC_APP_URL` | Vercel deployment URL |
 | `NEXT_PUBLIC_GOOGLE_MAP_ID` | Maps JS API vector maps |
-| `WEBAUTHN_RP_ID` | WebAuthn (deferred to v1.1) |
-| `WEBAUTHN_ORIGIN` | WebAuthn (deferred to v1.1) |
-| `CSRF_VALIDATION_ENABLED` | Browser CSRF (not applicable on mobile) |
-| `NEXT_PUBLIC_SENTRY_DSN` | Web Sentry — Flutter will use its own |
-| `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` | Web CI only |
-| `CORS_ALLOWED_ORIGINS` | Browser CORS only |
+| `WEBAUTHN_RP_ID` / `WEBAUTHN_ORIGIN` | WebAuthn (web only) |
 | `NODE_ENV` / `PORT` / `NEXT_TURBOPACK` | Next.js dev server |
 
-## Firebase (Flutter-specific, not in web app)
-
-| Variable | Location | Notes |
-|----------|----------|-------|
-| `google-services.json` | `android/app/` | Firebase Android config |
-| `GoogleService-Info.plist` | `ios/Runner/` | Firebase iOS config |

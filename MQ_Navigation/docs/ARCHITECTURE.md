@@ -4,12 +4,12 @@ This document describes the technical architecture of the MQ Navigation Flutter 
 
 ## System Context
 
-MQ Navigation uses a **two frontends, one backend** architecture:
+MQ Navigation is an **Open Day campus navigation app** for Macquarie University. It uses a **two frontends, one backend** architecture:
 
 ```
 +------------------+     +------------------+
 |  Flutter Mobile  |     |  Next.js Web App  |
-|  (this repo)     |     |  (mq-navigation)  |
+|  (this repo)     |     |  (syllabus-sync)  |
 +--------+---------+     +--------+---------+
          |                         |
          +--------+    +-----------+
@@ -34,7 +34,7 @@ lib/
     mq_navigation_app.dart      # Root MaterialApp.router
     router/
       app_router.dart           # GoRouter with auth guards + refreshListenable
-      app_shell.dart            # Bottom NavigationBar (5-tab shell)
+      app_shell.dart            # Bottom NavigationBar (3-tab shell)
       route_names.dart          # Named route constants
     theme/
       mq_colors.dart            # MQ brand palette (mapped from web tokens)
@@ -64,20 +64,10 @@ lib/
     extensions/                 # BuildContext extensions
 
   features/                     # Feature modules
-    auth/
-      data/datasources/
-      data/repositories/
-      domain/entities/
-      domain/services/
-      presentation/controllers/
-      presentation/pages/
-      presentation/widgets/
-    home/
-    calendar/
-    map/
-    feed/
-    settings/
-    ...
+    auth/                       # Splash screen, login page
+    home/                       # Navigation-focused home screen
+    map/                        # Campus map, building detail, directions
+    settings/                   # App settings
 ```
 
 ## Feature Module Pattern
@@ -87,7 +77,7 @@ Each feature follows a three-layer structure:
 ```
 features/<name>/
   data/           # Data sources (Supabase, local cache) + repository implementations
-  domain/         # Entities, value objects, repository interfaces, use cases
+  domain/         # Entities, value objects, repository interfaces
   presentation/   # Pages, widgets, Riverpod controllers/providers
 ```
 
@@ -104,7 +94,7 @@ features/<name>/
 |--------------|----------|
 | `Provider` | Singletons (router, services) |
 | `AsyncNotifierProvider` | Auth state, data fetching with lifecycle |
-| `StreamProvider` | Real-time data (connectivity, Supabase subscriptions) |
+| `StreamProvider` | Real-time data (connectivity) |
 | `FutureProvider` | One-shot async data loading |
 
 **No `setState`, no Bloc, no ChangeNotifier** (except the `AuthRefreshNotifier` bridge for GoRouter's `refreshListenable`).
@@ -112,9 +102,9 @@ features/<name>/
 ## Routing
 
 **GoRouter** (v17.1.0) with:
-- `StatefulShellRoute.indexedStack` for the 5-tab bottom navigation
+- `StatefulShellRoute.indexedStack` for the 3-tab bottom navigation (Home, Map, Settings)
 - `refreshListenable` pattern: a single stable `GoRouter` instance that re-evaluates redirects via `AuthRefreshNotifier` when auth state changes
-- Auth guard in `redirect` callback: unauthenticated users are sent to `/login`, authenticated users bypass `/splash` and `/login`
+- Splash → Home redirect: the app runs in guest mode for Open Day
 - Named routes via `RouteNames` constants
 
 ## Design System
@@ -139,11 +129,10 @@ Both **light** and **dark** themes are built from these tokens via `MqTheme.ligh
 
 ## Security Model
 
-1. **No server secrets in client** --- API keys stay in Edge Functions
+1. **Minimise secret exposure** --- only `ORS_API_KEY` is client-side; other service keys stay server-side
 2. **Encrypted storage** --- `flutter_secure_storage` (iOS Keychain / Android Keystore)
-3. **Biometric gates** --- `local_auth` for sensitive operations
-4. **PKCE auth flow** --- secure OAuth token exchange
-5. **RLS enforcement** --- all database access governed by Supabase Row-Level Security
+3. **PKCE auth flow** --- secure OAuth token exchange
+4. **RLS enforcement** --- all database access governed by Supabase Row-Level Security
 
 ## Environment Configuration
 
@@ -154,34 +143,14 @@ Build-time injection via `--dart-define`:
 | `SUPABASE_URL` | Yes | Supabase project URL |
 | `SUPABASE_ANON_KEY` | Yes | Supabase anonymous API key |
 | `GOOGLE_MAPS_API_KEY` | No | Google Maps SDK key |
+| `ORS_API_KEY` | No | OpenRouteService walking directions |
 | `APP_ENV` | No | `development` / `staging` / `production` |
-
-`EnvConfig.validate()` throws `StateError` in all build modes if required vars are missing.
-
-## CI/CD Pipeline
-
-GitHub Actions (`.github/workflows/ci.yml`):
-
-```
-Push/PR to main
-  -> Analyze & Test (ubuntu)
-     -> format check
-     -> flutter analyze
-     -> flutter test --coverage
-
-Push to main only
-  -> Build Android (ubuntu, Java 17)
-     -> flutter build apk --release
-     -> Upload artifact
-  -> Build iOS (macos)
-     -> flutter build ios --release --no-codesign
-```
 
 ## Error Handling
 
 - **Sealed exceptions** (`AppException`): `NetworkException`, `AuthException`, `ServerException`, `StorageException`, `UnsupportedException`
 - **Result type**: `Result<T>` sealed class with `Success<T>` and `Failure<T>`
-- **Error boundary**: `ErrorBoundary` widget wrapping the app tree, showing a friendly fallback UI instead of the red screen
+- **Error boundary**: `ErrorBoundary` widget wrapping the app tree, showing a friendly fallback UI
 - **Zone guard**: `runZonedGuarded` in `bootstrap()` catches unhandled async errors
 - **Structured logging**: `AppLogger` wrapping the `logger` package
 
@@ -191,6 +160,5 @@ Push to main only
 |-------|------|----------|
 | Unit tests | `flutter_test` | `test/core/`, `test/features/` |
 | Widget tests | `flutter_test` | `test/shared/`, `test/app/` |
-| Integration tests | `integration_test` | `test/integration/` (planned) |
 
 Quality gate: `scripts/check.sh` runs format, analyze, test, and gen-l10n in sequence.

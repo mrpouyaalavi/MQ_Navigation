@@ -1,5 +1,5 @@
 name: mq_navigation
-description: MQ Navigation — Macquarie University campus management mobile app.
+description: MQ Navigation — Macquarie University Open Day campus navigation app.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -18,7 +18,7 @@ dependencies:
   go_router: ^17.1.0
   intl: ^0.20.2
 
-  # Maps & Location (deferred usage, wired in Phase 5)
+  # Maps & Location
   google_maps_flutter: ^2.14.2
   geolocator: ^13.0.0
   permission_handler: ^12.0.1
@@ -27,14 +27,9 @@ dependencies:
   local_auth: ^3.0.0
   flutter_secure_storage: ^10.0.0
 
-  # Notifications
-  firebase_messaging: ^16.1.2
-  flutter_local_notifications: ^18.0.0
-
   # UI
   cupertino_icons: ^1.0.8
   cached_network_image: ^3.3.0
-  flutter_svg: ^2.0.9
 
   # Utilities
   connectivity_plus: ^6.1.4

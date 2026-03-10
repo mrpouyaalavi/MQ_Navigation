@@ -25,16 +25,16 @@ We will acknowledge receipt within 48 hours and provide a detailed response with
 This project follows these security principles:
 
 ### Client-Side Security
-- **No server secrets**: API keys and server credentials are never stored in the client binary. Sensitive operations are handled by Supabase Edge Functions.
+- **No server secrets**: API keys and server credentials are never stored in the client binary. Only `ORS_API_KEY` and `GOOGLE_MAPS_API_KEY` are client-side.
 - **Encrypted storage**: All sensitive data (tokens, user preferences) is stored using `flutter_secure_storage`, which uses iOS Keychain and Android Keystore.
 - **Biometric gates**: Optional biometric authentication via `local_auth` for sensitive operations.
-- **Certificate pinning**: Planned for production releases.
 
 ### Authentication
+- **Guest mode**: The app runs in guest mode for Open Day — no login required.
 - **PKCE flow**: OAuth uses Proof Key for Code Exchange (PKCE) for secure token exchange.
 - **Row-Level Security**: All database access is governed by Supabase RLS policies.
-- **MFA support**: Multi-factor authentication is supported and can be enforced.
 - **Session management**: Sessions are managed by Supabase Auth with automatic token refresh.
+- **MFA support**: Multi-factor authentication is supported and can be enforced.
 
 ### Build & Deployment
 - **Environment isolation**: `--dart-define` injects environment-specific configuration at build time. Secrets are passed via CI/CD secrets, never committed.
