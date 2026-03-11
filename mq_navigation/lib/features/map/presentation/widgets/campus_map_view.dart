@@ -34,6 +34,8 @@ class _CampusMapViewState extends State<CampusMapView> {
   @override
   void didUpdateWidget(covariant CampusMapView oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    // Animate to a newly selected building.
     if (widget.selectedBuilding != null &&
         widget.selectedBuilding?.id != oldWidget.selectedBuilding?.id) {
       final target = widget.selectedBuilding!;
@@ -46,6 +48,24 @@ class _CampusMapViewState extends State<CampusMapView> {
           ),
         );
       }
+      return;
+    }
+
+    // Animate to the user's current location when it first appears or changes.
+    final newLoc = widget.currentLocation;
+    final oldLoc = oldWidget.currentLocation;
+    if (_controller != null &&
+        newLoc != null &&
+        (oldLoc == null ||
+            newLoc.latitude != oldLoc.latitude ||
+            newLoc.longitude != oldLoc.longitude)) {
+      unawaited(
+        _controller!.animateCamera(
+          CameraUpdate.newLatLng(
+            LatLng(newLoc.latitude, newLoc.longitude),
+          ),
+        ),
+      );
     }
   }
 

@@ -2,14 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:mq_navigation/features/map/domain/entities/nav_instruction.dart';
 
 enum TravelMode {
-  walk('WALK'),
-  drive('DRIVE'),
-  bike('BICYCLE'),
-  transit('TRANSIT');
+  walk('WALK', 'walking'),
+  drive('DRIVE', 'driving'),
+  bike('BICYCLE', 'bicycling'),
+  transit('TRANSIT', 'transit');
 
-  const TravelMode(this.apiValue);
+  const TravelMode(this.apiValue, this.directionsApiValue);
 
+  /// Value used by the Routes API v2 (computeRoutes).
   final String apiValue;
+
+  /// Value used by the legacy Directions API.
+  final String directionsApiValue;
 }
 
 @immutable
@@ -44,14 +48,43 @@ class MapRoute {
   final List<NavInstruction> instructions;
 
   factory MapRoute.fromJson(Map<String, dynamic> json, TravelMode travelMode) {
+    // ── Directions API response parsing ──
+    final status = json['status'] as String?;
+    if (status != null && status != 'OK') {
+      throw StateError(
+        'No routes were returned by the routing service (status: $status).',
+      );
+    }
+
     final routes = (json['routes'] as List<dynamic>? ?? const <dynamic>[]);
     if (routes.isEmpty) {
-      throw StateError('No routes were returned by the routing service.');
+      final errorInfo = json['error'] as Map<String, dynamic>?;
+      final apiMessage = errorInfo?['message'] as String? ??
+          'empty response (is Directions API enabled on the API key?)';
+      throw StateError(
+        'No routes were returned by the routing service: $apiMessage',
+      );
     }
 
     final route = routes.first as Map<String, dynamic>;
     final legs = (route['legs'] as List<dynamic>? ?? const <dynamic>[])
         .cast<Map<String, dynamic>>();
+
+    // Aggregate distance / duration from the first leg.
+    final leg = legs.isNotEmpty ? legs.first : <String, dynamic>{};
+    final distanceMeters =
+        ((leg['distance'] as Map<String, dynamic>?)?['value'] as num?)
+            ?.toInt() ??
+        0;
+    final durationSeconds =
+        ((leg['duration'] as Map<String, dynamic>?)?['value'] as num?)
+            ?.toInt() ??
+        0;
+    final encodedPolyline =
+        (route['overview_polyline'] as Map<String, dynamic>?)?['points']
+            as String? ??
+        '';
+
     final steps =
         (legs.isNotEmpty
             ? legs.first['steps'] as List<dynamic>?
@@ -60,24 +93,14 @@ class MapRoute {
 
     return MapRoute(
       travelMode: travelMode,
-      distanceMeters: (route['distanceMeters'] as num?)?.toInt() ?? 0,
-      durationSeconds: _parseDurationSeconds(route['duration'] as String?),
-      encodedPolyline:
-          (route['polyline'] as Map<String, dynamic>?)?['encodedPolyline']
-              as String? ??
-          '',
+      distanceMeters: distanceMeters,
+      durationSeconds: durationSeconds,
+      encodedPolyline: encodedPolyline,
       instructions: steps
           .cast<Map<String, dynamic>>()
           .map(NavInstruction.fromJson)
           .where((instruction) => instruction.text.isNotEmpty)
           .toList(),
     );
-  }
-
-  static int _parseDurationSeconds(String? rawValue) {
-    if (rawValue == null || rawValue.isEmpty || !rawValue.endsWith('s')) {
-      return 0;
-    }
-    return double.tryParse(rawValue.replaceAll('s', ''))?.round() ?? 0;
   }
 }

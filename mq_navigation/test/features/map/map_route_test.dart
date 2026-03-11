@@ -3,23 +3,24 @@ import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 
 void main() {
   group('MapRoute', () {
-    test('parses Google Routes payloads into route instructions', () {
+    test('parses Google Directions API response into route instructions', () {
       final route = MapRoute.fromJson({
+        'status': 'OK',
         'routes': [
           {
-            'distanceMeters': 1450,
-            'duration': '480s',
-            'polyline': {'encodedPolyline': 'abc123'},
+            'overview_polyline': {'points': 'abc123'},
             'legs': [
               {
+                'distance': {'value': 1450, 'text': '1.5 km'},
+                'duration': {'value': 480, 'text': '8 mins'},
                 'steps': [
                   {
-                    'distanceMeters': 100,
-                    'navigationInstruction': {'instructions': 'Head north'},
+                    'distance': {'value': 100, 'text': '100 m'},
+                    'html_instructions': 'Head <b>north</b>',
                   },
                   {
-                    'distanceMeters': 20,
-                    'navigationInstruction': {'instructions': 'Turn right'},
+                    'distance': {'value': 20, 'text': '20 m'},
+                    'html_instructions': 'Turn <b>right</b>',
                   },
                 ],
               },

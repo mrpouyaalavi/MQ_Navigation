@@ -10,10 +10,8 @@ import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 class GoogleRoutesRemoteSource {
   const GoogleRoutesRemoteSource();
 
-  static const _routesUrl =
-      'https://routes.googleapis.com/directions/v2:computeRoutes';
-  static const _fieldMask =
-      'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline,routes.legs.steps';
+  static const _directionsUrl =
+      'https://maps.googleapis.com/maps/api/directions/json';
 
   Future<MapRoute> getRoute({
     required LocationSample origin,
@@ -31,47 +29,37 @@ class GoogleRoutesRemoteSource {
       throw StateError('Google Maps API key is not configured.');
     }
 
-    final body = jsonEncode({
-      'origin': {
-        'location': {
-          'latLng': {
-            'latitude': origin.latitude,
-            'longitude': origin.longitude,
-          },
-        },
-      },
-      'destination': {
-        'location': {
-          'latLng': {
-            'latitude': destinationLatitude,
-            'longitude': destinationLongitude,
-          },
-        },
-      },
-      'travelMode': travelMode.apiValue,
-      'computeAlternativeRoutes': false,
-      'languageCode': 'en',
-      'units': 'METRIC',
+    final uri = Uri.parse(_directionsUrl).replace(queryParameters: {
+      'origin': '${origin.latitude},${origin.longitude}',
+      'destination': '$destinationLatitude,$destinationLongitude',
+      'mode': travelMode.directionsApiValue,
+      'language': 'en',
+      'units': 'metric',
+      'key': apiKey,
     });
 
-    final response = await http.post(
-      Uri.parse(_routesUrl),
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Goog-Api-Key': apiKey,
-        'X-Goog-FieldMask': _fieldMask,
-      },
-      body: body,
-    );
+    final response = await http.get(uri);
 
     if (response.statusCode >= 400) {
-      debugPrint('Routes API error ${response.statusCode}: ${response.body}');
+      debugPrint(
+        'Directions API error ${response.statusCode}: ${response.body}',
+      );
       throw StateError(
-        'Google Routes API returned ${response.statusCode}',
+        'Google Directions API returned ${response.statusCode}',
       );
     }
 
     final json = jsonDecode(response.body) as Map<String, dynamic>;
+
+    debugPrint(
+      'Directions API response (${response.statusCode}): status=${json['status']}',
+    );
+    debugPrint(
+      'Directions API request: origin=(${origin.latitude}, ${origin.longitude}), '
+      'destination=($destinationLatitude, $destinationLongitude), '
+      'mode=${travelMode.directionsApiValue}',
+    );
+
     return MapRoute.fromJson(json, travelMode);
   }
 }
