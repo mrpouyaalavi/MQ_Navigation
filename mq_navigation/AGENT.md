@@ -18,7 +18,7 @@ Two frontends, one backend architecture: Flutter + Next.js sharing a Supabase ba
 3. Flutter is a presentation layer only — no server logic in app binary
 4. No server secrets in Flutter — API keys stay in Edge Functions
 5. Maps are a subsystem — not part of first parity milestone
-6. Security is non-negotiable — encrypted storage, biometric gates, cert pinning
+6. Security is non-negotiable — encrypted storage, cert pinning
 7. Accessibility from day one — 48x48dp tap targets, semantic labels, RTL
 
 ## Directory Structure
@@ -32,12 +32,12 @@ lib/
   core/error/       → App exceptions, error boundary
   core/logging/     → Structured logger
   core/network/     → Connectivity service
-  core/security/    → Secure storage, biometric service
+  core/security/    → Secure storage
   core/utils/       → Result type, validators
   shared/widgets/   → MQ button, card, input, bottom sheet, app bar
-  shared/providers/ → Auth state, connectivity, locale
+  shared/providers/ → Connectivity, locale
   shared/extensions/→ BuildContext extensions
-  features/<name>/  → Feature modules (auth, home, calendar, map, etc.)
+  features/<name>/  → Feature modules (home, calendar, map, feed, settings, notifications)
 ```
 
 ## Key Environment Variables (--dart-define)
@@ -74,6 +74,14 @@ Located in project root:
 - iOS: URL scheme in Info.plist + AASA file (TODO: deploy)
 
 ---
+
+Raouf: 2026-03-11 (AEDT) — Remove all auth/login code
+- Scope: Strip login, signup, auth guards, biometric lock, profile management, and auth provider from the project. App now starts directly at `/home` with no authentication gate.
+- Summary: Deleted the entire `features/auth/` module (11 files), `features/profiles/` module (3 files), `route_guard.dart`, `auth_provider.dart`, `biometric_service.dart`, and `user_profile.dart`. Removed `local_auth` dependency. Rewrote `app_router.dart` to start at `/home` with no redirect logic or auth guards. Rewrote `settings_page.dart` to remove profile card, security section, and sign-out button. Rewrote `settings_controller.dart` to remove biometric lock method. Rewrote `settings_repository.dart` from `SupabaseSettingsRepository` to local-only `LocalSettingsRepository`. Cleaned `user_preferences.dart` to remove `biometricLockEnabled`, `fromRemoteJson`, and `toRemoteJson`. Cleaned `notifications_controller.dart` to remove `authProvider` listener, `_handleAuthStateChanged`, and `_reloadForUser` methods — now uses `Supabase.instance.client.auth.currentUser` directly. Removed `BiometricLockGate` from `mq_navigation_app.dart`. Updated `route_names_test.dart` to match the reduced route set. Removed unused `context_extensions.dart` import from settings page. Updated AGENT.md to reflect removed modules.
+- Files deleted: `lib/features/auth/**`, `lib/features/profiles/**`, `lib/app/router/route_guard.dart`, `lib/shared/providers/auth_provider.dart`, `lib/core/security/biometric_service.dart`, `lib/shared/models/user_profile.dart`, `test/features/auth/**`, `test/app/route_guard_test.dart`.
+- Files changed: `lib/app/router/app_router.dart`, `lib/app/router/route_names.dart`, `lib/app/mq_navigation_app.dart`, `lib/features/home/presentation/pages/home_page.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/notifications/presentation/controllers/notifications_controller.dart`, `lib/shared/models/user_preferences.dart`, `test/app/route_names_test.dart`, `pubspec.yaml`, `AGENT.md`, `CHANGELOG.md`.
+- Verification: `flutter analyze` → 0 issues, `flutter test` → 88/88 passed.
+- Follow-ups: None.
 
 Raouf: 2026-03-11 (AEDT) — Fix dart:io Platform crash on web
 - Scope: Replace all `dart:io` `Platform.*` calls with web-safe `kIsWeb` + `defaultTargetPlatform` checks.

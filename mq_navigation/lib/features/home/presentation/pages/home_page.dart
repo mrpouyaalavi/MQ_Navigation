@@ -6,7 +6,6 @@ import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/home/presentation/controllers/dashboard_controller.dart';
-import 'package:mq_navigation/features/profiles/presentation/controllers/profile_controller.dart';
 import 'package:mq_navigation/shared/models/academic_models.dart';
 import 'package:mq_navigation/shared/widgets/mq_card.dart';
 
@@ -17,7 +16,6 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final dashboard = ref.watch(dashboardControllerProvider);
-    final profile = ref.watch(profileControllerProvider).value;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,8 +38,7 @@ class HomePage extends ConsumerWidget {
               padding: const EdgeInsets.all(MqSpacing.space4),
               children: [
                 _WelcomeCard(
-                  title:
-                      '${l10n.welcome}, ${profile?.displayName ?? 'Student'}',
+                  title: '${l10n.welcome}, Student',
                   subtitle:
                       'Your next priorities, academic signals, and campus schedule are all in one place.',
                 ),

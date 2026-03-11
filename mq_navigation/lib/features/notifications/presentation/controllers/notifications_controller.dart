@@ -13,7 +13,6 @@ import 'package:mq_navigation/features/notifications/data/repositories/notificat
 import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
 import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
 import 'package:mq_navigation/features/notifications/domain/services/notification_scheduler.dart';
-import 'package:mq_navigation/shared/providers/auth_provider.dart';
 
 @immutable
 class NotificationsState {
@@ -58,7 +57,7 @@ final notificationsControllerProvider =
 
 final notificationsStreamProvider =
     StreamProvider.autoDispose<List<AppNotification>>((ref) {
-      final user = ref.watch(currentUserProvider);
+      final user = Supabase.instance.client.auth.currentUser;
       if (user == null) {
         return Stream.value(const <AppNotification>[]);
       }
@@ -78,7 +77,6 @@ final unreadNotificationsCountProvider = Provider<int>((ref) {
 class NotificationsController extends AsyncNotifier<NotificationsState> {
   @override
   Future<NotificationsState> build() async {
-    ref.listen<AsyncValue<Session?>>(authProvider, _handleAuthStateChanged);
     ref.listen<AsyncValue<ConnectivityStatus>>(connectivityStatusProvider, (
       _,
       next,
@@ -96,7 +94,7 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
     final permissionStatus = await ref
         .read(fcmServiceProvider)
         .getPermissionStatus();
-    final userId = ref.read(currentUserProvider)?.id;
+    final userId = Supabase.instance.client.auth.currentUser?.id;
     final preferences = userId == null
         ? NotificationPreference.defaults()
         : await ref
@@ -130,7 +128,7 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
         .requestPermission();
     state = AsyncData(current.copyWith(permissionStatus: permissionStatus));
 
-    final userId = ref.read(currentUserProvider)?.id;
+    final userId = Supabase.instance.client.auth.currentUser?.id;
     if (userId != null &&
         (permissionStatus == NotificationPermissionStatus.granted ||
             permissionStatus == NotificationPermissionStatus.provisional)) {
@@ -140,7 +138,7 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
 
   Future<void> updatePreference(NotificationType type, bool enabled) async {
     final current = state.value;
-    final userId = ref.read(currentUserProvider)?.id;
+    final userId = Supabase.instance.client.auth.currentUser?.id;
     if (current == null) {
       return;
     }
@@ -181,7 +179,7 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
 
   Future<void> updateStudyPromptTime(TimeOfDay time) async {
     final current = state.value;
-    final userId = ref.read(currentUserProvider)?.id;
+    final userId = Supabase.instance.client.auth.currentUser?.id;
     if (current == null) {
       return;
     }
@@ -227,7 +225,7 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
   }
 
   Future<void> markAllRead() async {
-    final userId = ref.read(currentUserProvider)?.id;
+    final userId = Supabase.instance.client.auth.currentUser?.id;
     if (userId == null) {
       return;
     }
@@ -240,57 +238,10 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
         .deleteNotification(notificationId);
   }
 
-  void _handleAuthStateChanged(
-    AsyncValue<Session?>? previous,
-    AsyncValue<Session?> next,
-  ) {
-    final previousUserId = previous?.value?.user.id;
-    final nextUserId = next.value?.user.id;
-    if (previousUserId == nextUserId) {
-      return;
-    }
-
-    if (previousUserId != null) {
-      unawaited(ref.read(fcmServiceProvider).removeToken(previousUserId));
-    }
-    if (nextUserId != null) {
-      unawaited(_reloadForUser(nextUserId));
-    } else {
-      state = const AsyncData(
-        NotificationsState(
-          permissionStatus: NotificationPermissionStatus.unknown,
-          preferences: <NotificationPreference>[],
-          isInitialised: true,
-        ),
-      );
-    }
-  }
-
-  Future<void> _reloadForUser(String userId) async {
-    final permissionStatus = await ref
-        .read(fcmServiceProvider)
-        .getPermissionStatus();
-    final preferences = await ref
-        .read(notificationRepositoryProvider)
-        .fetchPreferences(userId);
-    if (permissionStatus == NotificationPermissionStatus.granted ||
-        permissionStatus == NotificationPermissionStatus.provisional) {
-      await ref.read(fcmServiceProvider).syncToken(userId);
-    }
-    state = AsyncData(
-      NotificationsState(
-        permissionStatus: permissionStatus,
-        preferences: preferences,
-        isInitialised: true,
-      ),
-    );
-    await _syncScheduledReminders(preferencesOverride: preferences);
-  }
-
   Future<void> _syncScheduledReminders({
     List<NotificationPreference>? preferencesOverride,
   }) async {
-    final userId = ref.read(currentUserProvider)?.id;
+    final userId = Supabase.instance.client.auth.currentUser?.id;
     if (userId == null) {
       return;
     }

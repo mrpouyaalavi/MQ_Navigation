@@ -4,6 +4,41 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-11 (AEDT) — Remove all auth/login code
+
+**Scope:** Strip login, signup, auth guards, biometric lock, profile management, and auth provider from the project.
+
+**Summary:**
+Removed the entire authentication and profile system. Deleted `features/auth/` (11 files), `features/profiles/` (3 files), `route_guard.dart`, `auth_provider.dart`, `biometric_service.dart`, and `user_profile.dart`. Removed `local_auth` dependency from pubspec. Rewrote router to start at `/home` with no auth redirect. Refactored settings from Supabase-backed to local-only storage. Cleaned notifications controller to remove auth state listener. Cleaned `UserPreferences` to remove biometric and remote JSON methods.
+
+**Files deleted:**
+- `lib/features/auth/**` (11 files)
+- `lib/features/profiles/**` (3 files)
+- `lib/app/router/route_guard.dart`
+- `lib/shared/providers/auth_provider.dart`
+- `lib/core/security/biometric_service.dart`
+- `lib/shared/models/user_profile.dart`
+- `test/features/auth/**`, `test/app/route_guard_test.dart`
+
+**Files changed:**
+- `lib/app/router/app_router.dart` — removed auth routes, guards, redirect logic
+- `lib/app/router/route_names.dart` — removed auth route name constants
+- `lib/app/mq_navigation_app.dart` — removed BiometricLockGate
+- `lib/features/home/presentation/pages/home_page.dart` — removed profile dependency
+- `lib/features/settings/**` — removed profile card, security section, sign-out, biometric lock
+- `lib/features/notifications/presentation/controllers/notifications_controller.dart` — removed auth listener
+- `lib/shared/models/user_preferences.dart` — removed biometricLockEnabled, remote JSON
+- `test/app/route_names_test.dart` — updated for reduced route set
+- `pubspec.yaml` — removed local_auth dependency
+- `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `flutter analyze` → 0 issues
+- `flutter test` → 88/88 passed
+
+**Follow-ups:**
+- None
+
 ### Raouf: 2026-03-11 (AEDT) — Fix dart:io Platform crash on web
 
 **Scope:** Replace all `dart:io` `Platform.*` calls with web-safe alternatives.

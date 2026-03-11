@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/features/auth/presentation/controllers/auth_flow_controller.dart';
-import 'package:mq_navigation/features/profiles/presentation/controllers/profile_controller.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -16,18 +11,6 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final settingsState = ref.watch(settingsControllerProvider);
-    final profile = ref.watch(profileControllerProvider).value;
-    final authActionState = ref.watch(authActionControllerProvider);
-
-    Future<void> signOut() async {
-      final message = await ref
-          .read(authActionControllerProvider.notifier)
-          .signOut();
-      if (!context.mounted || message == null) {
-        return;
-      }
-      context.showSnackBar(message, isError: true);
-    }
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settings)),
@@ -36,20 +19,6 @@ class SettingsPage extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.all(MqSpacing.space4),
             children: [
-              Card(
-                margin: EdgeInsets.zero,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(MqSpacing.space4),
-                  leading: const CircleAvatar(
-                    child: Icon(Icons.person_outline),
-                  ),
-                  title: Text(profile?.displayName ?? 'Profile'),
-                  subtitle: Text(profile?.email ?? ''),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => context.pushNamed(RouteNames.profileEdit),
-                ),
-              ),
-              const SizedBox(height: MqSpacing.space4),
               _SettingsSection(
                 title: 'General',
                 child: Column(
@@ -117,60 +86,6 @@ class SettingsPage extends ConsumerWidget {
               ),
               const SizedBox(height: MqSpacing.space4),
               _SettingsSection(
-                title: l10n.security,
-                child: Column(
-                  children: [
-                    SwitchListTile(
-                      secondary: const Icon(Icons.fingerprint_outlined),
-                      title: const Text('Biometric lock'),
-                      value: preferences.biometricLockEnabled,
-                      onChanged: (value) async {
-                        final message = await ref
-                            .read(settingsControllerProvider.notifier)
-                            .updateBiometricLockEnabled(value);
-                        if (message != null && context.mounted) {
-                          context.showSnackBar(message, isError: true);
-                        }
-                      },
-                    ),
-                    const Divider(height: 1),
-                    ListTile(
-                      leading: const Icon(Icons.verified_user_outlined),
-                      title: const Text('Two-factor authentication'),
-                      subtitle: const Text(
-                        'Enroll an authenticator app or complete an MFA challenge.',
-                      ),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => context.pushNamed(RouteNames.mfa),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: MqSpacing.space4),
-              const _SettingsSection(
-                title: 'Experience',
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: Icon(Icons.auto_graph_outlined),
-                      title: Text('Stress and workload insights'),
-                      subtitle: Text(
-                        'Dashboard and calendar use your academic data to surface pressure points.',
-                      ),
-                    ),
-                    Divider(height: 1),
-                    ListTile(
-                      leading: Icon(Icons.workspace_premium_outlined),
-                      title: Text('Gamification progress'),
-                      subtitle: Text(
-                        'XP and streaks are shown on Home from your Supabase profile.',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: MqSpacing.space4),
-              _SettingsSection(
                 title: l10n.about,
                 child: const Column(
                   children: [
@@ -183,12 +98,6 @@ class SettingsPage extends ConsumerWidget {
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(height: MqSpacing.space6),
-              FilledButton.tonalIcon(
-                onPressed: authActionState.isLoading ? null : signOut,
-                icon: const Icon(Icons.logout),
-                label: Text(l10n.signOut),
               ),
             ],
           );

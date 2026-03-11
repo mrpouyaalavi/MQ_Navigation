@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/router/app_router.dart';
 import 'package:mq_navigation/app/theme/mq_theme.dart';
-import 'package:mq_navigation/features/auth/presentation/widgets/biometric_lock_gate.dart';
 import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 
@@ -31,7 +30,7 @@ class MqNavigationApp extends ConsumerWidget {
         if (widget == null) {
           throw StateError('MaterialApp.router returned null widget');
         }
-        return BiometricLockGate(child: widget);
+        return widget;
       },
     );
   }

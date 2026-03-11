@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
-import 'package:mq_navigation/core/security/biometric_service.dart';
 import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
 import 'package:mq_navigation/shared/models/user_preferences.dart';
 
@@ -41,18 +40,6 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
   Future<String?> updateEmailNotifications(bool enabled) async {
     final currentPreferences = state.value ?? const UserPreferences();
     return _save(currentPreferences.copyWith(emailNotifications: enabled));
-  }
-
-  Future<String?> updateBiometricLockEnabled(bool enabled) async {
-    final currentPreferences = state.value ?? const UserPreferences();
-    if (enabled) {
-      final isAvailable = await ref.read(biometricServiceProvider).isAvailable;
-      if (!isAvailable) {
-        return 'Biometric authentication is not available on this device.';
-      }
-    }
-
-    return _save(currentPreferences.copyWith(biometricLockEnabled: enabled));
   }
 
   Future<String?> _save(UserPreferences preferences) async {
