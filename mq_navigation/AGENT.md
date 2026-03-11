@@ -75,6 +75,13 @@ Located in project root:
 
 ---
 
+Raouf: 2026-03-11 (AEDT) — Documentation Sweep: Stale References Cleanup
+- Scope: Read all project .md docs and fix stale directory names, outdated test counts, and completed-status labels.
+- Summary: Updated `README.md` to use `mq_navigation` directory name (was `mq-navigation_flutter`) and corrected test count from 78 to 99. Updated `Flutter_Migration_Plan.md` to use `mq_navigation` directory name in 3 places. Updated `endpoint_inventory.md` header from "Edge Functions to Build" to "Edge Functions (Deployed)" since all 9 functions are implemented.
+- Files changed: `README.md`, `Flutter_Migration_Plan.md`, `endpoint_inventory.md`, `AGENT.md`, `CHANGELOG.md`.
+- Verification: All docs reviewed — no remaining stale references in active content.
+- Follow-ups: None.
+
 Raouf: 2026-03-11 (AEDT) — Plan Alignment Audit + Final Old-Name Cleanup
 - Scope: Verify full project alignment with the updated Flutter Migration Plan and eliminate the last old-name reference.
 - Summary: Audited the entire codebase against the user's updated migration plan. Confirmed all navigation-focused goals (map, buildings, directions, categories) are fully implemented and the project exceeds the plan's scope with completed auth, calendar, dashboard, notifications, and feed features. Fixed the critical Android Kotlin directory mismatch: `MainActivity.kt` was still at `io/syllabussync/syllabus_sync/` with old package name while `build.gradle.kts` used `io.mqnavigation.mq_navigation` — moved to correct path and updated package declaration. Updated `Flutter_Migration_Plan.md` to remove stale external `syllabus-sync` URLs. Verified zero old-name references remain in source/config files (only historical changelog entries preserved).

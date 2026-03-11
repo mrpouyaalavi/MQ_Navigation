@@ -4,6 +4,25 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-11 (AEDT) — Documentation Sweep: Stale References Cleanup
+
+**Scope:** Read all project `.md` docs and fix stale directory names, outdated test counts, and completed-status labels.
+
+**Summary:**
+Updated `README.md` to use `mq_navigation` directory name (was `mq-navigation_flutter`) and corrected the CI test count from 78 to 99. Updated `Flutter_Migration_Plan.md` to use `mq_navigation` directory name in the description, clone instructions, and repo links. Updated `endpoint_inventory.md` section header from "Edge Functions to Build" to "Edge Functions (Deployed)" since all 9 functions are implemented.
+
+**Files changed:**
+- `README.md` — directory path in clone instructions, test count in CI/CD section
+- `Flutter_Migration_Plan.md` — description, clone instructions, repo link
+- `endpoint_inventory.md` — section header
+
+**Verification:**
+- All 16 project docs reviewed — no remaining stale references in active content
+- Historical AGENT.md/CHANGELOG.md entries preserved as-is
+
+**Follow-ups:**
+- None
+
 ### Raouf: 2026-03-11 (AEDT) — Plan Alignment Audit + Final Old-Name Cleanup
 
 **Scope:** Verify full project alignment with the updated Flutter Migration Plan and eliminate the last old-name reference.

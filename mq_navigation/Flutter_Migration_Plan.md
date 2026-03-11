@@ -1,6 +1,6 @@
 # MQ Navigation — Flutter Migration Plan (Updated)
 
-Based on the completed `mq-navigation_flutter` repository.
+Based on the completed `mq_navigation` repository.
 
 ---
 
@@ -534,7 +534,7 @@ These are deployment-time configurations needed before production release:
 ```bash
 # Clone and install
 git clone https://github.com/Raoof128/Pouya-Raouf-COMP3130.git
-cd mq-navigation_flutter
+cd mq_navigation
 flutter pub get
 
 # Run on device (debug mode — no flags needed)
@@ -557,6 +557,6 @@ flutter test
 
 ## Repository Links
 
-- **Mobile App:** https://github.com/Raoof128/Pouya-Raouf-COMP3130 (`mq-navigation_flutter/`)
+- **Mobile App:** https://github.com/Raoof128/Pouya-Raouf-COMP3130 (`mq_navigation/`)
 - **Web App:** https://github.com/Raoof128/Pouya-Raouf-COMP3130
 - **Live Web:** *(deployment pending)*

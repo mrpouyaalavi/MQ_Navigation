@@ -88,7 +88,7 @@ Maps every Next.js API route to the planned Supabase Edge Function or direct Sup
 | `/api/security/check-password-breach` | POST | EF: `security-utils` | 2 | |
 | `/api/admin/update-building-positions` | POST | N/A | — | Admin tool only |
 
-## Edge Functions to Build
+## Edge Functions (Deployed)
 
 | Edge Function | Routes It Replaces | Priority | Phase |
 |---------------|-------------------|----------|-------|

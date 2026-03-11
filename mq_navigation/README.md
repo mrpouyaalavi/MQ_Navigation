@@ -60,7 +60,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full architecture overv
 ```bash
 # Clone the repository
 git clone https://github.com/Raoof128/Pouya-Raouf-COMP3130.git
-cd Pouya-Raouf-COMP3130/mq-navigation_flutter
+cd Pouya-Raouf-COMP3130/mq_navigation
 
 # Install dependencies
 flutter pub get
@@ -171,7 +171,7 @@ The MQ Design System maps Macquarie University's brand tokens to Flutter:
 
 GitHub Actions runs on every push and PR to `main`:
 
-1. **Analyze & Test** -- format check, static analysis, 78 unit/widget tests with coverage
+1. **Analyze & Test** -- format check, static analysis, 99 unit/widget tests with coverage
 2. **Build Android** -- release APK with secrets injection (main branch only)
 3. **Build iOS** -- release build without code signing (main branch only)
 
