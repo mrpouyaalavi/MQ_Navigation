@@ -7,6 +7,7 @@ abstract final class MqColors {
   // ── Brand ──────────────────────────────────────────────
   static const Color red = Color(0xFFA6192E);
   static const Color brightRed = Color(0xFFD6001C);
+  static const Color vividRed = Color(0xFFFF0025);
   static const Color deepRed = Color(0xFF76232F);
   static const Color magenta = Color(0xFFC6007E);
   static const Color purple = Color(0xFF80225F);
@@ -17,7 +18,9 @@ abstract final class MqColors {
   static const Color alabasterLight = Color(0xFFF5F4ED);
 
   // ── Charcoal ───────────────────────────────────────────
+  static const Color charcoal950 = Color(0xFF12080A);
   static const Color charcoal900 = Color(0xFF262826);
+  static const Color charcoal850 = Color(0xFF1C0D0F);
   static const Color charcoal800 = Color(0xFF373A36);
   static const Color charcoal700 = Color(0xFF535650);
   static const Color charcoal600 = Color(0xFF71736B);

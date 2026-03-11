@@ -61,6 +61,7 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
   }
 
   Future<String?> _save(UserPreferences preferences) async {
+    final previous = state.value;
     try {
       // Optimistic update — show new value immediately, no loading spinner.
       state = AsyncData(preferences);
@@ -71,8 +72,13 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
       return null;
     } catch (error, stackTrace) {
       AppLogger.error('Failed to persist settings', error, stackTrace);
-      state = AsyncError(error, stackTrace);
-      return 'Unable to save your settings.';
+      // Revert to previous state so the UI stays usable.
+      if (previous != null) {
+        state = AsyncData(previous);
+      }
+      return _saveErrorMessage;
     }
   }
+
+  static const _saveErrorMessage = 'Unable to save settings.';
 }

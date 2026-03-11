@@ -4,6 +4,48 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-12 (AEDT) — Settings audit fix batch (10 issues)
+
+**Scope:** Full UI/UX/data audit of settings feature — fix all findings.
+
+**Summary:**
+Fixed 10 issues across 4 files from a comprehensive settings audit. Critical: S1 — language picker "System" (null) selection broken after redesign; fixed with `_PickerItem<T>` wrapper to disambiguate null values from bottom-sheet dismissal. High: S2 — repository silently swallowed save errors (returned preferences instead of rethrowing); controller never detected failure, causing data loss on restart; fixed by rethrowing + controller revert-on-failure pattern. Medium: S3 — error state had no retry mechanism (added retry button with `ref.invalidate`); S4 — removed `dense: true` from bottom-sheet ListTile to meet 48dp tap target; S5 — Experience section used wrong l10n keys (`aboutDesc`/`emailNotificationsDesc` swapped for `campusMapDesc`/`studyPromptNotificationBody`); S6 — controller error message hardcoded but controller now reverts state instead of going to AsyncError. Low: S7 — added `==`/`hashCode` to UserPreferences for value equality; S8 — made toggle row fully tappable (InkWell wrapping entire row); S9 — version still hardcoded (acceptable for v1.0); S10 — added Semantics wrappers to `_InfoRow` and `_AboutAppRow`.
+
+**Files changed:**
+- `lib/features/settings/presentation/pages/settings_page.dart` — S1 (PickerItem wrapper), S3 (retry button), S4 (dense removed), S5 (l10n keys), S8 (InkWell on toggle), S10 (Semantics), toggle error snackbar
+- `lib/features/settings/presentation/controllers/settings_controller.dart` — S6 (revert state on failure instead of AsyncError)
+- `lib/features/settings/data/repositories/settings_repository.dart` — S2 (rethrow on save failure)
+- `lib/shared/models/user_preferences.dart` — S7 (== and hashCode)
+
+**Verification:**
+- `flutter analyze` → 0 issues
+- `flutter test` → 83/83 passed
+
+**Follow-ups:**
+- S9: Wire `package_info_plus` for dynamic version display (low priority, acceptable for v1.0)
+
+---
+
+### Raouf: 2026-03-12 (AEDT) — Settings page redesign (HTML reference)
+
+**Scope:** Redesign settings page to match the provided HTML/CSS reference design.
+
+**Summary:**
+Complete visual overhaul of the settings page to match the dark-themed HTML reference design. Replaced generic Material ListTile/Card widgets with custom components faithful to the reference aesthetic: dark charcoal surfaces, red glow radial gradient, uppercase red section headers with letter-spacing, rounded cards with subtle white/5 borders, bottom-sheet pickers (replacing inline DropdownButton), vivid red toggle switches, and a branded about-app row with red shadow glow. Both light and dark mode fully supported. RTL-compatible with EdgeInsetsDirectional.
+
+**Files changed:**
+- `lib/features/settings/presentation/pages/settings_page.dart` — complete rewrite with custom widgets (_SectionHeader, _SettingsCard, _TapRow, _ToggleRow, _InfoRow, _AboutAppRow), bottom-sheet pickers, red glow gradient background
+- `lib/app/theme/mq_colors.dart` — added vividRed (#FF0025), charcoal950 (#12080A), charcoal850 (#1C0D0F)
+
+**Verification:**
+- `flutter analyze` → 0 issues
+- `flutter test` → 83/83 passed
+
+**Follow-ups:**
+- None — visual polish; no logic changes needed.
+
+---
+
 ### Raouf: 2026-03-12 (AEDT) — Comprehensive audit fix batch (25+ issues)
 
 **Scope:** Fix all critical, high, medium, and low severity issues from full codebase audit.

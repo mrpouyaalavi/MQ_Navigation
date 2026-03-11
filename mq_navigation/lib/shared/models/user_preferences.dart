@@ -30,4 +30,22 @@ class UserPreferences {
       emailNotifications: emailNotifications ?? this.emailNotifications,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserPreferences &&
+          runtimeType == other.runtimeType &&
+          themeMode == other.themeMode &&
+          localeCode == other.localeCode &&
+          notificationsEnabled == other.notificationsEnabled &&
+          emailNotifications == other.emailNotifications;
+
+  @override
+  int get hashCode => Object.hash(
+        themeMode,
+        localeCode,
+        notificationsEnabled,
+        emailNotifications,
+      );
 }

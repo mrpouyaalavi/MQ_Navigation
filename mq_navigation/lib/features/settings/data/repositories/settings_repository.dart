@@ -71,7 +71,7 @@ class LocalSettingsRepository implements SettingsRepository {
       return preferences;
     } catch (error, stackTrace) {
       AppLogger.error('Failed to save user preferences', error, stackTrace);
-      return preferences;
+      rethrow;
     }
   }
 }
