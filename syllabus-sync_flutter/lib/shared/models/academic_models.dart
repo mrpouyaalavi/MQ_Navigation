@@ -159,6 +159,7 @@ class DeadlineItem {
 class AcademicEvent {
   const AcademicEvent({
     this.id,
+    this.sourcePublicEventId,
     required this.title,
     this.description,
     this.location,
@@ -174,6 +175,7 @@ class AcademicEvent {
   });
 
   final String? id;
+  final String? sourcePublicEventId;
   final String title;
   final String? description;
   final String? location;
@@ -189,6 +191,7 @@ class AcademicEvent {
 
   AcademicEvent copyWith({
     String? id,
+    String? sourcePublicEventId,
     String? title,
     String? description,
     String? location,
@@ -204,6 +207,7 @@ class AcademicEvent {
   }) {
     return AcademicEvent(
       id: id ?? this.id,
+      sourcePublicEventId: sourcePublicEventId ?? this.sourcePublicEventId,
       title: title ?? this.title,
       description: description ?? this.description,
       location: location ?? this.location,
@@ -222,6 +226,7 @@ class AcademicEvent {
   factory AcademicEvent.fromJson(Map<String, dynamic> json) {
     return AcademicEvent(
       id: _stringOrNull(json['id']),
+      sourcePublicEventId: _stringOrNull(json['source_public_event_id']),
       title: (json['title'] as String?) ?? '',
       description: _stringOrNull(json['description']),
       location: _stringOrNull(json['location']),
@@ -241,6 +246,7 @@ class AcademicEvent {
     return <String, dynamic>{
       if (id != null) 'id': id,
       'user_id': userId,
+      'source_public_event_id': sourcePublicEventId,
       'title': title.trim(),
       'description': description?.trim() ?? '',
       'location': location?.trim() ?? '',
@@ -255,6 +261,8 @@ class AcademicEvent {
       'notification_enabled': notificationEnabled,
     };
   }
+
+  bool get isImportedFromFeed => sourcePublicEventId != null;
 }
 
 @immutable

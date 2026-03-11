@@ -10,8 +10,10 @@ abstract interface class CalendarRepository {
     required DateTime rangeEnd,
   });
 
+  Future<DeadlineItem?> fetchDeadlineById(String id);
   Future<DeadlineItem> saveDeadline(DeadlineItem item);
   Future<void> deleteDeadline(String id);
+  Future<AcademicEvent?> fetchEventById(String id);
   Future<AcademicEvent> saveEvent(AcademicEvent item);
   Future<void> deleteEvent(String id);
   Future<TodoItem> saveTodo(TodoItem item);
@@ -132,6 +134,29 @@ class SupabaseCalendarRepository implements CalendarRepository {
   }
 
   @override
+  Future<DeadlineItem?> fetchDeadlineById(String id) async {
+    final userId = _requireUserId();
+    try {
+      final response = await _client
+          .from('deadlines')
+          .select()
+          .eq('user_id', userId)
+          .eq('id', id)
+          .maybeSingle();
+      if (response == null || response['deleted_at'] != null) {
+        return null;
+      }
+      return DeadlineItem.fromJson(Map<String, dynamic>.from(response));
+    } catch (error, stackTrace) {
+      AppLogger.error('Failed to fetch deadline', error, stackTrace);
+      throw app_error.ServerException(
+        'Unable to load the deadline.',
+        cause: error,
+      );
+    }
+  }
+
+  @override
   Future<DeadlineItem> saveDeadline(DeadlineItem item) async {
     final userId = _requireUserId();
     try {
@@ -158,6 +183,31 @@ class SupabaseCalendarRepository implements CalendarRepository {
       AppLogger.error('Failed to delete deadline', error, stackTrace);
       throw app_error.ServerException(
         'Unable to delete the deadline.',
+        cause: error,
+      );
+    }
+  }
+
+  @override
+  Future<AcademicEvent?> fetchEventById(String id) async {
+    final userId = _requireUserId();
+    try {
+      final response = await _client
+          .from('events')
+          .select()
+          .eq('user_id', userId)
+          .eq('id', id)
+          .maybeSingle();
+      if (response == null ||
+          response['deleted_at'] != null ||
+          response['is_deleted'] == true) {
+        return null;
+      }
+      return AcademicEvent.fromJson(Map<String, dynamic>.from(response));
+    } catch (error, stackTrace) {
+      AppLogger.error('Failed to fetch event', error, stackTrace);
+      throw app_error.ServerException(
+        'Unable to load the event.',
         cause: error,
       );
     }

@@ -8,7 +8,7 @@ All environment variables used by Syllabus Sync, categorised by client/server ex
 |----------|----------|---------|-------|
 | `SUPABASE_URL` | Yes | — | Supabase project URL |
 | `SUPABASE_ANON_KEY` | Yes | — | Public anon key (RLS enforced) |
-| `GOOGLE_MAPS_API_KEY` | Yes | — | Client-side Maps SDK key (restricted to app bundle ID) |
+| `GOOGLE_MAPS_API_KEY` | No | — | Client-side Maps SDK key (restricted to app bundle ID; required only for the embedded map) |
 | `APP_ENV` | No | `development` | development / staging / production |
 
 ## Server-Only (Edge Functions env / Supabase dashboard)
@@ -23,7 +23,8 @@ All environment variables used by Syllabus Sync, categorised by client/server ex
 | `VERIFICATION_EMAIL_FROM` | Edge Functions | From address for verification emails |
 | `VERIFICATION_EMAIL_NAME` | Edge Functions | Display name for verification emails |
 | `CRON_SECRET` | Edge Functions | Protects cron endpoints |
-| `FCM_SERVER_KEY` | Edge Functions | Firebase Cloud Messaging push delivery |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | Edge Functions | Preferred Firebase service account JSON for FCM HTTP v1 |
+| `FCM_SERVER_KEY` | Edge Functions | Legacy FCM push delivery fallback |
 | `UPSTASH_REDIS_REST_URL` | Edge Functions | Rate limiting (production) |
 | `UPSTASH_REDIS_REST_TOKEN` | Edge Functions | Rate limiting (production) |
 
@@ -47,3 +48,4 @@ All environment variables used by Syllabus Sync, categorised by client/server ex
 |----------|----------|-------|
 | `google-services.json` | `android/app/` | Firebase Android config |
 | `GoogleService-Info.plist` | `ios/Runner/` | Firebase iOS config |
+| APNs auth key / certificate | Apple Developer + Firebase | Required for iOS push delivery |

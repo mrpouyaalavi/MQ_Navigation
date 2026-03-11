@@ -17,17 +17,17 @@ All map-related APIs, services, keys, and data sources used by the campus map su
 | Service | Web Usage | Flutter Usage | Phase |
 |---------|-----------|---------------|-------|
 | Google Maps JavaScript API | Leaflet + GM JS API | google_maps_flutter (native) | 5 |
-| Google Routes API | Via Next.js API proxy | Via Edge Function proxy | 5 |
+| Google Routes API | Via Next.js API proxy | Via `maps-routes` Edge Function proxy | 5 |
 | Google Places API | Place search/details | Via Edge Function proxy | 5 |
 | Google Weather API | Weather overlay | Via Edge Function proxy | 5 |
 | OpenRouteService | Walking directions fallback | Via Edge Function proxy | 5 |
 
 ## Building Registry
 
-- **Source**: `features/map/lib/buildings.ts` in web app (80+ buildings)
+- **Source**: `features/map/lib/buildings.ts` in web app (153 buildings in the current Flutter asset snapshot)
 - **Fields per building**: id, name, position, description, tags, aliases, translationKey, descriptionKey, gridRef, address, category, location (lat/lng), entranceLocation, accessibilityEntranceLocation, googlePlaceId, levels, wheelchair
 - **Categories**: academic, services, health, food, sports, venue, research, residential, other
-- **Flutter storage**: Cached in flutter_secure_storage (Phase 1), migrate to Drift (Phase 2+)
+- **Flutter storage**: Bundled JSON asset generated from the web registry, cached in flutter_secure_storage, optional Supabase `app_config` override
 
 ## Map Configuration
 
@@ -74,6 +74,7 @@ All map-related APIs, services, keys, and data sources used by the campus map su
 
 | Function | Purpose | Replaces |
 |----------|---------|----------|
-| `routes-proxy` | Google Routes API proxy (keeps key server-side) | `/api/navigate`, `/api/maps/routes` |
+| `maps-routes` | Authenticated Google Routes API proxy with rate limiting | `/api/maps/routes` |
+| `routes-proxy` | Legacy Google Routes API proxy retained for backward compatibility | `/api/navigate` |
 | `places-proxy` | Google Places API proxy | `/api/maps/place-search`, `/api/maps/place-details` |
 | `weather-proxy` | Google Weather API proxy | `/api/weather` |

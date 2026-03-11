@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:syllabus_sync/core/config/env_config.dart';
 import 'package:syllabus_sync/core/error/error_boundary.dart';
 import 'package:syllabus_sync/core/logging/app_logger.dart';
+import 'package:syllabus_sync/features/notifications/data/datasources/fcm_service.dart';
 
 /// Initialises all critical services before the widget tree mounts.
 Future<void> bootstrap(Widget Function() appBuilder) async {
@@ -19,6 +23,22 @@ Future<void> bootstrap(Widget Function() appBuilder) async {
     () async {
       // Validate required env vars.
       EnvConfig.validate();
+
+      if (Platform.isAndroid || Platform.isIOS) {
+        try {
+          await Firebase.initializeApp();
+          FirebaseMessaging.onBackgroundMessage(
+            firebaseMessagingBackgroundHandler,
+          );
+          AppLogger.info('Firebase initialised');
+        } catch (error, stackTrace) {
+          AppLogger.warning(
+            'Firebase initialisation skipped. Check native Firebase service files.',
+            error,
+            stackTrace,
+          );
+        }
+      }
 
       // Initialise Supabase.
       await Supabase.initialize(

@@ -1,0 +1,3363 @@
+[
+  {
+    "id": "18WW",
+    "name": "18 Wally's Walk (Central Hub)",
+    "description": "Main student services building housing Service Connect, IT, HR, Financial Services, and administration offices.",
+    "address": "18 Wally's Walk",
+    "category": "services",
+    "location": {
+      "lat": -33.7739781,
+      "lng": 151.1126116,
+      "osmId": 205588336
+    },
+    "entranceLocation": {
+      "lat": -33.77388,
+      "lng": 151.11275
+    },
+    "googlePlaceId": "ChIJ1-VKYet6kWsRMUE4VYvdBK4",
+    "levels": 4,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "administration",
+      "study"
+    ],
+    "aliases": [],
+    "gridRef": "N16"
+  },
+  {
+    "id": "LIB",
+    "name": "Waranara Library",
+    "description": "Main campus library with extensive collections, study spaces, Library Cafe, and the Lachlan Macquarie Room.",
+    "address": "16 Macquarie Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.7756994,
+      "lng": 151.1131306,
+      "osmId": 141281549
+    },
+    "entranceLocation": {
+      "lat": -33.7754,
+      "lng": 151.11325
+    },
+    "googlePlaceId": "ChIJZUF9Xut6kWsRFApfJUMU9gk",
+    "levels": 8,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "study",
+      "resources"
+    ],
+    "aliases": [],
+    "gridRef": "Q17"
+  },
+  {
+    "id": "SEC",
+    "name": "Security & Emergency",
+    "description": "Campus security headquarters and emergency first aid services. Available 24/7.",
+    "address": "4 Link Road",
+    "category": "services",
+    "location": {
+      "lat": -33.775252,
+      "lng": 151.1061672
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "safety",
+      "emergency"
+    ],
+    "aliases": [],
+    "gridRef": "P2"
+  },
+  {
+    "id": "25BWW",
+    "name": "25B Wally's Walk (Arts Faculty)",
+    "description": "Faculty of Arts administration, Education, Social Sciences, Indigenous Studies, History, and the Gale History Museum.",
+    "address": "25B Wally's Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.7745332,
+      "lng": 151.1112771
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "arts",
+      "teaching"
+    ],
+    "aliases": [],
+    "gridRef": "O13"
+  },
+  {
+    "id": "17WW",
+    "name": "17 Wally's Walk (Law & Media)",
+    "description": "Macquarie Law School, Media & Communication, Michael Kirby Law Building.",
+    "address": "17 Wally's Walk, Macquarie Park, NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.7748805,
+      "lng": 151.1133652,
+      "osmId": 205588360
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 3,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "law",
+      "media"
+    ],
+    "aliases": [],
+    "gridRef": "O19"
+  },
+  {
+    "id": "4ER",
+    "name": "4 Eastern Road (Business School)",
+    "description": "Macquarie Business School - Accounting, Finance, Management, Marketing, Actuarial Studies.",
+    "address": "4 Eastern Road",
+    "category": "academic",
+    "location": {
+      "lat": -33.775787,
+      "lng": 151.1160258
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 8,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "business",
+      "teaching"
+    ],
+    "aliases": [],
+    "gridRef": "Q22"
+  },
+  {
+    "id": "75TAL",
+    "name": "75 Talavera Road (Health Sciences)",
+    "description": "Faculty of Medicine, Health Sciences, Medical School, Australian Institute of Health Innovation, Chiropractic.",
+    "address": "75 Talavera Road, Macquarie Park, NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.7741652,
+      "lng": 151.1186167
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "health",
+      "research"
+    ],
+    "aliases": [],
+    "gridRef": "M28"
+  },
+  {
+    "id": "16UA",
+    "name": "16 University Avenue (Psychology)",
+    "description": "Psychology, Linguistics, Speech & Hearing Clinic, Reading Clinic, Centre for Emotional Health.",
+    "address": "16 University Avenue",
+    "category": "academic",
+    "location": {
+      "lat": -33.7765829,
+      "lng": 151.111851
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "psychology",
+      "health"
+    ],
+    "aliases": [],
+    "gridRef": "T14"
+  },
+  {
+    "id": "9WW",
+    "name": "9 Wally's Walk (Engineering)",
+    "description": "School of Engineering, Australian Astronomical Optics.",
+    "address": "9 Wally's Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.7744275,
+      "lng": 151.1155757
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "engineering",
+      "labs"
+    ],
+    "aliases": [],
+    "gridRef": "O22"
+  },
+  {
+    "id": "4RPD",
+    "name": "4 Research Park Drive (Computing)",
+    "description": "School of Computing, Esc Cafe.",
+    "address": "4 Research Park Drive",
+    "category": "academic",
+    "location": {
+      "lat": -33.7747745,
+      "lng": 151.1177871
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "technology",
+      "labs"
+    ],
+    "aliases": [],
+    "gridRef": "O26"
+  },
+  {
+    "id": "12WW",
+    "name": "12 Wally's Walk (Maths & Physics)",
+    "description": "School of Mathematical & Physical Sciences.",
+    "address": "12 Wally's Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.7742542,
+      "lng": 151.1146649
+    },
+    "entranceLocation": {
+      "lat": -33.7742,
+      "lng": 151.11475
+    },
+    "googlePlaceId": "ChIJo7_ByOt6kWsRG3j_0x7XALM",
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "science",
+      "research"
+    ],
+    "aliases": [],
+    "gridRef": "N20"
+  },
+  {
+    "id": "6WW",
+    "name": "6 Wally's Walk (Natural Sciences)",
+    "description": "School of Natural Sciences, Biological Sciences, Herbarium.",
+    "address": "6 Wally's Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.773867,
+      "lng": 151.1158118
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 3,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "science",
+      "research"
+    ],
+    "aliases": [],
+    "gridRef": "M23"
+  },
+  {
+    "id": "4WW",
+    "name": "4 Wally's Walk (Proteome)",
+    "description": "Australian Proteome Analysis Facility.",
+    "address": "4 Wally's Walk",
+    "category": "research",
+    "location": {
+      "lat": -33.7741298,
+      "lng": 151.1167778
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "research",
+      "labs"
+    ],
+    "aliases": [],
+    "gridRef": "M24"
+  },
+  {
+    "id": "LOTUS",
+    "name": "Lotus Theatre",
+    "description": "Major teaching and entertainment venue.",
+    "address": "27 Wally's Walk",
+    "category": "venue",
+    "location": {
+      "lat": -33.7746065,
+      "lng": 151.1106244
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "venue",
+      "teaching",
+      "events"
+    ],
+    "aliases": [],
+    "gridRef": "O11"
+  },
+  {
+    "id": "MQTH",
+    "name": "Macquarie Theatre",
+    "description": "Large lecture theatre and entertainment venue.",
+    "address": "21 Wally's Walk",
+    "category": "venue",
+    "location": {
+      "lat": -33.7746334,
+      "lng": 151.1122714
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "venue",
+      "teaching",
+      "events"
+    ],
+    "aliases": [],
+    "gridRef": "O15"
+  },
+  {
+    "id": "PRICE",
+    "name": "Price Theatre",
+    "description": "Teaching theatre.",
+    "address": "23 Wally's Walk",
+    "category": "venue",
+    "location": {
+      "lat": -33.7748869,
+      "lng": 151.1117559
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "venue",
+      "teaching"
+    ],
+    "aliases": [],
+    "gridRef": "O14"
+  },
+  {
+    "id": "LIGHT",
+    "name": "Lighthouse Theatre",
+    "description": "Performance venue.",
+    "address": "11 Gymnasium Road",
+    "category": "venue",
+    "location": {
+      "lat": -33.7718686,
+      "lng": 151.1114894
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "venue",
+      "performance",
+      "arts"
+    ],
+    "aliases": [],
+    "gridRef": "H14"
+  },
+  {
+    "id": "AINS",
+    "name": "Ainsworth Building",
+    "description": "Teaching facility.",
+    "address": "1 Wally's Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.7743803,
+      "lng": 151.1174832,
+      "osmId": 1303624871
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "teaching"
+    ],
+    "aliases": [],
+    "gridRef": "N27"
+  },
+  {
+    "id": "HOSP",
+    "name": "MQ University Hospital",
+    "description": "Teaching hospital with specialist clinics, medical imaging, and pharmacy.",
+    "address": "3 Technology Place",
+    "category": "health",
+    "location": {
+      "lat": -33.7735912,
+      "lng": 151.1179502,
+      "osmId": 459015460
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": true,
+    "tags": [
+      "health",
+      "medical",
+      "services"
+    ],
+    "aliases": [],
+    "gridRef": "L27"
+  },
+  {
+    "id": "CLINIC",
+    "name": "GP & Physio Clinics",
+    "description": "General practice and physiotherapy clinics, specialist consultations.",
+    "address": "2 Technology Place",
+    "category": "health",
+    "location": {
+      "lat": -33.7730453,
+      "lng": 151.1176713
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": true,
+    "tags": [
+      "health",
+      "medical",
+      "services"
+    ],
+    "aliases": [],
+    "gridRef": "K26"
+  },
+  {
+    "id": "WOOL",
+    "name": "Woolcock Institute",
+    "description": "Woolcock Institute of Medical Research.",
+    "address": "2 Innovation Road",
+    "category": "research",
+    "location": {
+      "lat": -33.7748879,
+      "lng": 151.1197583
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "health",
+      "research"
+    ],
+    "aliases": [],
+    "gridRef": "O30"
+  },
+  {
+    "id": "SPORT",
+    "name": "Sport & Aquatic Centre",
+    "description": "Gym, swimming pool, sports facilities, Crunch Cafe, Sporting Hall of Fame Museum.",
+    "address": "10 Gymnasium Road",
+    "category": "sports",
+    "location": {
+      "lat": -33.7726489,
+      "lng": 151.1105693,
+      "osmId": 205588367
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": true,
+    "tags": [
+      "sports",
+      "recreation",
+      "fitness"
+    ],
+    "aliases": [],
+    "gridRef": "J12"
+  },
+  {
+    "id": "FIELDS",
+    "name": "Sports Fields & Tennis",
+    "description": "Outdoor sports fields and tennis centre.",
+    "address": "15-17 Gymnasium Road",
+    "category": "sports",
+    "location": {
+      "lat": -33.7734239,
+      "lng": 151.1127799
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "sports",
+      "recreation",
+      "outdoor"
+    ],
+    "aliases": [],
+    "gridRef": "K16"
+  },
+  {
+    "id": "UBAR",
+    "name": "UBar & Central Courtyard",
+    "description": "Campus bar, social venue, graduation ceremonies area.",
+    "address": "1 Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.7733531,
+      "lng": 151.1133796,
+      "osmId": 914350786
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "social",
+      "events"
+    ],
+    "aliases": [],
+    "gridRef": "K18"
+  },
+  {
+    "id": "CULT",
+    "name": "Cult Eatery",
+    "description": "Campus eatery in Arts precinct.",
+    "address": "25B Wally's Walk",
+    "category": "food",
+    "location": {
+      "lat": -33.7745332,
+      "lng": 151.1112771
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe"
+    ],
+    "aliases": [],
+    "gridRef": "O13"
+  },
+  {
+    "id": "LACH",
+    "name": "Lachlan's Restaurant",
+    "description": "Fine dining restaurant.",
+    "address": "1 Executive Road",
+    "category": "food",
+    "location": {
+      "lat": -33.7713301,
+      "lng": 151.1158846,
+      "osmId": 148387967
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant"
+    ],
+    "aliases": [],
+    "gridRef": "E23"
+  },
+  {
+    "id": "8SCO",
+    "name": "8 Sir Christopher Ondaatje Ave",
+    "description": "Future Students, MQ College, MQ Academy, Prayer Room, IELTS/PTE Test Centre, Access & Widening Participation.",
+    "address": "8 Sir Christopher Ondaatje Ave, Macquarie Park, NSW",
+    "category": "services",
+    "location": {
+      "lat": -33.77578,
+      "lng": 151.11473,
+      "osmId": 23716703
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 4,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "student",
+      "administration"
+    ],
+    "aliases": [],
+    "gridRef": "P20"
+  },
+  {
+    "id": "16WW",
+    "name": "16 Wally's Walk (Research)",
+    "description": "Graduate Research Academy, Research Services, Commercialisation & Innovation.",
+    "address": "16 Wally's Walk",
+    "category": "research",
+    "location": {
+      "lat": -33.774231,
+      "lng": 151.113649,
+      "osmId": 205588359
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "research",
+      "services"
+    ],
+    "aliases": [],
+    "gridRef": "N18"
+  },
+  {
+    "id": "12SW",
+    "name": "12 Second Way (Student Services)",
+    "description": "Student Wellbeing, Student Engagement, Graduation Unit.",
+    "address": "12 Second Way",
+    "category": "services",
+    "location": {
+      "lat": -33.775059,
+      "lng": 151.113014,
+      "osmId": 458998306
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "student",
+      "wellbeing"
+    ],
+    "aliases": [],
+    "gridRef": "P16"
+  },
+  {
+    "id": "19ER",
+    "name": "19 Eastern Road (Chancellery)",
+    "description": "Chancellery, Archives & Records, Art Gallery.",
+    "address": "19 Eastern Road",
+    "category": "services",
+    "location": {
+      "lat": -33.7724696,
+      "lng": 151.1148539,
+      "osmId": 205588364
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "administration",
+      "gallery",
+      "arts"
+    ],
+    "aliases": [],
+    "gridRef": "H20"
+  },
+  {
+    "id": "OBS",
+    "name": "Observatory",
+    "description": "Astronomy observatory.",
+    "address": "5 Gymnasium Road",
+    "category": "research",
+    "location": {
+      "lat": -33.7703261,
+      "lng": 151.1111248,
+      "osmId": 1192242193
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "research",
+      "science",
+      "astronomy"
+    ],
+    "aliases": [],
+    "gridRef": "C12"
+  },
+  {
+    "id": "INCUB",
+    "name": "MQ Incubator",
+    "description": "Macquarie University Incubator for startups.",
+    "address": "8 Hadenfeld Avenue",
+    "category": "services",
+    "location": {
+      "lat": -33.7763444,
+      "lng": 151.1090529,
+      "osmId": 1107882877
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "business",
+      "innovation"
+    ],
+    "aliases": [],
+    "gridRef": "S8"
+  },
+  {
+    "id": "CHAP",
+    "name": "Chaplaincy",
+    "description": "Multi-faith chaplaincy services.",
+    "address": "10 Hadenfeld Avenue",
+    "category": "services",
+    "location": {
+      "lat": -33.7760151,
+      "lng": 151.1080508,
+      "osmId": 100955278
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 3,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "spiritual"
+    ],
+    "aliases": [],
+    "gridRef": "R6"
+  },
+  {
+    "id": "WALU",
+    "name": "Walanga Muru",
+    "description": "Indigenous student support and cultural services.",
+    "address": "29 Wally's Walk",
+    "category": "services",
+    "location": {
+      "lat": -33.7742704,
+      "lng": 151.1105191,
+      "osmId": 455246541
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "indigenous",
+      "culture"
+    ],
+    "aliases": [],
+    "gridRef": "N11"
+  },
+  {
+    "id": "BANK",
+    "name": "Banksia Cottage (Childcare)",
+    "description": "Campus childcare facility.",
+    "address": "8 Link Road, Macquarie Park, NSW",
+    "category": "services",
+    "location": {
+      "lat": -33.7752254,
+      "lng": 151.1090476,
+      "osmId": 148389594
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "childcare"
+    ],
+    "aliases": [],
+    "gridRef": "P8"
+  },
+  {
+    "id": "GUMNUT",
+    "name": "Gumnut Cottage (Childcare)",
+    "description": "Campus childcare facility.",
+    "address": "17 University Avenue",
+    "category": "services",
+    "location": {
+      "lat": -33.7776699,
+      "lng": 151.1122559
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "childcare"
+    ],
+    "aliases": [],
+    "gridRef": "V15"
+  },
+  {
+    "id": "MIAMIA",
+    "name": "Mia Mia (Childcare)",
+    "description": "Campus childcare facility near Walanga Muru.",
+    "address": "29 Wally's Walk",
+    "category": "services",
+    "location": {
+      "lat": -33.7742704,
+      "lng": 151.1105191
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "childcare"
+    ],
+    "aliases": [],
+    "gridRef": "N11"
+  },
+  {
+    "id": "WARATAH",
+    "name": "Waratah (Childcare)",
+    "description": "Campus childcare facility.",
+    "address": "11 University Avenue",
+    "category": "services",
+    "location": {
+      "lat": -33.77713,
+      "lng": 151.11174,
+      "osmId": 23716716
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "childcare"
+    ],
+    "aliases": [],
+    "gridRef": "W17"
+  },
+  {
+    "id": "NEXTSENSE",
+    "name": "NextSense Centre of Excellence",
+    "description": "NextSense Centre of Excellence for hearing, vision, and sensory research.",
+    "address": "2 Gymnasium Road",
+    "category": "research",
+    "location": {
+      "lat": -33.7719732,
+      "lng": 151.1106033
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "health",
+      "research"
+    ],
+    "aliases": [],
+    "gridRef": "F9"
+  },
+  {
+    "id": "NEXTSCHOOL",
+    "name": "NextSense School",
+    "description": "NextSense School for deaf and vision impaired students.",
+    "address": "131 Culloden Road",
+    "category": "academic",
+    "location": {
+      "lat": -33.7720602,
+      "lng": 151.1090071
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "education",
+      "accessibility"
+    ],
+    "aliases": [],
+    "gridRef": "G7"
+  },
+  {
+    "id": "METS",
+    "name": "METS (Engineering Services)",
+    "description": "Macquarie Engineering Technical Services - workshop and technical support.",
+    "address": "3 Science Road",
+    "category": "services",
+    "location": {
+      "lat": -33.7733742,
+      "lng": 151.1167229,
+      "osmId": 23716725
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "engineering",
+      "workshop"
+    ],
+    "aliases": [],
+    "gridRef": "K24"
+  },
+  {
+    "id": "WALLYS",
+    "name": "Wally's Coffee and Toasties",
+    "description": "Campus cafe in the Central Hub building.",
+    "address": "18 Wally's Walk",
+    "category": "food",
+    "location": {
+      "lat": -33.7741501,
+      "lng": 151.1127909
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ],
+    "aliases": [],
+    "gridRef": "N15"
+  },
+  {
+    "id": "LIBCAFE",
+    "name": "Library Cafe",
+    "description": "Cafe located in Waranara Library.",
+    "address": "16 Macquarie Walk",
+    "category": "food",
+    "location": {
+      "lat": -33.7756994,
+      "lng": 151.1131306
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ],
+    "aliases": [],
+    "gridRef": "Q17"
+  },
+  {
+    "id": "DLC",
+    "name": "Dunmore Lang College",
+    "description": "Student residential college.",
+    "address": "130 Herring Road",
+    "category": "residential",
+    "location": {
+      "lat": -33.7782967,
+      "lng": 151.1165648,
+      "osmId": 488128858
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "residential",
+      "accommodation"
+    ],
+    "aliases": [],
+    "gridRef": "W25"
+  },
+  {
+    "id": "RMC",
+    "name": "Robert Menzies College",
+    "description": "Student residential college.",
+    "address": "136 Herring Road",
+    "category": "residential",
+    "location": {
+      "lat": -33.77729,
+      "lng": 151.1168364
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "residential",
+      "accommodation"
+    ],
+    "aliases": [],
+    "gridRef": "V26"
+  },
+  {
+    "id": "MQV",
+    "name": "MQ Village",
+    "description": "Student accommodation village.",
+    "address": "122 Culloden Road",
+    "category": "residential",
+    "location": {
+      "lat": -33.7710178,
+      "lng": 151.1079173
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "residential",
+      "accommodation"
+    ],
+    "aliases": [],
+    "gridRef": "F7"
+  },
+  {
+    "id": "GALLERY",
+    "name": "Art Gallery",
+    "description": "University art gallery and exhibitions.",
+    "address": "19 Eastern Road",
+    "category": "venue",
+    "location": {
+      "lat": -33.7723959,
+      "lng": 151.1148585
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "arts",
+      "gallery",
+      "culture"
+    ],
+    "aliases": [],
+    "gridRef": "H20"
+  },
+  {
+    "id": "BIODISC",
+    "name": "Biology Discovery Centre",
+    "description": "Biology museum and discovery centre.",
+    "address": "6 Science Road",
+    "category": "venue",
+    "location": {
+      "lat": -33.7736165,
+      "lng": 151.1159258
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "science",
+      "museum",
+      "education"
+    ],
+    "aliases": [],
+    "gridRef": "L23"
+  },
+  {
+    "id": "11WW",
+    "name": "11 Wally's Walk",
+    "description": "Academic building on Wallys Walk.",
+    "address": "11 Wally's Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.7746267,
+      "lng": 151.1151193,
+      "osmId": 23716716
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 4,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "teaching"
+    ],
+    "aliases": [],
+    "gridRef": "N22"
+  },
+  {
+    "id": "13RPD",
+    "name": "13 Research Park Drive",
+    "description": "Research facility on Research Park Drive.",
+    "address": "13 Research Park Drive, Macquarie Park, NSW",
+    "category": "research",
+    "location": {
+      "lat": -33.7732317,
+      "lng": 151.1171794,
+      "osmId": 23716723
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "research",
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": "M26"
+  },
+  {
+    "id": "6ER",
+    "name": "6 Eastern Road",
+    "description": "Academic building on Eastern Road.",
+    "address": "6 Eastern Road, Macquarie Park, NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.775576,
+      "lng": 151.115895,
+      "osmId": 51673951
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 4,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "teaching"
+    ],
+    "aliases": [],
+    "gridRef": "Q21"
+  },
+  {
+    "id": "1CC",
+    "name": "1 Central Courtyard",
+    "description": "Central Courtyard building and student hub.",
+    "address": "1 Central Courtyard",
+    "category": "services",
+    "location": {
+      "lat": -33.7738842,
+      "lng": 151.1135164,
+      "osmId": 914350786
+    },
+    "entranceLocation": {
+      "lat": -33.77395,
+      "lng": 151.11365
+    },
+    "googlePlaceId": "ChIJ79q0w-t6kWsRD6lLJV1tWfo",
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "student"
+    ],
+    "aliases": [],
+    "gridRef": "K19"
+  },
+  {
+    "id": "13ARPD",
+    "name": "13A Research Park Drive",
+    "description": "Research facility on Research Park Drive.",
+    "address": "13 Research Park Drive",
+    "category": "research",
+    "location": {
+      "lat": -33.773151,
+      "lng": 151.116676,
+      "osmId": 1303624873
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "research",
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": "M26"
+  },
+  {
+    "id": "COCHLEAR",
+    "name": "Cochlear Limited",
+    "description": "Cochlear headquarters and research facility.",
+    "address": "University Avenue",
+    "category": "research",
+    "location": {
+      "lat": -33.7773091,
+      "lng": 151.1134198
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "research",
+      "commercial",
+      "health"
+    ],
+    "aliases": [],
+    "gridRef": "U16"
+  },
+  {
+    "id": "10SCO",
+    "name": "10 Sir Christopher Ondaatje Ave",
+    "description": "Academic building.",
+    "address": "10 Sir Christopher Ondaatje Ave",
+    "category": "academic",
+    "location": {
+      "lat": -33.774901,
+      "lng": 151.114706,
+      "osmId": 458998307
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "teaching"
+    ],
+    "aliases": [],
+    "gridRef": "P21"
+  },
+  {
+    "id": "14ER",
+    "name": "14 Eastern Road",
+    "description": "Academic building on Eastern Road. Faculty of Science.",
+    "address": "14 Eastern Road",
+    "category": "academic",
+    "location": {
+      "lat": -33.77386,
+      "lng": 151.115721,
+      "osmId": 157975715
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "teaching"
+    ],
+    "aliases": [],
+    "gridRef": "P22"
+  },
+  {
+    "id": "6SR",
+    "name": "6 Science Road",
+    "description": "Science building on Science Road.",
+    "address": "6 Science Road, Macquarie Park, NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.7736165,
+      "lng": 151.1159258,
+      "osmId": 157975717
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "science",
+      "labs"
+    ],
+    "aliases": [],
+    "gridRef": "M23"
+  },
+  {
+    "id": "14FW",
+    "name": "14 First Walk (MUSEC)",
+    "description": "Macquarie University Special Education Centre - education programs for children.",
+    "address": "14 First Walk, Macquarie Park, NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.774814,
+      "lng": 151.109691,
+      "osmId": 148389592
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "education",
+      "services"
+    ],
+    "aliases": [],
+    "gridRef": "O10"
+  },
+  {
+    "id": "14SCO",
+    "name": "14 Sir Christopher Ondaatje Ave",
+    "description": "Academic building with teaching spaces and exam halls. Faculty of Sciences.",
+    "address": "14 Sir Christopher Ondaatje Ave",
+    "category": "academic",
+    "location": {
+      "lat": -33.773899,
+      "lng": 151.114706,
+      "osmId": 157975716
+    },
+    "entranceLocation": {
+      "lat": -33.77395,
+      "lng": 151.11485
+    },
+    "googlePlaceId": "ChIJP8Z8but6kWsRcH59b0xPlls",
+    "levels": 7,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "teaching",
+      "exams"
+    ],
+    "aliases": [],
+    "gridRef": "N20"
+  },
+  {
+    "id": "4WR",
+    "name": "4 Western Road",
+    "description": "Academic building with teaching and examination rooms.",
+    "address": "4 Western Road",
+    "category": "academic",
+    "location": {
+      "lat": -33.775351,
+      "lng": 151.1114772
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "teaching",
+      "exams"
+    ],
+    "aliases": [],
+    "gridRef": "P14"
+  },
+  {
+    "id": "EAST3",
+    "name": "East 3 Car Park",
+    "description": "Multi-storey car park.",
+    "address": null,
+    "category": "other",
+    "location": {
+      "lat": -33.775629,
+      "lng": 151.116761,
+      "osmId": 14744550
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "other",
+      "parking"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "EAST2",
+    "name": "East 2 Car Park",
+    "description": "Multi-storey car park.",
+    "address": null,
+    "category": "other",
+    "location": {
+      "lat": -33.774796,
+      "lng": 151.116951,
+      "osmId": 14744551
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "other",
+      "parking"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "75TR",
+    "name": "75 Talavera Road",
+    "description": "Commercial building in the Macquarie Park precinct.",
+    "address": "75 Talavera Road Macquarie Park NSW",
+    "category": "other",
+    "location": {
+      "lat": -33.774162,
+      "lng": 151.118597,
+      "osmId": 23716719
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "commercial",
+      "office"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "3SR",
+    "name": "3 Science Road",
+    "description": "Academic building.",
+    "address": "3 Science Road Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.7733742,
+      "lng": 151.1167229,
+      "osmId": 23716725
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "6FW",
+    "name": "6 First Walk",
+    "description": "Academic building.",
+    "address": "6 First Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.775402,
+      "lng": 151.112022,
+      "osmId": 62060227
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 3,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "17MW",
+    "name": "17 Macquarie Walk",
+    "description": "Academic building.",
+    "address": "17 Macquarie Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.776217,
+      "lng": 151.113178,
+      "osmId": 141281548
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "1MD",
+    "name": "1 Management Drive",
+    "description": "Academic building.",
+    "address": "1 Management Drive Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.771631,
+      "lng": 151.116079,
+      "osmId": 148387966
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "3MD",
+    "name": "3 Management Drive",
+    "description": "Academic building.",
+    "address": "3 Management Drive Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.771921,
+      "lng": 151.1157,
+      "osmId": 148387968
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "5MD",
+    "name": "5 Management Drive",
+    "description": "Academic building.",
+    "address": "5 Management Drive",
+    "category": "academic",
+    "location": {
+      "lat": -33.7720139,
+      "lng": 151.1157984,
+      "osmId": 148387969
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "1EXR",
+    "name": "1 Executive Road",
+    "description": "Academic building.",
+    "address": "1 Executive Road Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.771097,
+      "lng": 151.115913,
+      "osmId": 148387970
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "2FW",
+    "name": "2 First Walk",
+    "description": "Academic building.",
+    "address": "2 First Walk Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.775327,
+      "lng": 151.113379,
+      "osmId": 148389591
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 3,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "4FW",
+    "name": "4 First Walk",
+    "description": "Academic building.",
+    "address": "4 First Walk",
+    "category": "academic",
+    "location": {
+      "lat": -33.77537,
+      "lng": 151.112847,
+      "osmId": 148389593
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 4,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "2LR",
+    "name": "2 Link Road",
+    "description": "Academic building.",
+    "address": "2 Link Road",
+    "category": "academic",
+    "location": {
+      "lat": -33.7748578,
+      "lng": 151.1058082,
+      "osmId": 148390207
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "6LR",
+    "name": "6 Link Road",
+    "description": "Academic building.",
+    "address": "6 Link Road",
+    "category": "academic",
+    "location": {
+      "lat": -33.7746607,
+      "lng": 151.1066688,
+      "osmId": 148390210
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "4LR",
+    "name": "4 Link Road",
+    "description": "Academic building.",
+    "address": "4 Link Road",
+    "category": "academic",
+    "location": {
+      "lat": -33.775259,
+      "lng": 151.106101,
+      "osmId": 148390211
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "DESTINATIO",
+    "name": "Destination Orana",
+    "description": "Student accommodation.",
+    "address": "112-118 Talavera Road Macquarie Park",
+    "category": "residential",
+    "location": {
+      "lat": -33.7738573,
+      "lng": 151.120262,
+      "osmId": 286832282
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 28,
+    "wheelchair": false,
+    "tags": [
+      "residential"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "3IR",
+    "name": "3 Innovation Road",
+    "description": "Academic building.",
+    "address": "3 Innovation Road Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.775235,
+      "lng": 151.118627,
+      "osmId": 324612872
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "1IR",
+    "name": "1 Innovation Road",
+    "description": "Academic building.",
+    "address": "1 Innovation Road Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.775569,
+      "lng": 151.119137,
+      "osmId": 324612876
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "15RPD",
+    "name": "15 Research Park Drive",
+    "description": "Academic building.",
+    "address": "15 Research Park Drive Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.772875,
+      "lng": 151.116836,
+      "osmId": 459015425
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "RONREILLYP",
+    "name": "Ron Reilly Pavilion",
+    "description": "Sports pavilion.",
+    "address": null,
+    "category": "sports",
+    "location": {
+      "lat": -33.766262,
+      "lng": 151.114914,
+      "osmId": 791253931
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "sports"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "VILLAS",
+    "name": "The Villas",
+    "description": "Residential villas.",
+    "address": "116-118 Herring Road Macquarie Park NSW",
+    "category": "residential",
+    "location": {
+      "lat": -33.7793912,
+      "lng": 151.1132109,
+      "osmId": 967533744
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "residential"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "6MD",
+    "name": "6 Management Drive",
+    "description": "Academic building.",
+    "address": "6 Management Drive Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.772124,
+      "lng": 151.116066,
+      "osmId": 1192234862
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "7MD",
+    "name": "7 Management Drive",
+    "description": "Academic building.",
+    "address": "7 Management Drive Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.772257,
+      "lng": 151.115679,
+      "osmId": 1192234863
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "12MW",
+    "name": "12 Macquarie Walk",
+    "description": "Academic building.",
+    "address": "12 Macquarie Walk Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.7759467,
+      "lng": 151.1151423,
+      "osmId": 1192234871
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "18ER",
+    "name": "18 Eastern Road",
+    "description": "Academic building.",
+    "address": "18 Eastern Road Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.772871,
+      "lng": 151.115713,
+      "osmId": 1192257351
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "2WW",
+    "name": "2 Wally's Walk",
+    "description": "Academic building.",
+    "address": "2 Wally's Walk Macquarie Park NSW",
+    "category": "academic",
+    "location": {
+      "lat": -33.774145,
+      "lng": 151.117209,
+      "osmId": 1303624872
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "23WW",
+    "name": "23WW",
+    "description": "23WW building.",
+    "address": null,
+    "category": "academic",
+    "location": {
+      "lat": -33.775064,
+      "lng": 151.111811,
+      "osmId": 6784791
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "SIEMENS",
+    "name": "Siemens",
+    "description": "Siemens building.",
+    "address": null,
+    "category": "other",
+    "location": {
+      "lat": -33.774873,
+      "lng": 151.119825,
+      "osmId": 6784971
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "commercial",
+      "office"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "10HA",
+    "name": "10 Hadenfeld Avenue (Chaplaincy)",
+    "description": "Multi-faith chaplaincy and spiritual services building.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.7764943,
+      "lng": 151.1118029
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "spiritual",
+      "chaplaincy"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "16MW",
+    "name": "16 Macquarie Walk (Waranara Library)",
+    "description": "Main campus library with study spaces, Library Cafe, and extensive collections.",
+    "address": null,
+    "category": "academic",
+    "location": {
+      "lat": -33.775621,
+      "lng": 151.113441,
+      "osmId": 141281549
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 8,
+    "wheelchair": false,
+    "tags": [
+      "academic",
+      "study",
+      "library",
+      "resources"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "LAKESIDEHO",
+    "name": "Lakeside Hotel & Conference Centre",
+    "description": "Lakeside Hotel & Conference Centre.",
+    "address": null,
+    "category": "other",
+    "location": {
+      "lat": -33.7713301,
+      "lng": 151.1158846,
+      "osmId": 148387967
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "accommodation",
+      "hotel",
+      "venue"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "8LR",
+    "name": "8LR (Banksia Cottage)",
+    "description": "Banksia Cottage campus childcare facility.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.7751467,
+      "lng": 151.1090168
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "childcare"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "MACQUARIEC",
+    "name": "Macquarie Centre",
+    "description": "Macquarie Centre shopping mall with food court, retail stores, and cinema.",
+    "address": null,
+    "category": "other",
+    "location": {
+      "lat": -33.7772506,
+      "lng": 151.1211352,
+      "osmId": 201725087
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "retail",
+      "shopping"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "11GR",
+    "name": "11GR (Lighthouse Theatre)",
+    "description": "Performance venue and theatre.",
+    "address": null,
+    "category": "venue",
+    "location": {
+      "lat": -33.7718686,
+      "lng": 151.1114894
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "venue",
+      "performance",
+      "arts"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "10GR",
+    "name": "10GR (Macquarie University Sport and Aquatic Centre)",
+    "description": "10GR building.",
+    "address": null,
+    "category": "sports",
+    "location": {
+      "lat": -33.7726489,
+      "lng": 151.1105693,
+      "osmId": 205588367
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "sports"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "DUNMORELAN",
+    "name": "Dunmore Lang College - Postgraduate Apartments",
+    "description": "Dunmore Lang College apartments.",
+    "address": null,
+    "category": "residential",
+    "location": {
+      "lat": -33.7783819,
+      "lng": 151.1165762,
+      "osmId": 205588642
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "residential"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "29WW",
+    "name": "29WW",
+    "description": "29WW building.",
+    "address": null,
+    "category": "academic",
+    "location": {
+      "lat": -33.7742704,
+      "lng": 151.1105191,
+      "osmId": 455246541
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "27WW",
+    "name": "27WW (Lotus Theatre)",
+    "description": "Major teaching and entertainment venue.",
+    "address": null,
+    "category": "venue",
+    "location": {
+      "lat": -33.7746627,
+      "lng": 151.1106308,
+      "osmId": 455246542
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "venue",
+      "teaching",
+      "events"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "25WW",
+    "name": "25WW",
+    "description": "25WW building.",
+    "address": null,
+    "category": "academic",
+    "location": {
+      "lat": -33.7751678,
+      "lng": 151.1110393
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "21WW",
+    "name": "21WW (Macquarie Theatre)",
+    "description": "Large lecture theatre and entertainment venue.",
+    "address": null,
+    "category": "venue",
+    "location": {
+      "lat": -33.7746449,
+      "lng": 151.1122661,
+      "osmId": 458998304
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "venue",
+      "teaching",
+      "events"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "14SW",
+    "name": "14SW",
+    "description": "14SW building.",
+    "address": null,
+    "category": "academic",
+    "location": {
+      "lat": -33.774892,
+      "lng": 151.112682,
+      "osmId": 458998305
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "2TP",
+    "name": "2 Technology Place",
+    "description": "2 Technology Place - health and medical facilities.",
+    "address": null,
+    "category": "health",
+    "location": {
+      "lat": -33.773134,
+      "lng": 151.117803,
+      "osmId": 459015453
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "health",
+      "medical"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "MACQUARIEU",
+    "name": "Macquarie University Hospital",
+    "description": "Macquarie University Hospital.",
+    "address": null,
+    "category": "health",
+    "location": {
+      "lat": -33.773738,
+      "lng": 151.118041,
+      "osmId": 459015460
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "health",
+      "medical",
+      "hospital"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "STUDENTACC",
+    "name": "Student Accommodation",
+    "description": "Student Accommodation.",
+    "address": null,
+    "category": "residential",
+    "location": {
+      "lat": -33.7732885,
+      "lng": 151.1127885,
+      "osmId": 914350787
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "residential",
+      "accommodation"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "205A",
+    "name": "205A Culloden Road",
+    "description": "205A Culloden Road residential building.",
+    "address": null,
+    "category": "residential",
+    "location": {
+      "lat": -33.769159,
+      "lng": 151.111826,
+      "osmId": 1065030401
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "residential"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "205B",
+    "name": "205B Culloden Road",
+    "description": "205B Culloden Road residential building.",
+    "address": null,
+    "category": "residential",
+    "location": {
+      "lat": -33.769541,
+      "lng": 151.111623,
+      "osmId": 1065030402
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "residential"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "8HA",
+    "name": "8HA (Incubator)",
+    "description": "Macquarie University Incubator for startups and innovation.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.7763444,
+      "lng": 151.1090529,
+      "osmId": 1107882877
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "business",
+      "innovation"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "5GR",
+    "name": "5GR (Macquarie Observatory)",
+    "description": "Astronomy observatory for research and education.",
+    "address": null,
+    "category": "research",
+    "location": {
+      "lat": -33.7703261,
+      "lng": 151.1111248,
+      "osmId": 1192242193
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "research",
+      "science",
+      "astronomy"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "1WW",
+    "name": "1WW (Ainsworth Building)",
+    "description": "1WW (Ainsworth Building).",
+    "address": null,
+    "category": "academic",
+    "location": {
+      "lat": -33.774195,
+      "lng": 151.118145,
+      "osmId": 1303624871
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "17WWMICHAE",
+    "name": "17WW (Michael Kirby Building)",
+    "description": "17WW (Michael Kirby Building).",
+    "address": null,
+    "category": "academic",
+    "location": {
+      "lat": -33.774771,
+      "lng": 151.113278,
+      "osmId": 7867502
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "18WWSERVIC",
+    "name": "18WW (Service Connect)",
+    "description": "Service Connect - main student services hub with IT, HR, and Financial Services.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.774029,
+      "lng": 151.112563,
+      "osmId": 205588336
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "administration",
+      "student"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "16WWLINCOL",
+    "name": "16WW (Lincoln Building)",
+    "description": "16WW (Lincoln Building).",
+    "address": null,
+    "category": "academic",
+    "location": {
+      "lat": -33.774239,
+      "lng": 151.11357,
+      "osmId": 205588359
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "academic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "19ERTHECHA",
+    "name": "19ER (The Chancellery)",
+    "description": "The Chancellery - University administration headquarters.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.772391,
+      "lng": 151.114933,
+      "osmId": 205588364
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "services",
+      "administration"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "16UAAUSTRA",
+    "name": "16UA (Australian Hearing Hub)",
+    "description": "Australian Hearing Hub - hearing research and clinical services.",
+    "address": null,
+    "category": "health",
+    "location": {
+      "lat": -33.7764943,
+      "lng": 151.1118029,
+      "osmId": 455246543
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 1,
+    "wheelchair": false,
+    "tags": [
+      "health",
+      "research",
+      "clinic"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "DLCNEW",
+    "name": "Dunmore Lang College - New Wing",
+    "description": "Dunmore Lang College New Wing residential building.",
+    "address": "130 Herring Road, Macquarie Park NSW",
+    "category": "residential",
+    "location": {
+      "lat": -33.777772,
+      "lng": 151.116569,
+      "osmId": 488128859
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 3,
+    "wheelchair": false,
+    "tags": [
+      "residential"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "DLCOFFICE",
+    "name": "Dunmore Lang College - Office",
+    "description": "Dunmore Lang College administration office.",
+    "address": "130 Herring Road, Macquarie Park NSW",
+    "category": "residential",
+    "location": {
+      "lat": -33.7776104,
+      "lng": 151.1166667
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": 2,
+    "wheelchair": false,
+    "tags": [
+      "residential",
+      "services"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "VILLAS2",
+    "name": "Villas (Building 2)",
+    "description": "Residential villas - second building.",
+    "address": "116-118 Herring Road, Macquarie Park NSW",
+    "category": "residential",
+    "location": {
+      "lat": -33.78005,
+      "lng": 151.11359,
+      "osmId": 967533745
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "residential"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "25CWW",
+    "name": "25C Wally's Walk (Gale History Museum)",
+    "description": "The Gale History Museum - historical exhibits and collections.",
+    "address": "25C Wally's Walk",
+    "category": "venue",
+    "location": {
+      "lat": -33.7751672,
+      "lng": 151.1109258
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "venue",
+      "museum",
+      "arts",
+      "history"
+    ],
+    "aliases": [],
+    "gridRef": "O13"
+  },
+  {
+    "id": "LBNMQ",
+    "name": "1919 Lanzhou Beef Noodle",
+    "description": "Chinese hand-pulled noodle restaurant on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.774214,
+      "lng": 151.113325
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "noodles"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "BKCMQ",
+    "name": "BAP Korean",
+    "description": "Korean cuisine restaurant on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.774058,
+      "lng": 151.113779
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "korean"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "BJMQ",
+    "name": "Boost Juice",
+    "description": "Juice and smoothie bar.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.773581,
+      "lng": 151.112794
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "drinks",
+      "juice"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "CTMQ",
+    "name": "Chatime",
+    "description": "Bubble tea and drinks.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.774311,
+      "lng": 151.113772
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "drinks",
+      "bubble tea"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "EIMQ",
+    "name": "Eat Istanbul",
+    "description": "Turkish restaurant on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.77331,
+      "lng": 151.11382
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "turkish"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "IMMQ",
+    "name": "Iguanas Mexicana",
+    "description": "Mexican food on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.773587,
+      "lng": 151.11281
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "mexican"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "IGGMQ",
+    "name": "Indi Go-Go",
+    "description": "Indian food on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.773587,
+      "lng": 151.11281
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "indian"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "LGBMQ",
+    "name": "Lashings Gourmet Burgers",
+    "description": "Gourmet burger restaurant on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.773562,
+      "lng": 151.113215
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "burgers"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "LAMQ",
+    "name": "Little Asia",
+    "description": "Asian food court on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.773606,
+      "lng": 151.113187
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "asian"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "MSMQ",
+    "name": "Monster Sushi",
+    "description": "Sushi restaurant on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.774203,
+      "lng": 151.113436
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "sushi",
+      "japanese"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "PRMQ",
+    "name": "PappaRich",
+    "description": "Malaysian cuisine restaurant on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.774198,
+      "lng": 151.113534
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "malaysian"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "RMQ",
+    "name": "Roll'd",
+    "description": "Vietnamese rice paper rolls and pho.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.774198,
+      "lng": 151.112661
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "vietnamese"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "SOMQ",
+    "name": "Soul Origin",
+    "description": "Fresh healthy meals, salads, and coffee.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.773577,
+      "lng": 151.113474
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "healthy"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "SLCMQ",
+    "name": "St Laurent Coffee",
+    "description": "Specialty coffee shop on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.773495,
+      "lng": 151.113687
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "SWMQ",
+    "name": "Sushi World",
+    "description": "Sushi and Japanese takeaway on campus.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.773406,
+      "lng": 151.113362
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "restaurant",
+      "sushi",
+      "japanese"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "TBMQ",
+    "name": "Taste Baguette",
+    "description": "Bakery and cafe serving baguettes and pastries.",
+    "address": "Central Courtyard",
+    "category": "food",
+    "location": {
+      "lat": -33.773446,
+      "lng": 151.113841
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "bakery"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "BUMQ",
+    "name": "(BREW)us",
+    "description": "Coffee and brunch spot near Macquarie University Station.",
+    "address": "University Avenue",
+    "category": "food",
+    "location": {
+      "lat": -33.771791,
+      "lng": 151.115756
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "ECMQ",
+    "name": "esc Cafe",
+    "description": "Cafe near the eastern campus precinct.",
+    "address": "4 Research Park Drive",
+    "category": "food",
+    "location": {
+      "lat": -33.774628,
+      "lng": 151.117692
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "CCMQ",
+    "name": "Crunch Cafe",
+    "description": "Cafe near the Sport & Aquatic Centre.",
+    "address": "Gymnasium Road",
+    "category": "food",
+    "location": {
+      "lat": -33.772214,
+      "lng": 151.110554
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "WWC",
+    "name": "MQH Cafe",
+    "description": "Cafe at Macquarie University Hospital precinct.",
+    "address": "2 Technology Place",
+    "category": "food",
+    "location": {
+      "lat": -33.773449,
+      "lng": 151.118332
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "hospital"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "PICCOLO",
+    "name": "Piccolo Me",
+    "description": "Specialty coffee and food.",
+    "address": "Wally's Walk",
+    "category": "food",
+    "location": {
+      "lat": -33.776723,
+      "lng": 151.112015
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "food",
+      "cafe",
+      "coffee"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "PSOUTH2",
+    "name": "Carpark P South 2",
+    "description": "Car park in the south of campus.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.776533,
+      "lng": 151.114171
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "parking",
+      "transport"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "PEAST3",
+    "name": "Carpark P East 3",
+    "description": "Car park in the east of campus.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.775446,
+      "lng": 151.116794
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "parking",
+      "transport"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "PEAST2",
+    "name": "Carpark P East 2",
+    "description": "Car park in the east of campus.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.774567,
+      "lng": 151.116969
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "parking",
+      "transport"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "PWEST5",
+    "name": "Carpark P West 5",
+    "description": "Car park in the west of campus.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.773501,
+      "lng": 151.109232
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "parking",
+      "transport"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "PWEST4",
+    "name": "Carpark P West 4",
+    "description": "Car park in the west of campus.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.777012,
+      "lng": 151.109179
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "parking",
+      "transport"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "PWEST3",
+    "name": "Carpark P West 3",
+    "description": "Car park in the west of campus.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.775667,
+      "lng": 151.110247
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "parking",
+      "transport"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "HEALTHP1",
+    "name": "MQ Health Disability Parking",
+    "description": "Disability parking for Macquarie University Clinic.",
+    "address": null,
+    "category": "health",
+    "location": {
+      "lat": -33.772509,
+      "lng": 151.117418
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": true,
+    "tags": [
+      "parking",
+      "accessibility",
+      "hospital"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "HEALTHP2",
+    "name": "Macquarie Hospital Parking",
+    "description": "Parking for Macquarie University Hospital and Clinic.",
+    "address": null,
+    "category": "health",
+    "location": {
+      "lat": -33.774105,
+      "lng": 151.117429
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "parking",
+      "hospital"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "130HR",
+    "name": "Central Courtyard Accommodation",
+    "description": "On-campus student accommodation near Central Courtyard.",
+    "address": "130 Herring Road",
+    "category": "residential",
+    "location": {
+      "lat": -33.773631,
+      "lng": 151.113952
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "accommodation",
+      "residential",
+      "housing"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "136HR",
+    "name": "Morling Residential Cottage",
+    "description": "Residential cottage on the southern edge of campus.",
+    "address": "136 Herring Road",
+    "category": "residential",
+    "location": {
+      "lat": -33.778378,
+      "lng": 151.114336
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "accommodation",
+      "residential",
+      "housing"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "BIKEHUB",
+    "name": "Central BikeHub",
+    "description": "Central bike storage and repair hub on campus.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.775046,
+      "lng": 151.112583
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "transport",
+      "cycling",
+      "bike"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "BIKEHUBE",
+    "name": "Eastern BikeHub",
+    "description": "Bike storage and repair hub in the eastern precinct.",
+    "address": null,
+    "category": "services",
+    "location": {
+      "lat": -33.773842,
+      "lng": 151.115409
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "transport",
+      "cycling",
+      "bike"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "MUSE",
+    "name": "MUSE (MQ University Study Experience)",
+    "description": "Collaborative study space and student experience hub.",
+    "address": "Central Courtyard",
+    "category": "academic",
+    "location": {
+      "lat": -33.774058,
+      "lng": 151.112639
+    },
+    "entranceLocation": {
+      "lat": -33.774,
+      "lng": 151.1127
+    },
+    "googlePlaceId": "ChIJ14sUZOt6kWsR3HjC-Nx_Mlw",
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "study",
+      "academic",
+      "student"
+    ],
+    "aliases": [],
+    "gridRef": null
+  },
+  {
+    "id": "BBALL",
+    "name": "Basketball Courts",
+    "description": "Outdoor basketball courts on campus.",
+    "address": null,
+    "category": "sports",
+    "location": {
+      "lat": -33.773111,
+      "lng": 151.111416
+    },
+    "entranceLocation": null,
+    "googlePlaceId": null,
+    "levels": null,
+    "wheelchair": false,
+    "tags": [
+      "sports",
+      "basketball",
+      "recreation"
+    ],
+    "aliases": [],
+    "gridRef": null
+  }
+]

@@ -12,10 +12,11 @@ Maps every web route to its Flutter equivalent.
 | `/verify` | `/verify-email` | `verify-email` | Done | 2 |
 | `/reset-password` | `/reset-password` | `reset-password` | Done | 2 |
 | `/onboarding` | `/onboarding` | `onboarding` | Done | 2 |
+| `/notifications` | `/notifications` | `notifications` | Done | 4 |
 | `/home` | `/home` | `home` | Done | 3 |
 | `/calendar` | `/calendar` | `calendar` | Done | 3 |
-| `/map` | `/map` | `map` | Done (placeholder) | 5 |
-| `/feed` | `/feed` | `feed` | Done (placeholder) | 4 |
+| `/map` | `/map` | `map` | Done | 5 |
+| `/feed` | `/feed` | `feed` | Done | 4 |
 | `/settings` | `/settings` | `settings` | Done | 2 |
 | `/settings/general` | `/settings` (section) | — | Done | 2 |
 | `/settings/appearance` | `/settings` (section) | — | Done | 2 |
@@ -43,10 +44,10 @@ Maps every web route to its Flutter equivalent.
 | Flutter Route | go_router Name | Phase |
 |---------------|----------------|-------|
 | `/unit/:unitId` | `unit-detail` | 3 |
-| `/deadline/:deadlineId` | `deadline-detail` | 3 |
-| `/exam/:examId` | `exam-detail` | 3 |
-| `/event/:eventId` | `event-detail` | 3 |
-| `/building/:buildingId` | `building-detail` | 5 |
+| `/detail/deadline/:deadlineId` | `deadline-detail` | 4 |
+| `/detail/exam/:examId` | `exam-detail` | 4 |
+| `/detail/event/:eventId` | `event-detail` | 4 |
+| `/map/building/:buildingId` | `building-detail` | 5 |
 | `/profile/edit` | `profile-edit` | 2 |
 
 ## Shell Navigation (bottom nav)

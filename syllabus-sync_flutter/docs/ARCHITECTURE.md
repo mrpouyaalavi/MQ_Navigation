@@ -96,6 +96,23 @@ features/<name>/
 - Cross-feature communication happens through `shared/providers/`
 - Only `presentation/` widgets may use `BuildContext`
 
+## Phase 4 and Phase 5 Subsystems
+
+### Notifications and Feed
+
+- `features/notifications/` owns FCM token sync, local reminder scheduling, the notification inbox, and preference state.
+- FCM tokens are stored in `user_fcm_tokens` and refreshed on login/token rotation; stale tokens are removed on logout or push failure.
+- Notification preferences are stored in `notification_preferences`, not local-only storage, and are normalized on the client so missing rows fall back safely.
+- `supabase/functions/notify` stores the inbox row in `notifications` and dispatches push delivery through Firebase without exposing push credentials to Flutter.
+- `features/feed/` reads `public_events`, preserves `source_public_event_id` when importing to the personal calendar, and keeps pagination ordered by cursor-safe `start_at`.
+
+### Campus Map
+
+- `features/map/` loads the building registry from Supabase `app_config` when available and otherwise falls back to the bundled asset generated from the audited web registry.
+- The bundled map asset currently contains 153 buildings, with the 6 high-traffic buildings carrying explicit `entranceLocation` and `googlePlaceId` enrichments for routing parity.
+- `supabase/functions/maps-routes` is the authenticated routing proxy. It validates input, enforces a per-user `rate_limits` window, and keeps `GOOGLE_ROUTES_API_KEY` server-side.
+- Client-side routing uses `google_maps_flutter` for rendering, `geolocator` for point-of-need location access, and `GoogleMap` camera bounds locked to the campus extent.
+
 ## State Management
 
 **Riverpod** (v3.2.1) is the sole state management solution.
@@ -153,7 +170,7 @@ Build-time injection via `--dart-define`:
 |----------|----------|---------|
 | `SUPABASE_URL` | Yes | Supabase project URL |
 | `SUPABASE_ANON_KEY` | Yes | Supabase anonymous API key |
-| `GOOGLE_MAPS_API_KEY` | No | Google Maps SDK key |
+| `GOOGLE_MAPS_API_KEY` | No | Google Maps SDK key for the embedded map |
 | `APP_ENV` | No | `development` / `staging` / `production` |
 
 `EnvConfig.validate()` throws `StateError` in all build modes if required vars are missing.

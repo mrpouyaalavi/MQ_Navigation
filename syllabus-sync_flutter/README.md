@@ -6,7 +6,8 @@ A cross-platform mobile client for Macquarie University's campus management plat
 
 - **Dashboard** -- upcoming deadlines, today's schedule, recent events, study streaks
 - **Calendar** -- academic calendar with deadline and exam tracking
-- **Campus Map** -- interactive Google Maps with 100+ building entries, search, and routing
+- **Notifications** -- Supabase inbox, FCM push, and local reminder scheduling
+- **Campus Map** -- interactive Google Maps with 153 building entries, search, and server-proxied routing
 - **Events Feed** -- university events with filtering and bookmarking
 - **Settings** -- profile management, theme preferences, notification controls
 - **35-Language Support** -- full i18n with RTL support (Arabic, Farsi, Hebrew, Urdu)
@@ -84,6 +85,33 @@ flutter run \
 | `GOOGLE_MAPS_API_KEY` | No | Google Maps SDK key (needed for map feature) |
 | `APP_ENV` | No | `development` (default), `staging`, or `production` |
 
+### Mobile Platform Setup
+
+1. Add Firebase mobile config files outside version control:
+   - `android/app/google-services.json`
+   - `ios/Runner/GoogleService-Info.plist`
+   - Android auto-enables the Google Services Gradle plugin when `google-services.json` exists.
+   - iOS `AppDelegate` configures Firebase automatically when `GoogleService-Info.plist` exists.
+2. Enable push prerequisites in Firebase/Apple Developer:
+   - iOS APNs key/certificate
+   - iOS Background Modes -> `remote-notification`
+   - Android notification permission on Android 13+
+3. Provide a restricted client Maps SDK key at build time:
+   - Android reads `GOOGLE_MAPS_API_KEY` through the manifest placeholder
+   - iOS reads `GOOGLE_MAPS_API_KEY` through `Info.plist` / `AppDelegate`
+4. Do not commit Firebase service files, APNs secrets, or unrestricted API keys.
+
+### Edge Function Secrets
+
+| Secret | Required For | Notes |
+|--------|--------------|-------|
+| `SUPABASE_SERVICE_ROLE_KEY` | All privileged Edge Functions | Server-only |
+| `GOOGLE_ROUTES_API_KEY` | `maps-routes` | Server-side routing proxy |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | `notify` (preferred) | FCM HTTP v1 service account JSON |
+| `FCM_SERVER_KEY` | `notify` (legacy fallback) | Supported as a compatibility fallback |
+| `CRON_SECRET` | `cleanup-cron` | Protects scheduled cleanup runs |
+| `RESEND_API_KEY` | `auth-email` | Email verification delivery |
+
 ## Development
 
 ### Quality Checks
@@ -113,7 +141,7 @@ flutter test --coverage
 flutter test test/features/map/building_test.dart
 ```
 
-**78 tests** across 8 test suites covering theme tokens, core utilities, domain entities, and shared widgets.
+Coverage spans core utilities, routing, auth flows, calendar state, feed-import models, notification scheduling, map parsing, the bundled building registry, and shared widgets.
 
 ### Project Scripts
 
@@ -152,6 +180,7 @@ GitHub Actions runs on every push and PR to `main`:
 | Document | Description |
 |----------|-------------|
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Full architecture overview |
+| [env_inventory.md](env_inventory.md) | Client/server environment inventory |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution guidelines |
 | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | Community standards |
 | [SECURITY.md](SECURITY.md) | Security policy and practices |
@@ -177,8 +206,8 @@ GitHub Actions runs on every push and PR to `main`:
 - [x] **Phase 1** -- App Shell: theme, routing, design system, i18n, core services
 - [x] **Phase 2** -- Auth, onboarding, profile, settings, MFA, biometric lock
 - [x] **Phase 3** -- Dashboard + calendar core with agenda/day/week views and CRUD quick-add flows
-- [ ] **Phase 4** -- Feed & Notifications: events, push notifications
-- [ ] **Phase 5** -- Map: Google Maps integration, building search, routing
+- [x] **Phase 4** -- Feed & Notifications: events, push notifications
+- [x] **Phase 5** -- Map: Google Maps integration, building search, routing
 - [ ] **Phase 6** -- Polish: performance, accessibility audit, store release
 
 ## Authors

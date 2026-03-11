@@ -54,7 +54,7 @@ class Building {
       entranceLatitude: (entrance?['lat'] as num?)?.toDouble(),
       entranceLongitude: (entrance?['lng'] as num?)?.toDouble(),
       googlePlaceId: json['googlePlaceId'] as String?,
-      levels: json['levels'] as int?,
+      levels: (json['levels'] as num?)?.toInt(),
       wheelchair: json['wheelchair'] as bool? ?? false,
       tags: (json['tags'] as List<dynamic>?)?.cast<String>() ?? [],
       aliases: (json['aliases'] as List<dynamic>?)?.cast<String>() ?? [],
@@ -83,6 +83,17 @@ class Building {
   /// Best coordinate for routing: entrance if available, otherwise building center.
   double? get routingLatitude => entranceLatitude ?? latitude;
   double? get routingLongitude => entranceLongitude ?? longitude;
+
+  bool get isHighTraffic {
+    return const <String>{
+      'LIB',
+      '18WW',
+      '1CC',
+      'MUSE',
+      '14SCO',
+      '12WW',
+    }.contains(id.toUpperCase());
+  }
 
   /// Whether this building matches a search query.
   bool matchesQuery(String query) {

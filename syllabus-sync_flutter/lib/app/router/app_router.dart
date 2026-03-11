@@ -14,9 +14,11 @@ import 'package:syllabus_sync/features/auth/presentation/pages/signup_page.dart'
 import 'package:syllabus_sync/features/auth/presentation/pages/splash_page.dart';
 import 'package:syllabus_sync/features/auth/presentation/pages/verify_email_page.dart';
 import 'package:syllabus_sync/features/calendar/presentation/pages/calendar_page.dart';
+import 'package:syllabus_sync/features/calendar/presentation/pages/academic_item_detail_page.dart';
 import 'package:syllabus_sync/features/feed/presentation/pages/feed_page.dart';
 import 'package:syllabus_sync/features/home/presentation/pages/home_page.dart';
 import 'package:syllabus_sync/features/map/presentation/pages/map_page.dart';
+import 'package:syllabus_sync/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:syllabus_sync/features/profiles/data/repositories/profile_repository.dart';
 import 'package:syllabus_sync/features/profiles/presentation/pages/profile_edit_page.dart';
 import 'package:syllabus_sync/features/settings/presentation/pages/settings_page.dart';
@@ -152,6 +154,35 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: RouteNames.profileEdit,
         builder: (context, state) => const ProfileEditPage(),
       ),
+      GoRoute(
+        path: '/notifications',
+        name: RouteNames.notifications,
+        builder: (context, state) => const NotificationsPage(),
+      ),
+      GoRoute(
+        path: '/detail/deadline/:deadlineId',
+        name: RouteNames.deadlineDetail,
+        builder: (context, state) => AcademicItemDetailPage(
+          itemId: state.pathParameters['deadlineId']!,
+          detailType: AcademicItemDetailType.deadline,
+        ),
+      ),
+      GoRoute(
+        path: '/detail/exam/:examId',
+        name: RouteNames.examDetail,
+        builder: (context, state) => AcademicItemDetailPage(
+          itemId: state.pathParameters['examId']!,
+          detailType: AcademicItemDetailType.exam,
+        ),
+      ),
+      GoRoute(
+        path: '/detail/event/:eventId',
+        name: RouteNames.eventDetail,
+        builder: (context, state) => AcademicItemDetailPage(
+          itemId: state.pathParameters['eventId']!,
+          detailType: AcademicItemDetailType.event,
+        ),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),
@@ -180,6 +211,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 path: '/map',
                 name: RouteNames.map,
                 builder: (context, state) => const MapPage(),
+                routes: [
+                  GoRoute(
+                    path: 'building/:buildingId',
+                    name: RouteNames.buildingDetail,
+                    builder: (context, state) => MapPage(
+                      initialBuildingId: state.pathParameters['buildingId'],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

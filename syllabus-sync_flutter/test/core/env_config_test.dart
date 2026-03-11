@@ -29,8 +29,9 @@ void main() {
       expect(EnvConfig.supabaseAnonKey, isNotEmpty);
     });
 
-    test('googleMapsApiKey falls back to dev default in debug mode', () {
-      expect(EnvConfig.googleMapsApiKey, isNotEmpty);
+    test('googleMapsApiKey stays empty until explicitly configured', () {
+      expect(EnvConfig.googleMapsApiKey, isEmpty);
+      expect(EnvConfig.hasGoogleMapsApiKey, isFalse);
     });
   });
 }

@@ -75,6 +75,55 @@ Located in project root:
 
 ---
 
+Raouf: 2026-03-11 (AEDT) — Final Stage Verification + Release Handoff
+- Scope: Close verification for the last Phase 4/5 patch and document what remains outside the repo.
+- Summary: Verified the full Phase 4/5 delivery after the final native Firebase, localization, and typed map-error patch. Confirmed Android now builds cleanly with conditional Google Services activation, iOS Firebase bootstrap remains safe when service files are absent, notification/detail UI strings resolve through ARB localization, and map failures no longer depend on English sentinel strings. Confirmed the remaining gaps are external deployment prerequisites only: real `android/app/google-services.json`, real `ios/Runner/GoogleService-Info.plist`, APNs/FCM console setup, Google Cloud key restrictions, Supabase Edge Function secrets, and deployment of `notify` / `maps-routes`.
+- Files changed: `AGENT.md`, `CHANGELOG.md`
+- Verification: `flutter analyze --no-fatal-infos` → no issues, `flutter test` → 99/99 passed, `./scripts/check.sh` → 6/6 checks passed including debug APK build, `deno check supabase/functions/maps-routes/index.ts` → passed, `deno check supabase/functions/notify/index.ts` → passed, `deno check supabase/functions/cleanup-cron/index.ts` → passed.
+- Follow-ups: Commit and push the completed Phase 4/5 repo state to `origin/main`, then apply the required Firebase/Supabase/Google Cloud secrets in the target environments.
+
+Raouf: 2026-03-11 (AEDT) — Phase 4 + Phase 5 Runtime Stabilization
+- Scope: Close the first runtime gaps discovered after the initial Phase 4/5 scaffold landed.
+- Summary: Normalized notification preferences so partially populated Supabase rows no longer break toggle updates, hardened notification/map JSON parsing and route coordinate guards, fixed feed pagination ordering so cursor-based paging stays stable, and added concrete `/detail/deadline/:id`, `/detail/exam/:id`, and `/detail/event/:id` routes with repository-backed detail pages so notification taps resolve to real screens instead of dead links. Also removed the last map analyze warning and replaced a few hardcoded map action labels with existing localized strings.
+- Files changed: `lib/features/notifications/domain/entities/notification_preferences.dart`, `lib/features/notifications/data/datasources/notification_remote_source.dart`, `lib/features/notifications/domain/entities/app_notification.dart`, `lib/features/feed/data/repositories/feed_repository.dart`, `lib/features/map/domain/entities/building.dart`, `lib/features/map/data/datasources/google_routes_remote_source.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/campus_map_view.dart`, `lib/features/map/presentation/widgets/route_panel.dart`, `lib/features/calendar/data/repositories/calendar_repository.dart`, `lib/features/calendar/presentation/pages/academic_item_detail_page.dart`, `lib/app/router/app_router.dart`.
+- Verification: Pending final analyze/test pass after the server functions, docs, and test additions land.
+
+Raouf: 2026-03-11 (AEDT) — Phase 4 + Phase 5 Edge Functions
+- Scope: Add the Supabase server-side pieces required by the new Flutter notification and map clients.
+- Summary: Added a new `maps-routes` Edge Function with authenticated Google Routes proxying, per-user `rate_limits` throttling (60 requests per minute), and request payload validation so the mobile map no longer depends on the older generic proxy. Added a new `notify` Edge Function that validates the caller, stores an inbox notification row, reads `user_fcm_tokens`, dispatches push messages through Firebase, and prunes stale tokens without exposing push credentials to Flutter. Updated the rate-limit cleanup cron to match the documented `reset_time_ms` schema and registered both new functions in `supabase/config.toml`.
+- Files changed: `supabase/functions/maps-routes/index.ts`, `supabase/functions/notify/index.ts`, `supabase/functions/cleanup-cron/index.ts`, `supabase/config.toml`.
+- Verification: Pending final repo-wide verification after tests and docs are updated.
+
+Raouf: 2026-03-11 (AEDT) — Edge Function TypeScript Cleanup
+- Scope: Correct the first-pass TypeScript issues in the new notification dispatcher before verification.
+- Summary: Replaced Dart-style array helpers in `notify` with valid TypeScript collection operations, made FCM v1 response parsing resilient to non-JSON upstream failures, and aligned a remaining length check with standard strict comparison so the new Edge Function code is ready for formatting and validation.
+- Files changed: `supabase/functions/notify/index.ts`.
+- Verification: Pending function formatting plus final repo-wide verification.
+
+Raouf: 2026-03-11 (AEDT) — Phase 5 Registry + Regression Tests
+- Scope: Replace the temporary map asset with the audited web registry and add regression coverage for the new Phase 4/5 behavior.
+- Summary: Regenerated `assets/data/buildings.json` from the sibling web app's `buildings.ts` source so Flutter now ships the full 153-building campus registry with GPS fallback coordinates and the 6 audited entrance-location enrichments preserved. Added targeted tests covering notification preference normalization and stable reminder scheduling, feed-import event persistence via `source_public_event_id`, map route parsing, route-name coverage for `/notifications`, and an asset-level guard that ensures the bundled building registry remains at full campus scale.
+- Files changed: `assets/data/buildings.json`, `test/app/route_names_test.dart`, `test/features/home/academic_models_test.dart`, `test/features/notifications/notification_scheduler_test.dart`, `test/features/map/map_route_test.dart`, `test/features/map/building_registry_asset_test.dart`.
+- Verification: Pending final repo-wide analyze/test/check pass after docs are updated.
+
+Raouf: 2026-03-11 (AEDT) — Phase 4 + Phase 5 Documentation Alignment
+- Scope: Bring the repo documentation and inventories in line with the implemented notifications, feed, and map stack.
+- Summary: Updated the README with Phase 4/5 feature status, mobile platform setup requirements, and server secret guidance for `notify` and `maps-routes`. Expanded the architecture doc with concrete notifications/feed/map subsystem notes, corrected the environment inventory to reflect the removed client Maps fallback and the preferred Firebase service-account secret, and refreshed the endpoint, notification, map, and route inventories so they now describe the implemented `/notifications`, `/detail/...`, `notify`, and `maps-routes` flows instead of the earlier placeholders.
+- Files changed: `README.md`, `docs/ARCHITECTURE.md`, `env_inventory.md`, `endpoint_inventory.md`, `notification_matrix.md`, `map_inventory.md`, `route_matrix.md`, `test/core/env_config_test.dart`.
+- Verification: Pending the final analyze/test/check pass.
+
+Raouf: 2026-03-11 (AEDT) — Phase 4 + Phase 5 Final Verification
+- Scope: Close the implementation cycle with repo-wide validation.
+- Summary: Verified the completed Phase 4/5 pass end-to-end. `flutter analyze --no-fatal-infos` returned 0 issues, `flutter test` passed 99/99 tests including the new notification/map regressions and building-registry asset guard, `scripts/check.sh --quick` passed all 5 checks, and `deno check` succeeded for `supabase/functions/maps-routes`, `supabase/functions/notify`, and `supabase/functions/cleanup-cron`.
+- Files changed: `AGENT.md`, `CHANGELOG.md`.
+- Verification: Complete.
+
+Raouf: 2026-03-11 (AEDT) — Final Stage Gap Closure
+- Scope: Finish the remaining concrete Phase 4/5 implementation gaps before commit.
+- Summary: Added the missing native Firebase activation hooks so Android now auto-applies the Google Services plugin when `android/app/google-services.json` exists and iOS now configures Firebase automatically when `GoogleService-Info.plist` is present. Replaced the remaining hardcoded notification/detail strings with ARB-backed localization usage, and replaced map error sentinel strings with a typed `MapStateError` flow so the map UI no longer relies on English string comparisons for routing or location failures.
+- Files changed: `android/settings.gradle.kts`, `android/app/build.gradle.kts`, `ios/Runner/AppDelegate.swift`, `lib/app/l10n/app_en.arb`, `lib/features/notifications/presentation/widgets/notification_tile.dart`, `lib/features/notifications/presentation/pages/notifications_page.dart`, `lib/features/calendar/presentation/pages/academic_item_detail_page.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `lib/features/map/presentation/pages/map_page.dart`, `README.md`.
+- Verification: Pending final analyze/test/build pass for this closing patch.
+
 Raouf: 2026-03-10 (AEDT) — Initial
 - Scope: Phase 0 + Phase 1 foundation sprint
 - Created project scaffold, core architecture, theme, routing, l10n, CI/CD
@@ -151,3 +200,10 @@ Raouf: 2026-03-11 (AEDT) — Phase 0 Gap Closure: Edge Functions + Fastlane
 - Files created: `supabase/config.toml`, `supabase/functions/_shared/cors.ts`, `supabase/functions/auth-email/index.ts`, `supabase/functions/auth-cleanup/index.ts`, `supabase/functions/routes-proxy/index.ts`, `supabase/functions/places-proxy/index.ts`, `supabase/functions/weather-proxy/index.ts`, `supabase/functions/security-utils/index.ts`, `supabase/functions/cleanup-cron/index.ts`, `android/Gemfile`, `android/fastlane/Appfile`, `android/fastlane/Fastfile`, `ios/Gemfile`, `ios/fastlane/Appfile`, `ios/fastlane/Fastfile`.
 - Verification: `flutter analyze` → no issues, `flutter test` → 94/94 passing, `scripts/check.sh --quick` → all 5 checks passed.
 - Follow-ups: Deploy AASA + assetlinks.json to web domain; configure Apple/Google developer account credentials in CI secrets for Fastlane.
+
+Raouf: 2026-03-11 (AEDT) — Phase 4 + Phase 5 Implementation
+- Scope: Notifications foundation, feed implementation, map MVP implementation, mobile notification/bootstrap wiring, and native map SDK setup for the Phase 4/5 pass.
+- Summary: Added the first production notification slice: Firebase bootstrap registration, Android/iOS mobile notification permissions hooks, local notification channels and scheduling services, Supabase-backed notification inbox/preferences data sources, a Riverpod notifications controller, and the `/notifications` route/page. Fixed the initial Flutter integration mismatches surfaced by analysis (`FirebaseMessaging` bootstrap import, the required `uiLocalNotificationDateInterpretation` scheduling parameter, and the feed query `DateTimeRange` import). Replaced the placeholder feed screen with a Supabase-backed events/announcements feed, filter/search controls, pagination, notification badge access, and calendar import wiring that preserves `source_public_event_id`. Replaced the placeholder map screen with a repository/controller/widget stack covering building registry loading with asset fallback, building search, location permission handling, Google Maps rendering, route panel travel mode switching, and `/map/building/:id` deep-link support. Added native Google Maps key plumbing for Android/iOS and removed the committed Google Maps dev key from Dart config so Phase 5 uses explicit build-time client configuration instead of a source-controlled key.
+- Files changed: `pubspec.yaml`, `lib/core/config/env_config.dart`, `lib/app/bootstrap/bootstrap.dart`, `lib/app/syllabus_sync_app.dart`, `lib/app/router/app_router.dart`, `lib/app/router/route_names.dart`, `lib/features/notifications/**`, `lib/features/feed/**`, `lib/features/map/**`, `lib/shared/models/academic_models.dart`, `android/app/src/main/AndroidManifest.xml`, `android/app/build.gradle.kts`, `ios/Runner/Info.plist`, `ios/Runner/AppDelegate.swift`, `assets/data/buildings.json`.
+- Verification: Pending until the Supabase edge functions, repository docs, tests, and full check suite are completed.
+- Follow-ups: Add Supabase `notify` and `maps-routes` functions, account for missing native Firebase service files in docs/setup, then run `flutter analyze`, `flutter test`, and `scripts/check.sh --quick`.

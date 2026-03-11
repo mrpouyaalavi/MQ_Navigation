@@ -51,7 +51,8 @@ Maps every Next.js API route to the planned Supabase Edge Function or direct Sup
 | `/api/events/[id]` | GET/PUT/DELETE | SDK: direct table ops | 3 | |
 | `/api/todos` | GET/POST | SDK: `supabase.from('todos')` | 3 | |
 | `/api/todos/[id]` | GET/PUT/DELETE | SDK: direct table ops | 3 | |
-| `/api/notifications` | GET/POST | SDK: `supabase.from('notifications')` | 4 | |
+| `/api/notifications` | GET | SDK: `supabase.from('notifications')` | 4 | Inbox read/query |
+| `/api/notifications` | POST | EF: `notify` | 4 | Stores inbox row + dispatches push |
 | `/api/notifications/[id]` | GET/PUT/DELETE | SDK: direct table ops | 4 | |
 | `/api/notifications/mark-all-read` | POST | SDK: `supabase.from('notifications').update({read: true})` | 4 | |
 | `/api/profiles` | GET/PUT | SDK: `supabase.rpc('get_my_profile')` | 2 | |
@@ -62,8 +63,8 @@ Maps every Next.js API route to the planned Supabase Edge Function or direct Sup
 
 | Web Route | Method | Flutter Approach | Phase | Notes |
 |-----------|--------|-----------------|-------|-------|
-| `/api/navigate` | POST | EF: `routes-proxy` | 5 | Needs GOOGLE_ROUTES_API_KEY |
-| `/api/maps/routes` | POST | EF: `routes-proxy` | 5 | Needs GOOGLE_ROUTES_API_KEY |
+| `/api/navigate` | POST | EF: `routes-proxy` | 5 | Legacy proxy retained for backward compatibility |
+| `/api/maps/routes` | POST | EF: `maps-routes` | 5 | Authenticated Flutter routing proxy |
 | `/api/maps/place-search` | GET | EF: `places-proxy` | 5 | Needs server key |
 | `/api/maps/place-details` | GET | EF: `places-proxy` | 5 | Needs server key |
 

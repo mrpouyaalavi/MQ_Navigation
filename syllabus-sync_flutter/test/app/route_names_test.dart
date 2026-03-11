@@ -11,6 +11,7 @@ void main() {
       expect(RouteNames.resetPassword, 'reset-password');
       expect(RouteNames.mfa, 'mfa');
       expect(RouteNames.onboarding, 'onboarding');
+      expect(RouteNames.notifications, 'notifications');
     });
 
     test('shell tab routes are defined', () {

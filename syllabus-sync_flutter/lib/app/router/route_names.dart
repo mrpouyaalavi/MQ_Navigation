@@ -8,6 +8,7 @@ abstract final class RouteNames {
   static const String resetPassword = 'reset-password';
   static const String mfa = 'mfa';
   static const String onboarding = 'onboarding';
+  static const String notifications = 'notifications';
 
   // Shell tabs
   static const String home = 'home';

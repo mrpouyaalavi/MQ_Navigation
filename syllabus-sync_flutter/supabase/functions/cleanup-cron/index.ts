@@ -29,12 +29,13 @@ Deno.serve(async (req) => {
     );
 
     const now = new Date().toISOString();
+    const nowMs = Date.now();
 
     // Clean expired rate-limit windows
     const { count: rateLimitCount } = await supabase
       .from("rate_limits")
       .delete()
-      .lt("window_end", now);
+      .lt("reset_time_ms", nowMs);
 
     // Clean audit logs older than 180 days
     const retentionDate = new Date(Date.now() - 180 * 86400_000).toISOString();

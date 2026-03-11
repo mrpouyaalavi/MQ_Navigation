@@ -5,6 +5,16 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val hasGoogleServicesJson = file("google-services.json").exists()
+val googleMapsApiKey: String =
+    (project.findProperty("GOOGLE_MAPS_API_KEY") as String?)
+        ?: System.getenv("GOOGLE_MAPS_API_KEY")
+        ?: ""
+
+if (hasGoogleServicesJson) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
 android {
     namespace = "io.syllabussync.syllabus_sync"
     compileSdk = flutter.compileSdkVersion
@@ -29,6 +39,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["googleMapsApiKey"] = googleMapsApiKey
     }
 
     buildTypes {

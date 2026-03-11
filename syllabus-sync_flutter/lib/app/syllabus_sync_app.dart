@@ -4,6 +4,7 @@ import 'package:syllabus_sync/app/l10n/generated/app_localizations.dart';
 import 'package:syllabus_sync/app/router/app_router.dart';
 import 'package:syllabus_sync/app/theme/mq_theme.dart';
 import 'package:syllabus_sync/features/auth/presentation/widgets/biometric_lock_gate.dart';
+import 'package:syllabus_sync/features/notifications/presentation/controllers/notifications_controller.dart';
 import 'package:syllabus_sync/features/settings/presentation/controllers/settings_controller.dart';
 
 class SyllabusSyncApp extends ConsumerWidget {
@@ -13,6 +14,7 @@ class SyllabusSyncApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
     final preferences = ref.watch(settingsControllerProvider).value;
+    ref.watch(notificationsControllerProvider);
 
     return MaterialApp.router(
       title: 'Syllabus Sync',

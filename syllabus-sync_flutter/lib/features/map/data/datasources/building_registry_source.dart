@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:syllabus_sync/core/logging/app_logger.dart';
@@ -7,6 +8,7 @@ import 'package:syllabus_sync/core/security/secure_storage_service.dart';
 import 'package:syllabus_sync/features/map/domain/entities/building.dart';
 
 const _cacheKey = 'building_registry';
+const _assetPath = 'assets/data/buildings.json';
 
 /// Data source for the campus building registry.
 /// Fetches from Supabase and caches locally in secure storage.
@@ -35,9 +37,11 @@ class BuildingRegistrySource {
       return buildings;
     } catch (e, s) {
       AppLogger.error('Failed to fetch building registry', e, s);
-      // Fall back to cache on network error
       final cached = await _loadFromCache();
-      return cached ?? [];
+      if (cached != null && cached.isNotEmpty) {
+        return cached;
+      }
+      return _loadFromAsset();
     }
   }
 
@@ -52,13 +56,23 @@ class BuildingRegistrySource {
         .maybeSingle();
 
     if (response == null || response['value'] == null) {
-      return [];
+      return _loadFromAsset();
     }
 
     final data = response['value'] as List<dynamic>;
     return data
         .map((e) => Building.fromJson(e as Map<String, dynamic>))
         .toList();
+  }
+
+  Future<List<Building>> _loadFromAsset() async {
+    final raw = await rootBundle.loadString(_assetPath);
+    final list = jsonDecode(raw) as List<dynamic>;
+    final buildings = list
+        .map((item) => Building.fromJson(item as Map<String, dynamic>))
+        .toList();
+    await _saveToCache(buildings);
+    return buildings;
   }
 
   Future<List<Building>?> _loadFromCache() async {
