@@ -22,8 +22,8 @@ flutter run \
 
 | Type | Pattern | Example |
 |------|---------|---------|
-| Feature | `feature/<short-description>` | `feature/auth-mfa-flow` |
-| Bug fix | `fix/<short-description>` | `fix/login-redirect-loop` |
+| Feature | `feature/<short-description>` | `feature/building-search` |
+| Bug fix | `fix/<short-description>` | `fix/map-permission-handling` |
 | Chore | `chore/<short-description>` | `chore/update-deps` |
 
 ### Before submitting a PR
@@ -48,8 +48,8 @@ All checks must pass before a PR will be reviewed.
 Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-feat: add MFA enrolment screen
-fix: resolve calendar date picker crash on RTL locales
+feat: add building category filter to home page
+fix: resolve map permission handling on Android 13+
 chore: pin intl dependency to ^0.19.0
 test: add widget tests for MqInput validation
 ```

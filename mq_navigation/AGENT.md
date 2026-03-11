@@ -7,8 +7,8 @@ Two frontends, one backend architecture: Flutter + Next.js sharing a Supabase ba
 ## Architecture
 - **Pattern**: Feature-first with data/domain/presentation layers per feature
 - **State management**: Riverpod (flutter_riverpod ^3.2.1)
-- **Routing**: go_router with StatefulShellRoute for bottom nav
-- **Backend**: Supabase (auth, Postgres, RLS, Realtime, Edge Functions)
+- **Routing**: go_router with StatefulShellRoute (3-tab bottom nav: Home, Map, Settings)
+- **Backend**: Supabase (Postgres, RLS, Realtime, Edge Functions)
 - **Theme**: MQ design tokens (MqColors, MqTypography, MqSpacing) mapped from web app
 - **i18n**: Flutter ARB files with 35 locales, RTL support for ar/fa/he/ur
 
@@ -17,7 +17,7 @@ Two frontends, one backend architecture: Flutter + Next.js sharing a Supabase ba
 2. Web app stays alive — no feature freeze on the web product
 3. Flutter is a presentation layer only — no server logic in app binary
 4. No server secrets in Flutter — API keys stay in Edge Functions
-5. Maps are a subsystem — not part of first parity milestone
+5. Maps are a core feature — 153 buildings, search, server-proxied routing
 6. Security is non-negotiable — encrypted storage, cert pinning
 7. Accessibility from day one — 48x48dp tap targets, semantic labels, RTL
 
@@ -80,6 +80,13 @@ Raouf: 2026-03-11 (AEDT) — Remove event feed feature
 - Summary: Deleted `features/feed/` (6 files). Removed feed branch from router, feed tab from bottom nav (4 → 3 tabs), and `feed` route name. Updated route names test.
 - Files deleted: `lib/features/feed/**` (6 files).
 - Files changed: `lib/app/router/app_router.dart`, `lib/app/router/route_names.dart`, `lib/app/router/app_shell.dart`, `test/app/route_names_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+- Verification: `flutter analyze` → 0 issues, `flutter test` → 83/83 passed.
+- Follow-ups: None.
+
+Raouf: 2026-03-11 (AEDT) — Update root documentation post-cleanup
+- Scope: Update all root docs to reflect current project state after auth/calendar/feed removal.
+- Summary: Updated README.md features list (removed Dashboard, Calendar, Feed, Biometric Auth), tech stack (removed local_auth, auth guards), architecture features list, test count (99→83), and roadmap phases. Updated CONTRIBUTING.md branch/commit examples to remove auth/calendar references. Rewrote SECURITY.md to remove biometric/PKCE/MFA sections, added Edge Function proxying and rate limiting sections. Updated AGENT.md routing description (3-tab nav), backend description (removed auth), and maps constraint (now core feature).
+- Files changed: `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, `AGENT.md`, `CHANGELOG.md`.
 - Verification: `flutter analyze` → 0 issues, `flutter test` → 83/83 passed.
 - Follow-ups: None.
 

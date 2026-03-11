@@ -4,15 +4,12 @@ A cross-platform mobile client for Macquarie University's campus management plat
 
 ## Features
 
-- **Dashboard** -- upcoming deadlines, today's schedule, recent events, study streaks
-- **Calendar** -- academic calendar with deadline and exam tracking
-- **Notifications** -- Supabase inbox, FCM push, and local reminder scheduling
+- **Home** -- campus dashboard with time-of-day greeting, building category grid, popular destinations carousel
 - **Campus Map** -- interactive Google Maps with 153 building entries, search, and server-proxied routing
-- **Events Feed** -- university events with filtering and bookmarking
-- **Settings** -- profile management, theme preferences, notification controls
+- **Notifications** -- Supabase inbox, FCM push, and local study-prompt scheduling
+- **Settings** -- theme preferences, notification controls, locale selection
 - **35-Language Support** -- full i18n with RTL support (Arabic, Farsi, Hebrew, Urdu)
 - **Dark Mode** -- system-aware light and dark themes using MQ design tokens
-- **Biometric Auth** -- optional fingerprint/face authentication for sensitive actions
 - **Offline Awareness** -- connectivity monitoring with graceful degradation
 
 ## Tech Stack
@@ -21,10 +18,10 @@ A cross-platform mobile client for Macquarie University's campus management plat
 |-------|-----------|
 | Framework | Flutter 3.11+ (Dart 3.11+) |
 | State Management | Riverpod 3.2 |
-| Routing | GoRouter 17.1 (StatefulShellRoute, auth guards) |
-| Backend | Supabase (Auth, Postgres, RLS, Realtime, Edge Functions) |
+| Routing | GoRouter 17.1 (StatefulShellRoute, 3-tab bottom nav) |
+| Backend | Supabase (Postgres, RLS, Realtime, Edge Functions) |
 | Maps | Google Maps Flutter 2.14 |
-| Security | flutter_secure_storage, local_auth |
+| Security | flutter_secure_storage |
 | Push Notifications | Firebase Cloud Messaging |
 | CI/CD | GitHub Actions (analyze, test, build Android + iOS) |
 | Localisation | Flutter ARB (35 locales, 1,995 keys each) |
@@ -38,7 +35,7 @@ lib/
   app/          # Bootstrap, router, theme, l10n
   core/         # Config, error handling, logging, security, networking
   shared/       # Design system widgets, providers, extensions
-  features/     # auth, home, calendar, map, feed, settings, ...
+  features/     # home, map, settings, notifications
     <feature>/
       data/           # Data sources + repositories
       domain/         # Entities, value objects, interfaces
@@ -141,7 +138,7 @@ flutter test --coverage
 flutter test test/features/map/building_test.dart
 ```
 
-Coverage spans core utilities, routing, auth flows, calendar state, feed-import models, notification scheduling, map parsing, the bundled building registry, and shared widgets.
+Coverage spans core utilities, routing, notification scheduling, map parsing, the bundled building registry, and shared widgets.
 
 ### Project Scripts
 
@@ -171,7 +168,7 @@ The MQ Design System maps Macquarie University's brand tokens to Flutter:
 
 GitHub Actions runs on every push and PR to `main`:
 
-1. **Analyze & Test** -- format check, static analysis, 99 unit/widget tests with coverage
+1. **Analyze & Test** -- format check, static analysis, 83 unit/widget tests with coverage
 2. **Build Android** -- release APK with secrets injection (main branch only)
 3. **Build iOS** -- release build without code signing (main branch only)
 
@@ -204,10 +201,10 @@ GitHub Actions runs on every push and PR to `main`:
 
 - [x] **Phase 0** -- Foundation: project scaffold, inventories, CI/CD
 - [x] **Phase 1** -- App Shell: theme, routing, design system, i18n, core services
-- [x] **Phase 2** -- Auth, onboarding, profile, settings, MFA, biometric lock
-- [x] **Phase 3** -- Dashboard + calendar core with agenda/day/week views and CRUD quick-add flows
-- [x] **Phase 4** -- Feed & Notifications: events, push notifications
-- [x] **Phase 5** -- Map: Google Maps integration, building search, routing
+- [x] **Phase 2** -- Settings: theme preferences, notification controls, locale selection
+- [x] **Phase 3** -- Home: campus dashboard with category grid, popular destinations, campus stats
+- [x] **Phase 4** -- Notifications: Supabase inbox, FCM push, local study-prompt reminders
+- [x] **Phase 5** -- Map: Google Maps integration, 153-building search, server-proxied routing
 - [ ] **Phase 6** -- Polish: performance, accessibility audit, store release
 
 ## Authors

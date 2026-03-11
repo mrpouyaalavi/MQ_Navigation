@@ -4,6 +4,23 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-11 (AEDT) — Update root documentation post-cleanup
+
+**Scope:** Update all root docs to reflect current project state after auth/calendar/feed removal.
+
+**Summary:**
+Updated README.md features, tech stack, architecture, test count (99→83), and roadmap. Updated CONTRIBUTING.md examples. Rewrote SECURITY.md to remove auth-specific sections, added Edge Function and rate limiting sections. Updated AGENT.md routing and backend descriptions.
+
+**Files changed:**
+- `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `flutter analyze` → 0 issues
+- `flutter test` → 83/83 passed
+
+**Follow-ups:**
+- None
+
 ### Raouf: 2026-03-11 (AEDT) — Design demo home page and map page
 
 **Scope:** Redesign home page from bare welcome card to a full demo experience; visually enhance map page.
