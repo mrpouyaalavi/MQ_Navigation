@@ -2007,5 +2007,7 @@
   "studyPromptLabel": "Study Prompt",
   "starts": "Starts",
   "ends": "Ends",
-  "itemNoLongerAvailable": "This item is no longer available."
+  "itemNoLongerAvailable": "This item is no longer available.",
+  "studyPromptNotificationTitle": "Pengingat belajar",
+  "studyPromptNotificationBody": "Tinjau tenggat waktu berikutnya dan rencanakan satu blok belajar terfokus."
 }

@@ -2007,5 +2007,7 @@
   "studyPromptLabel": "Study Prompt",
   "starts": "Starts",
   "ends": "Ends",
-  "itemNoLongerAvailable": "This item is no longer available."
+  "itemNoLongerAvailable": "This item is no longer available.",
+  "studyPromptNotificationTitle": "Recordatorio de estudio",
+  "studyPromptNotificationBody": "Revisa tu próximo plazo y planifica un bloque de estudio enfocado."
 }

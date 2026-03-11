@@ -2007,5 +2007,7 @@
   "studyPromptLabel": "Study Prompt",
   "starts": "Starts",
   "ends": "Ends",
-  "itemNoLongerAvailable": "This item is no longer available."
+  "itemNoLongerAvailable": "This item is no longer available.",
+  "studyPromptNotificationTitle": "תזכורת ללימודים",
+  "studyPromptNotificationBody": "בדוק את המועד הקרוב שלך ותכנן בלוק לימודים ממוקד."
 }

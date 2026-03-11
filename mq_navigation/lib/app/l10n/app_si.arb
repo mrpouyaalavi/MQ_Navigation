@@ -2007,5 +2007,7 @@
   "studyPromptLabel": "Study Prompt",
   "starts": "Starts",
   "ends": "Ends",
-  "itemNoLongerAvailable": "This item is no longer available."
+  "itemNoLongerAvailable": "This item is no longer available.",
+  "studyPromptNotificationTitle": "අධ්‍යයන මතක්කිරීම",
+  "studyPromptNotificationBody": "ඔබේ ඊළඟ නියමිත දිනය සමාලෝචනය කර එක් අවධානය යොමු කළ අධ්‍යයන කොටසක් සැලසුම් කරන්න."
 }

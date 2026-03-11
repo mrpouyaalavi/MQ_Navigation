@@ -33,7 +33,7 @@ class LocalNotificationsService {
     );
 
     await _plugin.initialize(
-      settings,
+      settings: settings,
       onDidReceiveNotificationResponse: (response) async {
         final payload = _decodePayload(response.payload);
         final link = payload['link'] as String?;
@@ -62,10 +62,10 @@ class LocalNotificationsService {
     }
 
     await _plugin.show(
-      notificationIdForStableId(notification.id),
-      notification.title,
-      notification.body,
-      _detailsFor(notification.type),
+      id: notificationIdForStableId(notification.id),
+      title: notification.title,
+      body: notification.body,
+      notificationDetails: _detailsFor(notification.type),
       payload: jsonEncode(<String, dynamic>{
         'managedBy': 'mq_navigation',
         'link': notification.link,
@@ -85,15 +85,13 @@ class LocalNotificationsService {
     }
 
     await _plugin.zonedSchedule(
-      request.notificationId,
-      request.title,
-      request.body,
-      scheduledAt,
-      _detailsFor(request.type),
+      id: request.notificationId,
+      title: request.title,
+      body: request.body,
+      scheduledDate: scheduledAt,
+      notificationDetails: _detailsFor(request.type),
       payload: request.encodedPayload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: request.repeatsDaily
           ? DateTimeComponents.time
           : null,
@@ -101,7 +99,7 @@ class LocalNotificationsService {
   }
 
   Future<void> cancel(int notificationId) {
-    return _plugin.cancel(notificationId);
+    return _plugin.cancel(id: notificationId);
   }
 
   Future<void> cancelManagedNotificationsExcept(Set<int> retainedIds) async {
@@ -110,7 +108,7 @@ class LocalNotificationsService {
       final payload = _decodePayload(request.payload);
       if (payload['managedBy'] == 'mq_navigation' &&
           !retainedIds.contains(request.id)) {
-        await _plugin.cancel(request.id);
+        await _plugin.cancel(id: request.id);
       }
     }
   }

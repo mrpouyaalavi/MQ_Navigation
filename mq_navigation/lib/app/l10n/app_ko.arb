@@ -2007,5 +2007,7 @@
   "studyPromptLabel": "Study Prompt",
   "starts": "Starts",
   "ends": "Ends",
-  "itemNoLongerAvailable": "This item is no longer available."
+  "itemNoLongerAvailable": "This item is no longer available.",
+  "studyPromptNotificationTitle": "학습 알림",
+  "studyPromptNotificationBody": "다음 마감일을 확인하고 집중 학습 블록을 계획하세요."
 }

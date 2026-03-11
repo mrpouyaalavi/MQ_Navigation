@@ -2007,5 +2007,7 @@
   "studyPromptLabel": "Study Prompt",
   "starts": "Starts",
   "ends": "Ends",
-  "itemNoLongerAvailable": "This item is no longer available."
+  "itemNoLongerAvailable": "This item is no longer available.",
+  "studyPromptNotificationTitle": "अध्ययन सम्झना",
+  "studyPromptNotificationBody": "तपाईंको अर्को म्याद समीक्षा गर्नुहोस् र एउटा केन्द्रित अध्ययन ब्लक योजना बनाउनुहोस्।"
 }

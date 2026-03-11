@@ -4,6 +4,29 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-12 (AEDT) — Flutter upgrade + fix untranslated messages
+
+**Scope:** Upgrade Flutter SDK and dependencies, fix 2 untranslated i18n keys across 34 locales.
+
+**Summary:**
+Upgraded Flutter from 3.41.2 to 3.41.4. Upgraded 4 major dependencies: flutter_local_notifications 18→21, connectivity_plus 6→7, geolocator 13→14, timezone 0.10→0.11. Fixed breaking API changes in flutter_local_notifications v21 (all methods switched from positional to named parameters, UILocalNotificationDateInterpretation removed). Added `studyPromptNotificationTitle` and `studyPromptNotificationBody` translations to all 34 non-English locale ARB files.
+
+**Files changed:**
+- `pubspec.yaml` — bumped 4 dependency versions
+- `pubspec.lock` — regenerated with 13 dependency changes
+- `lib/features/notifications/data/datasources/local_notifications_service.dart` — migrated initialize/show/zonedSchedule/cancel to named parameters, removed UILocalNotificationDateInterpretation
+- `lib/app/l10n/app_*.arb` (34 files) — added studyPromptNotificationTitle + studyPromptNotificationBody
+
+**Verification:**
+- `flutter analyze` → 0 issues
+- `flutter test` → 83/83 passed
+- `flutter gen-l10n` → 0 untranslated messages
+
+**Follow-ups:**
+- 5 transitive packages still have newer incompatible versions (analyzer, app_links, meta, win32, _fe_analyzer_shared) — blocked by upstream constraints
+
+---
+
 ### Raouf: 2026-03-12 (AEDT) — Settings audit fix batch (10 issues)
 
 **Scope:** Full UI/UX/data audit of settings feature — fix all findings.

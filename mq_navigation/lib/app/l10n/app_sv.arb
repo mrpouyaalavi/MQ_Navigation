@@ -2007,5 +2007,7 @@
   "studyPromptLabel": "Study Prompt",
   "starts": "Starts",
   "ends": "Ends",
-  "itemNoLongerAvailable": "This item is no longer available."
+  "itemNoLongerAvailable": "This item is no longer available.",
+  "studyPromptNotificationTitle": "Studiepåminnelse",
+  "studyPromptNotificationBody": "Granska din nästa deadline och planera ett fokuserat studiepass."
 }
