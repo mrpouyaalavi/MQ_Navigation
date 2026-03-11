@@ -4,6 +4,28 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-11 (AEDT) — Design demo home page and map page
+
+**Scope:** Redesign home page from bare welcome card to a full demo experience; visually enhance map page.
+
+**Summary:**
+Rebuilt `home_page.dart` with: gradient SliverAppBar hero with time-of-day serif greeting, notification bell with badge, tappable search bar linking to map, campus stats row (buildings/categories/popular), 6-category grid (academic, food, health, services, sports, research) with distinct brand colors, horizontal-scroll popular destinations carousel pulling `isHighTraffic` buildings, and a branded "Open Campus Map" CTA card. All components use MqColors, MqSpacing, MqTypography, MqCard, and NotificationBadge. Full dark mode support throughout.
+
+Enhanced `map_page.dart` with: styled search button with brand-colored container, error banner with warning icon and colored border, rounded map viewport via ClipRRect, branded FAB with red shadow, redesigned location confirmation bottom sheet with drag handle and icon header.
+
+**Files changed:**
+- `lib/features/home/presentation/pages/home_page.dart` (full rewrite)
+- `lib/features/map/presentation/pages/map_page.dart` (visual enhancement)
+
+**Verification:**
+- `flutter analyze` → 0 issues
+- `flutter test` → 83/83 passed
+
+**Follow-ups:**
+- Add l10n keys for hardcoded strings ("Explore Campus", "Popular Destinations", etc.)
+- Add widget tests for new home page sections
+- Consider animated transitions for category grid
+
 ### Raouf: 2026-03-11 (AEDT) — Remove event feed feature
 
 **Scope:** Strip the entire feed feature and feed tab.

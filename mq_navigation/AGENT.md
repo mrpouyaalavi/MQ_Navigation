@@ -83,6 +83,13 @@ Raouf: 2026-03-11 (AEDT) — Remove event feed feature
 - Verification: `flutter analyze` → 0 issues, `flutter test` → 83/83 passed.
 - Follow-ups: None.
 
+Raouf: 2026-03-11 (AEDT) — Design demo home page and map page
+- Scope: Redesign home page from bare welcome card to a full demo experience; visually enhance map page.
+- Summary: Rebuilt `home_page.dart` with gradient SliverAppBar hero (time-of-day serif greeting, notification bell with badge), tappable search bar, campus stats row, 6-category grid with brand colors, popular destinations carousel from `isHighTraffic` buildings, and branded CTA card. Enhanced `map_page.dart` with styled search button, error banner with icon, rounded map viewport, branded red FAB with shadow, and redesigned location bottom sheet with drag handle. All using MqColors, MqSpacing, MqTypography, MqCard, NotificationBadge. Full dark mode support.
+- Files changed: `lib/features/home/presentation/pages/home_page.dart`, `lib/features/map/presentation/pages/map_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+- Verification: `flutter analyze` → 0 issues, `flutter test` → 83/83 passed.
+- Follow-ups: Add l10n keys for hardcoded strings, add widget tests for new home page, consider animated transitions.
+
 Raouf: 2026-03-11 (AEDT) — Remove calendar/event feature
 - Scope: Strip the entire calendar feature, academic models, dashboard data layer, detail routes, and calendar tab from the project.
 - Summary: Deleted `features/calendar/` (4 files), `shared/models/academic_models.dart`, `home/data/repositories/dashboard_repository.dart`, `home/presentation/controllers/dashboard_controller.dart`, and related tests. Simplified home page to a welcome card. Removed calendar tab from bottom nav (5 → 4 tabs). Removed `/calendar`, `/detail/deadline/:id`, `/detail/exam/:id`, `/detail/event/:id` routes. Simplified notification scheduler to study-prompt-only (removed DeadlineItem/AcademicEvent params). Removed "add to calendar" from feed page/cards. Removed `toAcademicEvent()` from FeedItem.
