@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
-import 'package:mq_navigation/features/calendar/presentation/controllers/calendar_controller.dart';
-import 'package:mq_navigation/features/feed/domain/entities/feed_item.dart';
 import 'package:mq_navigation/features/feed/presentation/controllers/feed_controller.dart';
 import 'package:mq_navigation/features/feed/presentation/widgets/feed_event_card.dart';
 import 'package:mq_navigation/features/feed/presentation/widgets/feed_filter_bar.dart';
@@ -49,13 +47,6 @@ class _FeedPageState extends ConsumerState<FeedPage> {
     final l10n = AppLocalizations.of(context)!;
     final feedState = ref.watch(feedControllerProvider);
     final unreadCount = ref.watch(unreadNotificationsCountProvider);
-    final calendarState = ref.watch(calendarControllerProvider).value;
-    final importedEventIds =
-        calendarState?.events
-            .map((event) => event.sourcePublicEventId)
-            .whereType<String>()
-            .toSet() ??
-        <String>{};
 
     return Scaffold(
       appBar: MqAppBar(
@@ -132,11 +123,7 @@ class _FeedPageState extends ConsumerState<FeedPage> {
                 ...state.items.map(
                   (item) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
-                    child: FeedEventCard(
-                      item: item,
-                      isInCalendar: importedEventIds.contains(item.id),
-                      onAddToCalendar: () => _addToCalendar(context, item),
-                    ),
+                    child: FeedEventCard(item: item),
                   ),
                 ),
                 if (state.isLoadingMore)
@@ -170,20 +157,5 @@ class _FeedPageState extends ConsumerState<FeedPage> {
     if (range != null) {
       await ref.read(feedControllerProvider.notifier).updateDateRange(range);
     }
-  }
-
-  Future<void> _addToCalendar(BuildContext context, FeedItem item) async {
-    final l10n = AppLocalizations.of(context)!;
-    final message = await ref
-        .read(calendarControllerProvider.notifier)
-        .saveEvent(item.toAcademicEvent());
-    if (!context.mounted) {
-      return;
-    }
-    if (message != null) {
-      context.showSnackBar(message, isError: true);
-      return;
-    }
-    context.showSnackBar(l10n.eventAddedSuccess);
   }
 }

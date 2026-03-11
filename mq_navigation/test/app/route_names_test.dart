@@ -9,16 +9,12 @@ void main() {
 
     test('shell tab routes are defined', () {
       expect(RouteNames.home, 'home');
-      expect(RouteNames.calendar, 'calendar');
       expect(RouteNames.map, 'map');
       expect(RouteNames.feed, 'feed');
       expect(RouteNames.settings, 'settings');
     });
 
     test('detail routes are defined', () {
-      expect(RouteNames.deadlineDetail, 'deadline-detail');
-      expect(RouteNames.examDetail, 'exam-detail');
-      expect(RouteNames.eventDetail, 'event-detail');
       expect(RouteNames.buildingDetail, 'building-detail');
     });
   });

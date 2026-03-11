@@ -4,6 +4,35 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-11 (AEDT) — Remove calendar/event feature
+
+**Scope:** Strip the entire calendar feature, academic models, dashboard data layer, detail routes, and calendar tab.
+
+**Summary:**
+Deleted the calendar module (4 files), academic models, dashboard repository/controller, and related tests. Simplified home page to a welcome card. Removed calendar tab from bottom nav (5 → 4 tabs). Removed `/calendar` and all `/detail/*` academic routes. Simplified notification scheduler to study-prompt-only. Removed "add to calendar" from feed.
+
+**Files deleted:**
+- `lib/features/calendar/**` (4 files)
+- `lib/shared/models/academic_models.dart`
+- `lib/features/home/data/`, `lib/features/home/presentation/controllers/`
+- `test/features/calendar/`, `test/features/home/academic_models_test.dart`
+
+**Files changed:**
+- `lib/app/router/app_router.dart` — removed calendar branch and detail routes
+- `lib/app/router/route_names.dart` — removed calendar, deadlineDetail, examDetail, eventDetail
+- `lib/app/router/app_shell.dart` — removed calendar tab (5 → 4)
+- `lib/features/home/presentation/pages/home_page.dart` — simplified to welcome card
+- `lib/features/notifications/**` — removed calendar dependency, scheduler now study-prompt-only
+- `lib/features/feed/**` — removed calendar import and add-to-calendar feature
+- Tests updated
+
+**Verification:**
+- `flutter analyze` → 0 issues
+- `flutter test` → 83/83 passed
+
+**Follow-ups:**
+- None
+
 ### Raouf: 2026-03-11 (AEDT) — Fix zone mismatch in bootstrap
 
 **Scope:** Move `WidgetsFlutterBinding.ensureInitialized()` inside `runZonedGuarded` so it shares the same zone as `runApp()`.

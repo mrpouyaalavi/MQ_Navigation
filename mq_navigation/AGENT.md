@@ -37,7 +37,7 @@ lib/
   shared/widgets/   → MQ button, card, input, bottom sheet, app bar
   shared/providers/ → Connectivity, locale
   shared/extensions/→ BuildContext extensions
-  features/<name>/  → Feature modules (home, calendar, map, feed, settings, notifications)
+  features/<name>/  → Feature modules (home, map, feed, settings, notifications)
 ```
 
 ## Key Environment Variables (--dart-define)
@@ -74,6 +74,14 @@ Located in project root:
 - iOS: URL scheme in Info.plist + AASA file (TODO: deploy)
 
 ---
+
+Raouf: 2026-03-11 (AEDT) — Remove calendar/event feature
+- Scope: Strip the entire calendar feature, academic models, dashboard data layer, detail routes, and calendar tab from the project.
+- Summary: Deleted `features/calendar/` (4 files), `shared/models/academic_models.dart`, `home/data/repositories/dashboard_repository.dart`, `home/presentation/controllers/dashboard_controller.dart`, and related tests. Simplified home page to a welcome card. Removed calendar tab from bottom nav (5 → 4 tabs). Removed `/calendar`, `/detail/deadline/:id`, `/detail/exam/:id`, `/detail/event/:id` routes. Simplified notification scheduler to study-prompt-only (removed DeadlineItem/AcademicEvent params). Removed "add to calendar" from feed page/cards. Removed `toAcademicEvent()` from FeedItem.
+- Files deleted: `lib/features/calendar/**` (4 files), `lib/shared/models/academic_models.dart`, `lib/features/home/data/`, `lib/features/home/presentation/controllers/`, `test/features/calendar/`, `test/features/home/academic_models_test.dart`.
+- Files changed: `lib/app/router/app_router.dart`, `lib/app/router/route_names.dart`, `lib/app/router/app_shell.dart`, `lib/features/home/presentation/pages/home_page.dart`, `lib/features/notifications/presentation/controllers/notifications_controller.dart`, `lib/features/notifications/domain/services/notification_scheduler.dart`, `lib/features/feed/presentation/pages/feed_page.dart`, `lib/features/feed/domain/entities/feed_item.dart`, `lib/features/feed/presentation/widgets/feed_event_card.dart`, `test/app/route_names_test.dart`, `test/features/notifications/notification_scheduler_test.dart`, `AGENT.md`, `CHANGELOG.md`.
+- Verification: `flutter analyze` → 0 issues, `flutter test` → 83/83 passed.
+- Follow-ups: None.
 
 Raouf: 2026-03-11 (AEDT) — Fix zone mismatch in bootstrap
 - Scope: Move `WidgetsFlutterBinding.ensureInitialized()` inside `runZonedGuarded` so binding and `runApp()` share the same zone.

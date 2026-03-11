@@ -4,25 +4,17 @@ import 'package:mq_navigation/features/notifications/data/datasources/local_noti
 import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
 import 'package:mq_navigation/features/notifications/domain/entities/notification_preferences.dart';
 import 'package:mq_navigation/features/notifications/domain/entities/reminder_request.dart';
-import 'package:mq_navigation/shared/models/academic_models.dart';
 
 class NotificationScheduler {
   NotificationScheduler(this._localNotificationsService);
 
   final LocalNotificationsService _localNotificationsService;
 
-  Future<void> syncAcademicItems({
-    required List<DeadlineItem> deadlines,
-    required List<AcademicEvent> events,
+  Future<void> syncReminders({
     required List<NotificationPreference> preferences,
     DateTime? now,
   }) async {
-    final requests = buildRequests(
-      deadlines: deadlines,
-      events: events,
-      preferences: preferences,
-      now: now,
-    );
+    final requests = buildRequests(preferences: preferences, now: now);
     await _localNotificationsService.cancelManagedNotificationsExcept(
       requests.map((item) => item.notificationId).toSet(),
     );
@@ -32,8 +24,6 @@ class NotificationScheduler {
   }
 
   List<ReminderRequest> buildRequests({
-    required List<DeadlineItem> deadlines,
-    required List<AcademicEvent> events,
     required List<NotificationPreference> preferences,
     DateTime? now,
   }) {
@@ -42,76 +32,6 @@ class NotificationScheduler {
       for (final preference in preferences) preference.type: preference,
     };
     final requests = <ReminderRequest>[];
-
-    for (final item in deadlines) {
-      if (item.id == null || item.completed || !item.notificationEnabled) {
-        continue;
-      }
-
-      if (item.isExam) {
-        final preference = preferenceByType[NotificationType.exam];
-        if (preference?.enabled == true) {
-          final scheduledFor = item.dueDate.subtract(const Duration(hours: 1));
-          if (scheduledFor.isAfter(current)) {
-            requests.add(
-              ReminderRequest(
-                notificationId: _localNotificationsService
-                    .notificationIdForStableId('exam_${item.id}'),
-                stableId: 'exam_${item.id}',
-                type: NotificationType.exam,
-                title: item.title,
-                body: '${item.unitCode} exam in 1 hour',
-                scheduledFor: scheduledFor,
-                link: '/detail/exam/${item.id}',
-              ),
-            );
-          }
-        }
-      } else {
-        final preference = preferenceByType[NotificationType.deadline];
-        if (preference?.enabled == true) {
-          final scheduledFor = item.dueDate.subtract(const Duration(hours: 24));
-          if (scheduledFor.isAfter(current)) {
-            requests.add(
-              ReminderRequest(
-                notificationId: _localNotificationsService
-                    .notificationIdForStableId('deadline_${item.id}'),
-                stableId: 'deadline_${item.id}',
-                type: NotificationType.deadline,
-                title: item.title,
-                body: '${item.unitCode} deadline due in 24 hours',
-                scheduledFor: scheduledFor,
-                link: '/detail/deadline/${item.id}',
-              ),
-            );
-          }
-        }
-      }
-    }
-
-    final eventPreference = preferenceByType[NotificationType.event];
-    if (eventPreference?.enabled == true) {
-      for (final item in events) {
-        if (item.id == null || !item.notificationEnabled) {
-          continue;
-        }
-        final scheduledFor = item.startAt.subtract(const Duration(minutes: 30));
-        if (scheduledFor.isAfter(current)) {
-          requests.add(
-            ReminderRequest(
-              notificationId: _localNotificationsService
-                  .notificationIdForStableId('event_${item.id}'),
-              stableId: 'event_${item.id}',
-              type: NotificationType.event,
-              title: item.title,
-              body: 'Event starts in 30 minutes',
-              scheduledFor: scheduledFor,
-              link: '/detail/event/${item.id}',
-            ),
-          );
-        }
-      }
-    }
 
     final studyPreference = preferenceByType[NotificationType.studyPrompt];
     if (studyPreference?.enabled == true) {

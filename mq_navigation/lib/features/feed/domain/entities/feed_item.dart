@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:mq_navigation/shared/models/academic_models.dart';
 
 enum FeedItemType { event, announcement, featured }
 
@@ -52,22 +51,6 @@ class FeedItem {
       return '$location · $building';
     }
     return location;
-  }
-
-  AcademicEvent toAcademicEvent() {
-    return AcademicEvent(
-      sourcePublicEventId: id,
-      title: title,
-      description: description,
-      location: location,
-      building: building,
-      room: room,
-      startAt: startAt,
-      endAt: endAt,
-      category: category,
-      imageUrl: imageUrl,
-      notificationEnabled: true,
-    );
   }
 
   factory FeedItem.fromJson(Map<String, dynamic> json) {

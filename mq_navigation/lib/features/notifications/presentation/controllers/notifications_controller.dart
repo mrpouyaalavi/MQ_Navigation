@@ -6,7 +6,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:mq_navigation/app/router/app_router.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:mq_navigation/core/network/connectivity_service.dart';
-import 'package:mq_navigation/features/calendar/data/repositories/calendar_repository.dart';
 import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
 import 'package:mq_navigation/features/notifications/data/datasources/local_notifications_service.dart';
 import 'package:mq_navigation/features/notifications/data/repositories/notification_repository_impl.dart';
@@ -241,24 +240,10 @@ class NotificationsController extends AsyncNotifier<NotificationsState> {
   Future<void> _syncScheduledReminders({
     List<NotificationPreference>? preferencesOverride,
   }) async {
-    final userId = Supabase.instance.client.auth.currentUser?.id;
-    if (userId == null) {
-      return;
-    }
-
     try {
-      final now = DateTime.now();
-      final bundle = await ref
-          .read(calendarRepositoryProvider)
-          .fetchBundle(
-            rangeStart: now.subtract(const Duration(days: 2)),
-            rangeEnd: now.add(const Duration(days: 60)),
-          );
       await ref
           .read(notificationSchedulerProvider)
-          .syncAcademicItems(
-            deadlines: bundle.deadlines,
-            events: bundle.events,
+          .syncReminders(
             preferences:
                 preferencesOverride ??
                 state.value?.preferences ??

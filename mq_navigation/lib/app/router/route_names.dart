@@ -4,14 +4,10 @@ abstract final class RouteNames {
 
   // Shell tabs
   static const String home = 'home';
-  static const String calendar = 'calendar';
   static const String map = 'map';
   static const String feed = 'feed';
   static const String settings = 'settings';
 
   // Detail screens (pushed on top of shell)
-  static const String deadlineDetail = 'deadline-detail';
-  static const String examDetail = 'exam-detail';
-  static const String eventDetail = 'event-detail';
   static const String buildingDetail = 'building-detail';
 }
