@@ -25,29 +25,11 @@ enable_confirmations = true
 [auth.external.google]
 enabled = true
 
-[functions.auth-email]
-verify_jwt = true
-
-[functions.auth-cleanup]
-verify_jwt = true
-
-[functions.routes-proxy]
-verify_jwt = true
-
 [functions.maps-routes]
 verify_jwt = true
 
 [functions.notify]
 verify_jwt = true
-
-[functions.places-proxy]
-verify_jwt = true
-
-[functions.weather-proxy]
-verify_jwt = true
-
-[functions.security-utils]
-verify_jwt = false
 
 [functions.cleanup-cron]
 verify_jwt = true

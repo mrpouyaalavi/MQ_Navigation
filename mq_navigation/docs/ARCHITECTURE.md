@@ -30,11 +30,11 @@ Both clients share the same Supabase backend. The Flutter app is a **presentatio
 lib/
   main.dart                     # Entry point
   app/
-    bootstrap/bootstrap.dart    # Supabase init, error handlers, ProviderScope
+    bootstrap/bootstrap.dart    # Supabase init, Firebase init, error handlers, ProviderScope
     mq_navigation_app.dart      # Root MaterialApp.router
     router/
-      app_router.dart           # GoRouter with auth guards + refreshListenable
-      app_shell.dart            # Bottom NavigationBar (5-tab shell)
+      app_router.dart           # GoRouter with StatefulShellRoute (3-tab bottom nav)
+      app_shell.dart            # Bottom NavigationBar (3-tab shell: Home, Map, Settings)
       route_names.dart          # Named route constants
     theme/
       mq_colors.dart            # MQ brand palette (mapped from web tokens)
@@ -42,7 +42,7 @@ lib/
       mq_spacing.dart           # Spacing, radius, and tap-target tokens
       mq_theme.dart             # Light + dark ThemeData builders
     l10n/
-      app_en.arb                # English template (1995 keys)
+      app_en.arb                # English template
       app_*.arb                 # 34 other locale files
       generated/                # Auto-generated AppLocalizations
 
@@ -55,16 +55,17 @@ lib/
     network/connectivity_service.dart
     security/
       secure_storage_service.dart
-      biometric_service.dart
     utils/result.dart           # Result<T> sealed type
 
   shared/                       # Cross-feature shared code
     widgets/                    # MQ design system widgets
-    providers/                  # Auth, connectivity providers
+    models/                     # UserPreferences
     extensions/                 # BuildContext extensions
 
   features/                     # Feature modules
-    auth/
+    home/
+      presentation/pages/home_page.dart
+    map/
       data/datasources/
       data/repositories/
       domain/entities/
@@ -72,12 +73,18 @@ lib/
       presentation/controllers/
       presentation/pages/
       presentation/widgets/
-    home/
-    calendar/
-    map/
-    feed/
+    notifications/
+      data/datasources/
+      data/repositories/
+      domain/entities/
+      domain/services/
+      presentation/controllers/
+      presentation/pages/
+      presentation/widgets/
     settings/
-    ...
+      data/repositories/
+      presentation/controllers/
+      presentation/pages/
 ```
 
 ## Feature Module Pattern
@@ -96,22 +103,21 @@ features/<name>/
 - Cross-feature communication happens through `shared/providers/`
 - Only `presentation/` widgets may use `BuildContext`
 
-## Phase 4 and Phase 5 Subsystems
+## Subsystems
 
-### Notifications and Feed
+### Notifications
 
-- `features/notifications/` owns FCM token sync, local reminder scheduling, the notification inbox, and preference state.
-- FCM tokens are stored in `user_fcm_tokens` and refreshed on login/token rotation; stale tokens are removed on logout or push failure.
-- Notification preferences are stored in `notification_preferences`, not local-only storage, and are normalized on the client so missing rows fall back safely.
+- `features/notifications/` owns FCM token sync, local study prompt scheduling, the notification inbox, and preference state.
+- FCM tokens are stored in `user_fcm_tokens` and refreshed on token rotation.
 - `supabase/functions/notify` stores the inbox row in `notifications` and dispatches push delivery through Firebase without exposing push credentials to Flutter.
-- `features/feed/` reads `public_events`, preserves `source_public_event_id` when importing to the personal calendar, and keeps pagination ordered by cursor-safe `start_at`.
+- Local notifications are limited to study prompt reminders scheduled via `flutter_local_notifications`.
 
 ### Campus Map
 
-- `features/map/` loads the building registry from Supabase `app_config` when available and otherwise falls back to the bundled asset generated from the audited web registry.
-- The bundled map asset currently contains 153 buildings, with the 6 high-traffic buildings carrying explicit `entranceLocation` and `googlePlaceId` enrichments for routing parity.
+- `features/map/` loads the building registry from the bundled JSON asset (153 buildings from the audited web registry).
+- The 6 high-traffic buildings carry explicit `entranceLocation` and `googlePlaceId` enrichments for routing parity.
 - `supabase/functions/maps-routes` is the authenticated routing proxy. It validates input, enforces a per-user `rate_limits` window, and keeps `GOOGLE_ROUTES_API_KEY` server-side.
-- Client-side routing uses `google_maps_flutter` for rendering, `geolocator` for point-of-need location access, and `GoogleMap` camera bounds locked to the campus extent.
+- Client-side rendering uses `google_maps_flutter`, `geolocator` for point-of-need location access, and `GoogleMap` camera bounds locked to the campus extent.
 
 ## State Management
 
@@ -120,19 +126,20 @@ features/<name>/
 | Provider Type | Use Case |
 |--------------|----------|
 | `Provider` | Singletons (router, services) |
-| `AsyncNotifierProvider` | Auth state, data fetching with lifecycle |
-| `StreamProvider` | Real-time data (connectivity, Supabase subscriptions) |
+| `AsyncNotifierProvider` | Map state, data fetching with lifecycle |
+| `StreamProvider` | Real-time data (connectivity) |
 | `FutureProvider` | One-shot async data loading |
 
-**No `setState`, no Bloc, no ChangeNotifier** (except the `AuthRefreshNotifier` bridge for GoRouter's `refreshListenable`).
+**No `setState`, no Bloc, no ChangeNotifier.**
 
 ## Routing
 
 **GoRouter** (v17.1.0) with:
-- `StatefulShellRoute.indexedStack` for the 5-tab bottom navigation
-- `refreshListenable` pattern: a single stable `GoRouter` instance that re-evaluates redirects via `AuthRefreshNotifier` when auth state changes
-- Auth guard in `redirect` callback: unauthenticated users are sent to `/login`, authenticated users bypass `/splash` and `/login`
+- `StatefulShellRoute.indexedStack` for the 3-tab bottom navigation (Home, Map, Settings)
+- `/notifications` as a standalone route pushed on top of the shell
+- `/map/building/:buildingId` for deep-linking to a specific building
 - Named routes via `RouteNames` constants
+- App starts at `/home` with no auth guards
 
 ## Design System
 
@@ -158,9 +165,7 @@ Both **light** and **dark** themes are built from these tokens via `MqTheme.ligh
 
 1. **No server secrets in client** --- API keys stay in Edge Functions
 2. **Encrypted storage** --- `flutter_secure_storage` (iOS Keychain / Android Keystore)
-3. **Biometric gates** --- `local_auth` for sensitive operations
-4. **PKCE auth flow** --- secure OAuth token exchange
-5. **RLS enforcement** --- all database access governed by Supabase Row-Level Security
+3. **RLS enforcement** --- all database access governed by Supabase Row-Level Security
 
 ## Environment Configuration
 
@@ -208,6 +213,5 @@ Push to main only
 |-------|------|----------|
 | Unit tests | `flutter_test` | `test/core/`, `test/features/` |
 | Widget tests | `flutter_test` | `test/shared/`, `test/app/` |
-| Integration tests | `integration_test` | `test/integration/` (planned) |
 
 Quality gate: `scripts/check.sh` runs format, analyze, test, and gen-l10n in sequence.

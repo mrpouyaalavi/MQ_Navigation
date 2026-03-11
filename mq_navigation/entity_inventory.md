@@ -1,6 +1,9 @@
-# Entity Inventory — Supabase Schema
+# Entity Inventory — Supabase Schema (Shared Backend)
 
-All Supabase tables, views, and RPC functions used by MQ Navigation.
+This documents the **shared Supabase backend schema** used by both the web app and the Flutter app.
+
+> **Flutter app scope:** After removing auth, calendar, feed, and profile features, the Flutter app only interacts with `user_fcm_tokens` (push tokens), `notifications` (inbox), and `rate_limits` (map routing throttle). The building registry is loaded from a bundled JSON asset, not from Supabase. All other tables below are used by the web app only.
+
 Source: `lib/supabase/database.types.ts` in the web app.
 
 ## Tables

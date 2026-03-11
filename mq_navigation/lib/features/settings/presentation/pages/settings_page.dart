@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 
@@ -85,15 +86,66 @@ class SettingsPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: MqSpacing.space4),
-              _SettingsSection(
-                title: l10n.about,
-                child: const Column(
+              const _SettingsSection(
+                title: 'Experience',
+                child: Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.info_outline),
-                      title: Text('MQ Navigation'),
+                      leading: Icon(Icons.map_outlined),
+                      title: Text('Campus navigation'),
                       subtitle: Text(
+                        'Search 153 buildings and get walking directions across campus.',
+                      ),
+                    ),
+                    Divider(height: 1),
+                    ListTile(
+                      leading: Icon(Icons.schedule_outlined),
+                      title: Text('Study prompts'),
+                      subtitle: Text(
+                        'Get daily reminders to stay on track with your schedule.',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: MqSpacing.space4),
+              _SettingsSection(
+                title: l10n.about,
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: MqColors.red,
+                          borderRadius: BorderRadius.circular(
+                            MqSpacing.radiusMd,
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.school,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      title: const Text('MQ Navigation'),
+                      subtitle: const Text(
                         'Flutter mobile client for Macquarie University.',
+                      ),
+                    ),
+                    const Divider(height: 1),
+                    const ListTile(
+                      leading: Icon(Icons.code_outlined),
+                      title: Text('Version'),
+                      subtitle: Text('1.0.0'),
+                    ),
+                    const Divider(height: 1),
+                    const ListTile(
+                      leading: Icon(Icons.people_outline),
+                      title: Text('Authors'),
+                      subtitle: Text(
+                        'Raouf Abedini & Pouya Alavi\nCOMP3130, Macquarie University',
                       ),
                     ),
                   ],
