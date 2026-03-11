@@ -35,10 +35,11 @@ class HomePage extends StatelessWidget {
                   color: MqColors.red,
                   borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.school,
                   size: 56,
                   color: Colors.white,
+                  semanticLabel: l10n.appName,
                 ),
               ),
               const SizedBox(height: MqSpacing.space4),
@@ -64,7 +65,7 @@ class HomePage extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 child: FilledButton.icon(
-                  icon: const Icon(Icons.map, size: 24),
+                  icon: Icon(Icons.map, size: 24, semanticLabel: l10n.exploreMap),
                   label: Text(
                     l10n.exploreMap,
                     style: const TextStyle(fontSize: 18),
@@ -139,28 +140,32 @@ class _QuickAccessCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: () => context.goNamed(
-          RouteNames.map,
-          queryParameters: {'q': searchQuery},
-        ),
-        borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
-        child: Padding(
-          padding: const EdgeInsets.all(MqSpacing.space3),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: 32, color: color),
-              const SizedBox(height: MqSpacing.space2),
-              Text(
-                label,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+    return Semantics(
+      button: true,
+      label: label,
+      child: Card(
+        child: InkWell(
+          onTap: () => context.goNamed(
+            RouteNames.map,
+            queryParameters: {'q': searchQuery},
+          ),
+          borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+          child: Padding(
+            padding: const EdgeInsets.all(MqSpacing.space3),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, size: 32, color: color),
+                const SizedBox(height: MqSpacing.space2),
+                Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

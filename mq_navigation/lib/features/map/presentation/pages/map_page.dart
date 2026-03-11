@@ -52,7 +52,7 @@ class _MapPageState extends ConsumerState<MapPage> {
         title: l10n.map,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: MqSpacing.space1),
+            padding: const EdgeInsetsDirectional.only(end: MqSpacing.space1),
             child: IconButton(
               tooltip: l10n.searchBuildingsPlaceholder,
               onPressed: () => showModalBottomSheet<void>(
@@ -93,7 +93,7 @@ class _MapPageState extends ConsumerState<MapPage> {
               // ── Error banner ──
               if (mapState.error != null)
                 Container(
-                  margin: const EdgeInsets.fromLTRB(
+                  margin: const EdgeInsetsDirectional.fromSTEB(
                     MqSpacing.space4,
                     MqSpacing.space2,
                     MqSpacing.space4,
@@ -182,7 +182,7 @@ class _MapPageState extends ConsumerState<MapPage> {
 
               // ── Route panel ──
               Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   MqSpacing.space4,
                   MqSpacing.space3,
                   MqSpacing.space4,
@@ -241,11 +241,15 @@ class _MapPageState extends ConsumerState<MapPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: l10n.centerOnLocation,
         onPressed: () =>
             ref.read(mapControllerProvider.notifier).centerOnCurrentLocation(),
         backgroundColor: MqColors.red,
         foregroundColor: Colors.white,
-        child: const Icon(Icons.my_location),
+        child: Icon(
+          Icons.my_location,
+          semanticLabel: l10n.centerOnLocation,
+        ),
       ),
     );
   }

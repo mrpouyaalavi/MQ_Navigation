@@ -12,9 +12,16 @@ class NotificationScheduler {
 
   Future<void> syncReminders({
     required List<NotificationPreference> preferences,
+    String? studyPromptTitle,
+    String? studyPromptBody,
     DateTime? now,
   }) async {
-    final requests = buildRequests(preferences: preferences, now: now);
+    final requests = buildRequests(
+      preferences: preferences,
+      studyPromptTitle: studyPromptTitle,
+      studyPromptBody: studyPromptBody,
+      now: now,
+    );
     await _localNotificationsService.cancelManagedNotificationsExcept(
       requests.map((item) => item.notificationId).toSet(),
     );
@@ -25,6 +32,8 @@ class NotificationScheduler {
 
   List<ReminderRequest> buildRequests({
     required List<NotificationPreference> preferences,
+    String? studyPromptTitle,
+    String? studyPromptBody,
     DateTime? now,
   }) {
     final current = now ?? DateTime.now();
@@ -52,8 +61,8 @@ class NotificationScheduler {
           ),
           stableId: 'study_prompt_daily',
           type: NotificationType.studyPrompt,
-          title: 'Study prompt',
-          body: 'Review your next deadline and plan one focused study block.',
+          title: studyPromptTitle ?? 'Study prompt',
+          body: studyPromptBody ?? 'Review your next deadline and plan one focused study block.',
           scheduledFor: scheduledFor,
           link: '/home',
           repeatsDaily: true,

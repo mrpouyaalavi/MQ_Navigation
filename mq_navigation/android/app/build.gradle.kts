@@ -42,11 +42,27 @@ android {
         manifestPlaceholders["googleMapsApiKey"] = googleMapsApiKey
     }
 
+    signingConfigs {
+        create("release") {
+            val keystoreFile = project.findProperty("RELEASE_KEYSTORE_FILE") as String?
+            if (keystoreFile != null && file(keystoreFile).exists()) {
+                storeFile = file(keystoreFile)
+                storePassword = project.findProperty("RELEASE_KEYSTORE_PASSWORD") as String? ?: ""
+                keyAlias = project.findProperty("RELEASE_KEY_ALIAS") as String? ?: ""
+                keyPassword = project.findProperty("RELEASE_KEY_PASSWORD") as String? ?: ""
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            val hasReleaseKeystore = signingConfigs.getByName("release").storeFile != null
+            signingConfig = if (hasReleaseKeystore) {
+                signingConfigs.getByName("release")
+            } else {
+                // Fallback to debug keys for local development only.
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
+import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
 import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
 import 'package:mq_navigation/shared/models/user_preferences.dart';
 
@@ -34,7 +36,23 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
 
   Future<String?> updateNotificationsEnabled(bool enabled) async {
     final currentPreferences = state.value ?? const UserPreferences();
-    return _save(currentPreferences.copyWith(notificationsEnabled: enabled));
+    final result = await _save(
+      currentPreferences.copyWith(notificationsEnabled: enabled),
+    );
+    // Sync the master toggle to all notification preferences.
+    try {
+      final notifier = ref.read(notificationsControllerProvider.notifier);
+      for (final type in NotificationType.values) {
+        await notifier.updatePreference(type, enabled);
+      }
+    } catch (error, stackTrace) {
+      AppLogger.warning(
+        'Failed to sync notification preferences',
+        error,
+        stackTrace,
+      );
+    }
+    return result;
   }
 
   Future<String?> updateEmailNotifications(bool enabled) async {

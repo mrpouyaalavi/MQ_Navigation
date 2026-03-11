@@ -50,7 +50,7 @@ class NotificationPreference {
       'enabled': enabled,
       'scheduled_hour': scheduledHour,
       'scheduled_minute': scheduledMinute,
-      'updated_at': DateTime.now().toIso8601String(),
+      'updated_at': DateTime.now().toUtc().toIso8601String(),
     };
   }
 

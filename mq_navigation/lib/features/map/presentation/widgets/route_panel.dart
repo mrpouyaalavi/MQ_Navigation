@@ -85,7 +85,7 @@ class RoutePanel extends StatelessWidget {
                 .take(3)
                 .map(
                   (instruction) => Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
+                    padding: const EdgeInsetsDirectional.only(bottom: 4),
                     child: Text(
                       '• ${instruction.text}',
                       style: Theme.of(context).textTheme.bodySmall,

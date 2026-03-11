@@ -676,6 +676,8 @@
   "markAllRead": "Mark all read",
   "deleteNotification": "Delete notification",
   "studyPromptLabel": "Study Prompt",
+  "studyPromptNotificationTitle": "Study prompt",
+  "studyPromptNotificationBody": "Review your next deadline and plan one focused study block.",
   "notificationLoadError": "Failed to load notifications",
   "retry": "Retry",
   "signOut": "Sign out",

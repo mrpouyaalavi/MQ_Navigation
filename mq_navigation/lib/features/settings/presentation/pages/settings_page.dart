@@ -44,16 +44,14 @@ class SettingsPage extends ConsumerWidget {
                       icon: Icons.language_outlined,
                       title: l10n.language,
                       value: preferences.localeCode,
-                      itemLabel: (value) => switch (value) {
-                        null  => l10n.system,
-                        'en'  => 'English',
-                        'ar'  => 'العربية',
-                        'fa'  => 'فارسی',
-                        'zh'  => '中文',
-                        'hi'  => 'हिन्दी',
-                        _     => value.toUpperCase(),
-                      },
-                      items: const [null, 'en', 'ar', 'fa', 'zh', 'hi'],
+                      itemLabel: (value) => _languageLabel(value, l10n),
+                      items: const [
+                        null, 'en', 'ar', 'bn', 'cs', 'da', 'de', 'el',
+                        'es', 'fa', 'fi', 'fr', 'he', 'hi', 'hu', 'id',
+                        'it', 'ja', 'ko', 'ms', 'ne', 'nl', 'no', 'pl',
+                        'pt', 'ro', 'ru', 'si', 'sv', 'ta', 'th', 'tr',
+                        'uk', 'ur', 'vi', 'zh',
+                      ],
                       onChanged: (value) => ref
                           .read(settingsControllerProvider.notifier)
                           .updateLocaleCode(value),
@@ -159,6 +157,48 @@ class SettingsPage extends ConsumerWidget {
       ),
     );
   }
+
+  static String _languageLabel(String? code, AppLocalizations l10n) {
+    return switch (code) {
+      null  => l10n.system,
+      'en'  => 'English',
+      'ar'  => 'العربية',
+      'bn'  => 'বাংলা',
+      'cs'  => 'Čeština',
+      'da'  => 'Dansk',
+      'de'  => 'Deutsch',
+      'el'  => 'Ελληνικά',
+      'es'  => 'Español',
+      'fa'  => 'فارسی',
+      'fi'  => 'Suomi',
+      'fr'  => 'Français',
+      'he'  => 'עברית',
+      'hi'  => 'हिन्दी',
+      'hu'  => 'Magyar',
+      'id'  => 'Bahasa Indonesia',
+      'it'  => 'Italiano',
+      'ja'  => '日本語',
+      'ko'  => '한국어',
+      'ms'  => 'Bahasa Melayu',
+      'ne'  => 'नेपाली',
+      'nl'  => 'Nederlands',
+      'no'  => 'Norsk',
+      'pl'  => 'Polski',
+      'pt'  => 'Português',
+      'ro'  => 'Română',
+      'ru'  => 'Русский',
+      'si'  => 'සිංහල',
+      'sv'  => 'Svenska',
+      'ta'  => 'தமிழ்',
+      'th'  => 'ไทย',
+      'tr'  => 'Türkçe',
+      'uk'  => 'Українська',
+      'ur'  => 'اردو',
+      'vi'  => 'Tiếng Việt',
+      'zh'  => '中文',
+      _     => code.toUpperCase(),
+    };
+  }
 }
 
 class _SettingsSection extends StatelessWidget {
@@ -173,8 +213,8 @@ class _SettingsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(
-            left: MqSpacing.space1,
+          padding: const EdgeInsetsDirectional.only(
+            start: MqSpacing.space1,
             bottom: MqSpacing.space2,
           ),
           child: Text(
