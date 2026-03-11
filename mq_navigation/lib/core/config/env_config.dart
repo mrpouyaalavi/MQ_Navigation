@@ -31,6 +31,8 @@ class EnvConfig {
       'https://cxsqlgvbwtevkkljzolg.supabase.co';
   static const String _devSupabaseAnonKey =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4c3FsZ3Zid3RldmtrbGp6b2xnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjkwNTEsImV4cCI6MjA4MjYwNTA1MX0.5OXdkYfflYE27WRhw2PKf-up3UYctGKn3w2RQbTZrWw';
+  static const String _devGoogleMapsApiKey =
+      'AIzaSyD9WlnjQntUsWNzHR2oa-P-8zG3l60D2SA';
 
   /// Supabase project URL. Falls back to dev project in debug mode.
   static String get supabaseUrl => _supabaseUrl.isNotEmpty
@@ -43,7 +45,9 @@ class EnvConfig {
       : (kDebugMode ? _devSupabaseAnonKey : '');
 
   /// Google Maps client-side API key. Falls back to dev key in debug mode.
-  static String get googleMapsApiKey => _googleMapsApiKey;
+  static String get googleMapsApiKey => _googleMapsApiKey.isNotEmpty
+      ? _googleMapsApiKey
+      : (kDebugMode ? _devGoogleMapsApiKey : '');
 
   /// App environment. Defaults to 'development'.
   static String get appEnv => _appEnv.isNotEmpty ? _appEnv : 'development';

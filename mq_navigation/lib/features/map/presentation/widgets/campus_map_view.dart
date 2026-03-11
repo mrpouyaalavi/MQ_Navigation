@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
@@ -53,9 +52,7 @@ class _CampusMapViewState extends State<CampusMapView> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (!(defaultTargetPlatform == TargetPlatform.android ||
-            defaultTargetPlatform == TargetPlatform.iOS) ||
-        !EnvConfig.hasGoogleMapsApiKey) {
+    if (!EnvConfig.hasGoogleMapsApiKey) {
       return MqCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
