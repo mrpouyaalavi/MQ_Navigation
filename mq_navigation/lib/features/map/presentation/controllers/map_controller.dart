@@ -179,17 +179,8 @@ class MapController extends AsyncNotifier<MapState> {
     final permissionState = await ref
         .read(mapRepositoryProvider)
         .ensureLocationPermission();
-    if (permissionState != LocationPermissionState.granted) {
-      state = AsyncData(
-        current.copyWith(
-          permissionState: permissionState,
-          isLoadingRoute: false,
-          error: _errorForPermission(permissionState),
-        ),
-      );
-      return;
-    }
 
+    // Get location — may be real GPS or campus-center fallback.
     final location = await ref.read(mapRepositoryProvider).getCurrentLocation();
     if (location == null) {
       state = AsyncData(
@@ -201,7 +192,6 @@ class MapController extends AsyncNotifier<MapState> {
       );
       return;
     }
-
 
     try {
       final route = await ref

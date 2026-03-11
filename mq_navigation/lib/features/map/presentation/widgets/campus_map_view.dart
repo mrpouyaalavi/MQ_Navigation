@@ -68,61 +68,61 @@ class _CampusMapViewState extends State<CampusMapView> {
       );
     }
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: GoogleMap(
-        initialCameraPosition: const CameraPosition(
-          target: LatLng(-33.7738, 151.1130),
-          zoom: 16.5,
-        ),
-        onMapCreated: (controller) {
-          _controller = controller;
-        },
-        minMaxZoomPreference: const MinMaxZoomPreference(14, 20),
-        cameraTargetBounds: CameraTargetBounds(_campusBounds),
-        mapToolbarEnabled: false,
-        zoomControlsEnabled: false,
-        myLocationEnabled: widget.currentLocation != null,
-        myLocationButtonEnabled: false,
-        markers: widget.buildings
-            .where(
-              (building) =>
-                  building.latitude != null && building.longitude != null,
-            )
-            .map(
-              (building) {
-                final isSelected =
-                    widget.selectedBuilding?.id == building.id;
-                return Marker(
-                  markerId: MarkerId(building.id),
-                  position: LatLng(building.latitude!, building.longitude!),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(
-                    isSelected
-                        ? BitmapDescriptor.hueRed
-                        : BitmapDescriptor.hueOrange,
-                  ),
-                  alpha: isSelected ? 1.0 : 0.5,
-                  zIndexInt: isSelected ? 1 : 0,
-                  infoWindow: InfoWindow(
-                    title: building.name,
-                    snippet: building.id,
-                  ),
-                  onTap: () => widget.onSelectBuilding(building),
-                );
-              },
-            )
-            .toSet(),
-        polylines: widget.route == null || widget.route!.encodedPolyline.isEmpty
-            ? const <Polyline>{}
-            : {
-                Polyline(
-                  polylineId: const PolylineId('campus_route'),
-                  points: _decodePolyline(widget.route!.encodedPolyline),
-                  width: 5,
-                  color: _colorFor(widget.route!.travelMode),
-                ),
-              },
+    // Only show important buildings + selected building to keep the map clean.
+    final visibleBuildings = widget.buildings.where((building) {
+      if (building.latitude == null || building.longitude == null) return false;
+      if (widget.selectedBuilding?.id == building.id) return true;
+      return building.isHighTraffic;
+    }).toList();
+
+    return GoogleMap(
+      initialCameraPosition: const CameraPosition(
+        target: LatLng(-33.7738, 151.1130),
+        zoom: 15.5,
       ),
+      onMapCreated: (controller) {
+        _controller = controller;
+      },
+      minMaxZoomPreference: const MinMaxZoomPreference(14, 20),
+      cameraTargetBounds: CameraTargetBounds(_campusBounds),
+      mapToolbarEnabled: false,
+      zoomControlsEnabled: false,
+      myLocationEnabled: widget.currentLocation != null,
+      myLocationButtonEnabled: false,
+      markers: visibleBuildings
+          .map(
+            (building) {
+              final isSelected =
+                  widget.selectedBuilding?.id == building.id;
+              return Marker(
+                markerId: MarkerId(building.id),
+                position: LatLng(building.latitude!, building.longitude!),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                  isSelected
+                      ? BitmapDescriptor.hueRed
+                      : BitmapDescriptor.hueOrange,
+                ),
+                alpha: isSelected ? 1.0 : 0.7,
+                zIndexInt: isSelected ? 1 : 0,
+                infoWindow: InfoWindow(
+                  title: building.name,
+                  snippet: building.id,
+                ),
+                onTap: () => widget.onSelectBuilding(building),
+              );
+            },
+          )
+          .toSet(),
+      polylines: widget.route == null || widget.route!.encodedPolyline.isEmpty
+          ? const <Polyline>{}
+          : {
+              Polyline(
+                polylineId: const PolylineId('campus_route'),
+                points: _decodePolyline(widget.route!.encodedPolyline),
+                width: 5,
+                color: _colorFor(widget.route!.travelMode),
+              ),
+            },
     );
   }
 

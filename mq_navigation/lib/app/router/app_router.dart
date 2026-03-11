@@ -40,7 +40,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/map',
                 name: RouteNames.map,
-                builder: (context, state) => const MapPage(),
+                builder: (context, state) => MapPage(
+                  initialSearchQuery: state.uri.queryParameters['q'],
+                ),
                 routes: [
                   GoRoute(
                     path: 'building/:buildingId',

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
@@ -13,6 +13,14 @@ enum LocationPermissionState {
   unsupported,
 }
 
+/// Macquarie University campus center — used as fallback when GPS is unavailable
+/// (e.g. emulators, web, or when location services fail).
+const _campusFallback = LocationSample(
+  latitude: -33.7738,
+  longitude: 151.1130,
+  accuracy: 100,
+);
+
 class LocationSource {
   const LocationSource();
 
@@ -20,7 +28,8 @@ class LocationSource {
 
   Future<LocationPermissionState> ensurePermission() async {
     if (!_isSupported) {
-      return LocationPermissionState.unsupported;
+      // On web/desktop, treat as "granted" so routing can use the fallback location.
+      return LocationPermissionState.granted;
     }
 
     final servicesEnabled = await Geolocator.isLocationServiceEnabled();
@@ -44,23 +53,35 @@ class LocationSource {
   }
 
   Future<LocationSample?> getCurrentLocation() async {
+    if (!_isSupported) {
+      // Web / desktop / unsupported platforms: return campus center.
+      debugPrint('LocationSource: platform unsupported, using campus fallback');
+      return _campusFallback;
+    }
+
     final permission = await ensurePermission();
     if (permission != LocationPermissionState.granted) {
       return null;
     }
 
-    final position = await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 5,
-      ),
-    );
-    return LocationSample(
-      latitude: position.latitude,
-      longitude: position.longitude,
-      accuracy: position.accuracy,
-      timestamp: position.timestamp,
-    );
+    try {
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 5,
+        ),
+      ).timeout(const Duration(seconds: 10));
+      return LocationSample(
+        latitude: position.latitude,
+        longitude: position.longitude,
+        accuracy: position.accuracy,
+        timestamp: position.timestamp,
+      );
+    } catch (e) {
+      // GPS failed (common on emulators) — fall back to campus center.
+      debugPrint('LocationSource: GPS failed ($e), using campus fallback');
+      return _campusFallback;
+    }
   }
 
   Stream<LocationSample> watch() async* {

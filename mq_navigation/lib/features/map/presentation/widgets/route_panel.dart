@@ -37,26 +37,45 @@ class RoutePanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SegmentedButton<TravelMode>(
-            segments: [
-              ButtonSegment(value: TravelMode.walk, label: Text(l10n.walk)),
-              ButtonSegment(value: TravelMode.drive, label: Text(l10n.drive)),
-              ButtonSegment(value: TravelMode.bike, label: Text(l10n.bike)),
-              ButtonSegment(
-                value: TravelMode.transit,
-                label: Text(l10n.transit),
-              ),
-            ],
-            selected: <TravelMode>{travelMode},
-            onSelectionChanged: (selection) {
-              onTravelModeChanged(selection.first);
-            },
+          SizedBox(
+            width: double.infinity,
+            child: SegmentedButton<TravelMode>(
+              segments: [
+                ButtonSegment(
+                  value: TravelMode.walk,
+                  label: FittedBox(child: Text(l10n.walk)),
+                  icon: const Icon(Icons.directions_walk, size: 18),
+                ),
+                ButtonSegment(
+                  value: TravelMode.drive,
+                  label: FittedBox(child: Text(l10n.drive)),
+                  icon: const Icon(Icons.directions_car, size: 18),
+                ),
+                ButtonSegment(
+                  value: TravelMode.bike,
+                  label: FittedBox(child: Text(l10n.bike)),
+                  icon: const Icon(Icons.directions_bike, size: 18),
+                ),
+                ButtonSegment(
+                  value: TravelMode.transit,
+                  label: FittedBox(child: Text(l10n.transit)),
+                  icon: const Icon(Icons.directions_transit, size: 18),
+                ),
+              ],
+              selected: <TravelMode>{travelMode},
+              showSelectedIcon: false,
+              onSelectionChanged: (selection) {
+                onTravelModeChanged(selection.first);
+              },
+            ),
           ),
           const SizedBox(height: 16),
           if (selectedBuilding != null)
             Text(
               selectedBuilding!.name,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           if (route != null) ...[
             const SizedBox(height: 8),
@@ -69,8 +88,11 @@ class RoutePanel extends StatelessWidget {
                 .take(3)
                 .map(
                   (instruction) => Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
-                    child: Text('• ${instruction.text}'),
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Text(
+                      '• ${instruction.text}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ),
                 ),
             const SizedBox(height: 12),
@@ -82,7 +104,9 @@ class RoutePanel extends StatelessWidget {
           ] else ...[
             const SizedBox(height: 8),
             Text(
-              selectedBuilding == null ? l10n.routeReady : l10n.loadingRoute,
+              selectedBuilding == null
+                  ? l10n.routeReady
+                  : l10n.loadingRoute,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 12),

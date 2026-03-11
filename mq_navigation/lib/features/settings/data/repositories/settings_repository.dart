@@ -6,6 +6,8 @@ import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 const _themeModeKey = 'settings.theme_mode';
 const _localeCodeKey = 'settings.locale_code';
+const _notificationsEnabledKey = 'settings.notifications_enabled';
+const _emailNotificationsKey = 'settings.email_notifications';
 
 abstract interface class SettingsRepository {
   Future<UserPreferences> loadPreferences();
@@ -28,6 +30,10 @@ class LocalSettingsRepository implements SettingsRepository {
     try {
       final themeModeString = await _storage.read(_themeModeKey);
       final localeCode = await _storage.read(_localeCodeKey);
+      final notificationsEnabled = await _storage.read(
+        _notificationsEnabledKey,
+      );
+      final emailNotifications = await _storage.read(_emailNotificationsKey);
       final localThemeMode = ThemeMode.values.firstWhere(
         (mode) => mode.name == themeModeString,
         orElse: () => ThemeMode.system,
@@ -36,6 +42,8 @@ class LocalSettingsRepository implements SettingsRepository {
       return UserPreferences(
         themeMode: localThemeMode,
         localeCode: localeCode,
+        notificationsEnabled: notificationsEnabled != 'false',
+        emailNotifications: emailNotifications != 'false',
       );
     } catch (error, stackTrace) {
       AppLogger.error('Failed to load user preferences', error, stackTrace);
@@ -52,6 +60,14 @@ class LocalSettingsRepository implements SettingsRepository {
       } else {
         await _storage.delete(_localeCodeKey);
       }
+      await _storage.write(
+        _notificationsEnabledKey,
+        preferences.notificationsEnabled.toString(),
+      );
+      await _storage.write(
+        _emailNotificationsKey,
+        preferences.emailNotifications.toString(),
+      );
       return preferences;
     } catch (error, stackTrace) {
       AppLogger.error('Failed to save user preferences', error, stackTrace);

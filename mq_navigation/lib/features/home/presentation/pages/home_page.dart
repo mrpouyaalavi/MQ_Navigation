@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 
@@ -12,9 +13,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final subtitleColor = theme.colorScheme.onSurfaceVariant;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('MQ Navigation')),
+      appBar: AppBar(title: Text(l10n.appName)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(MqSpacing.space4),
@@ -38,7 +41,7 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: MqSpacing.space4),
               Text(
-                'Welcome to\nMacquarie University',
+                l10n.welcomeTo(l10n.appName),
                 textAlign: TextAlign.center,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
@@ -46,9 +49,9 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: MqSpacing.space2),
               Text(
-                'Find your way around campus',
+                l10n.campusMapDesc,
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: MqColors.charcoal600,
+                  color: subtitleColor,
                 ),
               ),
 
@@ -60,9 +63,9 @@ class HomePage extends StatelessWidget {
                 height: 56,
                 child: FilledButton.icon(
                   icon: const Icon(Icons.map, size: 24),
-                  label: const Text(
-                    'Explore Campus Map',
-                    style: TextStyle(fontSize: 18),
+                  label: Text(
+                    l10n.exploreMap,
+                    style: const TextStyle(fontSize: 18),
                   ),
                   onPressed: () => context.go('/map'),
                 ),
@@ -72,7 +75,7 @@ class HomePage extends StatelessWidget {
 
               // Quick access grid
               Text(
-                'Quick Access',
+                l10n.campusNavigation,
                 style: theme.textTheme.titleMedium,
               ),
               const SizedBox(height: MqSpacing.space3),
@@ -84,26 +87,30 @@ class HomePage extends StatelessWidget {
                 mainAxisSpacing: MqSpacing.space3,
                 crossAxisSpacing: MqSpacing.space3,
                 childAspectRatio: 1.4,
-                children: const [
+                children: [
                   _QuickAccessCard(
                     icon: Icons.restaurant,
-                    label: 'Food & Dining',
+                    label: l10n.food,
                     color: Colors.orange,
+                    searchQuery: 'food',
                   ),
                   _QuickAccessCard(
                     icon: Icons.local_parking,
-                    label: 'Parking',
+                    label: l10n.services,
                     color: Colors.purple,
+                    searchQuery: 'parking',
                   ),
                   _QuickAccessCard(
                     icon: Icons.menu_book,
-                    label: 'Library',
+                    label: l10n.study,
                     color: Colors.blue,
+                    searchQuery: 'library',
                   ),
                   _QuickAccessCard(
                     icon: Icons.local_hospital,
-                    label: 'Health',
+                    label: l10n.health,
                     color: Colors.green,
+                    searchQuery: 'health',
                   ),
                 ],
               ),
@@ -120,17 +127,19 @@ class _QuickAccessCard extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.color,
+    required this.searchQuery,
   });
 
   final IconData icon;
   final String label;
   final Color color;
+  final String searchQuery;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () => context.go('/map'),
+        onTap: () => context.go('/map?q=$searchQuery'),
         borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
         child: Padding(
           padding: const EdgeInsets.all(MqSpacing.space3),

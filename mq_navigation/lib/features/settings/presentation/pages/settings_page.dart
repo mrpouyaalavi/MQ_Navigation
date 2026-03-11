@@ -21,7 +21,7 @@ class SettingsPage extends ConsumerWidget {
             padding: const EdgeInsets.all(MqSpacing.space4),
             children: [
               _SettingsSection(
-                title: 'General',
+                title: l10n.settings_general,
                 child: Column(
                   children: [
                     _DropdownListTile<ThemeMode>(
@@ -30,8 +30,8 @@ class SettingsPage extends ConsumerWidget {
                       value: preferences.themeMode,
                       itemLabel: (value) => switch (value) {
                         ThemeMode.system => l10n.system,
-                        ThemeMode.light => l10n.light,
-                        ThemeMode.dark => l10n.dark,
+                        ThemeMode.light  => l10n.light,
+                        ThemeMode.dark   => l10n.dark,
                       },
                       items: ThemeMode.values,
                       onChanged: (value) => ref
@@ -44,13 +44,13 @@ class SettingsPage extends ConsumerWidget {
                       title: l10n.language,
                       value: preferences.localeCode,
                       itemLabel: (value) => switch (value) {
-                        null => 'System default',
-                        'en' => 'English',
-                        'ar' => 'Arabic',
-                        'fa' => 'Persian',
-                        'zh' => 'Chinese',
-                        'hi' => 'Hindi',
-                        _ => value.toUpperCase(),
+                        null  => l10n.system,
+                        'en'  => 'English',
+                        'ar'  => 'العربية',
+                        'fa'  => 'فارسی',
+                        'zh'  => '中文',
+                        'hi'  => 'हिन्दी',
+                        _     => value.toUpperCase(),
                       },
                       items: const [null, 'en', 'ar', 'fa', 'zh', 'hi'],
                       onChanged: (value) => ref
@@ -76,7 +76,7 @@ class SettingsPage extends ConsumerWidget {
                     const Divider(height: 1),
                     SwitchListTile(
                       secondary: const Icon(Icons.mail_outline),
-                      title: const Text('Email notifications'),
+                      title: Text(l10n.emailNotifications),
                       value: preferences.emailNotifications,
                       onChanged: (value) => ref
                           .read(settingsControllerProvider.notifier)
@@ -86,24 +86,20 @@ class SettingsPage extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: MqSpacing.space4),
-              const _SettingsSection(
-                title: 'Experience',
+              _SettingsSection(
+                title: l10n.settings_experience,
                 child: Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.map_outlined),
-                      title: Text('Campus navigation'),
-                      subtitle: Text(
-                        'Search 153 buildings and get walking directions across campus.',
-                      ),
+                      leading: const Icon(Icons.map_outlined),
+                      title: Text(l10n.campusMapDesc),
+                      subtitle: Text(l10n.aboutDesc),
                     ),
-                    Divider(height: 1),
+                    const Divider(height: 1),
                     ListTile(
-                      leading: Icon(Icons.schedule_outlined),
-                      title: Text('Study prompts'),
-                      subtitle: Text(
-                        'Get daily reminders to stay on track with your schedule.',
-                      ),
+                      leading: const Icon(Icons.schedule_outlined),
+                      title: Text(l10n.studyPromptLabel),
+                      subtitle: Text(l10n.emailNotificationsDesc),
                     ),
                   ],
                 ),
@@ -129,22 +125,20 @@ class SettingsPage extends ConsumerWidget {
                           size: 24,
                         ),
                       ),
-                      title: const Text('MQ Navigation'),
+                      title: Text(l10n.appName),
+                      subtitle: Text(l10n.aboutDesc),
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.code_outlined),
+                      title: Text(l10n.version),
+                      subtitle: const Text('1.0.0'),
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.people_outline),
+                      title: Text(l10n.about_theTeam),
                       subtitle: const Text(
-                        'Flutter mobile client for Macquarie University.',
-                      ),
-                    ),
-                    const Divider(height: 1),
-                    const ListTile(
-                      leading: Icon(Icons.code_outlined),
-                      title: Text('Version'),
-                      subtitle: Text('1.0.0'),
-                    ),
-                    const Divider(height: 1),
-                    const ListTile(
-                      leading: Icon(Icons.people_outline),
-                      title: Text('Authors'),
-                      subtitle: Text(
                         'Raouf Abedini & Pouya Alavi\nCOMP3130, Macquarie University',
                       ),
                     ),
@@ -154,10 +148,10 @@ class SettingsPage extends ConsumerWidget {
             ],
           );
         },
-        error: (error, stackTrace) => const Center(
+        error: (error, stackTrace) => Center(
           child: Padding(
-            padding: EdgeInsets.all(MqSpacing.space4),
-            child: Text('Unable to load your settings.'),
+            padding: const EdgeInsets.all(MqSpacing.space4),
+            child: Text(l10n.settingsError),
           ),
         ),
         loading: () => const Center(child: CircularProgressIndicator()),

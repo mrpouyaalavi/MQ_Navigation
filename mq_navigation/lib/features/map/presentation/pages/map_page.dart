@@ -10,12 +10,13 @@ import 'package:mq_navigation/features/map/presentation/widgets/campus_map_view.
 import 'package:mq_navigation/features/map/presentation/widgets/route_panel.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 import 'package:mq_navigation/shared/widgets/mq_app_bar.dart';
-import 'package:mq_navigation/shared/widgets/mq_button.dart';
+import 'package:mq_navigation/shared/widgets/mq_button.dart'; // ignore: unused_import
 
 class MapPage extends ConsumerStatefulWidget {
-  const MapPage({super.key, this.initialBuildingId});
+  const MapPage({super.key, this.initialBuildingId, this.initialSearchQuery});
 
   final String? initialBuildingId;
+  final String? initialSearchQuery;
 
   @override
   ConsumerState<MapPage> createState() => _MapPageState();
@@ -26,9 +27,16 @@ class _MapPageState extends ConsumerState<MapPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final buildingId = widget.initialBuildingId;
+    final searchQuery = widget.initialSearchQuery;
     if (buildingId != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(mapControllerProvider.notifier).selectBuildingById(buildingId);
+      });
+    } else if (searchQuery != null && searchQuery.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .read(mapControllerProvider.notifier)
+            .updateSearchQuery(searchQuery);
       });
     }
   }
@@ -163,23 +171,12 @@ class _MapPageState extends ConsumerState<MapPage> {
 
               // ── Map view ──
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    MqSpacing.space4,
-                    MqSpacing.space3,
-                    MqSpacing.space4,
-                    0,
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
-                    child: CampusMapView(
-                      buildings: mapState.buildings,
-                      selectedBuilding: mapState.selectedBuilding,
-                      route: mapState.route,
-                      currentLocation: mapState.currentLocation,
-                      onSelectBuilding: controller.selectBuilding,
-                    ),
-                  ),
+                child: CampusMapView(
+                  buildings: mapState.buildings,
+                  selectedBuilding: mapState.selectedBuilding,
+                  route: mapState.route,
+                  currentLocation: mapState.currentLocation,
+                  onSelectBuilding: controller.selectBuilding,
                 ),
               ),
 
@@ -196,7 +193,7 @@ class _MapPageState extends ConsumerState<MapPage> {
                   route: mapState.route,
                   travelMode: mapState.travelMode,
                   isLoading: mapState.isLoadingRoute,
-                  onLoadRoute: () => _ensureLocationAndLoadRoute(context),
+                  onLoadRoute: controller.loadRoute,
                   onClearRoute: controller.clearRoute,
                   onTravelModeChanged: controller.setTravelMode,
                 ),
@@ -243,118 +240,14 @@ class _MapPageState extends ConsumerState<MapPage> {
           ),
         ),
       ),
-      floatingActionButton: DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: MqColors.red.withValues(alpha: 0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: FloatingActionButton(
-          onPressed: () =>
-              _ensureLocationAndLoadRoute(context, onlyCenter: true),
-          backgroundColor: MqColors.red,
-          foregroundColor: Colors.white,
-          child: const Icon(Icons.my_location),
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            ref.read(mapControllerProvider.notifier).centerOnCurrentLocation(),
+        backgroundColor: MqColors.red,
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.my_location),
       ),
     );
-  }
-
-  Future<void> _ensureLocationAndLoadRoute(
-    BuildContext context, {
-    bool onlyCenter = false,
-  }) async {
-    final l10n = AppLocalizations.of(context)!;
-    final isDark = context.isDarkMode;
-
-    final proceed = await showModalBottomSheet<bool>(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return Container(
-          decoration: BoxDecoration(
-            color: isDark ? MqColors.charcoal800 : Colors.white,
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(MqSpacing.radiusXl),
-            ),
-          ),
-          padding: const EdgeInsets.all(MqSpacing.space6),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: isDark ? MqColors.charcoal600 : MqColors.sand300,
-                    borderRadius:
-                        BorderRadius.circular(MqSpacing.radiusFull),
-                  ),
-                ),
-              ),
-              const SizedBox(height: MqSpacing.space5),
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(MqSpacing.space2),
-                    decoration: BoxDecoration(
-                      color: MqColors.red.withValues(alpha: 0.1),
-                      borderRadius:
-                          BorderRadius.circular(MqSpacing.radiusMd),
-                    ),
-                    child: const Icon(
-                      Icons.my_location,
-                      color: MqColors.red,
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: MqSpacing.space3),
-                  Text(
-                    l10n.map,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: MqSpacing.space3),
-              Text(
-                l10n.walkingDirectionsDesc,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: isDark
-                      ? MqColors.sand400
-                      : MqColors.contentTertiary,
-                ),
-              ),
-              const SizedBox(height: MqSpacing.space5),
-              MqButton(
-                label: l10n.centerOnLocation,
-                icon: Icons.navigation,
-                onPressed: () => Navigator.of(context).pop(true),
-              ),
-              const SizedBox(height: MqSpacing.space2),
-            ],
-          ),
-        );
-      },
-    );
-
-    if (proceed != true || !context.mounted) {
-      return;
-    }
-
-    if (onlyCenter) {
-      await ref.read(mapControllerProvider.notifier).centerOnCurrentLocation();
-    } else {
-      await ref.read(mapControllerProvider.notifier).loadRoute();
-    }
   }
 
   String _errorTitle(AppLocalizations l10n, MapStateError error) {
