@@ -1,8 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/map/data/datasources/places_search_source.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:mq_navigation/features/map/domain/services/building_search.dart';
 import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 
 class BuildingSearchSheet extends ConsumerStatefulWidget {
   const BuildingSearchSheet({super.key});
@@ -14,6 +22,9 @@ class BuildingSearchSheet extends ConsumerStatefulWidget {
 
 class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
   late final TextEditingController _controller;
+  Timer? _placesDebounce;
+  List<PlaceSuggestion> _placeSuggestions = const [];
+  bool _isLoadingPlaces = false;
 
   @override
   void initState() {
@@ -25,15 +36,85 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
 
   @override
   void dispose() {
+    _placesDebounce?.cancel();
     _controller.dispose();
     super.dispose();
+  }
+
+  void _onSearchChanged(String value) {
+    ref.read(mapControllerProvider.notifier).updateSearchQuery(value);
+    _schedulePlacesSearch(value);
+  }
+
+  void _schedulePlacesSearch(String query) {
+    _placesDebounce?.cancel();
+
+    if (query.trim().length < 3) {
+      setState(() {
+        _placeSuggestions = const [];
+        _isLoadingPlaces = false;
+      });
+      return;
+    }
+
+    _placesDebounce = Timer(const Duration(milliseconds: 300), () {
+      _fetchPlaceSuggestions(query);
+    });
+  }
+
+  Future<void> _fetchPlaceSuggestions(String query) async {
+    final state = ref.read(mapControllerProvider).value;
+    final results = state?.searchResults ?? const <Building>[];
+    final normalized = normalizeMapSearch(query);
+
+    // Only fetch Places suggestions when campus search has no strong matches.
+    final hasStrongMatch = results.any(
+      (building) => isStrongCampusMatch(building, normalized),
+    );
+    if (hasStrongMatch) {
+      setState(() {
+        _placeSuggestions = const [];
+        _isLoadingPlaces = false;
+      });
+      return;
+    }
+
+    setState(() => _isLoadingPlaces = true);
+
+    final location = state?.currentLocation;
+    final suggestions = await ref
+        .read(placesSearchSourceProvider)
+        .search(
+          query,
+          latitude: location?.latitude,
+          longitude: location?.longitude,
+        );
+
+    if (!mounted) return;
+
+    setState(() {
+      _placeSuggestions = suggestions;
+      _isLoadingPlaces = false;
+    });
+  }
+
+  void _onPlaceTapped(PlaceSuggestion suggestion) {
+    ref
+        .read(mapControllerProvider.notifier)
+        .setRenderer(MapRendererType.google);
+    Navigator.of(context).pop();
+    context.showSnackBar(suggestion.description);
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = context.isDarkMode;
     final state = ref.watch(mapControllerProvider).value;
     final results = state?.searchResults ?? const <Building>[];
+    final query = _controller.text.trim();
+    final showPlacesSection =
+        query.length >= 3 && (_placeSuggestions.isNotEmpty || _isLoadingPlaces);
 
     return DraggableScrollableSheet(
       expand: false,
@@ -47,7 +128,7 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
           borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
           child: ListView(
             controller: scrollController,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(MqSpacing.space4),
             children: [
               TextField(
                 controller: _controller,
@@ -55,13 +136,9 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
                   hintText: l10n.searchBuildingsPlaceholder,
                   prefixIcon: const Icon(Icons.search),
                 ),
-                onChanged: (value) {
-                  ref
-                      .read(mapControllerProvider.notifier)
-                      .updateSearchQuery(value);
-                },
+                onChanged: _onSearchChanged,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: MqSpacing.space4),
               ...results.map(
                 (building) => ListTile(
                   title: Text(building.name),
@@ -74,6 +151,65 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
                   },
                 ),
               ),
+              if (showPlacesSection) ...[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: MqSpacing.space3,
+                  ),
+                  child: Divider(
+                    color: isDark ? MqColors.charcoal600 : MqColors.sand300,
+                    height: 1,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: MqSpacing.space4,
+                    bottom: MqSpacing.space2,
+                    top: MqSpacing.space1,
+                  ),
+                  child: Text(
+                    'Nearby places',
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: isDark
+                          ? MqColors.contentSecondaryDark
+                          : MqColors.contentSecondary,
+                    ),
+                  ),
+                ),
+                if (_isLoadingPlaces)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: MqSpacing.space4),
+                    child: Center(
+                      child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                  )
+                else
+                  ..._placeSuggestions.map(
+                    (suggestion) => ListTile(
+                      leading: Icon(
+                        Icons.place,
+                        color: isDark
+                            ? MqColors.contentSecondaryDark
+                            : MqColors.contentTertiary,
+                      ),
+                      title: Text(
+                        suggestion.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      minVerticalPadding: MqSpacing.space2,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: MqSpacing.space4,
+                      ),
+                      onTap: () => _onPlaceTapped(suggestion),
+                    ),
+                  ),
+              ],
             ],
           ),
         );
