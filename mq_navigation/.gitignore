@@ -61,3 +61,6 @@ GoogleService-Info.plist
 
 # Flutter plugins file
 .flutter-plugins
+
+# Codex desktop workspace metadata
+.codex/

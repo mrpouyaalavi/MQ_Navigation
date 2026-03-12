@@ -4,6 +4,23 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-12 (AEDT) — Ignore Codex workspace metadata
+
+**Scope:** Keep the Flutter repo clean after local Codex runs.
+
+**Summary:**
+Added `.codex/` to the app-level `.gitignore` so local Codex desktop workspace metadata does not appear as an untracked repository change. This is cleanup only; it does not affect runtime behavior or build output.
+
+**Files changed:**
+- `.gitignore` — ignored `.codex/`
+- `AGENT.md`, `CHANGELOG.md` — appended Raouf cleanup log entries
+
+**Verification:**
+- `git status --short` — `.codex/` no longer appears as an untracked path
+
+**Follow-ups:**
+- None
+
 ### Raouf: 2026-03-12 (AEDT) — Fix Chrome Google Maps teardown crash
 
 **Scope:** Remove the web-only Google Maps dispose path that was crashing Chrome during renderer teardown.
