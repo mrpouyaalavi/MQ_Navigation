@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "අධ්‍යයන මතක්කිරීම",
-  "studyPromptNotificationBody": "ඔබේ ඊළඟ නියමිත දිනය සමාලෝචනය කර එක් අවධානය යොමු කළ අධ්‍යයන කොටසක් සැලසුම් කරන්න."
+  "studyPromptNotificationBody": "ඔබේ ඊළඟ නියමිත දිනය සමාලෝචනය කර එක් අවධානය යොමු කළ අධ්‍යයන කොටසක් සැලසුම් කරන්න.",
+  "youveArrived": "ඔබ පැමිණ ඇත!",
+  "openStreetView": "Street View විවෘත කරන්න",
+  "nearbyPlaces": "අසල ස්ථාන",
+  "campusOverlayUnavailable": "කැම්පස් ආවරණ දත්ත ලබා ගත නොහැක.",
+  "stepsCount": "{count, plural, =1{පියවර 1ක්} other{පියවර {count}ක්}}",
+  "durationMinutes": "{minutes} මිනි",
+  "durationHoursMinutes": "{hours}පැ {minutes}මි"
 }

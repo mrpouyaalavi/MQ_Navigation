@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "படிப்பு நினைவூட்டல்",
-  "studyPromptNotificationBody": "உங்கள் அடுத்த காலக்கெடுவை மதிப்பாய்வு செய்து ஒரு கவனமான படிப்புத் தொகுதியைத் திட்டமிடுங்கள்."
+  "studyPromptNotificationBody": "உங்கள் அடுத்த காலக்கெடுவை மதிப்பாய்வு செய்து ஒரு கவனமான படிப்புத் தொகுதியைத் திட்டமிடுங்கள்.",
+  "youveArrived": "நீங்கள் வந்துவிட்டீர்கள்!",
+  "openStreetView": "தெரு காட்சியைத் திற",
+  "nearbyPlaces": "அருகிலுள்ள இடங்கள்",
+  "campusOverlayUnavailable": "வளாக மேலடுக்குத் தரவு கிடைக்கவில்லை.",
+  "stepsCount": "{count, plural, =1{1 படி} other{{count} படிகள்}}",
+  "durationMinutes": "{minutes} நிமி",
+  "durationHoursMinutes": "{hours}ம {minutes}நி"
 }

@@ -48,8 +48,6 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
   final MapController _controller = MapController();
   late final Future<CampusOverlayMeta> _metaFuture;
   CampusProjection? _projection;
-  double? _resolvedMinZoom;
-
   @override
   void initState() {
     super.initState();
@@ -97,20 +95,6 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
       return;
     }
 
-    final newLocation = widget.currentLocation;
-    final oldLocation = oldWidget.currentLocation;
-    if (!widget.isNavigating &&
-        newLocation != null &&
-        (oldLocation == null ||
-            newLocation.latitude != oldLocation.latitude ||
-            newLocation.longitude != oldLocation.longitude)) {
-      _moveMap(
-        projection.gpsToMapPoint(
-          latitude: newLocation.latitude,
-          longitude: newLocation.longitude,
-        ),
-      );
-    }
   }
 
   @override
@@ -180,12 +164,19 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
               initialZoom: 0,
               initialCameraFit: CameraFit.bounds(
                 bounds: bounds,
-                padding: EdgeInsets.all(meta.initialFitPadding),
+                // Extra top/bottom padding for the overlaid glass controls
+                // (search bar + toggle ~120px top, side controls ~60px bottom).
+                padding: EdgeInsets.fromLTRB(
+                  meta.initialFitPadding,
+                  meta.initialFitPadding + 100,
+                  meta.initialFitPadding,
+                  meta.initialFitPadding + 40,
+                ),
                 maxZoom: meta.maxZoom,
               ),
-              minZoom: _resolvedMinZoom,
+              minZoom: -2,
               maxZoom: meta.maxZoom,
-              cameraConstraint: CameraConstraint.contain(bounds: bounds),
+              cameraConstraint: const CameraConstraint.unconstrained(),
               onMapReady: () => _handleMapReady(meta, projection),
             ),
             children: [
@@ -225,14 +216,6 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;
-      }
-
-      final nextMinZoom = _currentZoom(fallback: 0) - meta.minZoomOffset;
-      if (_resolvedMinZoom == null ||
-          (_resolvedMinZoom! - nextMinZoom).abs() > 0.01) {
-        setState(() {
-          _resolvedMinZoom = nextMinZoom;
-        });
       }
 
       if (widget.selectedBuilding case final selectedBuilding?) {

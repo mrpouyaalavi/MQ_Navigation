@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Напоминание об учёбе",
-  "studyPromptNotificationBody": "Проверьте ближайший дедлайн и запланируйте сфокусированный блок учёбы."
+  "studyPromptNotificationBody": "Проверьте ближайший дедлайн и запланируйте сфокусированный блок учёбы.",
+  "youveArrived": "Вы прибыли!",
+  "openStreetView": "Открыть Street View",
+  "nearbyPlaces": "Места поблизости",
+  "campusOverlayUnavailable": "Данные наложения кампуса недоступны.",
+  "stepsCount": "{count, plural, =1{1 шаг} few{{count} шага} other{{count} шагов}}",
+  "durationMinutes": "{minutes} мин",
+  "durationHoursMinutes": "{hours}ч {minutes}м"
 }

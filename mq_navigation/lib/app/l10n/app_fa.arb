@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "یادآوری مطالعه",
-  "studyPromptNotificationBody": "مهلت بعدی خود را بررسی کنید و یک بلوک مطالعه متمرکز برنامه‌ریزی کنید."
+  "studyPromptNotificationBody": "مهلت بعدی خود را بررسی کنید و یک بلوک مطالعه متمرکز برنامه‌ریزی کنید.",
+  "youveArrived": "!رسیدید",
+  "openStreetView": "باز کردن نمای خیابان",
+  "nearbyPlaces": "مکان‌های نزدیک",
+  "campusOverlayUnavailable": "اطلاعات نقشه پردیس در دسترس نیست.",
+  "stepsCount": "{count, plural, =1{۱ مرحله} other{{count} مرحله}}",
+  "durationMinutes": "{minutes} دقیقه",
+  "durationHoursMinutes": "{hours}س {minutes}د"
 }

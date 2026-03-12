@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Нагадування про навчання",
-  "studyPromptNotificationBody": "Перевірте найближчий дедлайн і заплануйте сфокусований блок навчання."
+  "studyPromptNotificationBody": "Перевірте найближчий дедлайн і заплануйте сфокусований блок навчання.",
+  "youveArrived": "Ви прибули!",
+  "openStreetView": "Відкрити Street View",
+  "nearbyPlaces": "Місця поблизу",
+  "campusOverlayUnavailable": "Дані накладення кампусу недоступні.",
+  "stepsCount": "{count, plural, =1{1 крок} few{{count} кроки} other{{count} кроків}}",
+  "durationMinutes": "{minutes} хв",
+  "durationHoursMinutes": "{hours}г {minutes}хв"
 }

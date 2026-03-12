@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Studieherinnering",
-  "studyPromptNotificationBody": "Bekijk je volgende deadline en plan een geconcentreerd studieblok."
+  "studyPromptNotificationBody": "Bekijk je volgende deadline en plan een geconcentreerd studieblok.",
+  "youveArrived": "U bent aangekomen!",
+  "openStreetView": "Street View openen",
+  "nearbyPlaces": "Plaatsen in de buurt",
+  "campusOverlayUnavailable": "Campusoverlaygegevens zijn niet beschikbaar.",
+  "stepsCount": "{count, plural, =1{1 stap} other{{count} stappen}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}u {minutes}m"
 }

@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Çalışma hatırlatıcısı",
-  "studyPromptNotificationBody": "Bir sonraki son tarihinizi gözden geçirin ve odaklanmış bir çalışma bloğu planlayın."
+  "studyPromptNotificationBody": "Bir sonraki son tarihinizi gözden geçirin ve odaklanmış bir çalışma bloğu planlayın.",
+  "youveArrived": "Vardınız!",
+  "openStreetView": "Street View'ı Aç",
+  "nearbyPlaces": "Yakındaki yerler",
+  "campusOverlayUnavailable": "Kampüs katman verileri mevcut değil.",
+  "stepsCount": "{count, plural, =1{1 adım} other{{count} adım}}",
+  "durationMinutes": "{minutes} dk",
+  "durationHoursMinutes": "{hours}sa {minutes}dk"
 }

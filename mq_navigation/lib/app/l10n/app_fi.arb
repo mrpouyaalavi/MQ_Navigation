@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Opiskelumuistutus",
-  "studyPromptNotificationBody": "Tarkista seuraava määräaikasi ja suunnittele keskittynyt opiskelujakso."
+  "studyPromptNotificationBody": "Tarkista seuraava määräaikasi ja suunnittele keskittynyt opiskelujakso.",
+  "youveArrived": "Olet perillä!",
+  "openStreetView": "Avaa Street View",
+  "nearbyPlaces": "Läheiset paikat",
+  "campusOverlayUnavailable": "Kampuksen karttakerroksen tiedot eivät ole saatavilla.",
+  "stepsCount": "{count, plural, =1{1 vaihe} other{{count} vaihetta}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}t {minutes}m"
 }

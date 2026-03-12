@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Studiepåminnelse",
-  "studyPromptNotificationBody": "Granska din nästa deadline och planera ett fokuserat studiepass."
+  "studyPromptNotificationBody": "Granska din nästa deadline och planera ett fokuserat studiepass.",
+  "youveArrived": "Du har anlänt!",
+  "openStreetView": "Öppna Street View",
+  "nearbyPlaces": "Platser i närheten",
+  "campusOverlayUnavailable": "Campusöverläggsdata är inte tillgängliga.",
+  "stepsCount": "{count, plural, =1{1 steg} other{{count} steg}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}t {minutes}m"
 }

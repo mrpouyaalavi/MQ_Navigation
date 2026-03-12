@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "学习提醒",
-  "studyPromptNotificationBody": "查看您的下一个截止日期，并计划一个专注的学习时段。"
+  "studyPromptNotificationBody": "查看您的下一个截止日期，并计划一个专注的学习时段。",
+  "youveArrived": "您已到达！",
+  "openStreetView": "打开街景",
+  "nearbyPlaces": "附近地点",
+  "campusOverlayUnavailable": "校园覆盖层数据不可用。",
+  "stepsCount": "{count, plural, other{{count}步}}",
+  "durationMinutes": "{minutes}分钟",
+  "durationHoursMinutes": "{hours}小时{minutes}分钟"
 }

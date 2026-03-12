@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "अध्ययन अनुस्मारक",
-  "studyPromptNotificationBody": "अपनी अगली समय सीमा की समीक्षा करें और एक केंद्रित अध्ययन ब्लॉक की योजना बनाएं।"
+  "studyPromptNotificationBody": "अपनी अगली समय सीमा की समीक्षा करें और एक केंद्रित अध्ययन ब्लॉक की योजना बनाएं।",
+  "youveArrived": "आप पहुँच गए!",
+  "openStreetView": "स्ट्रीट व्यू खोलें",
+  "nearbyPlaces": "आस-पास के स्थान",
+  "campusOverlayUnavailable": "कैम्पस ओवरले डेटा उपलब्ध नहीं है।",
+  "stepsCount": "{count, plural, =1{1 चरण} other{{count} चरण}}",
+  "durationMinutes": "{minutes} मिनट",
+  "durationHoursMinutes": "{hours}घं {minutes}मि"
 }

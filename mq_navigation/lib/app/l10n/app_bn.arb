@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "পড়াশোনার অনুস্মারক",
-  "studyPromptNotificationBody": "আপনার পরবর্তী সময়সীমা পর্যালোচনা করুন এবং একটি মনোযোগী অধ্যয়ন ব্লক পরিকল্পনা করুন।"
+  "studyPromptNotificationBody": "আপনার পরবর্তী সময়সীমা পর্যালোচনা করুন এবং একটি মনোযোগী অধ্যয়ন ব্লক পরিকল্পনা করুন।",
+  "youveArrived": "আপনি পৌঁছে গেছেন!",
+  "openStreetView": "স্ট্রিট ভিউ খুলুন",
+  "nearbyPlaces": "কাছাকাছি স্থান",
+  "campusOverlayUnavailable": "ক্যাম্পাস ওভারলে তথ্য অনুপলব্ধ।",
+  "stepsCount": "{count, plural, =1{১টি ধাপ} other{{count}টি ধাপ}}",
+  "durationMinutes": "{minutes} মিনিট",
+  "durationHoursMinutes": "{hours}ঘ {minutes}মি"
 }

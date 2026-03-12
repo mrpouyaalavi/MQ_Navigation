@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "学習リマインダー",
-  "studyPromptNotificationBody": "次の締め切りを確認し、集中学習ブロックを計画しましょう。"
+  "studyPromptNotificationBody": "次の締め切りを確認し、集中学習ブロックを計画しましょう。",
+  "youveArrived": "到着しました！",
+  "openStreetView": "ストリートビューを開く",
+  "nearbyPlaces": "近くの場所",
+  "campusOverlayUnavailable": "キャンパスオーバーレイデータが利用できません。",
+  "stepsCount": "{count, plural, other{{count}ステップ}}",
+  "durationMinutes": "{minutes}分",
+  "durationHoursMinutes": "{hours}時間{minutes}分"
 }

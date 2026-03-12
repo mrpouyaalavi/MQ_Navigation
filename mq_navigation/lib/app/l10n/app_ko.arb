@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "학습 알림",
-  "studyPromptNotificationBody": "다음 마감일을 확인하고 집중 학습 블록을 계획하세요."
+  "studyPromptNotificationBody": "다음 마감일을 확인하고 집중 학습 블록을 계획하세요.",
+  "youveArrived": "도착했습니다!",
+  "openStreetView": "스트리트 뷰 열기",
+  "nearbyPlaces": "주변 장소",
+  "campusOverlayUnavailable": "캠퍼스 오버레이 데이터를 사용할 수 없습니다.",
+  "stepsCount": "{count, plural, other{{count}단계}}",
+  "durationMinutes": "{minutes}분",
+  "durationHoursMinutes": "{hours}시간 {minutes}분"
 }

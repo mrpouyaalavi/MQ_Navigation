@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "เตือนการเรียน",
-  "studyPromptNotificationBody": "ตรวจสอบกำหนดส่งถัดไปของคุณและวางแผนช่วงเรียนที่มุ่งเน้น"
+  "studyPromptNotificationBody": "ตรวจสอบกำหนดส่งถัดไปของคุณและวางแผนช่วงเรียนที่มุ่งเน้น",
+  "youveArrived": "คุณมาถึงแล้ว!",
+  "openStreetView": "เปิด Street View",
+  "nearbyPlaces": "สถานที่ใกล้เคียง",
+  "campusOverlayUnavailable": "ข้อมูลโอเวอร์เลย์ของวิทยาเขตไม่พร้อมใช้งาน",
+  "stepsCount": "{count, plural, =1{1 ขั้นตอน} other{{count} ขั้นตอน}}",
+  "durationMinutes": "{minutes} นาที",
+  "durationHoursMinutes": "{hours}ชม. {minutes}น."
 }

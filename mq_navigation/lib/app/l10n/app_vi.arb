@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Nhắc nhở học tập",
-  "studyPromptNotificationBody": "Xem lại hạn chót tiếp theo và lên kế hoạch cho một khối học tập tập trung."
+  "studyPromptNotificationBody": "Xem lại hạn chót tiếp theo và lên kế hoạch cho một khối học tập tập trung.",
+  "youveArrived": "Bạn đã đến nơi!",
+  "openStreetView": "Mở Street View",
+  "nearbyPlaces": "Địa điểm lân cận",
+  "campusOverlayUnavailable": "Dữ liệu lớp phủ khuôn viên không khả dụng.",
+  "stepsCount": "{count, plural, =1{1 bước} other{{count} bước}}",
+  "durationMinutes": "{minutes} phút",
+  "durationHoursMinutes": "{hours}g {minutes}p"
 }

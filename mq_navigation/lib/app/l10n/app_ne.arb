@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "अध्ययन सम्झना",
-  "studyPromptNotificationBody": "तपाईंको अर्को म्याद समीक्षा गर्नुहोस् र एउटा केन्द्रित अध्ययन ब्लक योजना बनाउनुहोस्।"
+  "studyPromptNotificationBody": "तपाईंको अर्को म्याद समीक्षा गर्नुहोस् र एउटा केन्द्रित अध्ययन ब्लक योजना बनाउनुहोस्।",
+  "youveArrived": "तपाईं पुग्नुभयो!",
+  "openStreetView": "स्ट्रिट भ्यू खोल्नुहोस्",
+  "nearbyPlaces": "नजिकका ठाउँहरू",
+  "campusOverlayUnavailable": "क्याम्पस ओभरले डेटा उपलब्ध छैन।",
+  "stepsCount": "{count, plural, =1{१ चरण} other{{count} चरण}}",
+  "durationMinutes": "{minutes} मिनेट",
+  "durationHoursMinutes": "{hours}घ {minutes}मि"
 }

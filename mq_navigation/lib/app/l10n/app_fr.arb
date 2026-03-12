@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Rappel d'étude",
-  "studyPromptNotificationBody": "Vérifiez votre prochaine échéance et planifiez un bloc d'étude concentré."
+  "studyPromptNotificationBody": "Vérifiez votre prochaine échéance et planifiez un bloc d'étude concentré.",
+  "youveArrived": "Vous êtes arrivé !",
+  "openStreetView": "Ouvrir Street View",
+  "nearbyPlaces": "Lieux à proximité",
+  "campusOverlayUnavailable": "Les données de superposition du campus ne sont pas disponibles.",
+  "stepsCount": "{count, plural, =1{1 étape} other{{count} étapes}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}h {minutes}m"
 }

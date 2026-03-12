@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Připomínka studia",
-  "studyPromptNotificationBody": "Zkontrolujte svůj nejbližší termín a naplánujte si soustředěný studijní blok."
+  "studyPromptNotificationBody": "Zkontrolujte svůj nejbližší termín a naplánujte si soustředěný studijní blok.",
+  "youveArrived": "Dorazili jste!",
+  "openStreetView": "Otevřít Street View",
+  "nearbyPlaces": "Místa v okolí",
+  "campusOverlayUnavailable": "Metadata překryvné vrstvy kampusu nejsou k dispozici.",
+  "stepsCount": "{count, plural, =1{1 krok} few{{count} kroky} other{{count} kroků}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}h {minutes}m"
 }

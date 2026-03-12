@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Memento de studiu",
-  "studyPromptNotificationBody": "Verifică următorul termen limită și planifică un bloc de studiu concentrat."
+  "studyPromptNotificationBody": "Verifică următorul termen limită și planifică un bloc de studiu concentrat.",
+  "youveArrived": "Ați ajuns!",
+  "openStreetView": "Deschide Street View",
+  "nearbyPlaces": "Locuri din apropiere",
+  "campusOverlayUnavailable": "Datele de suprapunere ale campusului nu sunt disponibile.",
+  "stepsCount": "{count, plural, =1{1 pas} other{{count} pași}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}h {minutes}m"
 }

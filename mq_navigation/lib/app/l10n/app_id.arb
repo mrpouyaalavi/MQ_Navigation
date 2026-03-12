@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Pengingat belajar",
-  "studyPromptNotificationBody": "Tinjau tenggat waktu berikutnya dan rencanakan satu blok belajar terfokus."
+  "studyPromptNotificationBody": "Tinjau tenggat waktu berikutnya dan rencanakan satu blok belajar terfokus.",
+  "youveArrived": "Anda telah tiba!",
+  "openStreetView": "Buka Street View",
+  "nearbyPlaces": "Tempat terdekat",
+  "campusOverlayUnavailable": "Data overlay kampus tidak tersedia.",
+  "stepsCount": "{count, plural, =1{1 langkah} other{{count} langkah}}",
+  "durationMinutes": "{minutes} mnt",
+  "durationHoursMinutes": "{hours}j {minutes}m"
 }

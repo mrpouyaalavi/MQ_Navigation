@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "תזכורת ללימודים",
-  "studyPromptNotificationBody": "בדוק את המועד הקרוב שלך ותכנן בלוק לימודים ממוקד."
+  "studyPromptNotificationBody": "בדוק את המועד הקרוב שלך ותכנן בלוק לימודים ממוקד.",
+  "youveArrived": "!הגעת",
+  "openStreetView": "פתח Street View",
+  "nearbyPlaces": "מקומות קרובים",
+  "campusOverlayUnavailable": "נתוני שכבת הקמפוס אינם זמינים.",
+  "stepsCount": "{count, plural, =1{צעד אחד} other{{count} צעדים}}",
+  "durationMinutes": "{minutes} דק׳",
+  "durationHoursMinutes": "{hours}ש {minutes}ד"
 }

@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Lernerinnerung",
-  "studyPromptNotificationBody": "Überprüfe deine nächste Frist und plane einen konzentrierten Lernblock."
+  "studyPromptNotificationBody": "Überprüfe deine nächste Frist und plane einen konzentrierten Lernblock.",
+  "youveArrived": "Sie sind angekommen!",
+  "openStreetView": "Street View öffnen",
+  "nearbyPlaces": "Orte in der Nähe",
+  "campusOverlayUnavailable": "Campus-Overlay-Daten sind nicht verfügbar.",
+  "stepsCount": "{count, plural, =1{1 Schritt} other{{count} Schritte}}",
+  "durationMinutes": "{minutes} Min.",
+  "durationHoursMinutes": "{hours}h {minutes}m"
 }

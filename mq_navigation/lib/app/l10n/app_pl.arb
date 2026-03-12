@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Przypomnienie o nauce",
-  "studyPromptNotificationBody": "Sprawdź najbliższy termin i zaplanuj skoncentrowany blok nauki."
+  "studyPromptNotificationBody": "Sprawdź najbliższy termin i zaplanuj skoncentrowany blok nauki.",
+  "youveArrived": "Dotarłeś!",
+  "openStreetView": "Otwórz Street View",
+  "nearbyPlaces": "Miejsca w pobliżu",
+  "campusOverlayUnavailable": "Dane nakładki kampusu są niedostępne.",
+  "stepsCount": "{count, plural, =1{1 krok} few{{count} kroki} other{{count} kroków}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}g {minutes}m"
 }

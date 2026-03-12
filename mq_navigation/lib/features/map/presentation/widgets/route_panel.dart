@@ -138,55 +138,65 @@ class _RoutePanelState extends State<RoutePanel> {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Text.rich(
-                          TextSpan(
-                            text: '${l10n.buildingCode}: ',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: isDark
-                                  ? Colors.white.withValues(alpha: 0.5)
-                                  : MqColors.contentTertiary,
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text.rich(
+                                TextSpan(
+                                  text: '${l10n.buildingCode}: ',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: isDark
+                                        ? Colors.white.withValues(alpha: 0.5)
+                                        : MqColors.contentTertiary,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: widget.selectedBuilding!.code,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: isDark
+                                            ? Colors.white
+                                            : MqColors.contentPrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                            children: [
-                              TextSpan(
-                                text: widget.selectedBuilding!.code,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: isDark
-                                      ? Colors.white
-                                      : MqColors.contentPrimary,
+                            if (widget.selectedBuilding!.category !=
+                                BuildingCategory.other) ...[
+                              const SizedBox(width: MqSpacing.space2),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 3,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: MqColors.vividRed
+                                      .withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(
+                                    MqSpacing.radiusFull,
+                                  ),
+                                ),
+                                child: Text(
+                                  widget.selectedBuilding!.category.name
+                                      .toUpperCase(),
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    color: MqColors.vividRed,
+                                    letterSpacing: 1.2,
+                                  ),
                                 ),
                               ),
                             ],
-                          ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  // Category badge
-                  if (widget.selectedBuilding!.category !=
-                      BuildingCategory.other)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: MqColors.vividRed.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(
-                          MqSpacing.radiusFull,
-                        ),
-                      ),
-                      child: Text(
-                        widget.selectedBuilding!.category.name.toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          color: MqColors.vividRed,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                    ),
                   IconButton(
                     icon: Icon(
                       Icons.close,

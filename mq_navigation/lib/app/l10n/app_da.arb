@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Studiepåmindelse",
-  "studyPromptNotificationBody": "Gennemgå din næste deadline og planlæg en fokuseret studieblok."
+  "studyPromptNotificationBody": "Gennemgå din næste deadline og planlæg en fokuseret studieblok.",
+  "youveArrived": "Du er ankommet!",
+  "openStreetView": "Åbn Street View",
+  "nearbyPlaces": "Steder i nærheden",
+  "campusOverlayUnavailable": "Campus-overlaydata er ikke tilgængelige.",
+  "stepsCount": "{count, plural, =1{1 trin} other{{count} trin}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}t {minutes}m"
 }

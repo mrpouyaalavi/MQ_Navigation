@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Recordatorio de estudio",
-  "studyPromptNotificationBody": "Revisa tu próximo plazo y planifica un bloque de estudio enfocado."
+  "studyPromptNotificationBody": "Revisa tu próximo plazo y planifica un bloque de estudio enfocado.",
+  "youveArrived": "¡Has llegado!",
+  "openStreetView": "Abrir Street View",
+  "nearbyPlaces": "Lugares cercanos",
+  "campusOverlayUnavailable": "Los datos de superposición del campus no están disponibles.",
+  "stepsCount": "{count, plural, =1{1 paso} other{{count} pasos}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}h {minutes}m"
 }

@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Studiepåminnelse",
-  "studyPromptNotificationBody": "Gjennomgå neste frist og planlegg en fokusert studieøkt."
+  "studyPromptNotificationBody": "Gjennomgå neste frist og planlegg en fokusert studieøkt.",
+  "youveArrived": "Du har ankommet!",
+  "openStreetView": "Åpne Street View",
+  "nearbyPlaces": "Steder i nærheten",
+  "campusOverlayUnavailable": "Campusoverlaydata er ikke tilgjengelig.",
+  "stepsCount": "{count, plural, =1{1 steg} other{{count} steg}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}t {minutes}m"
 }

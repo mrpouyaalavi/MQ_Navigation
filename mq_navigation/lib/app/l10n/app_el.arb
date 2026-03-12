@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Υπενθύμιση μελέτης",
-  "studyPromptNotificationBody": "Ελέγξτε την επόμενη προθεσμία σας και προγραμματίστε ένα μπλοκ εστιασμένης μελέτης."
+  "studyPromptNotificationBody": "Ελέγξτε την επόμενη προθεσμία σας και προγραμματίστε ένα μπλοκ εστιασμένης μελέτης.",
+  "youveArrived": "Φτάσατε!",
+  "openStreetView": "Άνοιγμα Street View",
+  "nearbyPlaces": "Κοντινά μέρη",
+  "campusOverlayUnavailable": "Τα δεδομένα επικάλυψης πανεπιστημιούπολης δεν είναι διαθέσιμα.",
+  "stepsCount": "{count, plural, =1{1 βήμα} other{{count} βήματα}}",
+  "durationMinutes": "{minutes} λεπ.",
+  "durationHoursMinutes": "{hours}ω {minutes}λ"
 }

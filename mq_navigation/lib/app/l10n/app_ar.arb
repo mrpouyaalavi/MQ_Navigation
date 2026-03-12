@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "تذكير بالدراسة",
-  "studyPromptNotificationBody": "راجع موعدك القادم وخطط لجلسة دراسة مركزة."
+  "studyPromptNotificationBody": "راجع موعدك القادم وخطط لجلسة دراسة مركزة.",
+  "youveArrived": "!لقد وصلت",
+  "openStreetView": "فتح التجوّل الافتراضي",
+  "nearbyPlaces": "أماكن قريبة",
+  "campusOverlayUnavailable": "بيانات خريطة الحرم غير متوفرة.",
+  "stepsCount": "{count, plural, =1{خطوة واحدة} other{{count} خطوات}}",
+  "durationMinutes": "{minutes} د",
+  "durationHoursMinutes": "{hours}س {minutes}د"
 }

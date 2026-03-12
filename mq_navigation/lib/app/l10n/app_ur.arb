@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "مطالعے کی یاددہانی",
-  "studyPromptNotificationBody": "اپنی اگلی ڈیڈلائن کا جائزہ لیں اور ایک مرکوز مطالعے کے بلاک کی منصوبہ بندی کریں۔"
+  "studyPromptNotificationBody": "اپنی اگلی ڈیڈلائن کا جائزہ لیں اور ایک مرکوز مطالعے کے بلاک کی منصوبہ بندی کریں۔",
+  "youveArrived": "!آپ پہنچ گئے",
+  "openStreetView": "اسٹریٹ ویو کھولیں",
+  "nearbyPlaces": "قریبی مقامات",
+  "campusOverlayUnavailable": "کیمپس اوورلے ڈیٹا دستیاب نہیں ہے۔",
+  "stepsCount": "{count, plural, =1{1 قدم} other{{count} قدم}}",
+  "durationMinutes": "{minutes} منٹ",
+  "durationHoursMinutes": "{hours}گھ {minutes}م"
 }

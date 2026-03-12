@@ -2010,5 +2010,12 @@
   "ends": "Ends",
   "itemNoLongerAvailable": "This item is no longer available.",
   "studyPromptNotificationTitle": "Peringatan belajar",
-  "studyPromptNotificationBody": "Semak tarikh akhir anda yang seterusnya dan rancang satu blok belajar berfokus."
+  "studyPromptNotificationBody": "Semak tarikh akhir anda yang seterusnya dan rancang satu blok belajar berfokus.",
+  "youveArrived": "Anda telah tiba!",
+  "openStreetView": "Buka Street View",
+  "nearbyPlaces": "Tempat berdekatan",
+  "campusOverlayUnavailable": "Data lapisan kampus tidak tersedia.",
+  "stepsCount": "{count, plural, =1{1 langkah} other{{count} langkah}}",
+  "durationMinutes": "{minutes} min",
+  "durationHoursMinutes": "{hours}j {minutes}m"
 }
