@@ -189,7 +189,11 @@ class _RoutePanelState extends State<RoutePanel> {
                             MqSpacing.radiusMd,
                           ),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
+                            constraints: const BoxConstraints(
+                              minWidth: MqSpacing.minTapTarget,
+                              minHeight: MqSpacing.minTapTarget,
+                            ),
+                            padding: const EdgeInsetsDirectional.symmetric(
                               horizontal: MqSpacing.space3,
                               vertical: MqSpacing.space3,
                             ),
@@ -418,30 +422,38 @@ class _ExpandableStepList extends StatelessWidget {
 
     return Column(
       children: [
-        GestureDetector(
+        InkWell(
           onTap: onToggle,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: MqSpacing.space1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${instructions.length} step${instructions.length != 1 ? 's' : ''}',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w500,
+          borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: MqSpacing.minTapTarget,
+            ),
+            child: Padding(
+              padding: const EdgeInsetsDirectional.symmetric(
+                vertical: MqSpacing.space1,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${instructions.length} step${instructions.length != 1 ? 's' : ''}',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: isDark
+                          ? MqColors.contentSecondaryDark
+                          : MqColors.contentSecondary,
+                    ),
+                  ),
+                  Icon(
+                    isExpanded ? Icons.expand_less : Icons.expand_more,
+                    size: 18,
                     color: isDark
                         ? MqColors.contentSecondaryDark
                         : MqColors.contentSecondary,
                   ),
-                ),
-                Icon(
-                  isExpanded ? Icons.expand_less : Icons.expand_more,
-                  size: 18,
-                  color: isDark
-                      ? MqColors.contentSecondaryDark
-                      : MqColors.contentSecondary,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

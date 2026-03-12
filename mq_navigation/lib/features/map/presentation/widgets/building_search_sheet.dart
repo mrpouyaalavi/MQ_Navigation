@@ -11,6 +11,7 @@ import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dar
 import 'package:mq_navigation/features/map/domain/services/building_search.dart';
 import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BuildingSearchSheet extends ConsumerStatefulWidget {
   const BuildingSearchSheet({super.key});
@@ -99,11 +100,17 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
   }
 
   void _onPlaceTapped(PlaceSuggestion suggestion) {
-    ref
-        .read(mapControllerProvider.notifier)
-        .setRenderer(MapRendererType.google);
+    final controller = ref.read(mapControllerProvider.notifier);
+    controller.setRenderer(MapRendererType.google);
     Navigator.of(context).pop();
-    context.showSnackBar(suggestion.description);
+    // Launch Google Maps directions to the place via deep-link.
+    // We don't have GPS coordinates for the place, so use the place
+    // description as a search query in Google Maps.
+    final uri = Uri.parse(
+      'https://www.google.com/maps/search/?api=1'
+      '&query=${Uri.encodeComponent(suggestion.description)}',
+    );
+    launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   @override

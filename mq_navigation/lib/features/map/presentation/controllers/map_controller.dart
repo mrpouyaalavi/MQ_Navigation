@@ -530,7 +530,10 @@ class MapController extends AsyncNotifier<MapState> {
             }
             state = AsyncData(current.copyWith(currentLocation: location));
 
-            if (current.isNavigating && current.selectedBuilding != null) {
+            final updated = state.value;
+            if (updated != null &&
+                updated.isNavigating &&
+                updated.selectedBuilding != null) {
               _checkNavigationState(location);
             }
           },
