@@ -167,6 +167,7 @@ class _MapPageState extends ConsumerState<MapPage> {
                         onStopNavigation: controller.stopNavigation,
                         onDismissArrival: controller.dismissArrival,
                         onOpenInGoogleMaps: controller.openInGoogleMaps,
+                        onOpenStreetView: controller.openStreetView,
                       ),
                     ),
             ),

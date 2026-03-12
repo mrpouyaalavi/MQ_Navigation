@@ -464,6 +464,19 @@ class MapController extends AsyncNotifier<MapState> {
     clearSelection();
   }
 
+  Future<void> openStreetView() async {
+    final building = state.value?.selectedBuilding;
+    if (building == null) return;
+    final lat = building.routingLatitude ?? building.latitude;
+    final lng = building.routingLongitude ?? building.longitude;
+    if (lat == null || lng == null) return;
+
+    final uri = Uri.parse(
+      'https://www.google.com/maps/@$lat,$lng,3a,75y,0h,90t/data=!3m4!1e1!3m2!1s!2e0',
+    );
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
   Future<void> openInGoogleMaps() async {
     final current = state.value;
     if (current == null) {

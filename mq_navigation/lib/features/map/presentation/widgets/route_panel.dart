@@ -27,6 +27,7 @@ class RoutePanel extends StatefulWidget {
     required this.onStopNavigation,
     required this.onDismissArrival,
     required this.onOpenInGoogleMaps,
+    required this.onOpenStreetView,
   });
 
   final Building? selectedBuilding;
@@ -43,6 +44,7 @@ class RoutePanel extends StatefulWidget {
   final VoidCallback onStopNavigation;
   final VoidCallback onDismissArrival;
   final VoidCallback onOpenInGoogleMaps;
+  final VoidCallback onOpenStreetView;
 
   @override
   State<RoutePanel> createState() => _RoutePanelState();
@@ -174,6 +176,41 @@ class _RoutePanelState extends State<RoutePanel> {
                       onPressed: widget.onClearRoute,
                     ),
                   ),
+                  if (widget.selectedBuilding != null) ...[
+                    const SizedBox(width: MqSpacing.space2),
+                    Semantics(
+                      button: true,
+                      label: 'Open Street View',
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: widget.onOpenStreetView,
+                          borderRadius: BorderRadius.circular(
+                            MqSpacing.radiusMd,
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: MqSpacing.space3,
+                              vertical: MqSpacing.space3,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: context.isDarkMode
+                                    ? MqColors.charcoal700
+                                    : MqColors.charcoal600.withValues(
+                                        alpha: 0.3,
+                                      ),
+                              ),
+                              borderRadius: BorderRadius.circular(
+                                MqSpacing.radiusMd,
+                              ),
+                            ),
+                            child: const Icon(Icons.streetview, size: 20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                   const SizedBox(width: MqSpacing.space2),
                   Semantics(
                     button: true,
