@@ -9,7 +9,7 @@ import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dar
 import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/building_search_sheet.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/campus/campus_map_view.dart';
-import 'package:mq_navigation/features/map/presentation/widgets/google_map_view.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/google/google_map_view.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/map_shell.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/route_panel.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
