@@ -29,7 +29,7 @@ secret = "env(GOOGLE_CLIENT_SECRET)"
 verify_jwt = false
 
 [functions.maps-routes]
-verify_jwt = true
+verify_jwt = false
 
 [functions.notify]
 verify_jwt = true

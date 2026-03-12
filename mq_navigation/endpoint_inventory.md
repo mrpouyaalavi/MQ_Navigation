@@ -11,12 +11,12 @@ Maps web API routes to their Flutter equivalents. After auth/calendar/feed remov
 
 | Web Route | Method | Flutter Approach | Notes |
 |-----------|--------|-----------------|-------|
-| `/api/maps/routes` | POST | **Direct HTTP** (mobile) / **EF: `directions-proxy`** (web) | Mobile calls Directions API directly; web routes through proxy to avoid CORS |
+| `/api/maps/routes` | POST | **EF: `maps-routes`** | Flutter uses the Supabase Edge Function for both campus and Google routing |
 
-> On **mobile**, routing calls the Google Directions API directly.
-> On **web**, direct calls are blocked by CORS, so the app uses the
-> `directions-proxy` Supabase Edge Function (no auth required).
-> The older `maps-routes` edge function (Routes API v2) still exists but is unused.
+> Flutter now sends a normalized route request to `maps-routes` with
+> `renderer`, `origin`, `destination`, and `travelMode`. The Edge Function
+> dispatches to Google Routes for Google mode and to the campus walking backend
+> for campus mode.
 
 ## Notifications (Used by Flutter)
 
@@ -46,7 +46,7 @@ The following endpoints exist in the web app but are not used by the Flutter app
 
 | Edge Function | Purpose |
 |---------------|---------|
-| `maps-routes` | Google Routes API proxy (unused by Flutter — kept for web) |
+| `maps-routes` | Shared campus/google route proxy with server-side Google/ORS keys |
 | `notify` | FCM push notification dispatcher |
 | `cleanup-cron` | Rate-limit record cleanup |
 

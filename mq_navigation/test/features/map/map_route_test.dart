@@ -36,5 +36,38 @@ void main() {
       expect(route.instructions, hasLength(2));
       expect(route.instructions.first.text, 'Head north');
     });
+
+    test('parses normalized maps-routes response', () {
+      final route = MapRoute.fromJson({
+        'renderer': 'google',
+        'mode': 'WALK',
+        'distanceMeters': 540,
+        'durationSeconds': 420,
+        'encodedPolyline': 'abc123',
+        'points': [
+          {'lat': -33.774, 'lng': 151.111},
+          {'lat': -33.775, 'lng': 151.112},
+        ],
+        'steps': [
+          {
+            'instruction': 'Head north',
+            'distanceMeters': 100,
+            'durationSeconds': 60,
+          },
+          {
+            'instruction': 'Turn right',
+            'distanceMeters': 50,
+            'durationSeconds': 30,
+          },
+        ],
+      }, TravelMode.walk);
+
+      expect(route.distanceMeters, 540);
+      expect(route.durationSeconds, 420);
+      expect(route.encodedPolyline, 'abc123');
+      expect(route.points, hasLength(2));
+      expect(route.instructions, hasLength(2));
+      expect(route.instructions.last.text, 'Turn right');
+    });
   });
 }

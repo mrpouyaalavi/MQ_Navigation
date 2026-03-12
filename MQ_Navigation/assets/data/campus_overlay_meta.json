@@ -1,0 +1,15 @@
+{
+  "imageAsset": "assets/maps/mq-campus.png",
+  "width": 4678,
+  "height": 3307,
+  "pixelOffsetX": 80,
+  "gpsBounds": {
+    "north": -33.769571,
+    "south": -33.778124,
+    "east": 151.122172,
+    "west": 151.103934
+  },
+  "initialZoom": -0.6,
+  "minZoom": -1.5,
+  "maxZoom": 1.8
+}

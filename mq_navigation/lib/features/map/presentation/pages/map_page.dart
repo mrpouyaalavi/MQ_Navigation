@@ -72,7 +72,7 @@ class _MapPageState extends ConsumerState<MapPage> {
           // Determine if we're in category browse mode:
           // search is active, multiple results, no specific building selected.
           final isCategoryBrowse =
-              mapState.searchQuery.trim().length >= 2 &&
+              mapState.searchQuery.trim().isNotEmpty &&
               mapState.selectedBuilding == null &&
               mapState.searchResults.length > 1;
 

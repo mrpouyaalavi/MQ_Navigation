@@ -4,6 +4,31 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-12 (AEDT) — Complete dual-map parity backend/assets pass
+
+**Scope:** Replace the remaining placeholder map pieces with shared exported assets, web-parity search behavior, and server-side routing.
+
+**Summary:**
+Completed the next substantial dual-map implementation step. Campus mode now reads the real exported raster image plus overlay metadata and renders in the same pixel coordinate space as the web app using `flutter_map` + `CrsSimple`. The bundled building registry was regenerated from the web source with `code`, `campusX/campusY`, and `searchTokens`, and Flutter search now follows the same ranking order as the web `buildingSearch.ts`. Route loading was migrated off the legacy client/Directions path onto the `maps-routes` Supabase Edge Function for both renderers, with a normalized response model that supports Google Routes data and campus-mode path points. The Edge Function was updated to accept anon clients safely, rate-limit by user or IP, dispatch Google mode to Google Routes, dispatch campus mode to OpenRouteService when configured, and fall back to a generated demo campus path when `ORS_API_KEY` is absent. Map docs and inventories were updated to reflect the new secure architecture.
+
+**Files changed:**
+- `assets/data/buildings.json`, `assets/data/campus_overlay_meta.json`, `assets/maps/mq-campus.png` — synced exported campus registry and raster overlay assets
+- `lib/features/map/data/datasources/map_assets_source.dart`, `maps_routes_remote_source.dart`, `google_routes_remote_source.dart`, `campus_routes_remote_source.dart` — shared asset loading and secure route backend wiring
+- `lib/features/map/data/mappers/campus_projection_impl.dart`, `lib/features/map/domain/entities/building.dart`, `campus_overlay_meta.dart`, `nav_instruction.dart`, `route_leg.dart`, `lib/features/map/domain/services/building_search.dart`, `campus_projection.dart` — web-parity map data contracts and search/routing normalization
+- `lib/features/map/presentation/controllers/map_controller.dart`, `pages/map_page.dart`, `widgets/building_search_sheet.dart`, `widgets/campus_map_view.dart`, `widgets/google_map_view.dart`, `widgets/map_view_helpers.dart` — shared controller/search updates and raster campus renderer implementation
+- `supabase/functions/maps-routes/index.ts`, `supabase/config.toml` — anon-safe normalized route proxy for Google and campus routing
+- `README.md`, `TECHNICAL_EXPLANATION.md`, `docs/ARCHITECTURE.md`, `map_inventory.md`, `endpoint_inventory.md`, `env_inventory.md` — documentation/inventory alignment
+- `test/features/map/building_search_test.dart`, `building_test.dart`, `map_route_test.dart`, `building_registry_asset_test.dart` — new regression coverage for the updated contracts
+
+**Verification:**
+- `node --experimental-strip-types tools/export_buildings.mjs` (from sibling web repo)
+- `deno check supabase/functions/maps-routes/index.ts`
+- `flutter analyze` → 0 issues
+- `flutter test` → 92/92 passed
+
+**Follow-ups:**
+- Street View / Pegman parity still remains richer on the web Google Maps stack than in Flutter
+
 ### Raouf: 2026-03-12 (AEDT) — Ignore Codex workspace metadata
 
 **Scope:** Keep the Flutter repo clean after local Codex runs.

@@ -33,6 +33,8 @@ void main() {
       expect(building!.entranceLatitude, isNotNull);
       expect(building.entranceLongitude, isNotNull);
       expect(building.googlePlaceId, isNotNull);
+      expect(building.campusX, isNotNull);
+      expect(building.campusY, isNotNull);
     }
   });
 }

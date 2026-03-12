@@ -5,24 +5,30 @@ void main() {
   group('Building', () {
     final sampleJson = {
       'id': '18WW',
+      'code': '18WW',
       'name': '18 Wally\'s Walk (Central Hub)',
       'description': 'Central services hub',
       'address': '18 Wally\'s Walk',
       'category': 'services',
-      'location': {'lat': -33.7739781, 'lng': 151.1126116},
-      'entranceLocation': {'lat': -33.77388, 'lng': 151.11275},
+      'latitude': -33.7739781,
+      'longitude': 151.1126116,
+      'entranceLatitude': -33.77388,
+      'entranceLongitude': 151.11275,
       'googlePlaceId': 'ChIJx123',
       'levels': 4,
       'wheelchair': true,
       'tags': ['services', 'administration', 'study'],
       'aliases': ['Central Hub', 'Wally\'s Walk'],
+      'searchTokens': ['service connect'],
       'gridRef': 'N16',
-      'campusLocation': {'x': 128, 'y': 256},
+      'campusX': 128,
+      'campusY': 256,
     };
 
     test('fromJson parses all fields correctly', () {
       final building = Building.fromJson(sampleJson);
       expect(building.id, '18WW');
+      expect(building.code, '18WW');
       expect(building.name, contains('Central Hub'));
       expect(building.description, 'Central services hub');
       expect(building.address, '18 Wally\'s Walk');
@@ -36,6 +42,7 @@ void main() {
       expect(building.wheelchair, isTrue);
       expect(building.tags, hasLength(3));
       expect(building.aliases, hasLength(2));
+      expect(building.searchTokens, ['service connect']);
       expect(building.gridRef, 'N16');
       expect(building.campusX, 128);
       expect(building.campusY, 256);
@@ -56,16 +63,18 @@ void main() {
       expect(building.wheelchair, isFalse);
       expect(building.tags, isEmpty);
       expect(building.aliases, isEmpty);
+      expect(building.code, 'TEST');
     });
 
     test('toJson round-trips correctly', () {
       final building = Building.fromJson(sampleJson);
       final json = building.toJson();
       expect(json['id'], '18WW');
+      expect(json['code'], '18WW');
       expect(json['category'], 'services');
-      expect((json['location'] as Map)['lat'], -33.7739781);
-      expect((json['entranceLocation'] as Map)['lat'], -33.77388);
-      expect((json['campusLocation'] as Map)['x'], 128);
+      expect(json['latitude'], -33.7739781);
+      expect(json['entranceLatitude'], -33.77388);
+      expect(json['campusX'], 128);
     });
 
     test('routingLatitude prefers entrance over building center', () {
@@ -98,6 +107,11 @@ void main() {
     test('matchesQuery matches alias', () {
       final building = Building.fromJson(sampleJson);
       expect(building.matchesQuery('Central Hub'), isTrue);
+    });
+
+    test('matchesQuery matches search token', () {
+      final building = Building.fromJson(sampleJson);
+      expect(building.matchesQuery('service connect'), isTrue);
     });
 
     test('matchesQuery matches tag', () {

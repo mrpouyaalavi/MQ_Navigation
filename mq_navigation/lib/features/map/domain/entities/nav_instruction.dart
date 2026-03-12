@@ -21,6 +21,7 @@ class NavInstruction {
     final text = rawHtml != null
         ? _stripHtml(rawHtml)
         : (navigationInstruction?['instructions'] as String?) ??
+              (json['instruction'] as String?) ??
               (json['instructions'] as String?) ??
               '';
 

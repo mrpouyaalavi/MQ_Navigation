@@ -8,6 +8,7 @@ import 'package:mq_navigation/features/map/data/repositories/map_repository_impl
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/domain/services/building_search.dart';
 
 enum MapStateError {
   routeUnavailable,
@@ -92,6 +93,7 @@ final mapControllerProvider = AsyncNotifierProvider<MapController, MapState>(
 );
 
 class MapController extends AsyncNotifier<MapState> {
+  static const _defaultVisibleBuildings = 15;
   StreamSubscription<LocationSample>? _locationSubscription;
   int _routeRequestVersion = 0;
 
@@ -102,7 +104,10 @@ class MapController extends AsyncNotifier<MapState> {
     return MapState(
       renderer: MapRendererType.campus,
       buildings: buildings,
-      searchResults: buildings.take(12).toList(),
+      searchResults: searchCampusBuildings(
+        buildings,
+        '',
+      ).take(_defaultVisibleBuildings).toList(),
       permissionState: LocationPermissionState.denied,
     );
   }
@@ -113,24 +118,17 @@ class MapController extends AsyncNotifier<MapState> {
       return;
     }
 
-    final normalized = query.trim().toLowerCase();
-    final searchResults =
-        normalized.length < 2
-              ? current.buildings.take(12).toList()
-              : current.buildings
-                    .where((building) => building.matchesQuery(normalized))
-                    .toList()
-          ..sort((left, right) {
-            final leftStrong = _isStrongMatch(left, normalized);
-            final rightStrong = _isStrongMatch(right, normalized);
-            if (leftStrong != rightStrong) {
-              return rightStrong ? 1 : -1;
-            }
-            return left.name.compareTo(right.name);
-          });
+    final normalized = normalizeMapSearch(query);
+    final rankedBuildings = searchCampusBuildings(
+      current.buildings,
+      normalized,
+    );
+    final searchResults = normalized.isEmpty
+        ? rankedBuildings.take(_defaultVisibleBuildings).toList()
+        : rankedBuildings;
 
     final exactMatch = searchResults.where((building) {
-      return _isStrongMatch(building, normalized);
+      return isStrongCampusMatch(building, normalized);
     }).toList();
     final shouldAutoSelect =
         exactMatch.length == 1 && searchResults.length == 1;
@@ -382,7 +380,10 @@ class MapController extends AsyncNotifier<MapState> {
         clearSelectedBuilding: true,
         clearRoute: true,
         searchQuery: '',
-        searchResults: current.buildings.take(12).toList(),
+        searchResults: searchCampusBuildings(
+          current.buildings,
+          '',
+        ).take(_defaultVisibleBuildings).toList(),
         isNavigating: false,
         isLoadingRoute: false,
         clearError: true,
@@ -438,13 +439,6 @@ class MapController extends AsyncNotifier<MapState> {
         current.selectedBuilding?.id == selectedBuildingId &&
         current.renderer == renderer &&
         current.travelMode == travelMode;
-  }
-
-  bool _isStrongMatch(Building building, String query) {
-    final normalized = query.trim().toLowerCase();
-    return building.id.toLowerCase() == normalized ||
-        building.name.toLowerCase() == normalized ||
-        building.aliases.any((alias) => alias.toLowerCase() == normalized);
   }
 
   MapStateError _errorForPermission(LocationPermissionState state) {

@@ -5,7 +5,8 @@ A cross-platform mobile client for Macquarie University's campus navigation, bui
 ## Features
 
 - **Home** -- welcome hub for Macquarie University campus navigation
-- **Campus Map** -- interactive Google Maps with 153 building entries, search, and server-proxied routing
+- **Dual-Renderer Map** -- raster campus overlay via `flutter_map` plus live Google basemap via `google_maps_flutter`
+- **Shared Map State** -- one building registry, search flow, selection model, and route state across both map modes
 - **Settings** -- theme preferences, language selection, notification controls
 - **Notifications** -- FCM push notifications and local study prompt scheduling
 - **35-Language Support** -- full i18n with RTL support (Arabic, Farsi, Hebrew, Urdu)
@@ -20,7 +21,7 @@ A cross-platform mobile client for Macquarie University's campus navigation, bui
 | State Management | Riverpod 3.2 |
 | Routing | GoRouter 17.1 (StatefulShellRoute, 3-tab bottom nav) |
 | Backend | Supabase (Postgres, Realtime, Edge Functions) |
-| Maps | Google Maps Flutter 2.14 |
+| Maps | google_maps_flutter 2.15 + flutter_map 8.2 |
 | Security | flutter_secure_storage |
 | Push Notifications | Firebase Cloud Messaging |
 | CI/CD | GitHub Actions (analyze, test, build Android + iOS) |
@@ -65,7 +66,12 @@ flutter pub get
 # Generate localisation files
 flutter gen-l10n
 
+# Sync the shared campus map assets from the web repo
+cd ../syllabus-sync
+npm run export:flutter-map-assets
+
 # Run the app — debug mode "just works" with hardcoded dev defaults
+cd ../mq_navigation
 flutter run                     # Android emulator (default)
 flutter run -d chrome           # Web (Chrome)
 ./scripts/run.sh chrome         # Web (alternative — loads .env overrides)
@@ -84,7 +90,7 @@ flutter run --release \
 |----------|----------|---------|-------------|
 | `SUPABASE_URL` | Release only | Dev fallback | Supabase project URL |
 | `SUPABASE_ANON_KEY` | Release only | Dev fallback | Supabase anonymous API key |
-| `GOOGLE_MAPS_API_KEY` | No | Dev fallback | Google Maps SDK + Directions API key |
+| `GOOGLE_MAPS_API_KEY` | No | Dev fallback | Google Maps SDK key for the Google renderer |
 | `APP_ENV` | No | `development` | `development`, `staging`, or `production` |
 
 > In **debug mode**, `env_config.dart` uses hardcoded development defaults so a
@@ -111,11 +117,14 @@ flutter run --release \
 | Secret | Required For | Notes |
 |--------|--------------|-------|
 | `SUPABASE_SERVICE_ROLE_KEY` | All privileged Edge Functions | Server-only |
+| `GOOGLE_ROUTES_API_KEY` | `maps-routes` | Server-only Google Routes API key |
+| `ORS_API_KEY` | `maps-routes` campus routing | Optional; when omitted, campus mode falls back to a generated demo route |
 | `FIREBASE_SERVICE_ACCOUNT_JSON` | `notify` | FCM HTTP v1 service account JSON |
 | `CRON_SECRET` | `cleanup-cron` | Protects scheduled cron endpoints |
 
-> `GOOGLE_ROUTES_API_KEY` is no longer needed — routing uses the client-side
-> Directions API via the same `GOOGLE_MAPS_API_KEY`.
+> Route requests no longer use the client-side Google Directions flow.
+> Both renderers call the `maps-routes` Supabase Edge Function, which keeps
+> server-side routing keys out of the Flutter binary.
 
 ## Development
 

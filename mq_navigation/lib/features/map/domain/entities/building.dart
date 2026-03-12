@@ -6,6 +6,7 @@ import 'package:mq_navigation/features/map/domain/entities/campus_point.dart';
 class Building {
   const Building({
     required this.id,
+    required this.code,
     required this.name,
     this.description,
     this.address,
@@ -19,12 +20,14 @@ class Building {
     this.wheelchair = false,
     this.tags = const [],
     this.aliases = const [],
+    this.searchTokens = const [],
     this.gridRef,
     this.campusX,
     this.campusY,
   });
 
   final String id;
+  final String code;
   final String name;
   final String? description;
   final String? address;
@@ -38,6 +41,7 @@ class Building {
   final bool wheelchair;
   final List<String> tags;
   final List<String> aliases;
+  final List<String> searchTokens;
   final String? gridRef;
   final double? campusX;
   final double? campusY;
@@ -46,24 +50,36 @@ class Building {
     final location = json['location'] as Map<String, dynamic>?;
     final entrance = json['entranceLocation'] as Map<String, dynamic>?;
     final campusLocation = json['campusLocation'] as Map<String, dynamic>?;
+    final id = json['id'] as String;
 
     return Building(
-      id: json['id'] as String,
+      id: id,
+      code: (json['code'] as String?) ?? id,
       name: json['name'] as String,
       description: json['description'] as String?,
       address: json['address'] as String?,
       category: BuildingCategory.fromString(
         json['category'] as String? ?? 'other',
       ),
-      latitude: (location?['lat'] as num?)?.toDouble(),
-      longitude: (location?['lng'] as num?)?.toDouble(),
-      entranceLatitude: (entrance?['lat'] as num?)?.toDouble(),
-      entranceLongitude: (entrance?['lng'] as num?)?.toDouble(),
+      latitude:
+          (json['latitude'] as num?)?.toDouble() ??
+          (location?['lat'] as num?)?.toDouble(),
+      longitude:
+          (json['longitude'] as num?)?.toDouble() ??
+          (location?['lng'] as num?)?.toDouble(),
+      entranceLatitude:
+          (json['entranceLatitude'] as num?)?.toDouble() ??
+          (entrance?['lat'] as num?)?.toDouble(),
+      entranceLongitude:
+          (json['entranceLongitude'] as num?)?.toDouble() ??
+          (entrance?['lng'] as num?)?.toDouble(),
       googlePlaceId: json['googlePlaceId'] as String?,
       levels: (json['levels'] as num?)?.toInt(),
       wheelchair: json['wheelchair'] as bool? ?? false,
       tags: (json['tags'] as List<dynamic>?)?.cast<String>() ?? [],
       aliases: (json['aliases'] as List<dynamic>?)?.cast<String>() ?? [],
+      searchTokens:
+          (json['searchTokens'] as List<dynamic>?)?.cast<String>() ?? [],
       gridRef: json['gridRef'] as String?,
       campusX:
           (campusLocation?['x'] as num?)?.toDouble() ??
@@ -76,10 +92,15 @@ class Building {
 
   Map<String, dynamic> toJson() => {
     'id': id,
+    'code': code,
     'name': name,
     'description': description,
     'address': address,
     'category': category.name,
+    'latitude': latitude,
+    'longitude': longitude,
+    'entranceLatitude': entranceLatitude,
+    'entranceLongitude': entranceLongitude,
     'location': latitude != null ? {'lat': latitude, 'lng': longitude} : null,
     'entranceLocation': entranceLatitude != null
         ? {'lat': entranceLatitude, 'lng': entranceLongitude}
@@ -89,7 +110,10 @@ class Building {
     'wheelchair': wheelchair,
     'tags': tags,
     'aliases': aliases,
+    'searchTokens': searchTokens,
     'gridRef': gridRef,
+    'campusX': campusX,
+    'campusY': campusY,
     'campusLocation': hasCampusCoordinates
         ? {'x': campusX, 'y': campusY}
         : null,
@@ -118,11 +142,13 @@ class Building {
   bool matchesQuery(String query) {
     final q = query.toLowerCase();
     return id.toLowerCase().contains(q) ||
+        code.toLowerCase().contains(q) ||
         name.toLowerCase().contains(q) ||
         category.name.toLowerCase().contains(q) ||
         (description?.toLowerCase().contains(q) ?? false) ||
         (address?.toLowerCase().contains(q) ?? false) ||
         aliases.any((a) => a.toLowerCase().contains(q)) ||
+        searchTokens.any((token) => token.toLowerCase().contains(q)) ||
         tags.any((t) => t.toLowerCase().contains(q));
   }
 

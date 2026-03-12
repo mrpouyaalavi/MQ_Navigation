@@ -1,0 +1,91 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'package:mq_navigation/core/config/env_config.dart';
+import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class MapsRoutesRemoteSource {
+  const MapsRoutesRemoteSource({http.Client? httpClient})
+    : _httpClient = httpClient;
+
+  final http.Client? _httpClient;
+
+  static String get _routesUrl =>
+      '${EnvConfig.supabaseUrl}/functions/v1/maps-routes';
+
+  Future<MapRoute> getRoute({
+    required MapRendererType renderer,
+    required LocationSample origin,
+    required Building destination,
+    required TravelMode travelMode,
+  }) async {
+    final destinationLatitude = destination.routingLatitude;
+    final destinationLongitude = destination.routingLongitude;
+    if (destinationLatitude == null || destinationLongitude == null) {
+      throw StateError('Selected building is missing routing coordinates.');
+    }
+    if (EnvConfig.supabaseUrl.isEmpty || EnvConfig.supabaseAnonKey.isEmpty) {
+      throw StateError('Supabase routing endpoint is not configured.');
+    }
+
+    final session = Supabase.instance.client.auth.currentSession;
+    final accessToken = session?.accessToken;
+    final headers = <String, String>{
+      'Content-Type': 'application/json',
+      'apikey': EnvConfig.supabaseAnonKey,
+      if (accessToken != null && accessToken.isNotEmpty)
+        'Authorization': 'Bearer $accessToken',
+    };
+
+    final body = {
+      'renderer': renderer.name,
+      'origin': {'lat': origin.latitude, 'lng': origin.longitude},
+      'destination': {
+        'id': destination.id,
+        'lat': destinationLatitude,
+        'lng': destinationLongitude,
+        'entranceLat': destination.entranceLatitude,
+        'entranceLng': destination.entranceLongitude,
+        'googlePlaceId': destination.googlePlaceId,
+      },
+      'travelMode': travelMode.apiValue,
+      'languageCode': 'en-AU',
+    };
+
+    final client = _httpClient ?? http.Client();
+    try {
+      final response = await client
+          .post(Uri.parse(_routesUrl), headers: headers, body: jsonEncode(body))
+          .timeout(const Duration(seconds: 15));
+
+      if (response.statusCode >= 400) {
+        if (kDebugMode) {
+          debugPrint(
+            'maps-routes error ${response.statusCode}: ${response.body}',
+          );
+        }
+        final errorPayload = jsonDecode(response.body) as Map<String, dynamic>?;
+        final message =
+            errorPayload?['error'] as String? ??
+            'maps-routes returned ${response.statusCode}';
+        throw StateError(message);
+      }
+
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      return MapRoute.fromJson(json, travelMode);
+    } finally {
+      if (_httpClient == null) {
+        client.close();
+      }
+    }
+  }
+}
+
+final mapsRoutesRemoteSourceProvider = Provider<MapsRoutesRemoteSource>((ref) {
+  return const MapsRoutesRemoteSource();
+});

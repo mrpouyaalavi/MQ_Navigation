@@ -447,11 +447,12 @@ It also implements:
 - `LocationSample`
 - `MapRoute`
 
-`MapRoute.fromJson(...)` is designed around Google Directions API response parsing and builds:
+`MapRoute.fromJson(...)` now handles both the normalized `maps-routes` response and legacy-compatible route payloads, and builds:
 
 - total distance
 - duration
 - encoded polyline
+- optional explicit route points
 - turn-by-turn instructions
 - derived `arrivalAt`
 
@@ -483,16 +484,13 @@ This makes the map feature more robust across emulators and non-mobile platforms
 
 ### Route retrieval
 
-[`lib/features/map/data/datasources/google_routes_remote_source.dart`](lib/features/map/data/datasources/google_routes_remote_source.dart) requests directions from Google over HTTP and converts the response into a `MapRoute`.
+[`lib/features/map/data/datasources/maps_routes_remote_source.dart`](lib/features/map/data/datasources/maps_routes_remote_source.dart) is the shared route client used by both renderer-specific data sources. It:
 
-Current implementation details:
-
-- it uses the client-side `GOOGLE_MAPS_API_KEY`
-- it hits the legacy Directions API JSON endpoint directly
-- it enforces a 15 second timeout
-- it emits debug diagnostics in development
-
-This is a notable divergence from some of the project documentation, which describes the preferred architecture as using the `maps-routes` Supabase Edge Function to keep server-side routing keys out of the client path.
+- calls the `maps-routes` Supabase Edge Function
+- sends the active renderer, origin, destination, and travel mode in one normalized request
+- relies on `SUPABASE_URL` + `SUPABASE_ANON_KEY` rather than a client-side routing key
+- enforces a 15 second timeout
+- converts the normalized server response into a shared `MapRoute`
 
 ### Repository
 
@@ -510,7 +508,7 @@ Its `MapState` includes:
 - current location
 - current route
 - search query
-- mode (`campus` or `navigation`)
+- renderer (`campus` or `google`)
 - travel mode
 - permission state
 - loading flag
@@ -571,15 +569,14 @@ The repo contains server-side TypeScript functions under `supabase/functions`.
 
 ### `maps-routes`
 
-[`supabase/functions/maps-routes/index.ts`](supabase/functions/maps-routes/index.ts) is an authenticated Google Routes proxy. It:
+[`supabase/functions/maps-routes/index.ts`](supabase/functions/maps-routes/index.ts) is the shared route proxy for the Flutter map stack. It:
 
-- requires a valid Supabase bearer token
-- validates coordinates and travel mode
-- rate limits requests per user
-- calls Google Routes API with a server-side API key
-- returns filtered route fields
-
-This is the intended secure routing architecture described by the docs, even though the current Flutter client is not yet wired to it.
+- accepts anon requests and upgrades to user-aware throttling when a valid bearer token is present
+- validates renderer, coordinates, and travel mode
+- rate limits requests by user ID or client IP
+- calls Google Routes API with a server-side API key for Google mode
+- calls OpenRouteService for campus mode when configured, with a generated demo fallback when it is not
+- returns one normalized route payload for both renderers
 
 ### `notify`
 
@@ -732,12 +729,11 @@ This gives reasonable confidence around design tokens, data parsing, and several
 
 ## Important Gaps and Architectural Tensions
 
-The most significant technical tension in the current codebase is between the documented architecture and the implemented routing path:
+The largest remaining gap in the map feature is no longer routing security; that path is now aligned on the `maps-routes` Edge Function. The remaining tension is product parity depth:
 
-- docs and architecture files describe server-side routing through the `maps-routes` Edge Function
-- the app currently uses direct client-side Directions API HTTP calls
-
-That means the code and the documentation are not fully aligned on one of the most security-sensitive flows.
+- campus mode now uses the real raster overlay asset and shared pixel metadata
+- campus routing can use OpenRouteService when configured, but still falls back to a generated demo route when `ORS_API_KEY` is absent
+- Street View / Pegman parity remains richer on the web app than in Flutter
 
 Other notable observations:
 

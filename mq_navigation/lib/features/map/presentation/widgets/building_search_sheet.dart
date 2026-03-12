@@ -65,7 +65,7 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
               ...results.map(
                 (building) => ListTile(
                   title: Text(building.name),
-                  subtitle: Text(building.id),
+                  subtitle: Text(building.code),
                   onTap: () {
                     ref
                         .read(mapControllerProvider.notifier)

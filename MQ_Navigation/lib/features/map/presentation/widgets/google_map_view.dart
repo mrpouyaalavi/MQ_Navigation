@@ -7,7 +7,6 @@ import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/core/config/env_config.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/features/map/domain/services/map_polyline_codec.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 import 'package:mq_navigation/shared/widgets/mq_card.dart';
 
@@ -132,16 +131,29 @@ class _GoogleMapViewState extends State<GoogleMapView> {
           ),
           alpha: isSelected ? 1.0 : 0.6,
           zIndexInt: isSelected ? 1 : 0,
-          infoWindow: InfoWindow(title: building.name, snippet: building.id),
+          infoWindow: InfoWindow(title: building.name, snippet: building.code),
           onTap: () => widget.onSelectBuilding(building),
         );
       }).toSet(),
       polylines: widget.route == null || widget.route!.encodedPolyline.isEmpty
-          ? const <Polyline>{}
+          ? (widget.route?.points.isEmpty ?? true)
+                ? const <Polyline>{}
+                : {
+                    Polyline(
+                      polylineId: const PolylineId('shared_route'),
+                      points: resolveRoutePoints(widget.route!)
+                          .map(
+                            (point) => LatLng(point.latitude, point.longitude),
+                          )
+                          .toList(),
+                      width: 5,
+                      color: _colorFor(widget.route!.travelMode),
+                    ),
+                  }
           : {
               Polyline(
                 polylineId: const PolylineId('shared_route'),
-                points: MapPolylineCodec.decode(widget.route!.encodedPolyline)
+                points: resolveRoutePoints(widget.route!)
                     .map((point) => LatLng(point.latitude, point.longitude))
                     .toList(),
                 width: 5,

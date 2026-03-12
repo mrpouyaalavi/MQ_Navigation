@@ -6,42 +6,43 @@ All map-related APIs, services, keys, and data sources used by the campus map su
 
 | Key | Location | Usage | Flutter Approach |
 |-----|----------|-------|-----------------|
-| `GOOGLE_MAPS_API_KEY` (client) | `--dart-define` / hardcoded debug fallback | Maps SDK rendering + Directions API | Restricted to app bundle ID in production |
+| `GOOGLE_MAPS_API_KEY` (client) | `--dart-define` / hardcoded debug fallback | Google Maps renderer SDK | Restricted to app bundle ID in production |
+| `GOOGLE_ROUTES_API_KEY` (server) | Supabase Edge Function secret | Google route computation | Never exposed to Flutter |
+| `ORS_API_KEY` (server, optional) | Supabase Edge Function secret | Campus walking route computation | Never exposed to Flutter |
 
 ## External Services
 
 | Service | Web Usage | Flutter Usage |
 |---------|-----------|---------------|
 | Google Maps JavaScript API | Leaflet + GM JS API | `google_maps_flutter` renderer for Google mode |
-| Google Directions API | Via Next.js API proxy | Shared route source for both renderers today: direct HTTP on mobile; Supabase `directions-proxy` on web |
-| OpenStreetMap raster tiles | N/A | `flutter_map` renderer for campus mode foundation |
+| Google Routes API | Via Next.js API proxy | `maps-routes` Supabase Edge Function for Google mode |
+| OpenRouteService | Campus walking routing | `maps-routes` Supabase Edge Function for campus mode |
+| Raster campus overlay | Leaflet `L.CRS.Simple` image overlay | `flutter_map` + `OverlayImageLayer` + `CrsSimple` |
 
-> **Note:** The renderer split is now in place, but routing is still on the old
-> path. On **mobile** (Android/iOS), the app still calls the Google Directions
-> API directly. On **web**, direct calls are blocked by CORS, so the app routes
-> through the `directions-proxy` Supabase Edge Function. Campus mode now has its
-> own data-source entry point, but that adapter still falls back to the same
-> route source until the campus-specific edge function lands.
+> **Note:** Campus mode now uses the exported web raster asset plus shared
+> overlay metadata (`assets/data/campus_overlay_meta.json`) and pixel-space
+> building coordinates exported from the web registry.
 
 ## Building Registry
 
 - **Source**: `features/map/lib/buildings.ts` in web app (153 buildings in the current Flutter asset snapshot)
-- **Fields per building**: id, name, position, description, tags, aliases, translationKey, descriptionKey, gridRef, address, category, location (lat/lng), entranceLocation, accessibilityEntranceLocation, googlePlaceId, levels, wheelchair
+- **Fields per building**: id, code, name, description, tags, aliases, searchTokens, gridRef, address, category, latitude/longitude, entranceLatitude/entranceLongitude, googlePlaceId, levels, wheelchair, campusX/campusY
 - **Categories**: academic, services, health, food, sports, venue, research, residential, other
 - **Flutter storage**: Bundled JSON asset at `assets/data/buildings.json`
+- **Overlay metadata**: `assets/data/campus_overlay_meta.json`
+- **Overlay image**: `assets/maps/mq-campus.png`
 
 ## Map Configuration
 
 | Config | Value | Notes |
 |--------|-------|-------|
-| Campus center lat | -33.7738 | Default camera target |
-| Campus center lng | 151.1130 | Default camera target |
+| Campus raster width | 4678 px | Shared with web `L.CRS.Simple` configuration |
+| Campus raster height | 3307 px | Shared with web `L.CRS.Simple` configuration |
+| Building pixel offset X | 80 px | Required for marker alignment with the raster |
 | Fallback location lat | -33.77388 | 18 Wally's Walk entrance — used when GPS unavailable |
 | Fallback location lng | 151.11275 | 18 Wally's Walk entrance — used when GPS unavailable |
-| Default zoom | 15.5 | |
-
-> Camera bounds and min/max zoom restrictions were removed so users can freely
-> pan and zoom outside the campus when navigating to/from off-campus locations.
+| Overlay min zoom | -1.5 | Shared exported overlay metadata |
+| Overlay max zoom | 1.8 | Shared exported overlay metadata |
 
 ## Flutter Map Packages
 
@@ -61,10 +62,10 @@ All map-related APIs, services, keys, and data sources used by the campus map su
 | Building registry data source + bundled JSON asset | flutter assets |
 | Current location tracking (fallback to campus centre on web/emulator) | geolocator + permission_handler |
 | Shared renderer state (`MapRendererType`) | Riverpod controller state |
-| Campus map renderer | flutter_map + OpenStreetMap tile layer (overlay-ready scaffold) |
+| Campus map renderer | flutter_map + raster overlay image + `CrsSimple` |
 | Google map renderer | google_maps_flutter |
 | Building markers (selected + search result parity) | renderer-specific widgets |
 | Building search bottom sheet | custom widget |
-| Route request contract split by renderer | repository + remote sources |
+| Route request contract split by renderer | repository + `maps-routes` remote source |
 | Route polyline rendering | google_maps_flutter + flutter_map |
-| Travel mode switching (walk/drive/bike/transit) | Directions API `mode` param |
+| Travel mode switching (walk/drive/bike/transit) | shared `TravelMode` routed through `maps-routes` |

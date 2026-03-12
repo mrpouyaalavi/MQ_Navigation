@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart' as latlong;
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/map/data/datasources/map_assets_source.dart';
+import 'package:mq_navigation/features/map/data/mappers/campus_projection_impl.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/domain/entities/campus_overlay_meta.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
-import 'package:mq_navigation/features/map/domain/services/map_polyline_codec.dart';
+import 'package:mq_navigation/features/map/domain/services/campus_projection.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
+import 'package:mq_navigation/shared/widgets/mq_card.dart';
 
-class CampusMapView extends StatefulWidget {
+class CampusMapView extends ConsumerStatefulWidget {
   const CampusMapView({
     super.key,
     required this.searchResults,
@@ -27,133 +32,212 @@ class CampusMapView extends StatefulWidget {
   final ValueChanged<Building> onSelectBuilding;
 
   @override
-  State<CampusMapView> createState() => _CampusMapViewState();
+  ConsumerState<CampusMapView> createState() => _CampusMapViewState();
 }
 
-class _CampusMapViewState extends State<CampusMapView> {
+class _CampusMapViewState extends ConsumerState<CampusMapView> {
   final MapController _controller = MapController();
+  late final Future<CampusOverlayMeta> _metaFuture;
+  CampusProjection? _projection;
+
+  @override
+  void initState() {
+    super.initState();
+    _metaFuture = ref.read(mapAssetsSourceProvider).loadCampusOverlayMeta();
+    _metaFuture.then((meta) {
+      if (!mounted) {
+        return;
+      }
+      _projection = CampusProjectionImpl(meta);
+    });
+  }
 
   @override
   void didUpdateWidget(covariant CampusMapView oldWidget) {
     super.didUpdateWidget(oldWidget);
-
-    // Animate to a newly selected building.
-    if (widget.selectedBuilding != null &&
-        widget.selectedBuilding?.id != oldWidget.selectedBuilding?.id) {
-      final target = widget.selectedBuilding!;
-      final latitude = target.routingLatitude;
-      final longitude = target.routingLongitude;
-      if (latitude != null && longitude != null) {
-        _controller.move(latlong.LatLng(latitude, longitude), 17);
-      }
+    final projection = _projection;
+    if (projection == null) {
       return;
     }
 
-    final newLoc = widget.currentLocation;
-    final oldLoc = oldWidget.currentLocation;
-    if (newLoc != null &&
-        (oldLoc == null ||
-            newLoc.latitude != oldLoc.latitude ||
-            newLoc.longitude != oldLoc.longitude)) {
-      _controller.move(latlong.LatLng(newLoc.latitude, newLoc.longitude), 17);
+    if (widget.selectedBuilding != null &&
+        widget.selectedBuilding?.id != oldWidget.selectedBuilding?.id) {
+      _controller.move(
+        _resolveBuildingPoint(widget.selectedBuilding!, projection),
+        0,
+      );
+      return;
+    }
+
+    final newLocation = widget.currentLocation;
+    final oldLocation = oldWidget.currentLocation;
+    if (newLocation != null &&
+        (oldLocation == null ||
+            newLocation.latitude != oldLocation.latitude ||
+            newLocation.longitude != oldLocation.longitude)) {
+      final campusPoint = projection.gpsToPixel(
+        latitude: newLocation.latitude,
+        longitude: newLocation.longitude,
+      );
+      _controller.move(projection.pixelToMapPoint(campusPoint), 0);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final visibleBuildings = resolveVisibleBuildings(
-      searchResults: widget.searchResults,
-      searchQuery: widget.searchQuery,
-      selectedBuilding: widget.selectedBuilding,
-    );
-    final routePoints = widget.route == null
-        ? const <latlong.LatLng>[]
-        : MapPolylineCodec.decode(widget.route!.encodedPolyline)
-              .map((point) => latlong.LatLng(point.latitude, point.longitude))
-              .toList();
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: Theme.of(context).brightness == Brightness.dark
-              ? const [MqColors.charcoal950, MqColors.charcoal850]
-              : const [MqColors.sand100, MqColors.alabaster],
-        ),
-      ),
-      child: FlutterMap(
-        mapController: _controller,
-        options: const MapOptions(
-          initialCenter: latlong.LatLng(-33.7738, 151.1130),
-          initialZoom: 15.9,
-          minZoom: 14.2,
-          maxZoom: 18.8,
-        ),
-        children: [
-          TileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'io.mqnavigation.mq_navigation',
-          ),
-          if (routePoints.isNotEmpty)
-            PolylineLayer(
-              polylines: [
-                Polyline(
-                  points: routePoints,
-                  strokeWidth: 5,
-                  color: _colorFor(widget.route!.travelMode),
-                  borderStrokeWidth: 2,
-                  borderColor: Colors.white.withValues(alpha: 0.45),
-                ),
-              ],
+    return FutureBuilder<CampusOverlayMeta>(
+      future: _metaFuture,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return MqCard(
+            child: Text(
+              'Campus overlay metadata is unavailable.',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
-          MarkerLayer(
-            markers: [
-              ...visibleBuildings.map((building) {
-                final latitude = building.latitude!;
-                final longitude = building.longitude!;
-                return Marker(
-                  point: latlong.LatLng(latitude, longitude),
-                  width: 110,
-                  height: widget.selectedBuilding?.id == building.id ? 74 : 54,
-                  alignment: Alignment.topCenter,
-                  child: _CampusBuildingMarker(
-                    building: building,
-                    isSelected: widget.selectedBuilding?.id == building.id,
-                    onTap: () => widget.onSelectBuilding(building),
-                  ),
-                );
-              }),
-              if (widget.currentLocation case final currentLocation?)
-                Marker(
-                  point: latlong.LatLng(
-                    currentLocation.latitude,
-                    currentLocation.longitude,
-                  ),
-                  width: 28,
-                  height: 28,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: MqColors.mapUserLocation,
-                      border: Border.all(color: Colors.white, width: 3),
-                      boxShadow: [
-                        BoxShadow(
-                          color: MqColors.mapUserLocation.withValues(
-                            alpha: 0.4,
-                          ),
-                          blurRadius: 14,
-                        ),
-                      ],
+          );
+        }
+
+        final meta = snapshot.data;
+        if (meta == null) {
+          return const Center(
+            child: CircularProgressIndicator(color: MqColors.red),
+          );
+        }
+
+        final projection = _projection ?? CampusProjectionImpl(meta);
+        _projection = projection;
+        final visibleBuildings = resolveVisibleBuildings(
+          searchResults: widget.searchResults,
+          searchQuery: widget.searchQuery,
+          selectedBuilding: widget.selectedBuilding,
+          requireCampusCoordinates: true,
+        );
+        final routePoints = widget.route == null
+            ? const <latlong.LatLng>[]
+            : resolveRoutePoints(widget.route!)
+                  .map(
+                    (point) => projection.pixelToMapPoint(
+                      projection.gpsToPixel(
+                        latitude: point.latitude,
+                        longitude: point.longitude,
+                      ),
                     ),
+                  )
+                  .toList();
+        final bounds = LatLngBounds(
+          const latlong.LatLng(0, 0),
+          latlong.LatLng(meta.height, meta.width + meta.pixelOffsetX),
+        );
+
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: Theme.of(context).brightness == Brightness.dark
+                  ? const [MqColors.charcoal950, MqColors.charcoal850]
+                  : const [MqColors.sand100, MqColors.alabaster],
+            ),
+          ),
+          child: FlutterMap(
+            mapController: _controller,
+            options: MapOptions(
+              crs: const CrsSimple(),
+              initialCenter: latlong.LatLng(
+                meta.height / 2,
+                (meta.width + meta.pixelOffsetX) / 2,
+              ),
+              initialZoom: meta.initialZoom,
+              minZoom: meta.minZoom,
+              maxZoom: meta.maxZoom,
+              cameraConstraint: CameraConstraint.containCenter(bounds: bounds),
+            ),
+            children: [
+              OverlayImageLayer(
+                overlayImages: [
+                  OverlayImage(
+                    bounds: bounds,
+                    imageProvider: AssetImage(meta.imageAsset),
                   ),
+                ],
+              ),
+              if (routePoints.isNotEmpty)
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: routePoints,
+                      strokeWidth: 5,
+                      color: _colorFor(widget.route!.travelMode),
+                      borderStrokeWidth: 2,
+                      borderColor: Colors.white.withValues(alpha: 0.45),
+                    ),
+                  ],
                 ),
+              MarkerLayer(
+                markers: [
+                  ...visibleBuildings.map((building) {
+                    return Marker(
+                      point: _resolveBuildingPoint(building, projection),
+                      width: 110,
+                      height: widget.selectedBuilding?.id == building.id
+                          ? 74
+                          : 54,
+                      alignment: Alignment.topCenter,
+                      child: _CampusBuildingMarker(
+                        building: building,
+                        isSelected: widget.selectedBuilding?.id == building.id,
+                        onTap: () => widget.onSelectBuilding(building),
+                      ),
+                    );
+                  }),
+                  if (widget.currentLocation case final currentLocation?)
+                    Marker(
+                      point: projection.pixelToMapPoint(
+                        projection.gpsToPixel(
+                          latitude: currentLocation.latitude,
+                          longitude: currentLocation.longitude,
+                        ),
+                      ),
+                      width: 28,
+                      height: 28,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: MqColors.mapUserLocation,
+                          border: Border.all(color: Colors.white, width: 3),
+                          boxShadow: [
+                            BoxShadow(
+                              color: MqColors.mapUserLocation.withValues(
+                                alpha: 0.4,
+                              ),
+                              blurRadius: 14,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ],
           ),
-          const RichAttributionWidget(
-            attributions: [TextSourceAttribution('OpenStreetMap contributors')],
-          ),
-        ],
+        );
+      },
+    );
+  }
+
+  latlong.LatLng _resolveBuildingPoint(
+    Building building,
+    CampusProjection projection,
+  ) {
+    final campusPoint = building.campusPoint;
+    if (campusPoint != null) {
+      return projection.pixelToMapPoint(campusPoint);
+    }
+
+    return projection.pixelToMapPoint(
+      projection.gpsToPixel(
+        latitude: building.routingLatitude ?? building.latitude!,
+        longitude: building.routingLongitude ?? building.longitude!,
       ),
     );
   }
@@ -214,7 +298,7 @@ class _CampusBuildingMarker extends StatelessWidget {
                 ],
               ),
               child: Text(
-                building.id,
+                building.code,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: foregroundColor,
                   fontWeight: FontWeight.w700,
