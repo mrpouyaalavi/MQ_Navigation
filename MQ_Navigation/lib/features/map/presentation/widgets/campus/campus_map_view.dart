@@ -3,14 +3,16 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart' as latlong;
 import 'package:mq_navigation/app/theme/mq_colors.dart';
-import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/map/data/datasources/map_assets_source.dart';
 import 'package:mq_navigation/features/map/data/mappers/campus_projection_impl.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/campus_overlay_meta.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/domain/services/campus_projection.dart';
-import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/campus/campus_map_location_layer.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/campus/campus_map_marker_layer.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/campus/campus_map_overlay.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/campus/campus_map_route_layer.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 import 'package:mq_navigation/shared/widgets/mq_card.dart';
 
@@ -85,7 +87,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
     if (widget.selectedBuilding != null &&
         widget.selectedBuilding?.id != oldWidget.selectedBuilding?.id) {
       _moveMap(
-        _resolveBuildingPoint(widget.selectedBuilding!, projection),
+        resolveBuildingPoint(widget.selectedBuilding!, projection),
         zoom: 1,
       );
       return;
@@ -182,80 +184,31 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
               onMapReady: () => _handleMapReady(meta, projection),
             ),
             children: [
-              OverlayImageLayer(
-                overlayImages: [
-                  OverlayImage(
-                    bounds: bounds,
-                    imageProvider: AssetImage(meta.imageAsset),
-                  ),
-                ],
-              ),
+              CampusMapOverlay(meta: meta),
               if (routePoints.isNotEmpty)
-                PolylineLayer(
-                  polylines: _buildCampusPolylines(routePoints, rawRoutePoints),
+                CampusMapRouteLayer(
+                  route: widget.route!,
+                  routePoints: routePoints,
+                  rawRoutePoints: rawRoutePoints,
+                  isNavigating: widget.isNavigating,
+                  currentLocation: widget.currentLocation,
                 ),
-              MarkerLayer(
-                markers: [
-                  ...visibleBuildings.map((building) {
-                    return Marker(
-                      point: _resolveBuildingPoint(building, projection),
-                      width: 110,
-                      height: widget.selectedBuilding?.id == building.id
-                          ? 74
-                          : 54,
-                      alignment: Alignment.bottomCenter,
-                      child: _CampusBuildingMarker(
-                        building: building,
-                        isSelected: widget.selectedBuilding?.id == building.id,
-                        onTap: () => widget.onSelectBuilding(building),
-                      ),
-                    );
-                  }),
-                  if (widget.currentLocation case final currentLocation?)
-                    Marker(
-                      point: projection.gpsToMapPoint(
-                        latitude: currentLocation.latitude,
-                        longitude: currentLocation.longitude,
-                      ),
-                      width: 28,
-                      height: 28,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: MqColors.mapUserLocation,
-                          border: Border.all(color: Colors.white, width: 3),
-                          boxShadow: [
-                            BoxShadow(
-                              color: MqColors.mapUserLocation.withValues(
-                                alpha: 0.4,
-                              ),
-                              blurRadius: 14,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                ],
+              CampusMapMarkerLayer(
+                visibleBuildings: visibleBuildings,
+                selectedBuilding: widget.selectedBuilding,
+                projection: projection,
+                onSelectBuilding: widget.onSelectBuilding,
+              ),
+              CampusMapLocationLayer(
+                currentLocation: widget.currentLocation,
+                projection: projection,
+                route: widget.route,
+                routePoints: routePoints,
               ),
             ],
           ),
         );
       },
-    );
-  }
-
-  latlong.LatLng _resolveBuildingPoint(
-    Building building,
-    CampusProjection projection,
-  ) {
-    final campusPoint = building.campusPoint;
-    if (campusPoint != null) {
-      return projection.buildingPixelToMapPoint(campusPoint);
-    }
-
-    return projection.gpsToMapPoint(
-      latitude: building.routingLatitude ?? building.latitude!,
-      longitude: building.routingLongitude ?? building.longitude!,
     );
   }
 
@@ -274,7 +227,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
       }
 
       if (widget.selectedBuilding case final selectedBuilding?) {
-        _moveMap(_resolveBuildingPoint(selectedBuilding, projection), zoom: 1);
+        _moveMap(resolveBuildingPoint(selectedBuilding, projection), zoom: 1);
         return;
       }
 
@@ -299,136 +252,5 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
     } on StateError {
       return fallback;
     }
-  }
-
-  List<Polyline> _buildCampusPolylines(
-    List<latlong.LatLng> mapPoints,
-    List<LocationSample> rawPoints,
-  ) {
-    final routeColor = _colorFor(widget.route!.travelMode);
-    final polylines = <Polyline>[];
-
-    if (widget.isNavigating &&
-        widget.currentLocation != null &&
-        rawPoints.length > 1) {
-      final splitIdx = findClosestPointIndex(
-        rawPoints,
-        widget.currentLocation!,
-      );
-
-      if (splitIdx > 0) {
-        polylines.add(
-          Polyline(
-            points: mapPoints.sublist(0, splitIdx + 1),
-            strokeWidth: 5,
-            color: const Color(0xFF94a3b8),
-            borderStrokeWidth: 2,
-            borderColor: Colors.white.withValues(alpha: 0.25),
-          ),
-        );
-      }
-
-      final remaining = splitIdx > 0 ? mapPoints.sublist(splitIdx) : mapPoints;
-      polylines.add(
-        Polyline(
-          points: remaining,
-          strokeWidth: 5,
-          color: routeColor,
-          borderStrokeWidth: 2,
-          borderColor: Colors.white.withValues(alpha: 0.45),
-        ),
-      );
-    } else {
-      polylines.add(
-        Polyline(
-          points: mapPoints,
-          strokeWidth: 5,
-          color: routeColor,
-          borderStrokeWidth: 2,
-          borderColor: Colors.white.withValues(alpha: 0.45),
-        ),
-      );
-    }
-
-    return polylines;
-  }
-
-  Color _colorFor(TravelMode travelMode) {
-    return switch (travelMode) {
-      TravelMode.walk => MqColors.red,
-      TravelMode.drive => const Color(0xFF6C757D),
-      TravelMode.bike => const Color(0xFF2E8B57),
-      TravelMode.transit => const Color(0xFFF57C00),
-    };
-  }
-}
-
-class _CampusBuildingMarker extends StatelessWidget {
-  const _CampusBuildingMarker({
-    required this.building,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final Building building;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final backgroundColor = isSelected ? MqColors.red : Colors.white;
-    final foregroundColor = isSelected ? Colors.white : MqColors.charcoal900;
-
-    return Semantics(
-      button: true,
-      label: building.name,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: MqSpacing.space3,
-                vertical: MqSpacing.space2,
-              ),
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
-                border: Border.all(
-                  color: isSelected
-                      ? MqColors.red
-                      : MqColors.charcoal900.withValues(alpha: 0.12),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.14),
-                    blurRadius: 12,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Text(
-                building.code,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: foregroundColor,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            const SizedBox(height: 2),
-            Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
