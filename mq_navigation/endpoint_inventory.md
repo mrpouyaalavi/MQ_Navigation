@@ -11,8 +11,11 @@ Maps web API routes to their Flutter equivalents. After auth/calendar/feed remov
 
 | Web Route | Method | Flutter Approach | Notes |
 |-----------|--------|-----------------|-------|
-| `/api/maps/routes` | POST | EF: `maps-routes` | Authenticated Flutter routing proxy |
-| `/api/navigate` | POST | EF: `routes-proxy` | Legacy proxy retained for backward compatibility |
+| `/api/maps/routes` | POST | **Direct HTTP**: Google Directions API | Client-side call via `google_routes_remote_source.dart` |
+
+> Routing was migrated from the `maps-routes` edge function to a direct
+> Google Directions API HTTP call.  The edge function still exists in
+> `supabase/functions/maps-routes/` but is unused by the Flutter client.
 
 ## Notifications (Used by Flutter)
 
@@ -42,7 +45,7 @@ The following endpoints exist in the web app but are not used by the Flutter app
 
 | Edge Function | Purpose |
 |---------------|---------|
-| `maps-routes` | Authenticated Google Routes API proxy with rate limiting |
+| `maps-routes` | Google Routes API proxy (unused by Flutter — kept for web) |
 | `notify` | FCM push notification dispatcher |
 | `cleanup-cron` | Rate-limit record cleanup |
 

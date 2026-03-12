@@ -4,6 +4,48 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-12 (AEDT) — Fix Chrome crash, map bounds, and Android Kotlin daemon
+
+**Scope:** Fix multi-platform launch failures and map usability issues.
+
+**Summary:**
+Fixed three critical issues preventing the app from running:
+
+1. **Chrome crash ("SUPABASE_URL must be set via --dart-define")** — Added hardcoded
+   development-only fallback values to `env_config.dart` so a bare `flutter run -d chrome`
+   works in debug mode without `--dart-define-from-file=.env`. The `validate()` method now
+   only throws in release mode.
+
+2. **Android Kotlin daemon failure** — The `kotlin.compiler.execution.strategy=in-process`
+   property was already set but stale daemon processes and build caches caused connection
+   failures. Fixed by cleaning the build, killing all Gradle/Kotlin daemons, and rebuilding.
+
+3. **Map not panning outside campus** — Removed `CameraTargetBounds` and `MinMaxZoomPreference`
+   restrictions from `CampusMapView` so users can freely pan and zoom beyond the campus
+   boundaries when navigating to/from off-campus locations.
+
+4. **Map marker clutter** — Changed non-selected building markers from orange (hueOrange) to
+   a subtle azure (hueAzure) at 55% opacity, making them less visually intrusive and
+   distinguishable from the selected marker (red, 100% opacity).
+
+**Files changed:**
+- `lib/core/config/env_config.dart` — hardcoded debug fallbacks, release-only validation
+- `lib/features/map/presentation/widgets/campus_map_view.dart` — removed bounds/zoom lock, improved markers
+- `android/gradle.properties` — already had in-process strategy (no change needed)
+- `.env.example` — simplified (removed DEV_ prefix vars)
+- `map_inventory.md` — updated for Directions API, removed bounds section
+- `env_inventory.md` — updated for hardcoded fallbacks, removed web-only section
+- `endpoint_inventory.md` — updated routing approach
+- `README.md` — simplified getting started, updated secrets table
+
+**Verification:**
+- `flutter analyze` → 0 issues
+- `flutter test` → 83/83 passed
+- `flutter build web --debug` → ✓
+- `flutter build apk --debug` → ✓
+
+---
+
 ### Raouf: 2026-03-12 (AEDT) — Flutter upgrade + fix untranslated messages
 
 **Scope:** Upgrade Flutter SDK and dependencies, fix 2 untranslated i18n keys across 34 locales.

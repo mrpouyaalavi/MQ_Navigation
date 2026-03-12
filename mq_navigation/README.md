@@ -65,22 +65,30 @@ flutter pub get
 # Generate localisation files
 flutter gen-l10n
 
-# Run the app (development mode)
-flutter run \
+# Run the app — debug mode "just works" with hardcoded dev defaults
+flutter run                     # Android emulator (default)
+flutter run -d chrome           # Web (Chrome)
+./scripts/run.sh chrome         # Web (alternative — loads .env overrides)
+
+# For release builds, supply secrets via --dart-define or .env:
+flutter run --release \
   --dart-define=SUPABASE_URL=https://your-project.supabase.co \
   --dart-define=SUPABASE_ANON_KEY=your-anon-key \
   --dart-define=GOOGLE_MAPS_API_KEY=your-maps-key \
-  --dart-define=APP_ENV=development
+  --dart-define=APP_ENV=production
 ```
 
 ### Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `SUPABASE_URL` | Yes | Supabase project URL |
-| `SUPABASE_ANON_KEY` | Yes | Supabase anonymous API key |
-| `GOOGLE_MAPS_API_KEY` | No | Google Maps SDK key (needed for map feature) |
-| `APP_ENV` | No | `development` (default), `staging`, or `production` |
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `SUPABASE_URL` | Release only | Dev fallback | Supabase project URL |
+| `SUPABASE_ANON_KEY` | Release only | Dev fallback | Supabase anonymous API key |
+| `GOOGLE_MAPS_API_KEY` | No | Dev fallback | Google Maps SDK + Directions API key |
+| `APP_ENV` | No | `development` | `development`, `staging`, or `production` |
+
+> In **debug mode**, `env_config.dart` uses hardcoded development defaults so a
+> bare `flutter run` works out-of-the-box on any platform (Android, iOS, web).
 
 ### Mobile Platform Setup
 
@@ -103,9 +111,11 @@ flutter run \
 | Secret | Required For | Notes |
 |--------|--------------|-------|
 | `SUPABASE_SERVICE_ROLE_KEY` | All privileged Edge Functions | Server-only |
-| `GOOGLE_ROUTES_API_KEY` | `maps-routes` | Server-side routing proxy |
-| `FIREBASE_SERVICE_ACCOUNT_JSON` | `notify` (preferred) | FCM HTTP v1 service account JSON |
-| `FCM_SERVER_KEY` | `notify` (legacy fallback) | Supported as a compatibility fallback |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | `notify` | FCM HTTP v1 service account JSON |
+| `CRON_SECRET` | `cleanup-cron` | Protects scheduled cron endpoints |
+
+> `GOOGLE_ROUTES_API_KEY` is no longer needed — routing uses the client-side
+> Directions API via the same `GOOGLE_MAPS_API_KEY`.
 
 ## Development
 

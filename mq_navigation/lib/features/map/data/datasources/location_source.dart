@@ -85,6 +85,11 @@ class LocationSource {
   }
 
   Stream<LocationSample> watch() async* {
+    if (!_isSupported) {
+      // Web / desktop: no real-time location updates available.
+      return;
+    }
+
     final permission = await ensurePermission();
     if (permission != LocationPermissionState.granted) {
       return;
@@ -105,12 +110,14 @@ class LocationSource {
     );
   }
 
-  Future<void> openLocationSettings() {
-    return Geolocator.openLocationSettings();
+  Future<void> openLocationSettings() async {
+    if (!_isSupported) return;
+    await Geolocator.openLocationSettings();
   }
 
-  Future<void> openAppSettings() {
-    return Geolocator.openAppSettings();
+  Future<void> openAppSettings() async {
+    if (!_isSupported) return;
+    await Geolocator.openAppSettings();
   }
 }
 

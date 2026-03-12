@@ -109,8 +109,6 @@ class _CampusMapViewState extends State<CampusMapView> {
       onMapCreated: (controller) {
         _controller = controller;
       },
-      minMaxZoomPreference: const MinMaxZoomPreference(14, 20),
-      cameraTargetBounds: CameraTargetBounds(_campusBounds),
       mapToolbarEnabled: false,
       zoomControlsEnabled: false,
       myLocationEnabled: widget.currentLocation != null,
@@ -126,9 +124,9 @@ class _CampusMapViewState extends State<CampusMapView> {
                 icon: BitmapDescriptor.defaultMarkerWithHue(
                   isSelected
                       ? BitmapDescriptor.hueRed
-                      : BitmapDescriptor.hueOrange,
+                      : BitmapDescriptor.hueAzure,
                 ),
-                alpha: isSelected ? 1.0 : 0.7,
+                alpha: isSelected ? 1.0 : 0.55,
                 zIndexInt: isSelected ? 1 : 0,
                 infoWindow: InfoWindow(
                   title: building.name,
@@ -194,7 +192,3 @@ class _CampusMapViewState extends State<CampusMapView> {
   }
 }
 
-final LatLngBounds _campusBounds = LatLngBounds(
-  southwest: const LatLng(-33.778124, 151.103934),
-  northeast: const LatLng(-33.769571, 151.122172),
-);

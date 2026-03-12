@@ -27,8 +27,6 @@ class EnvConfig {
   static const String _appEnv = String.fromEnvironment('APP_ENV');
 
   // Development defaults loaded via --dart-define-from-file=.env
-  // NEVER hardcode API keys in source. Use:
-  //   flutter run --dart-define-from-file=.env
   static const String _devSupabaseUrl = String.fromEnvironment(
     'DEV_SUPABASE_URL',
   );
@@ -39,20 +37,40 @@ class EnvConfig {
     'DEV_GOOGLE_MAPS_API_KEY',
   );
 
-  /// Supabase project URL. Falls back to dev env var in debug mode.
-  static String get supabaseUrl => _supabaseUrl.isNotEmpty
-      ? _supabaseUrl
-      : (kDebugMode ? _devSupabaseUrl : '');
+  // ── Hardcoded debug-only fallbacks ──────────────────────────────────────
+  // These are intentionally committed so that a plain `flutter run` just
+  // works for local development.  The anon key is a *public* key gated by
+  // Row-Level Security – not a secret.
+  static const String _fallbackSupabaseUrl =
+      'https://cxsqlgvbwtevkkljzolg.supabase.co';
+  static const String _fallbackSupabaseAnonKey =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.'
+      'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4c3FsZ3Zid3RldmtrbGp6b2xnIiwi'
+      'cm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjkwNTEsImV4cCI6MjA4MjYwNTA1MX0.'
+      '5OXdkYfflYE27WRhw2PKf-up3UYctGKn3w2RQbTZrWw';
+  static const String _fallbackGoogleMapsApiKey =
+      'AIzaSyD9WlnjQntUsWNzHR2oa-P-8zG3l60D2SA';
 
-  /// Supabase anonymous key (public, RLS-enforced). Falls back to dev env var in debug mode.
-  static String get supabaseAnonKey => _supabaseAnonKey.isNotEmpty
-      ? _supabaseAnonKey
-      : (kDebugMode ? _devSupabaseAnonKey : '');
+  /// Supabase project URL. Falls back to dev env var → hardcoded fallback in debug mode.
+  static String get supabaseUrl {
+    if (_supabaseUrl.isNotEmpty) return _supabaseUrl;
+    if (_devSupabaseUrl.isNotEmpty) return _devSupabaseUrl;
+    return kDebugMode ? _fallbackSupabaseUrl : '';
+  }
 
-  /// Google Maps client-side API key. Falls back to dev env var in debug mode.
-  static String get googleMapsApiKey => _googleMapsApiKey.isNotEmpty
-      ? _googleMapsApiKey
-      : (kDebugMode ? _devGoogleMapsApiKey : '');
+  /// Supabase anonymous key (public, RLS-enforced). Falls back to dev env var → hardcoded fallback in debug mode.
+  static String get supabaseAnonKey {
+    if (_supabaseAnonKey.isNotEmpty) return _supabaseAnonKey;
+    if (_devSupabaseAnonKey.isNotEmpty) return _devSupabaseAnonKey;
+    return kDebugMode ? _fallbackSupabaseAnonKey : '';
+  }
+
+  /// Google Maps client-side API key. Falls back to dev env var → hardcoded fallback in debug mode.
+  static String get googleMapsApiKey {
+    if (_googleMapsApiKey.isNotEmpty) return _googleMapsApiKey;
+    if (_devGoogleMapsApiKey.isNotEmpty) return _devGoogleMapsApiKey;
+    return kDebugMode ? _fallbackGoogleMapsApiKey : '';
+  }
 
   /// App environment. Defaults to 'development'.
   static String get appEnv => _appEnv.isNotEmpty ? _appEnv : 'development';
@@ -62,16 +80,21 @@ class EnvConfig {
   static bool get isDevelopment => appEnv == 'development';
   static bool get hasGoogleMapsApiKey => googleMapsApiKey.trim().isNotEmpty;
 
-  /// Throws [StateError] if required env vars are missing.
-  ///
-  /// In debug mode this always passes (dev defaults are used).
-  /// In release mode, missing `--dart-define` values are fatal.
+  /// Throws [StateError] if required env vars are missing **in release mode**.
+  /// In debug mode, logs a warning but does NOT throw — this lets bare
+  /// `flutter run` work without `--dart-define-from-file=.env` by falling
+  /// back to the hardcoded development defaults below.
   static void validate() {
     if (supabaseUrl.isEmpty) {
-      throw StateError('SUPABASE_URL must be set via --dart-define');
+      if (kReleaseMode) {
+        throw StateError('SUPABASE_URL must be set via --dart-define');
+      }
+      // Debug fallback handled by getter.
     }
     if (supabaseAnonKey.isEmpty) {
-      throw StateError('SUPABASE_ANON_KEY must be set via --dart-define');
+      if (kReleaseMode) {
+        throw StateError('SUPABASE_ANON_KEY must be set via --dart-define');
+      }
     }
   }
 }

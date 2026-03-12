@@ -6,15 +6,18 @@ All map-related APIs, services, keys, and data sources used by the campus map su
 
 | Key | Location | Usage | Flutter Approach |
 |-----|----------|-------|-----------------|
-| `GOOGLE_MAPS_API_KEY` (client) | --dart-define | Maps SDK rendering | Restricted to app bundle ID |
-| `GOOGLE_ROUTES_API_KEY` (server) | Edge Functions env | Google Routes API | Never in client code |
+| `GOOGLE_MAPS_API_KEY` (client) | `--dart-define` / hardcoded debug fallback | Maps SDK rendering + Directions API | Restricted to app bundle ID in production |
 
 ## External Services
 
 | Service | Web Usage | Flutter Usage |
 |---------|-----------|---------------|
-| Google Maps JavaScript API | Leaflet + GM JS API | google_maps_flutter (native SDK) |
-| Google Routes API | Via Next.js API proxy | Via `maps-routes` Edge Function proxy |
+| Google Maps JavaScript API | Leaflet + GM JS API | google_maps_flutter (native SDK on Android/iOS, JS API on web) |
+| Google Directions API | Via Next.js API proxy | Direct HTTP call from client (`google_routes_remote_source.dart`) |
+
+> **Note:** Routing was migrated from the Supabase `maps-routes` edge function to a direct
+> Google Directions API HTTP call. The edge function is kept in `supabase/functions/maps-routes/`
+> but is no longer used by the Flutter app.
 
 ## Building Registry
 
@@ -27,37 +30,31 @@ All map-related APIs, services, keys, and data sources used by the campus map su
 
 | Config | Value | Notes |
 |--------|-------|-------|
-| Campus bounds (north) | -33.769571 | |
-| Campus bounds (south) | -33.778124 | |
-| Campus bounds (east) | 151.122172 | |
-| Campus bounds (west) | 151.103934 | |
 | Campus center lat | -33.7738 | Default camera target |
 | Campus center lng | 151.1130 | Default camera target |
-| Default zoom | 16.5 | |
+| Default zoom | 15.5 | |
+
+> Camera bounds and min/max zoom restrictions were removed so users can freely
+> pan and zoom outside the campus when navigating to/from off-campus locations.
 
 ## Flutter Map Packages
 
 | Package | Version | Role |
 |---------|---------|------|
-| google_maps_flutter | ^2.14.2 | Primary map engine |
-| geolocator | ^13.0.0 | GPS location tracking |
+| google_maps_flutter | ^2.14.2 | Primary map engine (Android, iOS, web) |
+| geolocator | ^14.0.2 | GPS location tracking |
 | permission_handler | ^12.0.1 | Location permission flow |
+| http | ^1.4.0 | Google Directions API HTTP calls |
 
 ## Map Features (Implemented)
 
-| Feature | Package |
-|---------|---------|
+| Feature | Package / Source |
+|---------|-----------------|
 | Building registry data source + bundled JSON asset | flutter assets |
-| Current location tracking | geolocator + permission_handler |
-| Google Map widget + camera bounds | google_maps_flutter |
-| Building markers + info windows | google_maps_flutter |
+| Current location tracking (fallback to campus centre on web/emulator) | geolocator + permission_handler |
+| Google Map widget (no camera bounds) | google_maps_flutter |
+| Building markers (azure for unselected, red for selected) | google_maps_flutter |
 | Building search bottom sheet | custom widget |
-| Route request via Edge Function | maps-routes EF |
+| Route request via Google Directions API (HTTP) | http |
 | Route polyline rendering | google_maps_flutter |
-| Travel mode switching (walk/drive/bike/transit) | maps-routes EF |
-
-## Edge Functions for Maps
-
-| Function | Purpose |
-|----------|---------|
-| `maps-routes` | Authenticated Google Routes API proxy with rate limiting |
+| Travel mode switching (walk/drive/bike/transit) | Directions API `mode` param |

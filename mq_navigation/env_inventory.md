@@ -6,20 +6,26 @@ All environment variables used by MQ Navigation, categorised by client/server ex
 
 | Variable | Required | Default | Notes |
 |----------|----------|---------|-------|
-| `SUPABASE_URL` | Yes | — | Supabase project URL |
-| `SUPABASE_ANON_KEY` | Yes | — | Public anon key (RLS enforced) |
-| `GOOGLE_MAPS_API_KEY` | No | — | Client-side Maps SDK key (restricted to app bundle ID; required only for the embedded map) |
+| `SUPABASE_URL` | Release only | Hardcoded dev fallback | Supabase project URL |
+| `SUPABASE_ANON_KEY` | Release only | Hardcoded dev fallback | Public anon key (RLS enforced) |
+| `GOOGLE_MAPS_API_KEY` | No | Hardcoded dev fallback | Client-side Maps SDK + Directions API key |
 | `APP_ENV` | No | `development` | development / staging / production |
+
+> In **debug mode** a bare `flutter run` works without `--dart-define-from-file=.env`
+> because `env_config.dart` falls back to hardcoded development defaults.
+> In **release mode** you must supply at least `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
 
 ## Server-Only (Edge Functions env / Supabase dashboard)
 
 | Variable | Service | Notes |
 |----------|---------|-------|
 | `SUPABASE_SERVICE_ROLE_KEY` | Edge Functions | Bypasses RLS — never in client code |
-| `GOOGLE_ROUTES_API_KEY` | `maps-routes` EF | Google Routes API billing key |
-| `FIREBASE_SERVICE_ACCOUNT_JSON` | `notify` EF | Preferred Firebase service account JSON for FCM HTTP v1 |
-| `FCM_SERVER_KEY` | `notify` EF | Legacy FCM push delivery fallback |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | `notify` EF | Firebase service account JSON for FCM HTTP v1 |
 | `CRON_SECRET` | `cleanup-cron` EF | Protects cron endpoints |
+
+> **Note:** `GOOGLE_ROUTES_API_KEY` is no longer used by the `maps-routes` edge function.
+> Routing is now handled client-side via the Google Directions API using
+> the same `GOOGLE_MAPS_API_KEY`.
 
 ## Firebase (Flutter-specific, not in web app)
 
@@ -29,18 +35,3 @@ All environment variables used by MQ Navigation, categorised by client/server ex
 | `GoogleService-Info.plist` | `ios/Runner/` | Firebase iOS config |
 | APNs auth key / certificate | Apple Developer + Firebase | Required for iOS push delivery |
 
-## Web-Only (Not Needed in Flutter)
-
-| Variable | Reason |
-|----------|--------|
-| `NEXT_PUBLIC_APP_URL` | Vercel deployment URL |
-| `NEXT_PUBLIC_GOOGLE_MAP_ID` | Maps JS API vector maps |
-| `RESEND_API_KEY` | Email delivery (web auth flow) |
-| `VERIFICATION_EMAIL_FROM` | Verification emails (web auth) |
-| `VERIFICATION_EMAIL_NAME` | Verification emails (web auth) |
-| `WEBAUTHN_RP_ID` | WebAuthn (web-only) |
-| `WEBAUTHN_ORIGIN` | WebAuthn (web-only) |
-| `CSRF_VALIDATION_ENABLED` | Browser CSRF (not applicable on mobile) |
-| `NEXT_PUBLIC_SENTRY_DSN` | Web Sentry — Flutter will use its own |
-| `CORS_ALLOWED_ORIGINS` | Browser CORS only |
-| `NODE_ENV` / `PORT` / `NEXT_TURBOPACK` | Next.js dev server |
