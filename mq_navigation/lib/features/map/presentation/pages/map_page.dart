@@ -172,7 +172,8 @@ class _MapPageState extends ConsumerState<MapPage> {
               // ── Map view ──
               Expanded(
                 child: CampusMapView(
-                  buildings: mapState.buildings,
+                  searchResults: mapState.searchResults,
+                  searchQuery: mapState.searchQuery,
                   selectedBuilding: mapState.selectedBuilding,
                   route: mapState.route,
                   currentLocation: mapState.currentLocation,

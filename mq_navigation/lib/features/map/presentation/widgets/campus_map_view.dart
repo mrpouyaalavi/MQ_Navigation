@@ -11,14 +11,16 @@ import 'package:mq_navigation/shared/widgets/mq_card.dart';
 class CampusMapView extends StatefulWidget {
   const CampusMapView({
     super.key,
-    required this.buildings,
+    required this.searchResults,
+    required this.searchQuery,
     required this.selectedBuilding,
     required this.route,
     required this.currentLocation,
     required this.onSelectBuilding,
   });
 
-  final List<Building> buildings;
+  final List<Building> searchResults;
+  final String searchQuery;
   final Building? selectedBuilding;
   final MapRoute? route;
   final LocationSample? currentLocation;
@@ -94,12 +96,38 @@ class _CampusMapViewState extends State<CampusMapView> {
       );
     }
 
-    // Only show important buildings + selected building to keep the map clean.
-    final visibleBuildings = widget.buildings.where((building) {
-      if (building.latitude == null || building.longitude == null) return false;
-      if (widget.selectedBuilding?.id == building.id) return true;
-      return building.isHighTraffic;
-    }).toList();
+    // Determine which buildings to show as markers:
+    // • No search query & no selection → clean map, no markers
+    // • Search query active → show all matching results (azure markers)
+    // • Single building selected → show only that building (red marker)
+    final List<Building> visibleBuildings;
+    if (widget.selectedBuilding != null) {
+      // A specific building is selected — show only that one.
+      final sel = widget.selectedBuilding!;
+      if (sel.latitude != null && sel.longitude != null) {
+        visibleBuildings = [sel];
+      } else {
+        visibleBuildings = [];
+      }
+      // Also add search results if a query is active so category searches
+      // still show all matching buildings alongside the selected one.
+      if (widget.searchQuery.trim().length >= 2) {
+        final others = widget.searchResults.where((b) {
+          return b.latitude != null &&
+              b.longitude != null &&
+              b.id != sel.id;
+        });
+        visibleBuildings.addAll(others);
+      }
+    } else if (widget.searchQuery.trim().length >= 2) {
+      // Search query is active — show all matching results.
+      visibleBuildings = widget.searchResults.where((b) {
+        return b.latitude != null && b.longitude != null;
+      }).toList();
+    } else {
+      // Default — clean map, no markers.
+      visibleBuildings = [];
+    }
 
     return GoogleMap(
       initialCameraPosition: const CameraPosition(

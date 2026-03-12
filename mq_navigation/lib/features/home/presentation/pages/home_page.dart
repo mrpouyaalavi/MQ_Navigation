@@ -99,7 +99,7 @@ class HomePage extends StatelessWidget {
                   ),
                   _QuickAccessCard(
                     icon: Icons.local_parking,
-                    label: l10n.services,
+                    label: l10n.parking,
                     color: MqColors.purple,
                     searchQuery: 'parking',
                   ),

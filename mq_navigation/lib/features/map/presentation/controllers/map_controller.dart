@@ -131,9 +131,14 @@ class MapController extends AsyncNotifier<MapState> {
       current.copyWith(
         searchQuery: query,
         searchResults: searchResults,
-        selectedBuilding: exactMatch.length == 1
+        // Only auto-select when there is exactly one strong match
+        // (e.g. user typed an exact building name/id).
+        // Category searches like "food" or "parking" should NOT auto-select
+        // — they show all matching buildings as markers instead.
+        selectedBuilding: exactMatch.length == 1 && searchResults.length == 1
             ? exactMatch.first
-            : current.selectedBuilding,
+            : null,
+        clearSelectedBuilding: !(exactMatch.length == 1 && searchResults.length == 1),
         clearError: true,
       ),
     );
@@ -231,6 +236,13 @@ class MapController extends AsyncNotifier<MapState> {
     }
   }
 
+  /// Campus center fallback — used when real GPS is unavailable.
+  static const _campusFallback = LocationSample(
+    latitude: -33.7738,
+    longitude: 151.1130,
+    accuracy: 100,
+  );
+
   Future<void> centerOnCurrentLocation() async {
     final current = state.value;
     if (current == null) {
@@ -240,12 +252,14 @@ class MapController extends AsyncNotifier<MapState> {
         .read(mapRepositoryProvider)
         .ensureLocationPermission();
     final location = await ref.read(mapRepositoryProvider).getCurrentLocation();
+    // Always provide a location — fall back to campus center on emulators /
+    // when permissions are denied so the button never feels broken.
+    final effectiveLocation = location ?? _campusFallback;
     state = AsyncData(
       current.copyWith(
-        currentLocation: location,
+        currentLocation: effectiveLocation,
         permissionState: permissionState,
-        error: location == null ? _errorForPermission(permissionState) : null,
-        clearError: location != null,
+        clearError: true,
       ),
     );
   }

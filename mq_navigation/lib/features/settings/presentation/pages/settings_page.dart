@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
+import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
@@ -138,20 +140,6 @@ class SettingsPage extends ConsumerWidget {
                             }
                           },
                         ),
-                        _ToggleRow(
-                          icon: Icons.mail_outline,
-                          label: l10n.emailNotifications,
-                          value: preferences.emailNotifications,
-                          semanticLabel: l10n.emailNotifications,
-                          onChanged: (v) async {
-                            final msg = await ref
-                                .read(settingsControllerProvider.notifier)
-                                .updateEmailNotifications(v);
-                            if (msg != null && context.mounted) {
-                              context.showSnackBar(msg, isError: true);
-                            }
-                          },
-                        ),
                       ],
                     ),
                     const SizedBox(height: MqSpacing.space6),
@@ -160,15 +148,12 @@ class SettingsPage extends ConsumerWidget {
                     _SectionHeader(title: l10n.settings_experience),
                     _SettingsCard(
                       children: [
-                        _InfoRow(
+                        _TapRow(
                           icon: Icons.map_outlined,
                           label: l10n.campusMapLabel,
-                          subtitle: l10n.campusMapDesc,
-                        ),
-                        _InfoRow(
-                          icon: Icons.schedule_outlined,
-                          label: l10n.studyPromptLabel,
-                          subtitle: l10n.studyPromptNotificationBody,
+                          value: '',
+                          semanticLabel: l10n.campusMapLabel,
+                          onTap: () => context.goNamed(RouteNames.map),
                         ),
                       ],
                     ),

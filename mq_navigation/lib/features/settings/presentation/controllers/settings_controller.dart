@@ -55,10 +55,6 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     return result;
   }
 
-  Future<String?> updateEmailNotifications(bool enabled) async {
-    final currentPreferences = state.value ?? const UserPreferences();
-    return _save(currentPreferences.copyWith(emailNotifications: enabled));
-  }
 
   Future<String?> _save(UserPreferences preferences) async {
     final previous = state.value;

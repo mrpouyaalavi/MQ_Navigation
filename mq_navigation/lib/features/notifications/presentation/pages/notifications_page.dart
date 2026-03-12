@@ -143,7 +143,6 @@ class _PreferenceSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(notificationsControllerProvider.notifier);
-    final studyPreference = state.preferenceFor(NotificationType.studyPrompt);
 
     return MqCard(
       child: Column(
@@ -154,39 +153,16 @@ class _PreferenceSection extends ConsumerWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: 12),
-          for (final type in NotificationType.values)
+          // Only show types that have corresponding features in the app.
+          for (final type in const [
+            NotificationType.announcement,
+            NotificationType.system,
+          ])
             SwitchListTile.adaptive(
               value: state.preferenceFor(type).enabled,
               contentPadding: EdgeInsets.zero,
               title: Text(_labelFor(context, type)),
-              subtitle: type == NotificationType.studyPrompt
-                  ? Text(
-                      AppLocalizations.of(context)!.dailyAt(
-                        TimeOfDay(
-                          hour: studyPreference.scheduledHour,
-                          minute: studyPreference.scheduledMinute,
-                        ).format(context),
-                      ),
-                    )
-                  : null,
               onChanged: (value) => notifier.updatePreference(type, value),
-              secondary: type == NotificationType.studyPrompt
-                  ? IconButton(
-                      onPressed: () async {
-                        final picked = await showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay(
-                            hour: studyPreference.scheduledHour,
-                            minute: studyPreference.scheduledMinute,
-                          ),
-                        );
-                        if (picked != null) {
-                          await notifier.updateStudyPromptTime(picked);
-                        }
-                      },
-                      icon: const Icon(Icons.schedule_outlined),
-                    )
-                  : null,
             ),
         ],
       ),
