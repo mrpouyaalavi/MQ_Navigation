@@ -28,9 +28,24 @@ Decomposed the monolithic campus renderer into 5 focused layer widgets under `ca
 
 **Follow-ups:**
 - Street View is deep-link only — no embedded view due to flutter platform limitations
-- Overlay images are full-resolution from web repo — consider optimizing for mobile bundle size
 - Google Places fallback requires `GOOGLE_ROUTES_API_KEY` on the maps-places Edge Function
-- Campus walking dashed polyline requires custom `flutter_map` painter (not yet ported)
+
+### Raouf: 2026-03-13 (AEDT) — Map parity follow-up fixes
+
+**Scope:** i18n, RTL, dashed polyline, and overlay image optimization.
+
+**Summary:**
+Addressed the 4 actionable follow-up items from the full map parity pass.
+
+**Changes:**
+1. **i18n** — replaced all hardcoded English strings in map widgets with ARB keys: `youveArrived`, `openStreetView`, `nearbyPlaces`, `campusOverlayUnavailable`, `stepsCount` (ICU plural), `durationMinutes`, `durationHoursMinutes` in `app_en.arb`, updated `route_panel.dart`, `building_search_sheet.dart`, `campus_map_view.dart`
+2. **RTL** — converted `EdgeInsets.only(left:)` to `EdgeInsetsDirectional.only(start:)` in `building_search_sheet.dart` (only asymmetric instance found across all new widgets)
+3. **Dashed polyline** — applied `StrokePattern.dashed(segments: [12, 8])` for walking routes in `campus_map_route_layer.dart` using flutter_map v8.2.2's built-in support (no custom painter needed)
+4. **Overlay optimization** — compressed 4 overlay PNGs with pngquant (5.7 MB → 1.5 MB, 74% reduction) while preserving 3509×2481 resolution
+
+**Files modified:** `app_en.arb`, `route_panel.dart`, `building_search_sheet.dart`, `campus_map_view.dart`, `campus_map_route_layer.dart`, `overlay_parking.png`, `overlay_water.png`, `overlay_accessibility.png`, `overlay_permits.png`
+
+**Verification:** `dart analyze` (0 issues), `flutter test` (43/43 map tests passed)
 
 ### Raouf: 2026-03-12 (AEDT) — Full web-to-Flutter navigation parity
 
