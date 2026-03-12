@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 
 void main() {
   group('Building', () {
@@ -90,6 +91,28 @@ void main() {
         'location': {'lat': -33.77, 'lng': 151.11},
       });
       expect(building.routingLatitude, -33.77);
+    });
+
+    test('google map target prefers entrance coordinates for parity', () {
+      final building = Building.fromJson(sampleJson);
+      final target = resolveBuildingGeographicTarget(building);
+
+      expect(target, isNotNull);
+      expect(target!.latitude, -33.77388);
+      expect(target.longitude, 151.11275);
+    });
+
+    test('google map target falls back to building center when needed', () {
+      final building = Building.fromJson({
+        'id': 'Y',
+        'name': 'Y',
+        'location': {'lat': -33.77, 'lng': 151.11},
+      });
+      final target = resolveBuildingGeographicTarget(building);
+
+      expect(target, isNotNull);
+      expect(target!.latitude, -33.77);
+      expect(target.longitude, 151.11);
     });
 
     test('matchesQuery matches building code', () {

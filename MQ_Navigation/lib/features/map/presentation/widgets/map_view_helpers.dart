@@ -52,3 +52,13 @@ List<LocationSample> resolveRoutePoints(MapRoute route) {
       )
       .toList();
 }
+
+LocationSample? resolveBuildingGeographicTarget(Building building) {
+  final latitude = building.routingLatitude;
+  final longitude = building.routingLongitude;
+  if (latitude == null || longitude == null) {
+    return null;
+  }
+
+  return LocationSample(latitude: latitude, longitude: longitude);
+}

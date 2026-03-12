@@ -52,16 +52,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
 
     if (widget.selectedBuilding != null &&
         widget.selectedBuilding?.id != oldWidget.selectedBuilding?.id) {
-      final target = widget.selectedBuilding!;
-      final latitude = target.routingLatitude;
-      final longitude = target.routingLongitude;
-      if (_controller != null && latitude != null && longitude != null) {
-        unawaited(
-          _controller!.animateCamera(
-            CameraUpdate.newLatLngZoom(LatLng(latitude, longitude), 17),
-          ),
-        );
-      }
+      _focusBuilding(widget.selectedBuilding!);
       return;
     }
 
@@ -72,13 +63,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
         (oldLocation == null ||
             newLocation.latitude != oldLocation.latitude ||
             newLocation.longitude != oldLocation.longitude)) {
-      unawaited(
-        _controller!.animateCamera(
-          CameraUpdate.newLatLng(
-            LatLng(newLocation.latitude, newLocation.longitude),
-          ),
-        ),
-      );
+      _focusLocation(newLocation);
     }
   }
 
@@ -114,27 +99,32 @@ class _GoogleMapViewState extends State<GoogleMapView> {
       ),
       onMapCreated: (controller) {
         _controller = controller;
+        _syncCameraToState();
       },
       mapToolbarEnabled: false,
       zoomControlsEnabled: false,
       myLocationEnabled: widget.currentLocation != null,
       myLocationButtonEnabled: false,
-      markers: visibleBuildings.map((building) {
-        final latitude = building.latitude!;
-        final longitude = building.longitude!;
-        final isSelected = widget.selectedBuilding?.id == building.id;
-        return Marker(
-          markerId: MarkerId(building.id),
-          position: LatLng(latitude, longitude),
-          icon: BitmapDescriptor.defaultMarkerWithHue(
-            isSelected ? BitmapDescriptor.hueRed : BitmapDescriptor.hueAzure,
-          ),
-          alpha: isSelected ? 1.0 : 0.6,
-          zIndexInt: isSelected ? 1 : 0,
-          infoWindow: InfoWindow(title: building.name, snippet: building.code),
-          onTap: () => widget.onSelectBuilding(building),
-        );
-      }).toSet(),
+      markers: {
+        for (final building in visibleBuildings)
+          if (resolveBuildingGeographicTarget(building) case final target?)
+            Marker(
+              markerId: MarkerId(building.id),
+              position: LatLng(target.latitude, target.longitude),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                widget.selectedBuilding?.id == building.id
+                    ? BitmapDescriptor.hueRed
+                    : BitmapDescriptor.hueAzure,
+              ),
+              alpha: widget.selectedBuilding?.id == building.id ? 1.0 : 0.6,
+              zIndexInt: widget.selectedBuilding?.id == building.id ? 1 : 0,
+              infoWindow: InfoWindow(
+                title: building.name,
+                snippet: building.code,
+              ),
+              onTap: () => widget.onSelectBuilding(building),
+            ),
+      },
       polylines: widget.route == null || widget.route!.encodedPolyline.isEmpty
           ? (widget.route?.points.isEmpty ?? true)
                 ? const <Polyline>{}
@@ -161,6 +151,53 @@ class _GoogleMapViewState extends State<GoogleMapView> {
               ),
             },
     );
+  }
+
+  void _syncCameraToState() {
+    final selectedBuilding = widget.selectedBuilding;
+    if (selectedBuilding != null) {
+      _focusBuilding(selectedBuilding, animate: false);
+      return;
+    }
+
+    final currentLocation = widget.currentLocation;
+    if (currentLocation != null) {
+      _focusLocation(currentLocation, animate: false);
+    }
+  }
+
+  void _focusBuilding(Building building, {bool animate = true}) {
+    final target = resolveBuildingGeographicTarget(building);
+    if (_controller == null || target == null) {
+      return;
+    }
+
+    final update = CameraUpdate.newLatLngZoom(
+      LatLng(target.latitude, target.longitude),
+      17,
+    );
+    if (animate) {
+      unawaited(_controller!.animateCamera(update));
+      return;
+    }
+
+    unawaited(_controller!.moveCamera(update));
+  }
+
+  void _focusLocation(LocationSample location, {bool animate = true}) {
+    if (_controller == null) {
+      return;
+    }
+
+    final update = CameraUpdate.newLatLng(
+      LatLng(location.latitude, location.longitude),
+    );
+    if (animate) {
+      unawaited(_controller!.animateCamera(update));
+      return;
+    }
+
+    unawaited(_controller!.moveCamera(update));
   }
 
   Color _colorFor(TravelMode travelMode) {

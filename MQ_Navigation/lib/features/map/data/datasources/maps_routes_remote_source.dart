@@ -9,6 +9,13 @@ import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dar
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Calls the `maps-routes` Supabase Edge Function to compute a route.
+///
+/// Authentication is optional by design — the app has no login requirement
+/// (see AGENT.md: "No auth: App starts directly at /home"). Unauthenticated
+/// requests are rate-limited by client IP (60 req / 60 s); authenticated
+/// requests are rate-limited by user ID. If app-level auth is introduced
+/// later, the Bearer token path below already supports it.
 class MapsRoutesRemoteSource {
   const MapsRoutesRemoteSource({http.Client? httpClient})
     : _httpClient = httpClient;

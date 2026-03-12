@@ -4,6 +4,52 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-12 (AEDT) — Blueprint gap audit fixes
+
+**Scope:** Close the two remaining gaps from the full dual-map blueprint acceptance audit.
+
+**Summary:**
+A full 37-criterion audit against the implementation blueprint scored 35/37 PASS, 2 PARTIAL. This change closes both partials:
+
+1. **Export automation** — Added `tools/sync_buildings.dart`, a standalone Dart CLI script that fetches the building registry from the Supabase `app_config` table and writes normalised JSON to `assets/data/buildings.json`. Reads credentials from `.env` or `--url`/`--key` flags. This provides a repeatable sync path from the Supabase source of truth to the bundled Flutter asset, removing the dependency on manual copy from the web repo export.
+
+2. **Auth design documentation** — Added a doc comment on `MapsRoutesRemoteSource` explicitly documenting that unauthenticated route access is intentional: the app has no login requirement (AGENT.md), unauthenticated callers are rate-limited by IP (60 req/60 s), and the Bearer token path is already wired for future auth if needed.
+
+**Files changed:**
+- `tools/sync_buildings.dart` — new: Supabase → `buildings.json` sync script
+- `lib/features/map/data/datasources/maps_routes_remote_source.dart` — added auth design-decision doc comment
+- `AGENT.md`, `CHANGELOG.md` — appended Raouf log entries
+
+**Verification:**
+- `dart format tools/sync_buildings.dart lib/features/map/data/datasources/maps_routes_remote_source.dart` — 0 issues
+- `flutter analyze` — 0 issues
+- `flutter test` — 101/101 passed
+
+**Follow-ups:**
+- Integrate `sync_buildings.dart` into CI/CD if automated Supabase → Flutter asset sync is desired.
+
+---
+
+### Raouf: 2026-03-12 (AEDT) — Align Google building targets with campus mode
+
+**Scope:** Fix the Google renderer so building markers and camera focus use the same coordinate source and preserve the active map framing when switching renderers.
+
+**Summary:**
+The Google map was centering selected buildings with `routingLatitude` and `routingLongitude` but still rendering markers with the raw building-center `latitude` and `longitude`. For buildings that ship separate entrance coordinates, this made the Google renderer appear slightly offset compared with campus mode. The fix adds a shared geographic-target resolver, reuses it for both Google marker placement and selected-building camera focus, and applies an initial camera sync in `onMapCreated` so toggling from campus mode keeps the currently selected building or location in view instead of falling back to the default campus center.
+
+**Files changed:**
+- `lib/features/map/presentation/widgets/map_view_helpers.dart` — added a shared building geographic-target resolver
+- `lib/features/map/presentation/widgets/google_map_view.dart` — unified marker/camera targeting and synced initial camera state
+- `test/features/map/building_test.dart` — added regression coverage for entrance-vs-center target resolution
+- `AGENT.md` — logged the change
+- `CHANGELOG.md` — logged the change
+
+**Verification:**
+- `dart format lib/features/map/presentation/widgets/map_view_helpers.dart lib/features/map/presentation/widgets/google_map_view.dart test/features/map/building_test.dart`
+- `flutter test test/features/map/building_test.dart` (15/15 passed)
+- `flutter analyze` (0 issues)
+- `flutter test` (101/101 passed)
+
 ### Raouf: 2026-03-12 (AEDT) — Normalize campus overlay bounds for flutter_map
 
 **Scope:** Fix the campus renderer crash caused by constructing `flutter_map` bounds from raw image-pixel dimensions.
