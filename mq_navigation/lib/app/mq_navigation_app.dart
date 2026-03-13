@@ -45,7 +45,7 @@ class MqNavigationApp extends ConsumerWidget {
               StateError('Application shell failed to build.'),
             );
       },
-      title: 'MQ Navigation',
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appName,
       debugShowCheckedModeBanner: false,
       theme: MqTheme.light,
       darkTheme: MqTheme.dark,

@@ -2017,5 +2017,37 @@
   "campusOverlayUnavailable": "Dữ liệu lớp phủ khuôn viên không khả dụng.",
   "stepsCount": "{count, plural, =1{1 bước} other{{count} bước}}",
   "durationMinutes": "{minutes} phút",
-  "durationHoursMinutes": "{hours}g {minutes}p"
+  "durationHoursMinutes": "{hours}g {minutes}p",
+  "@dailyAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@stepsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorApplication": "Application error",
+  "errorSomethingWentWrong": "Something went wrong while building the UI.",
+  "about_theTeam_desc": "Raouf Abedini & Pouya Alavi\nCOMP3130, Macquarie University"
 }

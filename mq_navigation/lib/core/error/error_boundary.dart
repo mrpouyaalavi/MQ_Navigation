@@ -1,7 +1,9 @@
 import 'dart:ui';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 
 /// App-level wrapper kept for API stability.
 ///
@@ -25,10 +27,18 @@ class _ErrorFallback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final isDark = context.isDarkMode;
+
     return Directionality(
-      textDirection: TextDirection.ltr,
+      textDirection: l10n?.localeName == 'ar' ||
+              l10n?.localeName == 'fa' ||
+              l10n?.localeName == 'he' ||
+              l10n?.localeName == 'ur'
+          ? TextDirection.rtl
+          : TextDirection.ltr,
       child: ColoredBox(
-        color: const Color(0xFFF5F5F5),
+        color: isDark ? const Color(0xFF111111) : const Color(0xFFF5F5F5),
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 420),
@@ -36,32 +46,39 @@ class _ErrorFallback extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFFFFF),
+                  color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFFFFFFF),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFFD0D0D0)),
+                  border: Border.all(
+                    color: isDark
+                        ? const Color(0xFF333333)
+                        : const Color(0xFFD0D0D0),
+                  ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        'Application error',
+                      Text(
+                        l10n?.errorApplication ?? 'Application error',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF111111),
+                          color: isDark ? Colors.white : const Color(0xFF111111),
                         ),
                       ),
                       const SizedBox(height: 12),
-                      const Text(
-                        'Something went wrong while building the UI.',
+                      Text(
+                        l10n?.errorSomethingWentWrong ??
+                            'Something went wrong while building the UI.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 15,
                           height: 1.4,
-                          color: Color(0xFF333333),
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.7)
+                              : const Color(0xFF333333),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -70,10 +87,12 @@ class _ErrorFallback extends StatelessWidget {
                         textAlign: TextAlign.center,
                         maxLines: 6,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           height: 1.4,
-                          color: Color(0xFF555555),
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.5)
+                              : const Color(0xFF555555),
                         ),
                       ),
                     ],

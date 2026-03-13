@@ -4,7 +4,34 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
-### Raouf: 2026-03-13 (AEDT) — Codebase annotation and educational comments
+### Raouf: 2026-03-14 (AEDT) — Repository-wide i18n Audit and Remediation
+
+**Scope:** Full i18n audit, hardcoded string migration, and locale coverage repair.
+
+**Summary:**
+Performed a comprehensive audit of the project's internationalization system. Migrated hardcoded user-facing strings in `mq_navigation_app.dart` (app title), `error_boundary.dart` (fallback error messages), `settings_page.dart` (team credits), and `route_panel.dart` (distance units) to the ARB system. Added missing placeholder metadata (`@dailyAt`, `@durationMinutes`, `@durationHoursMinutes`, `@stepsCount`) to all 34 non-English locales to ensure structural integrity. Translated 249 keys for Arabic, Chinese, and Spanish, addressing major gaps introduced in Phase 3/4/5. Synchronized the remaining 31 locales with English fallbacks for new keys to ensure a clean `flutter gen-l10n` run.
+
+**Files changed:**
+- `lib/app/l10n/app_en.arb`
+- `lib/app/mq_navigation_app.dart`
+- `lib/core/error/error_boundary.dart`
+- `lib/features/settings/presentation/pages/settings_page.dart`
+- `lib/features/map/presentation/widgets/route_panel.dart`
+- `lib/app/l10n/app_ar.arb`
+- `lib/app/l10n/app_zh.arb`
+- `lib/app/l10n/app_es.arb`
+- (Metadata and sync keys in 31 other ARB files)
+
+**Verification:**
+- `flutter gen-l10n` → Success (0 warnings)
+- `grep` checks confirmed translation of previously untranslated keys in major locales.
+- Manual check of modified files for JSON and Dart syntax validity.
+
+**Follow-ups:**
+- Address remaining 246 untranslated keys in the other 31 locales (requires restoring web source for automated sync).
+- Localize native language names in `SettingsPage` if non-native identification is preferred.
+
+### Raouf: 2026-03-13 (AEDT) — Codebase Annotation and Educational Comments
 
 **Scope:** Educational comment pass for student developers.
 

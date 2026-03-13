@@ -173,8 +173,7 @@ class SettingsPage extends ConsumerWidget {
                         _InfoRow(
                           icon: Icons.people_outline,
                           label: l10n.about_theTeam,
-                          subtitle:
-                              'Raouf Abedini & Pouya Alavi\nCOMP3130, Macquarie University',
+                          subtitle: l10n.about_theTeam_desc,
                         ),
                       ],
                     ),

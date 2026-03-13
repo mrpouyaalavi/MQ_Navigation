@@ -2017,5 +2017,37 @@
   "campusOverlayUnavailable": "क्याम्पस ओभरले डेटा उपलब्ध छैन।",
   "stepsCount": "{count, plural, =1{१ चरण} other{{count} चरण}}",
   "durationMinutes": "{minutes} मिनेट",
-  "durationHoursMinutes": "{hours}घ {minutes}मि"
+  "durationHoursMinutes": "{hours}घ {minutes}मि",
+  "@dailyAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@stepsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorApplication": "Application error",
+  "errorSomethingWentWrong": "Something went wrong while building the UI.",
+  "about_theTeam_desc": "Raouf Abedini & Pouya Alavi\nCOMP3130, Macquarie University"
 }

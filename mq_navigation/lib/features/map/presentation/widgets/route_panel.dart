@@ -535,6 +535,7 @@ class _NextInstructionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: MqSpacing.space3,
@@ -562,8 +563,8 @@ class _NextInstructionCard extends StatelessWidget {
               padding: const EdgeInsetsDirectional.only(top: 2),
               child: Text(
                 instruction.distanceMeters >= 1000
-                    ? '${(instruction.distanceMeters / 1000).toStringAsFixed(1)} km'
-                    : '${instruction.distanceMeters} m',
+                    ? '${(instruction.distanceMeters / 1000).toStringAsFixed(1)} ${l10n.routeKilometersShort}'
+                    : '${instruction.distanceMeters} ${l10n.routeMetersShort}',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: isDark
                       ? const Color(0xFF6ea8f0)
@@ -701,8 +702,8 @@ class _ExpandableStepList extends StatelessWidget {
                                 ),
                                 child: Text(
                                   step.distanceMeters >= 1000
-                                      ? '${(step.distanceMeters / 1000).toStringAsFixed(1)} km'
-                                      : '${step.distanceMeters} m',
+                                      ? '${(step.distanceMeters / 1000).toStringAsFixed(1)} ${l10n.routeKilometersShort}'
+                                      : '${step.distanceMeters} ${l10n.routeMetersShort}',
                                   style: Theme.of(context).textTheme.labelSmall
                                       ?.copyWith(
                                         color: isDark

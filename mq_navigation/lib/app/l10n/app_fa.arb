@@ -2017,5 +2017,37 @@
   "campusOverlayUnavailable": "اطلاعات نقشه پردیس در دسترس نیست.",
   "stepsCount": "{count, plural, =1{۱ مرحله} other{{count} مرحله}}",
   "durationMinutes": "{minutes} دقیقه",
-  "durationHoursMinutes": "{hours}س {minutes}د"
+  "durationHoursMinutes": "{hours}س {minutes}د",
+  "@dailyAt": {
+    "placeholders": {
+      "time": {}
+    }
+  },
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@durationHoursMinutes": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "@stepsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorApplication": "Application error",
+  "errorSomethingWentWrong": "Something went wrong while building the UI.",
+  "about_theTeam_desc": "Raouf Abedini & Pouya Alavi\nCOMP3130, Macquarie University"
 }
