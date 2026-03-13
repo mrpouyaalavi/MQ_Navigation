@@ -4,6 +4,43 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-14 (AEDT) — Full UI/UX Production Readiness Audit
+
+**Scope:** Comprehensive UI/UX audit and remediation for production readiness.
+
+**Summary:**
+Performed a full audit of all presentation layers (Home, Map, Settings, Notifications, Error Boundary) against the AGENT.md coding conventions. Fixed 80+ issues spanning design token compliance, accessibility, RTL support, keyboard handling, and visual polish.
+
+**Key changes:**
+1. **Theme tokens** — Extended `MqColors` with 21 new semantic tokens: `contentTertiaryDark`, 8 navigation instruction colors (blue dark/light), 10 arrival card colors (green dark/light). Extended `MqSpacing` with 6 icon size tokens (`iconSm` 16 through `iconHero` 56).
+2. **Design token compliance** — Replaced 50+ hardcoded `fontSize`/`fontWeight` values with `Theme.of(context).textTheme.*` references. Replaced 15+ inline hex color literals (`0xFF1a3a5c`, etc.) with `MqColors` semantic tokens. Replaced all magic spacing numbers with `MqSpacing` tokens.
+3. **RTL support** — Converted 20+ `EdgeInsets` to `EdgeInsetsDirectional`. Improved error boundary RTL detection to handle locale variants (e.g., `ar-EG`, `fa_IR`).
+4. **Accessibility** — Settings switch tap target widened from 44dp to 48dp. Notification tiles wrapped in `Semantics`. Title text overflow capped with `maxLines: 2`.
+5. **Critical UX fixes** — Route panel wrapped in `SingleChildScrollView` (prevents overflow). Search sheet gains `autofocus`, `textInputAction.search`, keyboard dismissal on result tap, and empty state message. Notification error displays no longer expose raw `error.toString()`. Settings picker `initialChildSize` increased to 0.5.
+
+**Files changed:**
+- `lib/app/theme/mq_colors.dart`
+- `lib/app/theme/mq_spacing.dart`
+- `lib/features/home/presentation/pages/home_page.dart`
+- `lib/features/map/presentation/widgets/route_panel.dart`
+- `lib/features/map/presentation/widgets/building_search_sheet.dart`
+- `lib/features/map/presentation/widgets/map_shell.dart`
+- `lib/features/map/presentation/widgets/map_mode_toggle.dart`
+- `lib/features/settings/presentation/pages/settings_page.dart`
+- `lib/features/notifications/presentation/pages/notifications_page.dart`
+- `lib/features/notifications/presentation/widgets/notification_tile.dart`
+- `lib/core/error/error_boundary.dart`
+
+**Verification:**
+- `dart analyze` → 0 issues
+- `flutter test` → 115/115 passed
+
+**Follow-ups:**
+- Branded splash screen for Android and iOS (currently uses default Flutter splash)
+- Animation duration token system for consistent transitions
+- Extract `GlassPane` to `lib/shared/widgets/` for app-wide reuse
+- Add `noSearchResults` i18n key to all 35 locales
+
 ### Raouf: 2026-03-14 (AEDT) — Repository-wide i18n Audit and Remediation
 
 **Scope:** Full i18n audit, hardcoded string migration, and locale coverage repair.

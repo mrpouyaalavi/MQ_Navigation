@@ -26,7 +26,7 @@ class MapModeToggle extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
         child: Container(
-          padding: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(MqSpacing.space1),
           decoration: BoxDecoration(
             color: isDark
                 ? MqColors.charcoal850.withValues(alpha: 0.85)
@@ -84,7 +84,7 @@ class _PillSegment extends StatelessWidget {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           curve: Curves.easeInOut,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: MqSpacing.space6, vertical: MqSpacing.space2),
           decoration: BoxDecoration(
             color: isSelected ? MqColors.vividRed : Colors.transparent,
             borderRadius: BorderRadius.circular(MqSpacing.radiusFull),

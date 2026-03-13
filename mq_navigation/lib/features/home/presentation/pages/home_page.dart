@@ -31,15 +31,15 @@ class HomePage extends ConsumerWidget {
 
               // Logo area
               Container(
-                width: 100,
-                height: 100,
+                width: 2 * MqSpacing.space12,
+                height: 2 * MqSpacing.space12,
                 decoration: BoxDecoration(
                   color: MqColors.red,
                   borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
                 ),
                 child: Icon(
                   Icons.school,
-                  size: 56,
+                  size: MqSpacing.iconHero,
                   color: Colors.white,
                   semanticLabel: l10n.appName,
                 ),
@@ -49,7 +49,7 @@ class HomePage extends ConsumerWidget {
                 l10n.welcomeTo(l10n.appName),
                 textAlign: TextAlign.center,
                 style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: MqSpacing.space2),
@@ -65,16 +65,19 @@ class HomePage extends ConsumerWidget {
               // Primary CTA — Explore Campus
               SizedBox(
                 width: double.infinity,
-                height: 56,
+                height: MqSpacing.minTapTarget + MqSpacing.space2,
                 child: FilledButton.icon(
                   icon: Icon(
                     Icons.map,
-                    size: 24,
+                    size: MqSpacing.iconDefault,
                     semanticLabel: l10n.exploreMap,
                   ),
                   label: Text(
                     l10n.exploreMap,
-                    style: const TextStyle(fontSize: 18),
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   onPressed: () => context.goNamed(RouteNames.map),
                 ),
@@ -165,7 +168,7 @@ class _QuickAccessCard extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, size: 32, color: color),
+                Icon(icon, size: MqSpacing.iconLg, color: color),
                 const SizedBox(height: MqSpacing.space2),
                 Text(
                   label,

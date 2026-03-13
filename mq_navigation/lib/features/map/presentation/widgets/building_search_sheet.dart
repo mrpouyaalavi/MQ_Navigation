@@ -32,6 +32,7 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
   Timer? _placesDebounce;
   List<PlaceSuggestion> _placeSuggestions = const [];
   bool _isLoadingPlaces = false;
+  late final FocusNode _searchFocusNode;
 
   @override
   void initState() {
@@ -39,11 +40,13 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
     _controller = TextEditingController(
       text: ref.read(mapControllerProvider).value?.searchQuery ?? '',
     );
+    _searchFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
     _placesDebounce?.cancel();
+    _searchFocusNode.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -106,6 +109,7 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
   }
 
   void _onPlaceTapped(PlaceSuggestion suggestion) {
+    _searchFocusNode.unfocus();
     final controller = ref.read(mapControllerProvider.notifier);
     controller.setRenderer(MapRendererType.google);
     Navigator.of(context).pop();
@@ -138,18 +142,22 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
       snapSizes: const <double>[0.15, 0.5, 0.9],
       builder: (context, scrollController) {
         return Material(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(MqSpacing.space6)),
           child: ListView(
             controller: scrollController,
             padding: const EdgeInsets.all(MqSpacing.space4),
             children: [
               TextField(
                 controller: _controller,
+                focusNode: _searchFocusNode,
+                autofocus: true,
+                textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   hintText: l10n.searchBuildingsPlaceholder,
                   prefixIcon: const Icon(Icons.search),
                 ),
                 onChanged: _onSearchChanged,
+                onSubmitted: (_) => _searchFocusNode.unfocus(),
               ),
               const SizedBox(height: MqSpacing.space4),
               ...results.map(
@@ -157,6 +165,7 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
                   title: Text(building.name),
                   subtitle: Text(building.code),
                   onTap: () {
+                    _searchFocusNode.unfocus();
                     ref
                         .read(mapControllerProvider.notifier)
                         .selectBuilding(building);
@@ -164,6 +173,20 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
                   },
                 ),
               ),
+              if (results.isEmpty && query.isNotEmpty && !_isLoadingPlaces)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: MqSpacing.space8),
+                  child: Center(
+                    child: Text(
+                      l10n.noBuildingsFound(query),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: isDark
+                            ? MqColors.contentSecondaryDark
+                            : MqColors.contentTertiary,
+                      ),
+                    ),
+                  ),
+                ),
               if (showPlacesSection) ...[
                 Padding(
                   padding: const EdgeInsets.symmetric(

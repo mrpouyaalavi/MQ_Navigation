@@ -104,12 +104,13 @@ class _RoutePanelState extends State<RoutePanel> {
             ],
           ),
           padding: const EdgeInsets.all(MqSpacing.space6),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Handle bar
-              Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Handle bar
+                Center(
                 child: Container(
                   width: 48,
                   height: 5,
@@ -133,24 +134,21 @@ class _RoutePanelState extends State<RoutePanel> {
                       children: [
                         Text(
                           widget.selectedBuilding!.name,
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                             color: isDark
                                 ? Colors.white
                                 : MqColors.contentPrimary,
                             letterSpacing: -0.5,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: MqSpacing.space1),
                         Row(
                           children: [
                             Flexible(
                               child: Text.rich(
                                 TextSpan(
                                   text: '${l10n.buildingCode}: ',
-                                  style: TextStyle(
-                                    fontSize: 13,
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                     color: isDark
                                         ? Colors.white.withValues(alpha: 0.5)
                                         : MqColors.contentTertiary,
@@ -175,8 +173,8 @@ class _RoutePanelState extends State<RoutePanel> {
                               const SizedBox(width: MqSpacing.space2),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 3,
+                                  horizontal: MqSpacing.space3,
+                                  vertical: MqSpacing.space1,
                                 ),
                                 decoration: BoxDecoration(
                                   color: MqColors.vividRed.withValues(
@@ -189,8 +187,7 @@ class _RoutePanelState extends State<RoutePanel> {
                                 child: Text(
                                   widget.selectedBuilding!.category.name
                                       .toUpperCase(),
-                                  style: const TextStyle(
-                                    fontSize: 11,
+                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
                                     fontWeight: FontWeight.w700,
                                     color: MqColors.vividRed,
                                     letterSpacing: 1.2,
@@ -206,7 +203,7 @@ class _RoutePanelState extends State<RoutePanel> {
                   IconButton(
                     icon: Icon(
                       Icons.close,
-                      size: 20,
+                      size: MqSpacing.iconMd,
                       color: isDark
                           ? Colors.white.withValues(alpha: 0.5)
                           : MqColors.contentTertiary,
@@ -319,7 +316,8 @@ class _RoutePanelState extends State<RoutePanel> {
                       : () => widget.onLoadRoute(),
                 ),
               ],
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -366,8 +364,7 @@ class _RouteInfoRow extends StatelessWidget {
         const SizedBox(width: MqSpacing.space2),
         Text(
           duration,
-          style: TextStyle(
-            fontSize: 14,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: isDark ? Colors.white : MqColors.contentPrimary,
           ),
@@ -383,8 +380,7 @@ class _RouteInfoRow extends StatelessWidget {
         const SizedBox(width: MqSpacing.space2),
         Text(
           distance,
-          style: TextStyle(
-            fontSize: 14,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: isDark ? Colors.white : MqColors.contentPrimary,
           ),
@@ -392,8 +388,7 @@ class _RouteInfoRow extends StatelessWidget {
         const Spacer(),
         Text(
           '${l10n.eta} ${DateFormat('h:mm a').format(route.arrivalAt)}',
-          style: TextStyle(
-            fontSize: 12,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: isDark
                 ? Colors.white.withValues(alpha: 0.4)
                 : MqColors.contentTertiary,
@@ -450,8 +445,8 @@ class _TravelModePills extends StatelessWidget {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 8,
+                    horizontal: MqSpacing.space4,
+                    vertical: MqSpacing.space2,
                   ),
                   decoration: BoxDecoration(
                     color: isSelected
@@ -473,14 +468,14 @@ class _TravelModePills extends StatelessWidget {
                     children: [
                       Icon(
                         _iconFor(mode),
-                        size: 16,
+                        size: MqSpacing.iconSm,
                         color: isSelected
                             ? MqColors.vividRed
                             : isDark
                             ? Colors.white.withValues(alpha: 0.5)
                             : MqColors.contentTertiary,
                       ),
-                      const SizedBox(width: 6),
+                      const SizedBox(width: MqSpacing.space2),
                       Text(
                         _labelFor(mode),
                         style: TextStyle(
@@ -542,10 +537,10 @@ class _NextInstructionCard extends StatelessWidget {
         vertical: MqSpacing.space2,
       ),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1a3a5c) : const Color(0xFFe8f0fe),
+        color: isDark ? MqColors.navInstructionBgDark : MqColors.navInstructionBgLight,
         borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
         border: Border.all(
-          color: isDark ? const Color(0xFF3b6fa0) : const Color(0xFFc2d9f7),
+          color: isDark ? MqColors.navInstructionBorderDark : MqColors.navInstructionBorderLight,
         ),
       ),
       child: Column(
@@ -555,7 +550,7 @@ class _NextInstructionCard extends StatelessWidget {
             instruction.text,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w500,
-              color: isDark ? const Color(0xFF8ab4f8) : const Color(0xFF1a73e8),
+              color: isDark ? MqColors.navInstructionTextDark : MqColors.navInstructionTextLight,
             ),
           ),
           if (instruction.distanceMeters > 0)
@@ -567,8 +562,8 @@ class _NextInstructionCard extends StatelessWidget {
                     : '${instruction.distanceMeters} ${l10n.routeMetersShort}',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: isDark
-                      ? const Color(0xFF6ea8f0)
-                      : const Color(0xFF4285f4),
+                      ? MqColors.navInstructionSubtextDark
+                      : MqColors.navInstructionSubtextLight,
                 ),
               ),
             ),
@@ -655,15 +650,15 @@ class _ExpandableStepList extends StatelessWidget {
                   decoration: isFirst
                       ? BoxDecoration(
                           color: isDark
-                              ? const Color(0xFF1a3a5c)
-                              : const Color(0xFFe8f0fe),
+                              ? MqColors.navInstructionBgDark
+                              : MqColors.navInstructionBgLight,
                           borderRadius: BorderRadius.circular(
                             MqSpacing.radiusMd,
                           ),
                           border: Border.all(
                             color: isDark
-                                ? const Color(0xFF3b6fa0)
-                                : const Color(0xFFc2d9f7),
+                                ? MqColors.navInstructionBorderDark
+                                : MqColors.navInstructionBorderLight,
                           ),
                         )
                       : null,
@@ -894,7 +889,7 @@ class _GlassCircleAction extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              size: 20,
+              size: MqSpacing.iconMd,
               color: isDark
                   ? Colors.white.withValues(alpha: 0.7)
                   : MqColors.contentSecondary,
@@ -933,11 +928,11 @@ class _ArrivalCard extends StatelessWidget {
           padding: const EdgeInsets.all(MqSpacing.space6),
           decoration: BoxDecoration(
             color: isDark
-                ? const Color(0xFF052e16).withValues(alpha: 0.9)
-                : const Color(0xFFf0fdf4).withValues(alpha: 0.92),
+                ? MqColors.arrivalBgDark.withValues(alpha: 0.9)
+                : MqColors.arrivalBgLight.withValues(alpha: 0.92),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: isDark ? const Color(0xFF166534) : const Color(0xFFbbf7d0),
+              color: isDark ? MqColors.arrivalBorderDark : MqColors.arrivalBorderLight,
             ),
             boxShadow: [
               BoxShadow(
@@ -954,8 +949,8 @@ class _ArrivalCard extends StatelessWidget {
                 Icons.check_circle,
                 size: 40,
                 color: isDark
-                    ? const Color(0xFF4ade80)
-                    : const Color(0xFF16a34a),
+                    ? MqColors.arrivalIconDark
+                    : MqColors.arrivalIconLight,
               ),
               const SizedBox(height: MqSpacing.space3),
               Text(
@@ -964,8 +959,8 @@ class _ArrivalCard extends StatelessWidget {
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   color: isDark
-                      ? const Color(0xFFbbf7d0)
-                      : const Color(0xFF166534),
+                      ? MqColors.arrivalTextDark
+                      : MqColors.arrivalTextLight,
                 ),
               ),
               if (buildingName.isNotEmpty) ...[
@@ -975,8 +970,8 @@ class _ArrivalCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     color: isDark
-                        ? const Color(0xFF86efac)
-                        : const Color(0xFF15803d),
+                        ? MqColors.arrivalSubtextDark
+                        : MqColors.arrivalSubtextLight,
                   ),
                   textAlign: TextAlign.center,
                 ),

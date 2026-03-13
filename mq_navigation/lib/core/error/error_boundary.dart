@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 
 /// App-level wrapper kept for API stability.
@@ -30,32 +32,30 @@ class _ErrorFallback extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final isDark = context.isDarkMode;
 
+    final locale = l10n?.localeName ?? '';
+    final langCode = locale.split('-').first.split('_').first;
+    final isRtl = const {'ar', 'fa', 'he', 'ur'}.contains(langCode);
     return Directionality(
-      textDirection: l10n?.localeName == 'ar' ||
-              l10n?.localeName == 'fa' ||
-              l10n?.localeName == 'he' ||
-              l10n?.localeName == 'ur'
-          ? TextDirection.rtl
-          : TextDirection.ltr,
+      textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
       child: ColoredBox(
-        color: isDark ? const Color(0xFF111111) : const Color(0xFFF5F5F5),
+        color: isDark ? MqColors.charcoal950 : MqColors.sand100,
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 420),
             child: Padding(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(MqSpacing.space6),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFFFFFFF),
-                  borderRadius: BorderRadius.circular(16),
+                  color: isDark ? MqColors.contentPrimary : Colors.white,
+                  borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
                   border: Border.all(
                     color: isDark
-                        ? const Color(0xFF333333)
-                        : const Color(0xFFD0D0D0),
+                        ? MqColors.charcoal800
+                        : MqColors.sand300,
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(MqSpacing.space6),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -63,12 +63,12 @@ class _ErrorFallback extends StatelessWidget {
                         l10n?.errorApplication ?? 'Application error',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 24, // headlineLarge scale
                           fontWeight: FontWeight.w700,
-                          color: isDark ? Colors.white : const Color(0xFF111111),
+                          color: isDark ? Colors.white : MqColors.charcoal950,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: MqSpacing.space3),
                       Text(
                         l10n?.errorSomethingWentWrong ??
                             'Something went wrong while building the UI.',
@@ -78,10 +78,10 @@ class _ErrorFallback extends StatelessWidget {
                           height: 1.4,
                           color: isDark
                               ? Colors.white.withValues(alpha: 0.7)
-                              : const Color(0xFF333333),
+                              : MqColors.charcoal800,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: MqSpacing.space3),
                       Text(
                         error.toString(),
                         textAlign: TextAlign.center,
@@ -92,7 +92,7 @@ class _ErrorFallback extends StatelessWidget {
                           height: 1.4,
                           color: isDark
                               ? Colors.white.withValues(alpha: 0.5)
-                              : const Color(0xFF555555),
+                              : MqColors.charcoal700,
                         ),
                       ),
                     ],

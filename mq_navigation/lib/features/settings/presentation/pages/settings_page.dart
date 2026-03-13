@@ -245,7 +245,7 @@ class SettingsPage extends ConsumerWidget {
       builder: (ctx) {
         return DraggableScrollableSheet(
           expand: false,
-          initialChildSize: 0.45,
+          initialChildSize: 0.5,
           maxChildSize: 0.75,
           minChildSize: 0.3,
           builder: (ctx, controller) {
@@ -272,8 +272,7 @@ class SettingsPage extends ConsumerWidget {
                   padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
                   child: Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 16,
+                    style: context.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: dark
                           ? MqColors.contentPrimaryDark
@@ -294,8 +293,7 @@ class SettingsPage extends ConsumerWidget {
                         child: ListTile(
                           title: Text(
                             labelOf(wrapped.value),
-                            style: TextStyle(
-                              fontSize: 15,
+                            style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
                               fontWeight: isSelected
                                   ? FontWeight.w600
                                   : FontWeight.w400,
@@ -449,8 +447,7 @@ class _SectionHeader extends StatelessWidget {
       ),
       child: Text(
         title.toUpperCase(),
-        style: TextStyle(
-          fontSize: 12,
+        style: context.textTheme.labelMedium?.copyWith(
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
           color: dark ? MqColors.vividRed : MqColors.brightRed,
@@ -538,8 +535,7 @@ class _TapRow extends StatelessWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 15,
+                    style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: dark
                           ? MqColors.contentPrimaryDark
@@ -549,8 +545,7 @@ class _TapRow extends StatelessWidget {
                 ),
                 Text(
                   value,
-                  style: TextStyle(
-                    fontSize: 14,
+                  style: context.textTheme.bodyMedium?.copyWith(
                     color: dark ? MqColors.slate500 : MqColors.charcoal600,
                   ),
                 ),
@@ -610,8 +605,7 @@ class _ToggleRow extends StatelessWidget {
                 Expanded(
                   child: Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 15,
+                    style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: dark
                           ? MqColors.contentPrimaryDark
@@ -620,7 +614,7 @@ class _ToggleRow extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: 44,
+                  width: MqSpacing.minTapTarget,
                   height: MqSpacing.space6,
                   child: Switch.adaptive(
                     value: value,
@@ -676,8 +670,7 @@ class _InfoRow extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 15,
+                    style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: dark
                           ? MqColors.contentPrimaryDark
@@ -687,8 +680,7 @@ class _InfoRow extends StatelessWidget {
                   const SizedBox(height: MqSpacing.space1),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 13,
+                    style: context.textTheme.bodySmall?.copyWith(
                       color: dark ? MqColors.slate500 : MqColors.charcoal600,
                     ),
                   ),
@@ -745,8 +737,7 @@ class _AboutAppRow extends StatelessWidget {
                 children: [
                   Text(
                     appName,
-                    style: TextStyle(
-                      fontSize: 15,
+                    style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: dark
                           ? MqColors.contentPrimaryDark
@@ -756,8 +747,7 @@ class _AboutAppRow extends StatelessWidget {
                   const SizedBox(height: MqSpacing.space1),
                   Text(
                     desc,
-                    style: TextStyle(
-                      fontSize: 13,
+                    style: context.textTheme.bodySmall?.copyWith(
                       color: dark ? MqColors.slate500 : MqColors.charcoal600,
                     ),
                   ),

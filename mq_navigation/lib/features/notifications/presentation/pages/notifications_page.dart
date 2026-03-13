@@ -9,6 +9,7 @@ import 'package:mq_navigation/features/notifications/presentation/widgets/notifi
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 import 'package:mq_navigation/shared/widgets/mq_app_bar.dart';
 import 'package:mq_navigation/shared/widgets/mq_button.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/shared/widgets/mq_card.dart';
 
 /// Screen displaying the user's notification inbox and preference toggles.
@@ -41,7 +42,7 @@ class NotificationsPage extends ConsumerWidget {
       body: controller.when(
         data: (state) {
           return ListView(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
             children: [
               if (state.permissionStatus !=
                       NotificationPermissionStatus.granted &&
@@ -55,9 +56,9 @@ class NotificationsPage extends ConsumerWidget {
                         l10n.enablePushNotificationsDesc,
                         style: context.textTheme.titleMedium,
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: MqSpacing.space3),
                       Text(l10n.pushNotificationsDesc),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: MqSpacing.space3),
                       MqButton(
                         label: l10n.enableNotifications,
                         isExpanded: false,
@@ -68,9 +69,9 @@ class NotificationsPage extends ConsumerWidget {
                     ],
                   ),
                 ),
-              const SizedBox(height: 16),
+              const SizedBox(height: MqSpacing.space4),
               _PreferenceSection(state: state),
-              const SizedBox(height: 16),
+              const SizedBox(height: MqSpacing.space4),
               notifications.when(
                 data: (items) {
                   if (items.isEmpty) {
@@ -82,7 +83,7 @@ class NotificationsPage extends ConsumerWidget {
                             l10n.noNotificationsYet,
                             style: context.textTheme.titleMedium,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: MqSpacing.space2),
                           Text(l10n.noNotificationsYetDesc),
                         ],
                       ),
@@ -94,7 +95,7 @@ class NotificationsPage extends ConsumerWidget {
                         .map(
                           (item) => Padding(
                             padding: const EdgeInsetsDirectional.only(
-                              bottom: 12,
+                              bottom: MqSpacing.space3,
                             ),
                             child: NotificationTile(
                               notification: item,
@@ -116,13 +117,41 @@ class NotificationsPage extends ConsumerWidget {
                         .toList(),
                   );
                 },
-                error: (error, _) => MqCard(child: Text(error.toString())),
+                error: (error, _) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: MqSpacing.space4),
+                  child: Center(
+                    child: Icon(
+                      Icons.error_outline_rounded,
+                      size: MqSpacing.space8,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                ),
                 loading: () => const Center(child: CircularProgressIndicator()),
               ),
             ],
           );
         },
-        error: (error, _) => Center(child: Text(error.toString())),
+        error: (error, _) => Center(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.error_outline_rounded,
+                  size: MqSpacing.space12,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                const SizedBox(height: MqSpacing.space4),
+                Text(
+                  l10n.settingsError,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );
@@ -159,7 +188,7 @@ class _PreferenceSection extends ConsumerWidget {
             AppLocalizations.of(context)!.notificationPreferences,
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: MqSpacing.space3),
           // Only show types that have corresponding features in the app.
           for (final type in const [
             NotificationType.announcement,
@@ -167,7 +196,7 @@ class _PreferenceSection extends ConsumerWidget {
           ])
             SwitchListTile.adaptive(
               value: state.preferenceFor(type).enabled,
-              contentPadding: EdgeInsets.zero,
+              contentPadding: EdgeInsetsDirectional.zero,
               title: Text(_labelFor(context, type)),
               onChanged: (value) => notifier.updatePreference(type, value),
             ),

@@ -54,6 +54,31 @@ abstract final class MqColors {
   static const Color contentPrimaryDark = alabaster;
   static const Color contentSecondaryDark = Color(0xFFC4C6C0);
 
+  // ── Dark mode content (continued) ──────────────────────
+  static const Color contentTertiaryDark = Color(0xFF8A8A80);
+
+  // ── Navigation instruction (blue) ──────────────────────
+  static const Color navInstructionBgDark = Color(0xFF1a3a5c);
+  static const Color navInstructionBgLight = Color(0xFFe8f0fe);
+  static const Color navInstructionBorderDark = Color(0xFF3b6fa0);
+  static const Color navInstructionBorderLight = Color(0xFFc2d9f7);
+  static const Color navInstructionTextDark = Color(0xFF8ab4f8);
+  static const Color navInstructionTextLight = Color(0xFF1a73e8);
+  static const Color navInstructionSubtextDark = Color(0xFF6ea8f0);
+  static const Color navInstructionSubtextLight = Color(0xFF4285f4);
+
+  // ── Arrival card (green) ───────────────────────────────
+  static const Color arrivalBgDark = Color(0xFF052e16);
+  static const Color arrivalBgLight = Color(0xFFf0fdf4);
+  static const Color arrivalBorderDark = Color(0xFF166534);
+  static const Color arrivalBorderLight = Color(0xFFbbf7d0);
+  static const Color arrivalIconDark = Color(0xFF4ade80);
+  static const Color arrivalIconLight = Color(0xFF16a34a);
+  static const Color arrivalTextDark = Color(0xFFbbf7d0);
+  static const Color arrivalTextLight = Color(0xFF166534);
+  static const Color arrivalSubtextDark = Color(0xFF86efac);
+  static const Color arrivalSubtextLight = Color(0xFF15803d);
+
   // ── Map-specific ───────────────────────────────────────
   static const Color mapUserLocation = Color(0xFF29AAED);
   static const Color mapSelectedBuilding = Color(0xFFE8853A);

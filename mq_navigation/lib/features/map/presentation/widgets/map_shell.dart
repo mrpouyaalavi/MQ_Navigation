@@ -66,7 +66,7 @@ class MapShell extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsetsDirectional.symmetric(
                         horizontal: MqSpacing.space4,
-                        vertical: MqSpacing.space3 + 2,
+                        vertical: MqSpacing.space4,
                       ),
                       child: Row(
                         children: [

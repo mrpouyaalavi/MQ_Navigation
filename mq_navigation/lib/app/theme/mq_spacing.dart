@@ -24,4 +24,12 @@ abstract final class MqSpacing {
 
   // ── Minimum tap target (accessibility) ─────────────────
   static const double minTapTarget = 48;
+
+  // ── Icon sizes ───────────────────────────────────────────
+  static const double iconSm = 16;
+  static const double iconMd = 20;
+  static const double iconDefault = 24;
+  static const double iconLg = 32;
+  static const double iconXl = 40;
+  static const double iconHero = 56;
 }
