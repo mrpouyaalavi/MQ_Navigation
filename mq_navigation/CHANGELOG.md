@@ -4,6 +4,85 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-17 (AEDT) — Supabase Migration History Reconciliation
+
+**Scope:** Repair local/remote Supabase migration alignment so CLI deploys work cleanly.
+
+**Summary:**
+Reconciled this repo’s local `supabase/migrations` directory with the linked remote project by fetching the remote migration history into source control, then successfully applying the pending local migrations with `supabase db push --include-all`. Deployed the updated map Edge Functions after the database push succeeded.
+
+**Files changed:**
+- `supabase/migrations/20260104000000_initial_schema.sql`
+- `supabase/migrations/20260104000001_fix_schema_issues.sql`
+- `supabase/migrations/20260108131028_add_user_id_and_rls_policies.sql`
+- `supabase/migrations/20260108140000_add_event_date_columns.sql`
+- `supabase/migrations/20260108150000_fix_rls_policies.sql`
+- `supabase/migrations/20260109012136_create_user_profile_function.sql`
+- `supabase/migrations/20260109012243_add_gamification_system.sql`
+- `supabase/migrations/20260109012548_fix_permissions_and_schema_alignment.sql`
+- `supabase/migrations/20260109012721_add_missing_deadline_columns.sql`
+- `supabase/migrations/20260109012944_fix_auth_trigger_for_new_users.sql`
+- `supabase/migrations/20260109013033_check_and_fix_existing_triggers.sql`
+- `supabase/migrations/20260109013302_disable_all_auth_triggers.sql`
+- `supabase/migrations/20260113000000_reenable_auth_trigger_with_user_view.sql`
+- `supabase/migrations/20260113100000_fix_foreign_key_constraints.sql`
+- `supabase/migrations/20260113110000_schema_cleanup_and_fixes.sql`
+- `supabase/migrations/20260114000000_add_missing_materialized_views.sql`
+- `supabase/migrations/20260114010403_add_course_and_year_to_profiles.sql`
+- `supabase/migrations/20260114011650_fix_schema_comprehensive.sql`
+- `supabase/migrations/20260114013136_complete_schema_audit_fix.sql`
+- `supabase/migrations/20260114013519_add_soft_deletes_constraints_seeds.sql`
+- `supabase/migrations/20260114014506_schema_cleanup_and_normalization.sql`
+- `supabase/migrations/20260114015445_clarify_views_simplify_events.sql`
+- `supabase/migrations/20260119000000_add_push_notifications_to_user_preferences.sql`
+- `supabase/migrations/20260119050000_multiuser_demo_seed.sql`
+- `supabase/migrations/20260119100000_remove_strict_constraints.sql`
+- `supabase/migrations/20260119110000_remove_sample_events.sql`
+- `supabase/migrations/20260122000000_atomic_unit_sync.sql`
+- `supabase/migrations/20260124000000_complete_schema_initialization.sql`
+- `supabase/migrations/20260124001000_create_todos_table.sql`
+- `supabase/migrations/20260124120000_add_events_timestamp_fields.sql`
+- `supabase/migrations/20260126000000_add_missing_columns.sql`
+- `supabase/migrations/20260129000000_add_audit_logging.sql`
+- `supabase/migrations/20260201084007_add_audit_logging_and_feature_flags.sql`
+- `supabase/migrations/20260203000000_add_notification_enabled.sql`
+- `supabase/migrations/20260203000001_fix_units_unique_constraint.sql`
+- `supabase/migrations/20260203000002_public_events.sql`
+- `supabase/migrations/20260207000000_add_webauthn_tables.sql`
+- `supabase/migrations/20260207001000_fix_building_codes.sql`
+- `supabase/migrations/20260207100000_add_color_to_todos.sql`
+- `supabase/migrations/20260208000000_security_audit_fixes.sql`
+- `supabase/migrations/20260213000000_email_verifications.sql`
+- `supabase/migrations/20260214000000_harden_gamification_rpc.sql`
+- `supabase/migrations/20260214001000_align_code_db_objects.sql`
+- `supabase/migrations/20260214002000_restore_log_audit_function.sql`
+- `supabase/migrations/20260214003000_restore_missing_core_security_tables.sql`
+- `supabase/migrations/20260216090000_harden_security_functions.sql`
+- `supabase/migrations/20260216193000_password_resets.sql`
+- `supabase/migrations/20260217093000_rate_limits.sql`
+- `supabase/migrations/20260219000000_avatars_storage_bucket.sql`
+- `supabase/migrations/20260220000000_add_faculty_to_profiles.sql`
+- `supabase/migrations/20260220100000_realtime_offline.sql`
+- `supabase/migrations/20260226000000_fix_security_definer_and_rls.sql`
+- `supabase/migrations/20260226100000_add_march_events.sql`
+- `supabase/migrations/20260303000000_seed_16_public_events.sql`
+- `supabase/migrations/20260304000000_cleanup_duplicate_public_events.sql`
+- `supabase/migrations/20260304100000_add_faculty_to_views_and_functions.sql`
+- `supabase/migrations/20260304200000_fix_profile_protection_trigger.sql`
+- `supabase/migrations/20260308000000_shift_events_to_april.sql`
+- `supabase/migrations/20260313093000_add_web_push_infrastructure.sql`
+- `supabase/migrations/20260313120000_backfill_push_notifications_column.sql`
+- `supabase/migrations/20260314_auto_create_profile_trigger.sql`
+- `AGENT.md`
+- `CHANGELOG.md`
+
+**Verification:**
+- `supabase migration fetch`
+- `supabase db push --include-all`
+- `supabase functions deploy maps-places`
+- `supabase functions deploy maps-routes`
+- `supabase functions deploy cleanup-cron`
+
 ### Raouf: 2026-03-17 (AEDT) — Anonymous Map API Hardening
 
 **Scope:** Harden anonymous map endpoints without introducing user auth.

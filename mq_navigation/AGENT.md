@@ -76,6 +76,9 @@ Located in project root:
 See `CHANGELOG.md` for full development history.
 
 Raouf:
+2026-03-17: Supabase migration history reconciliation — fixed the linked project’s `supabase db push` failure by fetching the remote migration history into the local `supabase/migrations` directory, then successfully applying the pending local migrations (`20260312_fix_user_details_security_invoker.sql` and `20260317_add_edge_response_cache.sql`) with `supabase db push --include-all`. Also deployed the updated `maps-places`, `maps-routes`, and `cleanup-cron` Edge Functions to project `cxsqlgvbwtevkkljzolg`. This sync ensures future CLI pushes from this repo can see the same migration lineage as the remote database.
+
+Raouf:
 2026-03-17: Map API anonymous-endpoint hardening — applied the parts of the anonymous API security playbook that fit this repo’s current architecture. Hardened `maps-places` with IP-based rate limiting (30/minute), cached repeated Places responses in a new `edge_response_cache` table, and added browser-origin allowlisting support for both `maps-places` and `maps-routes` via `ALLOWED_WEB_ORIGINS` without breaking mobile clients that send no `Origin` header. Updated `cleanup-cron` to purge expired cache rows and refreshed the docs/env inventory to document the new controls. Deliberately did not add Firebase App Check in this pass because the repo has no existing App Attestation/App Check verification pipeline and forcing it in would be a separate cross-platform integration project.
 
 Raouf:
