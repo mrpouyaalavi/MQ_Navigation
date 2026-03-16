@@ -33,9 +33,14 @@
   <link rel="manifest" href="manifest.json">
 
   <!--
-    Inject the Google Maps JavaScript API script at deploy/runtime for web builds.
-    Do not commit client API keys into this file.
+    `google_maps_config.js` is generated locally / in CI and is intentionally
+    gitignored. It can set `window.GOOGLE_MAPS_API_KEY` for web builds without
+    committing the key into source control.
   -->
+  <script>
+    window.GOOGLE_MAPS_API_KEY = window.GOOGLE_MAPS_API_KEY || "";
+  </script>
+  <script src="google_maps_config.js"></script>
 </head>
 <body>
   <!--

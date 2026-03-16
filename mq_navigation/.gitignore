@@ -54,6 +54,7 @@ lib/app/l10n/generated/
 .env
 .env.*
 !.env.example
+web/google_maps_config.js
 
 # Firebase config (contains project-specific keys)
 google-services.json

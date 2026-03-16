@@ -76,6 +76,9 @@ Located in project root:
 See `CHANGELOG.md` for full development history.
 
 Raouf:
+2026-03-17: Web Google Maps runtime key injection — added a web-safe Google Maps key path that keeps the client key out of tracked source. Introduced a custom `web/flutter_bootstrap.js` that loads the Google Maps JavaScript SDK only when `window.GOOGLE_MAPS_API_KEY` is present, added `web/google_maps_config.js.example`, ignored the real `web/google_maps_config.js`, updated `web/index.html` to load the gitignored runtime config, and taught `scripts/run.sh` to generate that file automatically from `.env` for local Chrome runs. Updated docs to explain the new web injection flow.
+
+Raouf:
 2026-03-17: Supabase migration history reconciliation — fixed the linked project’s `supabase db push` failure by fetching the remote migration history into the local `supabase/migrations` directory, then successfully applying the pending local migrations (`20260312_fix_user_details_security_invoker.sql` and `20260317_add_edge_response_cache.sql`) with `supabase db push --include-all`. Also deployed the updated `maps-places`, `maps-routes`, and `cleanup-cron` Edge Functions to project `cxsqlgvbwtevkkljzolg`. This sync ensures future CLI pushes from this repo can see the same migration lineage as the remote database.
 
 Raouf:

@@ -4,6 +4,24 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-17 (AEDT) — Web Google Maps Runtime Key Injection
+
+**Scope:** Enable Flutter web Google Maps without committing the client API key.
+
+**Summary:**
+Added a web-safe runtime injection path for the Google Maps JavaScript SDK. The web client now reads `window.GOOGLE_MAPS_API_KEY` from a gitignored `web/google_maps_config.js` file, and a custom `web/flutter_bootstrap.js` loads the SDK only when that runtime config exists. Local `./scripts/run.sh chrome` runs now generate the config file automatically from `.env`.
+
+**Files changed:**
+- `.gitignore`
+- `web/index.html`
+- `web/flutter_bootstrap.js`
+- `web/google_maps_config.js.example`
+- `scripts/run.sh`
+- `README.md`
+- `TECHNICAL_EXPLANATION.md`
+- `AGENT.md`
+- `CHANGELOG.md`
+
 ### Raouf: 2026-03-17 (AEDT) — Supabase Migration History Reconciliation
 
 **Scope:** Repair local/remote Supabase migration alignment so CLI deploys work cleanly.

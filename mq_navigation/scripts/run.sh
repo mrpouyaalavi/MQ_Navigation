@@ -18,6 +18,19 @@ if [[ ! -f "$ENV_FILE" ]]; then
   exit 1
 fi
 
+WEB_MAPS_CONFIG="web/google_maps_config.js"
+cleanup() {
+  rm -f "$WEB_MAPS_CONFIG"
+}
+trap cleanup EXIT
+
+if grep -q '^GOOGLE_MAPS_API_KEY=' "$ENV_FILE"; then
+  GOOGLE_MAPS_API_KEY_VALUE="$(grep '^GOOGLE_MAPS_API_KEY=' "$ENV_FILE" | head -1 | cut -d= -f2-)"
+  cat > "$WEB_MAPS_CONFIG" <<EOF
+window.GOOGLE_MAPS_API_KEY = ${GOOGLE_MAPS_API_KEY_VALUE@Q};
+EOF
+fi
+
 DEVICE_ARG=""
 if [[ -n "${1:-}" ]]; then
   DEVICE_ARG="-d $1"

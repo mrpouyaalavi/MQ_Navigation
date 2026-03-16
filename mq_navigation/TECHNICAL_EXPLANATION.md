@@ -655,6 +655,13 @@ It is protected by a cron secret and intended for scheduled maintenance.
 - location usage description
 - `remote-notification` background mode
 
+### Web
+
+[`web/flutter_bootstrap.js`](web/flutter_bootstrap.js) loads the Google Maps
+JavaScript SDK at runtime only when `window.GOOGLE_MAPS_API_KEY` is present.
+That value comes from a gitignored `web/google_maps_config.js` file so the web
+client key is never committed to source control.
+
 ## Tooling and Automation
 
 ### CI

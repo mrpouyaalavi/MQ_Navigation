@@ -95,6 +95,16 @@ flutter run --release \
 > client key must still come from local environment config when you want the
 > Google renderer or web Google Maps integration.
 
+For Flutter web, the repo uses a gitignored runtime file:
+
+```bash
+cp web/google_maps_config.js.example web/google_maps_config.js
+# then set window.GOOGLE_MAPS_API_KEY inside that file
+```
+
+`./scripts/run.sh chrome` generates that file automatically from `.env` for
+local development.
+
 ### Mobile Platform Setup
 
 1. Add Firebase mobile config files outside version control:
