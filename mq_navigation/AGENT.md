@@ -76,6 +76,9 @@ Located in project root:
 See `CHANGELOG.md` for full development history.
 
 Raouf:
+2026-03-17: README key-placement guidance — added a dedicated key placement section to `README.md` documenting where each client and server credential belongs, which values must never be committed, and the current tracked-secret status after the Google Maps cleanup. This is intended to prevent future regressions where client keys are committed or server secrets are confused with public client config.
+
+Raouf:
 2026-03-17: Web Google Maps runtime key injection — added a web-safe Google Maps key path that keeps the client key out of tracked source. Introduced a custom `web/flutter_bootstrap.js` that loads the Google Maps JavaScript SDK only when `window.GOOGLE_MAPS_API_KEY` is present, added `web/google_maps_config.js.example`, ignored the real `web/google_maps_config.js`, updated `web/index.html` to load the gitignored runtime config, and taught `scripts/run.sh` to generate that file automatically from `.env` for local Chrome runs. Updated docs to explain the new web injection flow.
 
 Raouf:

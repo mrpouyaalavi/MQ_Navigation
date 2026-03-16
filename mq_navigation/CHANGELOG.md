@@ -4,6 +4,18 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-17 (AEDT) — README Key Placement Guidance
+
+**Scope:** Document safe storage rules for client and server keys used by the repo.
+
+**Summary:**
+Added a dedicated README section that tells contributors exactly where each key should live (`.env`, gitignored web runtime config, CI/deployment env, or Supabase secrets), which ones must never be committed, and what secret-like material still remains tracked by design.
+
+**Files changed:**
+- `README.md`
+- `AGENT.md`
+- `CHANGELOG.md`
+
 ### Raouf: 2026-03-17 (AEDT) — Web Google Maps Runtime Key Injection
 
 **Scope:** Enable Flutter web Google Maps without committing the client API key.

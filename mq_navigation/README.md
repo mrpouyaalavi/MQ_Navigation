@@ -105,6 +105,27 @@ cp web/google_maps_config.js.example web/google_maps_config.js
 `./scripts/run.sh chrome` generates that file automatically from `.env` for
 local development.
 
+### Key Placement
+
+Use this project’s keys in the following locations only:
+
+| Key | Safe Location | Commit to Git? | Notes |
+|-----|---------------|----------------|-------|
+| `GOOGLE_MAPS_API_KEY` | Local `.env`, CI secrets, deployment env, gitignored `web/google_maps_config.js` | No | Client-visible by design, so restrict it by Android package/SHA, iOS bundle ID, and web referrer |
+| `SUPABASE_URL` | `.env`, CI secrets, deployment env | No for project-specific values | Safe to expose to the client, but do not hardcode project-specific production values in tracked files |
+| `SUPABASE_ANON_KEY` | `.env`, CI secrets, deployment env | No for project-specific values | Public key protected by RLS; still keep production project values out of tracked config where possible |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase project secrets / Edge Function env only | Never | Full privileged server key |
+| `GOOGLE_ROUTES_API_KEY` | Supabase Edge Function secrets only | Never | Server-side Google Routes / Places billing key |
+| `ORS_API_KEY` | Supabase Edge Function secrets only | Never | Optional campus routing server key |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | Supabase Edge Function secrets only | Never | Server-only FCM credentials |
+| `CRON_SECRET` | Supabase Edge Function secrets only | Never | Protects scheduled maintenance endpoints |
+
+Tracked repo status after the current cleanup:
+- Google Maps client keys are no longer committed in tracked files.
+- Web map loading uses gitignored runtime config.
+- Server-side map keys stay in Supabase Edge Function secrets.
+- The only secret-like tracked value left is the development Supabase anon fallback in `EnvConfig`, which is a public client key rather than a server secret.
+
 ### Mobile Platform Setup
 
 1. Add Firebase mobile config files outside version control:
