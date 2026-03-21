@@ -1,22 +1,52 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:io' show Platform;
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mq_navigation/core/error/app_exception.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Encrypted key-value storage backed by Keychain (iOS) / Keystore (Android).
 ///
-/// Used to persist sensitive settings and tokens. Every operation is wrapped
-/// in a try-catch that logs the native platform error and rethrows it as a
-/// [StorageException] to keep the caller agnostic of the underlying plugin.
+/// On **macOS / Linux / Windows / Web** the native Keychain requires a signed
+/// build with Keychain Sharing capability. To keep local development working
+/// without Xcode signing, desktop & web builds fall back to
+/// [SharedPreferences] (unencrypted but functional).
+/// On iOS and Android the real [FlutterSecureStorage] is used.
 class SecureStorageService {
   SecureStorageService([FlutterSecureStorage? storage])
-    : _storage = storage ?? const FlutterSecureStorage();
+    : _explicitStorage = storage,
+      _useFallback = storage == null && _shouldUseFallback();
 
-  final FlutterSecureStorage _storage;
+  final FlutterSecureStorage? _explicitStorage;
+  final bool _useFallback;
+
+  /// Desktop / web platforms cannot reliably access the Keychain without
+  /// code-signing, so we fall back to SharedPreferences.
+  static bool _shouldUseFallback() {
+    if (kIsWeb) return true;
+    return Platform.isMacOS || Platform.isLinux || Platform.isWindows;
+  }
+
+  // ── Lazy SharedPreferences accessor ────────────────────────────────────
+  SharedPreferences? _prefs;
+
+  Future<SharedPreferences> _getPrefs() async =>
+      _prefs ??= await SharedPreferences.getInstance();
+
+  FlutterSecureStorage get _secure =>
+      _explicitStorage ?? const FlutterSecureStorage();
+
+  // ── Public API ─────────────────────────────────────────────────────────
 
   Future<String?> read(String key) async {
     try {
-      return await _storage.read(key: key);
+      if (_useFallback) {
+        final prefs = await _getPrefs();
+        return prefs.getString(key);
+      }
+      return await _secure.read(key: key);
     } catch (e, s) {
       AppLogger.error('SecureStorage read failed', e, s);
       throw StorageException('Failed to read key "$key"', e);
@@ -25,7 +55,12 @@ class SecureStorageService {
 
   Future<void> write(String key, String value) async {
     try {
-      await _storage.write(key: key, value: value);
+      if (_useFallback) {
+        final prefs = await _getPrefs();
+        await prefs.setString(key, value);
+        return;
+      }
+      await _secure.write(key: key, value: value);
     } catch (e, s) {
       AppLogger.error('SecureStorage write failed', e, s);
       throw StorageException('Failed to write key "$key"', e);
@@ -34,7 +69,12 @@ class SecureStorageService {
 
   Future<void> delete(String key) async {
     try {
-      await _storage.delete(key: key);
+      if (_useFallback) {
+        final prefs = await _getPrefs();
+        await prefs.remove(key);
+        return;
+      }
+      await _secure.delete(key: key);
     } catch (e, s) {
       AppLogger.error('SecureStorage delete failed', e, s);
       throw StorageException('Failed to delete key "$key"', e);
@@ -43,7 +83,12 @@ class SecureStorageService {
 
   Future<void> deleteAll() async {
     try {
-      await _storage.deleteAll();
+      if (_useFallback) {
+        final prefs = await _getPrefs();
+        await prefs.clear();
+        return;
+      }
+      await _secure.deleteAll();
     } catch (e, s) {
       AppLogger.error('SecureStorage deleteAll failed', e, s);
       throw StorageException('Failed to delete all keys', e);
@@ -52,7 +97,11 @@ class SecureStorageService {
 
   Future<bool> containsKey(String key) async {
     try {
-      return await _storage.containsKey(key: key);
+      if (_useFallback) {
+        final prefs = await _getPrefs();
+        return prefs.containsKey(key);
+      }
+      return await _secure.containsKey(key: key);
     } catch (e, s) {
       AppLogger.error('SecureStorage containsKey failed', e, s);
       throw StorageException('Failed to check key "$key"', e);

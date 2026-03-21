@@ -109,7 +109,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    if (!EnvConfig.hasGoogleMapsApiKey) {
+    // On web the Google Maps JS SDK receives its key via google_maps_config.js
+    // (HTML-side), so the Dart-side EnvConfig check does not apply.
+    if (!kIsWeb && !EnvConfig.hasGoogleMapsApiKey) {
       return MqCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

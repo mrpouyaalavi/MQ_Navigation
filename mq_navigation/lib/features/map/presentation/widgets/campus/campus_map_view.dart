@@ -179,7 +179,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                 ),
                 maxZoom: meta.maxZoom,
               ),
-              minZoom: -3,
+              minZoom: -1,
               maxZoom: meta.maxZoom,
               cameraConstraint: const CameraConstraint.unconstrained(),
               onMapReady: () => _handleMapReady(meta, projection),
@@ -223,24 +223,16 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
         return;
       }
 
+      // Only override the initial camera fit when a building is selected.
+      // Otherwise let the CameraFit.bounds show the full campus.
       if (widget.selectedBuilding case final selectedBuilding?) {
         _moveMap(resolveBuildingPoint(selectedBuilding, projection), zoom: 1);
-        return;
-      }
-
-      if (widget.currentLocation case final currentLocation?) {
-        _moveMap(
-          projection.gpsToMapPoint(
-            latitude: currentLocation.latitude,
-            longitude: currentLocation.longitude,
-          ),
-        );
       }
     });
   }
 
   void _moveMap(latlong.LatLng point, {double? zoom}) {
-    _controller.move(point, zoom ?? _currentZoom(fallback: 0));
+    _controller.move(point, zoom ?? _currentZoom(fallback: -0.5));
   }
 
   double _currentZoom({required double fallback}) {

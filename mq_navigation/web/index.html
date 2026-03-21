@@ -36,11 +36,20 @@
     `google_maps_config.js` is generated locally / in CI and is intentionally
     gitignored. It can set `window.GOOGLE_MAPS_API_KEY` for web builds without
     committing the key into source control.
+
+    Loaded via synchronous XHR so the value is available before
+    flutter_bootstrap.js runs, and a missing file (404) is handled silently
+    without Chrome MIME-type errors.
   -->
   <script>
     window.GOOGLE_MAPS_API_KEY = window.GOOGLE_MAPS_API_KEY || "";
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "google_maps_config.js", false);
+      xhr.send();
+      if (xhr.status === 200) { new Function(xhr.responseText)(); }
+    } catch (_) { /* file not present or blocked – continue without */ }
   </script>
-  <script src="google_maps_config.js"></script>
 </head>
 <body>
   <!--
