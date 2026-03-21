@@ -214,3 +214,20 @@ Raouf: 2026-03-22 AEDT — Campus default load zoom-out tuning
   - `flutter test test/features/map/map_controller_test.dart` → all tests passed.
 - Follow-ups:
   - If you want even wider default framing after visual check, next safe step is `maxZoom: -3.5` with current bounds guards unchanged.
+
+Raouf: 2026-03-22 AEDT — Campus fit clamp-range crash fix
+
+- Summary:
+  - Fixed repeated `Invalid argument(s): 0.0` exceptions from `FitBounds._getBoundsZoom` / `double.clamp` during campus map initial camera fit.
+  - Added explicit `minZoom` to `CameraFit.bounds` and aligned fit/map zoom constants so clamp bounds are always valid.
+- Rationale:
+  - `flutter_map` fit logic clamps computed zoom between fit min/max and map min/max; when ranges become inconsistent, clamp can throw. Keeping explicit, consistent min/max prevents invalid clamp intervals.
+- Files:
+  - `lib/features/map/presentation/widgets/campus/campus_map_view.dart` — introduced `mapMinZoom` and `initialFitMaxZoom` constants; set `CameraFit.bounds(minZoom: mapMinZoom, maxZoom: initialFitMaxZoom)`.
+  - `AGENT.md` — appended this entry.
+  - `CHANGELOG.md` — appended matching entry.
+- Verification:
+  - `./scripts/check.sh --quick` → Passed 5, Failed 0.
+  - `flutter test test/features/map/map_controller_test.dart` → all tests passed.
+- Follow-ups:
+  - If crash logs recur on specific devices, capture layout constraints + meta bounds values for that device to tune padding bounds further.

@@ -1703,3 +1703,22 @@ Raouf:
   - `flutter test test/features/map/map_controller_test.dart` → all tests passed
 - Follow-ups:
   - Optional next tuning after UI validation: test `-3.5` if an even wider first frame is desired.
+
+### Raouf: 2026-03-22 (AEDT) — Campus fit clamp-range crash fix
+
+**Scope:** Eliminate `FitBounds`/`double.clamp` startup exceptions in campus map.
+
+- Summary:
+  - Fixed `Invalid argument(s): 0.0` thrown from `flutter_map` camera fit (`FitBounds._getBoundsZoom`).
+  - Added explicit `minZoom` to `CameraFit.bounds` and aligned startup zoom constants.
+- Rationale:
+  - Prevent invalid clamp ranges inside `flutter_map` by keeping fit and map zoom bounds consistent.
+- Files:
+  - `lib/features/map/presentation/widgets/campus/campus_map_view.dart`
+  - `AGENT.md`
+  - `CHANGELOG.md`
+- Verification:
+  - `./scripts/check.sh --quick` → all checks passed
+  - `flutter test test/features/map/map_controller_test.dart` → all tests passed
+- Follow-ups:
+  - Monitor runtime logs on-device; if needed, add telemetry around constraint and bounds values at map init.

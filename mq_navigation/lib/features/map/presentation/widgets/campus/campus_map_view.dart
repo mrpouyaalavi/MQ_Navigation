@@ -170,6 +170,8 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
             final double verticalPadding = constraints.hasInfiniteHeight
                 ? MqSpacing.space4
                 : constraints.maxHeight * 0.15;
+            const double mapMinZoom = -5.0;
+            const double initialFitMaxZoom = -3.0;
 
             return DecoratedBox(
               decoration: BoxDecoration(
@@ -201,12 +203,15 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                           ),
                           // Cap the initial fit zoom lower than before so first load
                           // is about 2x more zoomed out (one additional zoom level).
-                          maxZoom: -3.0,
+                          maxZoom: initialFitMaxZoom,
+                          // Keep fit min zoom consistent with map min zoom to avoid
+                          // invalid clamp ranges in flutter_map internals.
+                          minZoom: mapMinZoom,
                         )
                       : null,
                   // Allow zooming out further than the default (-3) to ensure
                   // users can see the whole map if needed.
-                  minZoom: -5.0,
+                  minZoom: mapMinZoom,
                   maxZoom: meta.maxZoom,
                   // Constrain the camera to the campus bounds so users don't pan into the void.
                   cameraConstraint: CameraConstraint.contain(bounds: bounds),
