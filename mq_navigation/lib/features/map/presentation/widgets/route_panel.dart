@@ -80,15 +80,15 @@ class _RoutePanelState extends State<RoutePanel> {
     }
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        filter: ImageFilter.blur(sigmaX: MqSpacing.space3, sigmaY: MqSpacing.space3),
         child: Container(
           decoration: BoxDecoration(
             color: isDark
                 ? MqColors.charcoal850.withValues(alpha: 0.88)
                 : Colors.white.withValues(alpha: 0.88),
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
             border: Border(
               top: BorderSide(
                 color: isDark
@@ -922,16 +922,16 @@ class _ArrivalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        filter: ImageFilter.blur(sigmaX: MqSpacing.space3, sigmaY: MqSpacing.space3),
         child: Container(
           padding: const EdgeInsets.all(MqSpacing.space6),
           decoration: BoxDecoration(
             color: isDark
                 ? MqColors.arrivalBgDark.withValues(alpha: 0.9)
                 : MqColors.arrivalBgLight.withValues(alpha: 0.92),
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
             border: Border.all(
               color: isDark ? MqColors.arrivalBorderDark : MqColors.arrivalBorderLight,
             ),

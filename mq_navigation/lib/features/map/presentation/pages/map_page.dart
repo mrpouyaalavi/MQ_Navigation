@@ -350,11 +350,11 @@ class _CategoryBuildingList extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
-        top: Radius.circular(24),
+        top: Radius.circular(MqSpacing.radiusXl),
         bottom: Radius.circular(MqSpacing.radiusXl),
       ),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+        filter: ImageFilter.blur(sigmaX: MqSpacing.space3, sigmaY: MqSpacing.space3),
         child: Container(
           constraints: const BoxConstraints(maxHeight: 240),
           decoration: BoxDecoration(
@@ -362,7 +362,7 @@ class _CategoryBuildingList extends StatelessWidget {
                 ? MqColors.charcoal850.withValues(alpha: 0.88)
                 : Colors.white.withValues(alpha: 0.85),
             borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(24),
+              top: Radius.circular(MqSpacing.radiusXl),
               bottom: Radius.circular(MqSpacing.radiusXl),
             ),
             border: Border.all(

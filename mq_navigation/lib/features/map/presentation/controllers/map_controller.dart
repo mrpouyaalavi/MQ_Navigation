@@ -324,6 +324,10 @@ class MapController extends AsyncNotifier<MapState> {
     accuracy: 100,
   );
 
+  /// Centers the map on the user's current GPS location.
+  /// 
+  /// Requests location permissions if needed. Falls back to a default campus
+  /// coordinate if GPS is unavailable so the map always has a valid center.
   Future<void> centerOnCurrentLocation() async {
     final current = state.value;
     if (current == null) {
@@ -345,6 +349,8 @@ class MapController extends AsyncNotifier<MapState> {
     );
   }
 
+  /// Changes the current travel mode (walk, drive, bike, transit) and 
+  /// requests a new route if one is currently active.
   Future<void> setTravelMode(TravelMode travelMode) async {
     final current = state.value;
     if (current == null) {
@@ -365,6 +371,11 @@ class MapController extends AsyncNotifier<MapState> {
     }
   }
 
+  /// Updates the active map renderer (Campus vs Google).
+  ///
+  /// Clears the existing route because the route polyline points are specific
+  /// to the renderer's coordinate system. If a building is selected, it
+  /// automatically requests a new route for the new renderer.
   void setRenderer(MapRendererType renderer) {
     final current = state.value;
     if (current == null || current.renderer == renderer) {
@@ -375,12 +386,20 @@ class MapController extends AsyncNotifier<MapState> {
     state = AsyncData(
       current.copyWith(
         renderer: renderer,
+        clearRoute: true,
         isLoadingRoute: false,
+        isNavigating: false,
+        hasArrived: false,
         clearError: true,
       ),
     );
+    
+    if (current.selectedBuilding != null && current.route != null) {
+      unawaited(loadRoute());
+    }
   }
 
+  /// Clears the active route and ends any active navigation session.
   void clearRoute() {
     final current = state.value;
     if (current == null) {
