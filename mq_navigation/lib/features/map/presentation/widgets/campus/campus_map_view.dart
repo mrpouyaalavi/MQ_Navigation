@@ -166,7 +166,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                 meta.centerLatitude,
                 meta.centerLongitude,
               ),
-              initialZoom: 0,
+              initialZoom: -1.5,
               initialCameraFit: CameraFit.bounds(
                 bounds: bounds,
                 // Extra top/bottom padding for the overlaid glass controls
@@ -179,7 +179,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                 ),
                 maxZoom: meta.maxZoom,
               ),
-              minZoom: -2,
+              minZoom: -3,
               maxZoom: meta.maxZoom,
               cameraConstraint: const CameraConstraint.unconstrained(),
               onMapReady: () => _handleMapReady(meta, projection),
