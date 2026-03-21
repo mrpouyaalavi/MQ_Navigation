@@ -97,6 +97,45 @@ class MapState {
       error: clearError ? null : error ?? this.error,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is MapState &&
+        other.renderer == renderer &&
+        listEquals(other.buildings, buildings) &&
+        listEquals(other.searchResults, searchResults) &&
+        other.selectedBuilding == selectedBuilding &&
+        other.currentLocation == currentLocation &&
+        other.route == route &&
+        other.searchQuery == searchQuery &&
+        other.travelMode == travelMode &&
+        other.permissionState == permissionState &&
+        other.isNavigating == isNavigating &&
+        other.isLoadingRoute == isLoadingRoute &&
+        other.hasArrived == hasArrived &&
+        setEquals(other.activeOverlayIds, activeOverlayIds) &&
+        other.error == error;
+  }
+
+  @override
+  int get hashCode {
+    return renderer.hashCode ^
+        buildings.hashCode ^
+        searchResults.hashCode ^
+        selectedBuilding.hashCode ^
+        currentLocation.hashCode ^
+        route.hashCode ^
+        searchQuery.hashCode ^
+        travelMode.hashCode ^
+        permissionState.hashCode ^
+        isNavigating.hashCode ^
+        isLoadingRoute.hashCode ^
+        hasArrived.hashCode ^
+        activeOverlayIds.hashCode ^
+        error.hashCode;
+  }
 }
 
 final mapControllerProvider = AsyncNotifierProvider<MapController, MapState>(

@@ -6,6 +6,9 @@ import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 ///
 /// Used extensively in navigation to detect arrival, off-route deviations,
 /// and splitting walked vs remaining route segments.
+///
+/// **Performance Note**: This involves trigonometric functions (sin, cos, atan2, sqrt).
+/// Avoid calling this in tight loops on the UI thread for large datasets.
 double haversineMetres({
   required double lat1,
   required double lng1,
@@ -26,6 +29,11 @@ double haversineMetres({
 double _toRadians(double degrees) => degrees * pi / 180;
 
 /// Returns the index of the point in [points] closest to [location].
+///
+/// **Complexity**: O(N).
+/// **Performance Warning**: Iterates through all points. Use with caution on large lists
+/// inside `build()` methods. Consider memoization or running in an isolate for
+/// lists > 1000 items.
 int findClosestPointIndex(
   List<LocationSample> points,
   LocationSample location,

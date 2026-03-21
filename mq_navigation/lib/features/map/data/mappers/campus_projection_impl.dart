@@ -14,32 +14,48 @@ class CampusProjectionImpl implements CampusProjection {
     required double latitude,
     required double longitude,
   }) {
+    // 1. Try Affine Projection (High Accuracy)
     final affine = meta.gpsProjection?.affine;
     if (affine != null && affine.x.length == 3 && affine.y.length == 3) {
-      final minLat = affine.normalization.minLat;
-      final maxLat = affine.normalization.maxLat;
-      final minLng = affine.normalization.minLng;
-      final maxLng = affine.normalization.maxLng;
-      final normLng = (longitude - minLng) / (maxLng - minLng);
-      final normLat = (latitude - minLat) / (maxLat - minLat);
+      final norm = affine.normalization;
+      // Avoid division by zero in normalization
+      final latRange = norm.maxLat - norm.minLat;
+      final lngRange = norm.maxLng - norm.minLng;
 
-      final x = affine.x[0] + affine.x[1] * normLng + affine.x[2] * normLat;
-      final y = affine.y[0] + affine.y[1] * normLng + affine.y[2] * normLat;
+      if (latRange != 0 && lngRange != 0) {
+        final normLng = (longitude - norm.minLng) / lngRange;
+        final normLat = (latitude - norm.minLat) / latRange;
 
+        final x = affine.x[0] + affine.x[1] * normLng + affine.x[2] * normLat;
+        final y = affine.y[0] + affine.y[1] * normLng + affine.y[2] * normLat;
+
+        return CampusPoint(
+          x: x
+              .roundToDouble()
+              .clamp(meta.pixelBounds.west, meta.pixelBounds.east)
+              .toDouble(),
+          y: y
+              .roundToDouble()
+              .clamp(meta.pixelBounds.south, meta.pixelBounds.north)
+              .toDouble(),
+        );
+      }
+    }
+
+    // 2. Fallback to Linear Bounds Interpolation
+    final latSpan = meta.gpsNorth - meta.gpsSouth;
+    final lngSpan = meta.gpsEast - meta.gpsWest;
+
+    // Safety check for zero-span (invalid metadata)
+    if (latSpan == 0 || lngSpan == 0) {
       return CampusPoint(
-        x: x
-            .roundToDouble()
-            .clamp(meta.pixelBounds.west, meta.pixelBounds.east)
-            .toDouble(),
-        y: y
-            .roundToDouble()
-            .clamp(meta.pixelBounds.south, meta.pixelBounds.north)
-            .toDouble(),
+        x: meta.pixelBounds.west,
+        y: meta.pixelBounds.south,
       );
     }
 
-    final xNorm = (longitude - meta.gpsWest) / (meta.gpsEast - meta.gpsWest);
-    final yNorm = (meta.gpsNorth - latitude) / (meta.gpsNorth - meta.gpsSouth);
+    final xNorm = (longitude - meta.gpsWest) / lngSpan;
+    final yNorm = (meta.gpsNorth - latitude) / latSpan;
 
     return CampusPoint(
       x: (meta.pixelBounds.west + (xNorm * meta.pixelWidth))

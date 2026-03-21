@@ -25,12 +25,20 @@ class CampusMapRouteLayer extends StatelessWidget {
   final bool isNavigating;
   final LocationSample? currentLocation;
 
+  static const Color _traversedColor = MqColors.slate400; // was 0xFF94a3b8
+  static const double _strokeWidth = 5.0;
+  static const double _borderWidth = 2.0;
+
   @override
   Widget build(BuildContext context) {
     if (routePoints.isEmpty) {
       return const SizedBox.shrink();
     }
 
+    // Optimization: Only calculate polylines if points exist.
+    // The computation of 'splitIdx' is O(N) where N is route points.
+    // For typical campus routes (N < 200), this is negligible on UI thread.
+    // If routes become massive, move this to a provider or isolate.
     return PolylineLayer(
       polylines: _buildCampusPolylines(routePoints, rawRoutePoints),
     );
@@ -45,42 +53,47 @@ class CampusMapRouteLayer extends StatelessWidget {
     final StrokePattern pattern = isWalking
         ? StrokePattern.dashed(segments: const [12, 8])
         : const StrokePattern.solid();
-    final polylines = <Polyline>[];
 
-    if (isNavigating && currentLocation != null && rawPoints.length > 1) {
-      final splitIdx = findClosestPointIndex(rawPoints, currentLocation!);
-
-      if (splitIdx > 0) {
-        polylines.add(
-          Polyline(
-            points: mapPoints.sublist(0, splitIdx + 1),
-            strokeWidth: 5,
-            color: const Color(0xFF94a3b8),
-            borderStrokeWidth: 2,
-            borderColor: Colors.white.withValues(alpha: 0.25),
-            pattern: pattern,
-          ),
-        );
-      }
-
-      final remaining = splitIdx > 0 ? mapPoints.sublist(splitIdx) : mapPoints;
-      polylines.add(
+    // If not navigating or no location, return single full polyline
+    if (!isNavigating || currentLocation == null || rawPoints.length <= 1) {
+      return [
         Polyline(
-          points: remaining,
-          strokeWidth: 5,
+          points: mapPoints,
+          strokeWidth: _strokeWidth,
           color: routeColor,
-          borderStrokeWidth: 2,
+          borderStrokeWidth: _borderWidth,
           borderColor: Colors.white.withValues(alpha: 0.45),
           pattern: pattern,
         ),
-      );
-    } else {
+      ];
+    }
+
+    final splitIdx = findClosestPointIndex(rawPoints, currentLocation!);
+    final polylines = <Polyline>[];
+
+    // Traversed segment (Grey)
+    if (splitIdx > 0) {
       polylines.add(
         Polyline(
-          points: mapPoints,
-          strokeWidth: 5,
+          points: mapPoints.sublist(0, splitIdx + 1),
+          strokeWidth: _strokeWidth,
+          color: _traversedColor,
+          borderStrokeWidth: _borderWidth,
+          borderColor: Colors.white.withValues(alpha: 0.25),
+          pattern: pattern,
+        ),
+      );
+    }
+
+    // Remaining segment (Colored)
+    final remaining = splitIdx > 0 ? mapPoints.sublist(splitIdx) : mapPoints;
+    if (remaining.isNotEmpty) {
+      polylines.add(
+        Polyline(
+          points: remaining,
+          strokeWidth: _strokeWidth,
           color: routeColor,
-          borderStrokeWidth: 2,
+          borderStrokeWidth: _borderWidth,
           borderColor: Colors.white.withValues(alpha: 0.45),
           pattern: pattern,
         ),
@@ -93,9 +106,9 @@ class CampusMapRouteLayer extends StatelessWidget {
   static Color _colorFor(TravelMode travelMode) {
     return switch (travelMode) {
       TravelMode.walk => MqColors.red,
-      TravelMode.drive => const Color(0xFF6C757D),
-      TravelMode.bike => const Color(0xFF2E8B57),
-      TravelMode.transit => const Color(0xFFF57C00),
+      TravelMode.drive => MqColors.charcoal600, // was 0xFF6C757D
+      TravelMode.bike => MqColors.success, // was 0xFF2E8B57 (approx)
+      TravelMode.transit => MqColors.warning, // was 0xFFF57C00 (orange-ish)
     };
   }
 }

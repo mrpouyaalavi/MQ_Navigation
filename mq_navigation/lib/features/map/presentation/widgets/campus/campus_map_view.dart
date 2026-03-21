@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart' as latlong;
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/map/data/datasources/map_assets_source.dart';
 import 'package:mq_navigation/features/map/data/mappers/campus_projection_impl.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
@@ -169,21 +170,20 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
               initialZoom: -2,
               initialCameraFit: CameraFit.bounds(
                 bounds: bounds,
-                // Extra top/bottom padding for the overlaid glass controls
-                // (search bar + toggle ~120px top, side controls ~60px bottom).
-                padding: EdgeInsets.fromLTRB(
-                  meta.initialFitPadding,
-                  meta.initialFitPadding + 100,
-                  meta.initialFitPadding,
-                  meta.initialFitPadding + 40,
-                ),
+                // Substantial padding to prevent the map from hugging the screen edges,
+                // resolving RTL if necessary.
+                padding: EdgeInsetsDirectional.all(MqSpacing.space12)
+                    .resolve(Directionality.of(context)),
                 // Cap the initial fit zoom low so the full campus is visible
                 // and the raster image stays crisp on first load.
                 maxZoom: 0.5,
               ),
-              minZoom: -3,
+              // Allow zooming out further than the default (-3) to ensure
+              // users can see the whole map if needed.
+              minZoom: -5.0,
               maxZoom: meta.maxZoom,
-              cameraConstraint: const CameraConstraint.unconstrained(),
+              // Constrain the camera to the campus bounds so users don't pan into the void.
+              cameraConstraint: CameraConstraint.contain(bounds: bounds),
               onMapReady: () => _handleMapReady(meta, projection),
             ),
             children: [

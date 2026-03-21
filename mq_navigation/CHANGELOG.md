@@ -4,6 +4,24 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-03-21 (AEDT) — Campus Map Zoom Fix & Technical Audit
+
+**Scope:** Fix critical map zoom usability issues and perform a deep technical audit of map feature code.
+
+**Summary:**
+Fixed the campus map initial zoom being too close and uncomfortably tight by adjusting `MapOptions` (minZoom -5.0, padded initial fit, constrained camera). Audited and refactored core map files to improve error handling (`MapAssetsException`), safety (zero-division checks in projection), performance (value equality in `MapState`), and design consistency (replaced magic numbers/colors with `MqSpacing`/`MqColors`).
+
+**Files changed:**
+- `lib/features/map/presentation/widgets/campus/campus_map_view.dart`
+- `lib/features/map/presentation/controllers/map_controller.dart`
+- `lib/features/map/data/datasources/map_assets_source.dart`
+- `lib/features/map/data/mappers/campus_projection_impl.dart`
+- `lib/features/map/domain/services/geo_utils.dart`
+- `lib/features/map/presentation/widgets/campus/campus_map_marker_layer.dart`
+- `lib/features/map/presentation/widgets/campus/campus_map_route_layer.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+
 ### Raouf: 2026-03-17 (AEDT) — README Key Placement Guidance
 
 **Scope:** Document safe storage rules for client and server keys used by the repo.
