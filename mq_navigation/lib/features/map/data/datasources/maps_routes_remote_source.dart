@@ -20,10 +20,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// requests are rate-limited by user ID. If app-level auth is introduced
 /// later, the Bearer token path below already supports it.
 class MapsRoutesRemoteSource {
-  const MapsRoutesRemoteSource({http.Client? httpClient})
-    : _httpClient = httpClient;
+  const MapsRoutesRemoteSource({
+    http.Client? httpClient,
+    SupabaseClient? supabaseClient,
+  }) : _httpClient = httpClient,
+       _supabaseClient = supabaseClient;
 
   final http.Client? _httpClient;
+  final SupabaseClient? _supabaseClient;
+
+  SupabaseClient get _client => _supabaseClient ?? Supabase.instance.client;
 
   static String get _routesUrl =>
       '${EnvConfig.supabaseUrl}/functions/v1/maps-routes';
@@ -43,7 +49,7 @@ class MapsRoutesRemoteSource {
       throw StateError('Supabase routing endpoint is not configured.');
     }
 
-    final session = Supabase.instance.client.auth.currentSession;
+    final session = _client.auth.currentSession;
     final accessToken = session?.accessToken;
     final headers = <String, String>{
       'Content-Type': 'application/json',
