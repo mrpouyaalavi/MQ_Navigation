@@ -85,7 +85,10 @@ class _PillSegment extends StatelessWidget {
         child: AnimatedContainer(
           duration: MqAnimations.normal,
           curve: Curves.easeInOut,
-          padding: const EdgeInsets.symmetric(horizontal: MqSpacing.space6, vertical: MqSpacing.space2),
+          padding: const EdgeInsets.symmetric(
+            horizontal: MqSpacing.space6,
+            vertical: MqSpacing.space2,
+          ),
           decoration: BoxDecoration(
             color: isSelected ? MqColors.vividRed : Colors.transparent,
             borderRadius: BorderRadius.circular(MqSpacing.radiusFull),

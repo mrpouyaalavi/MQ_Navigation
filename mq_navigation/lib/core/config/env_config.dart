@@ -52,6 +52,7 @@ class EnvConfig {
       'eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4c3FsZ3Zid3RldmtrbGp6b2xnIiwi'
       'cm9sZSI6ImFub24iLCJpYXQiOjE3NjcwMjkwNTEsImV4cCI6MjA4MjYwNTA1MX0.'
       '5OXdkYfflYE27WRhw2PKf-up3UYctGKn3w2RQbTZrWw';
+
   /// Supabase project URL. Falls back to dev env var → hardcoded fallback in debug mode.
   static String get supabaseUrl {
     if (_supabaseUrl.isNotEmpty) return _supabaseUrl;

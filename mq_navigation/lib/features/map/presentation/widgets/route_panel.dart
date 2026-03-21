@@ -82,7 +82,10 @@ class _RoutePanelState extends State<RoutePanel> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: MqSpacing.space3, sigmaY: MqSpacing.space3),
+        filter: ImageFilter.blur(
+          sigmaX: MqSpacing.space3,
+          sigmaY: MqSpacing.space3,
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: isDark
@@ -112,211 +115,222 @@ class _RoutePanelState extends State<RoutePanel> {
               children: [
                 // Handle bar
                 Center(
-                child: Container(
-                  width: 48,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.2)
-                        : Colors.black.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(3),
+                  child: Container(
+                    width: 48,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.2)
+                          : Colors.black.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: MqSpacing.space6),
+                const SizedBox(height: MqSpacing.space6),
 
-              // Building name + close button
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                // Building name + close button
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.selectedBuilding!.name,
+                            style: Theme.of(context).textTheme.headlineMedium
+                                ?.copyWith(
+                                  color: isDark
+                                      ? Colors.white
+                                      : MqColors.contentPrimary,
+                                  letterSpacing: -0.5,
+                                ),
+                          ),
+                          const SizedBox(height: MqSpacing.space1),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: '${l10n.buildingCode}: ',
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: isDark
+                                              ? Colors.white.withValues(
+                                                  alpha: 0.5,
+                                                )
+                                              : MqColors.contentTertiary,
+                                        ),
+                                    children: [
+                                      TextSpan(
+                                        text: widget.selectedBuilding!.code,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: isDark
+                                              ? Colors.white
+                                              : MqColors.contentPrimary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (widget.selectedBuilding!.category !=
+                                  BuildingCategory.other) ...[
+                                const SizedBox(width: MqSpacing.space2),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: MqSpacing.space3,
+                                    vertical: MqSpacing.space1,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: MqColors.vividRed.withValues(
+                                      alpha: 0.15,
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                      MqSpacing.radiusFull,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    widget.selectedBuilding!.category.name
+                                        .toUpperCase(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelSmall
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          color: MqColors.vividRed,
+                                          letterSpacing: 1.2,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        size: MqSpacing.iconMd,
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.5)
+                            : MqColors.contentTertiary,
+                      ),
+                      tooltip: l10n.clear,
+                      onPressed: widget.isNavigating
+                          ? widget.onStopNavigation
+                          : widget.onClearSelection,
+                    ),
+                  ],
+                ),
+
+                // Route info row (when route is loaded)
+                if (widget.route != null) ...[
+                  const SizedBox(height: MqSpacing.space4),
+                  _RouteInfoRow(
+                    route: widget.route!,
+                    l10n: l10n,
+                    isDark: isDark,
+                  ),
+                ],
+
+                // Travel mode selector (hidden during navigation)
+                if (!widget.isNavigating) ...[
+                  const SizedBox(height: MqSpacing.space4),
+                  _TravelModePills(
+                    travelMode: widget.travelMode,
+                    isDark: isDark,
+                    l10n: l10n,
+                    onChanged: widget.onTravelModeChanged,
+                  ),
+                ],
+
+                // Next instruction (during navigation)
+                if (widget.isNavigating &&
+                    widget.route != null &&
+                    widget.route!.instructions.isNotEmpty) ...[
+                  const SizedBox(height: MqSpacing.space4),
+                  _NextInstructionCard(
+                    instruction: widget.route!.instructions.first,
+                    isDark: isDark,
+                  ),
+                ],
+
+                // Expandable steps
+                if (widget.route != null &&
+                    widget.route!.instructions.isNotEmpty) ...[
+                  const SizedBox(height: MqSpacing.space2),
+                  _ExpandableStepList(
+                    instructions: widget.route!.instructions,
+                    isNavigating: widget.isNavigating,
+                    isExpanded: _stepsExpanded,
+                    isDark: isDark,
+                    onToggle: () =>
+                        setState(() => _stepsExpanded = !_stepsExpanded),
+                  ),
+                ],
+
+                const SizedBox(height: MqSpacing.space4),
+
+                // Action buttons
+                if (widget.route != null) ...[
+                  if (widget.isNavigating)
+                    _GlassOutlinedButton(
+                      label: l10n.clear,
+                      isDark: isDark,
+                      onPressed: widget.onStopNavigation,
+                    )
+                  else ...[
+                    _BrandActionButton(
+                      label: l10n.walkingDirections,
+                      icon: Icons.double_arrow_rounded,
+                      onPressed: widget.onStartNavigation,
+                    ),
+                    const SizedBox(height: MqSpacing.space2),
+                    Row(
                       children: [
-                        Text(
-                          widget.selectedBuilding!.name,
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            color: isDark
-                                ? Colors.white
-                                : MqColors.contentPrimary,
-                            letterSpacing: -0.5,
+                        Expanded(
+                          child: _GlassOutlinedButton(
+                            label: l10n.clear,
+                            isDark: isDark,
+                            onPressed: widget.onClearRoute,
                           ),
                         ),
-                        const SizedBox(height: MqSpacing.space1),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: Text.rich(
-                                TextSpan(
-                                  text: '${l10n.buildingCode}: ',
-                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: isDark
-                                        ? Colors.white.withValues(alpha: 0.5)
-                                        : MqColors.contentTertiary,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: widget.selectedBuilding!.code,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: isDark
-                                            ? Colors.white
-                                            : MqColors.contentPrimary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            if (widget.selectedBuilding!.category !=
-                                BuildingCategory.other) ...[
-                              const SizedBox(width: MqSpacing.space2),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: MqSpacing.space3,
-                                  vertical: MqSpacing.space1,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: MqColors.vividRed.withValues(
-                                    alpha: 0.15,
-                                  ),
-                                  borderRadius: BorderRadius.circular(
-                                    MqSpacing.radiusFull,
-                                  ),
-                                ),
-                                child: Text(
-                                  widget.selectedBuilding!.category.name
-                                      .toUpperCase(),
-                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: MqColors.vividRed,
-                                    letterSpacing: 1.2,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      size: MqSpacing.iconMd,
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.5)
-                          : MqColors.contentTertiary,
-                    ),
-                    tooltip: l10n.clear,
-                    onPressed: widget.isNavigating
-                        ? widget.onStopNavigation
-                        : widget.onClearSelection,
-                  ),
-                ],
-              ),
-
-              // Route info row (when route is loaded)
-              if (widget.route != null) ...[
-                const SizedBox(height: MqSpacing.space4),
-                _RouteInfoRow(route: widget.route!, l10n: l10n, isDark: isDark),
-              ],
-
-              // Travel mode selector (hidden during navigation)
-              if (!widget.isNavigating) ...[
-                const SizedBox(height: MqSpacing.space4),
-                _TravelModePills(
-                  travelMode: widget.travelMode,
-                  isDark: isDark,
-                  l10n: l10n,
-                  onChanged: widget.onTravelModeChanged,
-                ),
-              ],
-
-              // Next instruction (during navigation)
-              if (widget.isNavigating &&
-                  widget.route != null &&
-                  widget.route!.instructions.isNotEmpty) ...[
-                const SizedBox(height: MqSpacing.space4),
-                _NextInstructionCard(
-                  instruction: widget.route!.instructions.first,
-                  isDark: isDark,
-                ),
-              ],
-
-              // Expandable steps
-              if (widget.route != null &&
-                  widget.route!.instructions.isNotEmpty) ...[
-                const SizedBox(height: MqSpacing.space2),
-                _ExpandableStepList(
-                  instructions: widget.route!.instructions,
-                  isNavigating: widget.isNavigating,
-                  isExpanded: _stepsExpanded,
-                  isDark: isDark,
-                  onToggle: () =>
-                      setState(() => _stepsExpanded = !_stepsExpanded),
-                ),
-              ],
-
-              const SizedBox(height: MqSpacing.space4),
-
-              // Action buttons
-              if (widget.route != null) ...[
-                if (widget.isNavigating)
-                  _GlassOutlinedButton(
-                    label: l10n.clear,
-                    isDark: isDark,
-                    onPressed: widget.onStopNavigation,
-                  )
-                else ...[
-                  _BrandActionButton(
-                    label: l10n.walkingDirections,
-                    icon: Icons.double_arrow_rounded,
-                    onPressed: widget.onStartNavigation,
-                  ),
-                  const SizedBox(height: MqSpacing.space2),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _GlassOutlinedButton(
-                          label: l10n.clear,
-                          isDark: isDark,
-                          onPressed: widget.onClearRoute,
-                        ),
-                      ),
-                      if (widget.selectedBuilding != null) ...[
+                        if (widget.selectedBuilding != null) ...[
+                          const SizedBox(width: MqSpacing.space2),
+                          _GlassCircleAction(
+                            icon: Icons.streetview,
+                            tooltip: l10n.openStreetView,
+                            isDark: isDark,
+                            onPressed: widget.onOpenStreetView,
+                          ),
+                        ],
                         const SizedBox(width: MqSpacing.space2),
                         _GlassCircleAction(
-                          icon: Icons.streetview,
-                          tooltip: l10n.openStreetView,
+                          icon: Icons.open_in_new,
+                          tooltip: l10n.openInGoogleMaps,
                           isDark: isDark,
-                          onPressed: widget.onOpenStreetView,
+                          onPressed: widget.onOpenInGoogleMaps,
                         ),
                       ],
-                      const SizedBox(width: MqSpacing.space2),
-                      _GlassCircleAction(
-                        icon: Icons.open_in_new,
-                        tooltip: l10n.openInGoogleMaps,
-                        isDark: isDark,
-                        onPressed: widget.onOpenInGoogleMaps,
-                      ),
-                    ],
+                    ),
+                  ],
+                ] else ...[
+                  // No route yet — show "Get Directions" button
+                  _BrandActionButton(
+                    label: widget.isLoading
+                        ? l10n.loadingRoute
+                        : _directionsLabel(l10n),
+                    icon: Icons.double_arrow_rounded,
+                    isLoading: widget.isLoading,
+                    onPressed: widget.selectedBuilding == null
+                        ? null
+                        : () => widget.onLoadRoute(),
                   ),
                 ],
-              ] else ...[
-                // No route yet — show "Get Directions" button
-                _BrandActionButton(
-                  label: widget.isLoading
-                      ? l10n.loadingRoute
-                      : _directionsLabel(l10n),
-                  icon: Icons.double_arrow_rounded,
-                  isLoading: widget.isLoading,
-                  onPressed: widget.selectedBuilding == null
-                      ? null
-                      : () => widget.onLoadRoute(),
-                ),
-              ],
               ],
             ),
           ),
@@ -538,10 +552,14 @@ class _NextInstructionCard extends StatelessWidget {
         vertical: MqSpacing.space2,
       ),
       decoration: BoxDecoration(
-        color: isDark ? MqColors.navInstructionBgDark : MqColors.navInstructionBgLight,
+        color: isDark
+            ? MqColors.navInstructionBgDark
+            : MqColors.navInstructionBgLight,
         borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
         border: Border.all(
-          color: isDark ? MqColors.navInstructionBorderDark : MqColors.navInstructionBorderLight,
+          color: isDark
+              ? MqColors.navInstructionBorderDark
+              : MqColors.navInstructionBorderLight,
         ),
       ),
       child: Column(
@@ -551,7 +569,9 @@ class _NextInstructionCard extends StatelessWidget {
             instruction.text,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w500,
-              color: isDark ? MqColors.navInstructionTextDark : MqColors.navInstructionTextLight,
+              color: isDark
+                  ? MqColors.navInstructionTextDark
+                  : MqColors.navInstructionTextLight,
             ),
           ),
           if (instruction.distanceMeters > 0)
@@ -924,7 +944,10 @@ class _ArrivalCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: MqSpacing.space3, sigmaY: MqSpacing.space3),
+        filter: ImageFilter.blur(
+          sigmaX: MqSpacing.space3,
+          sigmaY: MqSpacing.space3,
+        ),
         child: Container(
           padding: const EdgeInsets.all(MqSpacing.space6),
           decoration: BoxDecoration(
@@ -933,7 +956,9 @@ class _ArrivalCard extends StatelessWidget {
                 : MqColors.arrivalBgLight.withValues(alpha: 0.92),
             borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
             border: Border.all(
-              color: isDark ? MqColors.arrivalBorderDark : MqColors.arrivalBorderLight,
+              color: isDark
+                  ? MqColors.arrivalBorderDark
+                  : MqColors.arrivalBorderLight,
             ),
             boxShadow: [
               BoxShadow(

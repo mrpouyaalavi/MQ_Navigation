@@ -325,7 +325,7 @@ class MapController extends AsyncNotifier<MapState> {
   );
 
   /// Centers the map on the user's current GPS location.
-  /// 
+  ///
   /// Requests location permissions if needed. Falls back to a default campus
   /// coordinate if GPS is unavailable so the map always has a valid center.
   Future<void> centerOnCurrentLocation() async {
@@ -349,7 +349,7 @@ class MapController extends AsyncNotifier<MapState> {
     );
   }
 
-  /// Changes the current travel mode (walk, drive, bike, transit) and 
+  /// Changes the current travel mode (walk, drive, bike, transit) and
   /// requests a new route if one is currently active.
   Future<void> setTravelMode(TravelMode travelMode) async {
     final current = state.value;
@@ -393,7 +393,7 @@ class MapController extends AsyncNotifier<MapState> {
         clearError: true,
       ),
     );
-    
+
     if (current.selectedBuilding != null && current.route != null) {
       unawaited(loadRoute());
     }

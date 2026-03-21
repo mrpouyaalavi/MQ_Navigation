@@ -49,9 +49,7 @@ class _ErrorFallback extends StatelessWidget {
                   color: isDark ? MqColors.contentPrimary : Colors.white,
                   borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
                   border: Border.all(
-                    color: isDark
-                        ? MqColors.charcoal800
-                        : MqColors.sand300,
+                    color: isDark ? MqColors.charcoal800 : MqColors.sand300,
                   ),
                 ),
                 child: Padding(

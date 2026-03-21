@@ -354,7 +354,10 @@ class _CategoryBuildingList extends StatelessWidget {
         bottom: Radius.circular(MqSpacing.radiusXl),
       ),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: MqSpacing.space3, sigmaY: MqSpacing.space3),
+        filter: ImageFilter.blur(
+          sigmaX: MqSpacing.space3,
+          sigmaY: MqSpacing.space3,
+        ),
         child: Container(
           constraints: const BoxConstraints(maxHeight: 240),
           decoration: BoxDecoration(

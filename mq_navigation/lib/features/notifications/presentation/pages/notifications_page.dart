@@ -118,7 +118,9 @@ class NotificationsPage extends ConsumerWidget {
                   );
                 },
                 error: (error, _) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: MqSpacing.space4),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: MqSpacing.space4,
+                  ),
                   child: Center(
                     child: Icon(
                       Icons.error_outline_rounded,
@@ -144,10 +146,7 @@ class NotificationsPage extends ConsumerWidget {
                   color: Theme.of(context).colorScheme.error,
                 ),
                 const SizedBox(height: MqSpacing.space4),
-                Text(
-                  l10n.settingsError,
-                  textAlign: TextAlign.center,
-                ),
+                Text(l10n.settingsError, textAlign: TextAlign.center),
               ],
             ),
           ),
