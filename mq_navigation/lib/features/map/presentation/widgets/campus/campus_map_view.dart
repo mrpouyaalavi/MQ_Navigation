@@ -96,7 +96,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
         widget.selectedBuilding?.id != oldWidget.selectedBuilding?.id) {
       _moveMap(
         resolveBuildingPoint(widget.selectedBuilding!, projection),
-        zoom: 1,
+        zoom: 0.5,
       );
       return;
     }
@@ -166,7 +166,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                 meta.centerLatitude,
                 meta.centerLongitude,
               ),
-              initialZoom: -1.5,
+              initialZoom: -2,
               initialCameraFit: CameraFit.bounds(
                 bounds: bounds,
                 // Extra top/bottom padding for the overlaid glass controls
@@ -177,9 +177,11 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                   meta.initialFitPadding,
                   meta.initialFitPadding + 40,
                 ),
-                maxZoom: meta.maxZoom,
+                // Cap the initial fit zoom low so the full campus is visible
+                // and the raster image stays crisp on first load.
+                maxZoom: 0.5,
               ),
-              minZoom: -1,
+              minZoom: -3,
               maxZoom: meta.maxZoom,
               cameraConstraint: const CameraConstraint.unconstrained(),
               onMapReady: () => _handleMapReady(meta, projection),
@@ -226,7 +228,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
       // Only override the initial camera fit when a building is selected.
       // Otherwise let the CameraFit.bounds show the full campus.
       if (widget.selectedBuilding case final selectedBuilding?) {
-        _moveMap(resolveBuildingPoint(selectedBuilding, projection), zoom: 1);
+        _moveMap(resolveBuildingPoint(selectedBuilding, projection), zoom: 0.5);
       }
     });
   }
