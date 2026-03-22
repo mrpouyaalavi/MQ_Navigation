@@ -1,3 +1,4 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
 #include "Generated.xcconfig"
-GOOGLE_MAPS_API_KEY=AIzaSyAmvp4dWl2QyCGAzbcTH0CfTJlnaI6rBKc
+// Set via Secrets.xcconfig or --dart-define — do NOT commit real keys here
+GOOGLE_MAPS_API_KEY=
