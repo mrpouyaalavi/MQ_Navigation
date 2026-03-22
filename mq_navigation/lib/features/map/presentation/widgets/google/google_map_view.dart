@@ -8,6 +8,7 @@ import 'package:mq_navigation/core/config/env_config.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/google/desktop_map_fallback_view.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 import 'package:mq_navigation/shared/widgets/mq_card.dart';
 
@@ -109,6 +110,27 @@ class _GoogleMapViewState extends State<GoogleMapView> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    // google_maps_flutter only supports Android, iOS, and Web.
+    // On desktop platforms (macOS, Linux, Windows) show a fallback.
+    final isGoogleMapsSupported = kIsWeb ||
+        defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS;
+
+    if (!isGoogleMapsSupported) {
+      // On desktop platforms use flutter_map with OSM tiles as a fallback
+      // so the "Google Maps" toggle still shows a real interactive map.
+      return DesktopMapFallbackView(
+        searchResults: widget.searchResults,
+        searchQuery: widget.searchQuery,
+        selectedBuilding: widget.selectedBuilding,
+        route: widget.route,
+        currentLocation: widget.currentLocation,
+        isNavigating: widget.isNavigating,
+        onSelectBuilding: widget.onSelectBuilding,
+      );
+    }
+
     // On web the Google Maps JS SDK receives its key via google_maps_config.js
     // (HTML-side), so the Dart-side EnvConfig check does not apply.
     if (!kIsWeb && !EnvConfig.hasGoogleMapsApiKey) {
