@@ -31,7 +31,11 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+**/build/
 /coverage/
+
+# Temp files
+*.tmp
 
 # Symbolication related
 app.*.symbols

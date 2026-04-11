@@ -1,4 +1,4 @@
-# Only track mq_navigation and root docs in this repo
+# Only track MQ_Navigation and root docs in this repo
 # Ignore everything else at the top level
 /*
 
@@ -11,4 +11,4 @@
 !/SECURITY.md
 !/AGENT.md
 !/CHANGELOG.md
-!/mq_navigation/
+!/MQ_Navigation/
