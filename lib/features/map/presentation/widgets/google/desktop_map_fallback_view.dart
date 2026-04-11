@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' as latlong;
@@ -35,8 +34,7 @@ class DesktopMapFallbackView extends StatefulWidget {
   final ValueChanged<Building> onSelectBuilding;
 
   @override
-  State<DesktopMapFallbackView> createState() =>
-      _DesktopMapFallbackViewState();
+  State<DesktopMapFallbackView> createState() => _DesktopMapFallbackViewState();
 }
 
 class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
@@ -130,8 +128,7 @@ class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
         MarkerLayer(
           markers: [
             for (final building in visibleBuildings)
-              if (resolveBuildingGeographicTarget(building)
-                  case final target?)
+              if (resolveBuildingGeographicTarget(building) case final target?)
                 Marker(
                   point: latlong.LatLng(target.latitude, target.longitude),
                   width: 40,
@@ -181,8 +178,7 @@ class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
             // User location marker
             if (widget.currentLocation case final location?)
               Marker(
-                point:
-                    latlong.LatLng(location.latitude, location.longitude),
+                point: latlong.LatLng(location.latitude, location.longitude),
                 width: 30,
                 height: 30,
                 child: Container(
@@ -241,8 +237,9 @@ class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
         );
       }
 
-      final remainingPoints =
-          splitIdx > 0 ? allPoints.sublist(splitIdx) : allPoints;
+      final remainingPoints = splitIdx > 0
+          ? allPoints.sublist(splitIdx)
+          : allPoints;
       polylines.add(
         Polyline(
           points: remainingPoints
@@ -279,9 +276,7 @@ class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
       }
 
       if (widget.currentLocation case final location?) {
-        _moveToLatLng(
-          latlong.LatLng(location.latitude, location.longitude),
-        );
+        _moveToLatLng(latlong.LatLng(location.latitude, location.longitude));
       }
     });
   }
@@ -346,4 +341,3 @@ class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
     };
   }
 }
-

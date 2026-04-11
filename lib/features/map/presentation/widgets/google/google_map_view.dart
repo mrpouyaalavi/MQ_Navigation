@@ -113,7 +113,8 @@ class _GoogleMapViewState extends State<GoogleMapView> {
 
     // google_maps_flutter only supports Android, iOS, and Web.
     // On desktop platforms (macOS, Linux, Windows) show a fallback.
-    final isGoogleMapsSupported = kIsWeb ||
+    final isGoogleMapsSupported =
+        kIsWeb ||
         defaultTargetPlatform == TargetPlatform.android ||
         defaultTargetPlatform == TargetPlatform.iOS;
 
