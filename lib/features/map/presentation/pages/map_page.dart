@@ -620,11 +620,7 @@ class _CategoryChip extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    icon,
-                    size: 16,
-                    color: isActive ? activeFg : inactiveFg,
-                  ),
+                  Icon(icon, size: 16, color: isActive ? activeFg : inactiveFg),
                   const SizedBox(width: MqSpacing.space2),
                   Text(
                     label,
@@ -745,7 +741,8 @@ class _CampusDestinationPanel extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            if (building.category != BuildingCategory.other) ...[
+                            if (building.category !=
+                                BuildingCategory.other) ...[
                               const SizedBox(width: MqSpacing.space2),
                               Container(
                                 padding: const EdgeInsets.symmetric(
@@ -882,4 +879,3 @@ class _CampusDestinationPanel extends StatelessWidget {
     );
   }
 }
-

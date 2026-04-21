@@ -133,8 +133,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     // On web, the Maps JS API key comes from google_maps_config.js (HTML-side).
     // On native, it comes from --dart-define via EnvConfig.
     // In both cases, fall back to the OSM renderer instead of crashing.
-    final hasKey =
-        kIsWeb ? hasWebGoogleMapsApiKey() : EnvConfig.hasGoogleMapsApiKey;
+    final hasKey = kIsWeb
+        ? hasWebGoogleMapsApiKey()
+        : EnvConfig.hasGoogleMapsApiKey;
     if (!hasKey) {
       return DesktopMapFallbackView(
         searchResults: widget.searchResults,
