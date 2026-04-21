@@ -24,6 +24,7 @@ class MapShell extends StatelessWidget {
     this.onOpenOverlayPicker,
     this.banner,
     this.footer,
+    this.filterChips,
   });
 
   final Widget mapView;
@@ -34,6 +35,7 @@ class MapShell extends StatelessWidget {
   final VoidCallback? onOpenOverlayPicker;
   final Widget? banner;
   final Widget? footer;
+  final Widget? filterChips;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +98,13 @@ class MapShell extends StatelessWidget {
                   ),
                 ),
               ),
+
+              // Category filter chips — available in both renderers so students
+              // can re-filter the map without going back to the home screen.
+              if (filterChips != null) ...[
+                const SizedBox(height: MqSpacing.space3),
+                filterChips!,
+              ],
 
               const SizedBox(height: MqSpacing.space3),
 

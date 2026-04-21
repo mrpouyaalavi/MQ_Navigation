@@ -54,7 +54,8 @@ class HomePage extends ConsumerWidget {
               ),
               const SizedBox(height: MqSpacing.space2),
               Text(
-                l10n.campusMapDesc,
+                'Find buildings, parking, food, and services across Macquarie University campus.',
+                textAlign: TextAlign.center,
                 style: theme.textTheme.bodyLarge?.copyWith(
                   color: subtitleColor,
                 ),
@@ -83,10 +84,84 @@ class HomePage extends ConsumerWidget {
                 ),
               ),
 
-              const SizedBox(height: MqSpacing.space8),
+              const SizedBox(height: MqSpacing.space6),
+
+              // Map modes explainer
+              Container(
+                padding: const EdgeInsets.all(MqSpacing.space3),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(
+                    alpha: 0.6,
+                  ),
+                  borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
+                  border: Border.all(
+                    color: theme.dividerColor.withValues(alpha: 0.4),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.map_outlined,
+                          size: 16,
+                          color: MqColors.vividRed,
+                        ),
+                        const SizedBox(width: MqSpacing.space2),
+                        Text(
+                          'Two ways to find your way',
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: MqSpacing.space2),
+                    Text(
+                      '• Campus map — a visual leaflet of MQ. Your '
+                      'destination is highlighted and you find your way there.',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: subtitleColor,
+                        height: 1.35,
+                      ),
+                    ),
+                    const SizedBox(height: MqSpacing.space1),
+                    Text(
+                      '• Google Maps — for turn-by-turn directions and '
+                      'live routing.',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: subtitleColor,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: MqSpacing.space6),
 
               // Quick access grid
-              Text(l10n.campusNavigation, style: theme.textTheme.titleMedium),
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  'Quick Access',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              const SizedBox(height: MqSpacing.space1),
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  'Tap a category to filter the map. Switch between campus and '
+                  'Google Maps from the toggle at the top.',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: subtitleColor,
+                  ),
+                ),
+              ),
               const SizedBox(height: MqSpacing.space3),
 
               GridView.count(
@@ -95,7 +170,7 @@ class HomePage extends ConsumerWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 mainAxisSpacing: MqSpacing.space3,
                 crossAxisSpacing: MqSpacing.space3,
-                childAspectRatio: 1.4,
+                childAspectRatio: 1.2,
                 children: [
                   _QuickAccessCard(
                     icon: Icons.restaurant,
@@ -109,17 +184,29 @@ class HomePage extends ConsumerWidget {
                     color: MqColors.purple,
                     searchQuery: 'parking',
                   ),
-                  _QuickAccessCard(
+                  const _QuickAccessCard(
                     icon: Icons.menu_book,
-                    label: l10n.study,
+                    label: 'Library',
                     color: MqColors.info,
                     searchQuery: 'library',
                   ),
-                  _QuickAccessCard(
-                    icon: Icons.local_hospital,
-                    label: l10n.health,
+                  const _QuickAccessCard(
+                    icon: Icons.school,
+                    label: 'Student Centre',
+                    color: MqColors.red,
+                    searchQuery: 'student centre',
+                  ),
+                  const _QuickAccessCard(
+                    icon: Icons.directions_bus,
+                    label: 'Transport',
                     color: MqColors.success,
-                    searchQuery: 'health',
+                    searchQuery: 'bus',
+                  ),
+                  _QuickAccessCard(
+                    icon: Icons.support_agent,
+                    label: l10n.services,
+                    color: MqColors.info,
+                    searchQuery: 'services',
                   ),
                 ],
               ),
