@@ -194,7 +194,7 @@ class HomePage extends ConsumerWidget {
                     icon: Icons.school,
                     label: 'Student Centre',
                     color: MqColors.red,
-                    searchQuery: 'student centre',
+                    searchQuery: 'student',
                   ),
                   const _QuickAccessCard(
                     icon: Icons.directions_bus,

@@ -189,9 +189,15 @@ class MapController extends AsyncNotifier<MapState> {
       current.buildings,
       normalized,
     );
+    // When a query is present, drop non-matches (score == 0). `searchCampusBuildings`
+    // is a ranker, not a filter — it returns every building sorted by score — so
+    // category chips like "library" or "parking" would otherwise show all 153
+    // buildings regardless of match.
     final searchResults = normalized.isEmpty
         ? rankedBuildings.take(_defaultVisibleBuildings).toList()
-        : rankedBuildings;
+        : rankedBuildings
+              .where((b) => scoreBuildingMatch(b, normalized) > 0)
+              .toList();
 
     final exactMatch = searchResults.where((building) {
       return isStrongCampusMatch(building, normalized);

@@ -537,7 +537,7 @@ class _CategoryFilterChips extends StatelessWidget {
         (icon: Icons.restaurant, label: 'Food', query: 'food'),
         (icon: Icons.local_parking, label: 'Parking', query: 'parking'),
         (icon: Icons.menu_book, label: 'Library', query: 'library'),
-        (icon: Icons.school, label: 'Student Centre', query: 'student centre'),
+        (icon: Icons.school, label: 'Student Centre', query: 'student'),
         (icon: Icons.directions_bus, label: 'Transport', query: 'bus'),
         (icon: Icons.support_agent, label: 'Services', query: 'services'),
       ];

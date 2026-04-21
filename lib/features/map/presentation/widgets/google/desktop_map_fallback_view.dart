@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' as latlong;
 import 'package:mq_navigation/app/theme/mq_colors.dart';
+import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
@@ -103,6 +105,24 @@ class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    return Stack(
+      children: [
+        _buildFlutterMap(isDark, visibleBuildings),
+        // On web the Google Maps renderer falls back to OSM whenever no
+        // Maps JS API key is configured. Surface that so users understand
+        // why tiles look different from Google Maps rather than thinking
+        // the app is broken.
+        if (kIsWeb)
+          const Positioned(
+            left: MqSpacing.space3,
+            bottom: MqSpacing.space3,
+            child: _OsmFallbackBadge(),
+          ),
+      ],
+    );
+  }
+
+  FlutterMap _buildFlutterMap(bool isDark, List<Building> visibleBuildings) {
     return FlutterMap(
       mapController: _controller,
       options: MapOptions(
@@ -339,5 +359,40 @@ class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
       TravelMode.bike => const Color(0xFF2E8B57),
       TravelMode.transit => const Color(0xFFF57C00),
     };
+  }
+}
+
+class _OsmFallbackBadge extends StatelessWidget {
+  const _OsmFallbackBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Material(
+      color: isDark
+          ? MqColors.charcoal850.withValues(alpha: 0.85)
+          : Colors.white.withValues(alpha: 0.92),
+      borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: MqSpacing.space3,
+          vertical: MqSpacing.space1,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.info_outline, size: 14, color: MqColors.info),
+            const SizedBox(width: MqSpacing.space2),
+            Text(
+              'OpenStreetMap fallback · add a Maps API key to use Google',
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: isDark ? Colors.white70 : MqColors.contentSecondary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
