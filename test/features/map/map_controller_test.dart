@@ -9,6 +9,8 @@ import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dar
 import 'package:mq_navigation/features/map/domain/entities/nav_instruction.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 void main() {
   group('MapController', () {
@@ -32,7 +34,12 @@ void main() {
       () async {
         final repository = _FakeMapRepository(buildings: [building]);
         final container = ProviderContainer(
-          overrides: [mapRepositoryProvider.overrideWithValue(repository)],
+          overrides: [
+            mapRepositoryProvider.overrideWithValue(repository),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
         );
         addTearDown(container.dispose);
 
@@ -52,7 +59,12 @@ void main() {
     test('passes active renderer through route loading', () async {
       final repository = _FakeMapRepository(buildings: [building]);
       final container = ProviderContainer(
-        overrides: [mapRepositoryProvider.overrideWithValue(repository)],
+        overrides: [
+          mapRepositoryProvider.overrideWithValue(repository),
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(),
+          ),
+        ],
       );
       addTearDown(container.dispose);
 
@@ -82,7 +94,12 @@ void main() {
       repository.pendingRouteCompleter = completer;
 
       final container = ProviderContainer(
-        overrides: [mapRepositoryProvider.overrideWithValue(repository)],
+        overrides: [
+          mapRepositoryProvider.overrideWithValue(repository),
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(),
+          ),
+        ],
       );
       addTearDown(container.dispose);
 
@@ -122,7 +139,12 @@ void main() {
           currentLocation: null,
         );
         final container = ProviderContainer(
-          overrides: [mapRepositoryProvider.overrideWithValue(repository)],
+          overrides: [
+            mapRepositoryProvider.overrideWithValue(repository),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
         );
         addTearDown(container.dispose);
 
@@ -149,7 +171,12 @@ void main() {
           locationStream: locationStream.stream,
         );
         final container = ProviderContainer(
-          overrides: [mapRepositoryProvider.overrideWithValue(repository)],
+          overrides: [
+            mapRepositoryProvider.overrideWithValue(repository),
+            settingsControllerProvider.overrideWith(
+              () => _FakeSettingsController(),
+            ),
+          ],
         );
         addTearDown(container.dispose);
 
@@ -183,7 +210,12 @@ void main() {
         locationStream: locationStream.stream,
       );
       final container = ProviderContainer(
-        overrides: [mapRepositoryProvider.overrideWithValue(repository)],
+        overrides: [
+          mapRepositoryProvider.overrideWithValue(repository),
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(),
+          ),
+        ],
       );
       addTearDown(container.dispose);
 
@@ -230,6 +262,11 @@ void main() {
       expect(updated.activeOverlayIds, {'parking'});
     });
   });
+}
+
+class _FakeSettingsController extends SettingsController {
+  @override
+  Future<UserPreferences> build() async => const UserPreferences();
 }
 
 class _FakeMapRepository implements MapRepository {

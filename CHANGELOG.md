@@ -1787,3 +1787,18 @@ Expanded the local settings stack to support "zero-data" features and enhanced a
 **Verification:**
 - Logic review of the search and animation guards.
 - Verified state refresh logic after data wipe.
+
+### Raouf: 2026-04-22 (AEST) — Project-wide verification & build fixes
+**Scope:** QA & Stability.
+**Summary:**
+Performed a full project health check via `scripts/check.sh` and addressed all failures:
+1. **L10n**: Added missing localization keys (`defaultRenderer`, `wipeData`, etc.) to `app_en.arb` and regenerated classes.
+2. **Android Build**: Fixed a Kotlin compilation error in `build.gradle.kts` by adding the `java.util.Properties` import and corrected the `jvmTarget` syntax.
+3. **Tests**: Updated `MapController` unit tests to include a `_FakeSettingsController` mock, resolving dependency injection failures and noisy storage errors.
+4. **Formatting**: Ensured all files are correctly formatted according to `dart format`.
+**Files Changed:**
+- `lib/app/l10n/app_en.arb`
+- `android/app/build.gradle.kts`
+- `test/features/map/map_controller_test.dart`
+**Verification:**
+- `./scripts/check.sh` → All 6 steps passed (Format, Analyze, Test, L10n, Build).

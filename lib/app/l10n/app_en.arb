@@ -2050,5 +2050,20 @@
       }
     }
   },
-  "noSearchResults": "No results found"
+  "noSearchResults": "No results found",
+  "defaultRenderer": "Default Map Renderer",
+  "campusRenderer": "Campus Map",
+  "googleRenderer": "Google Maps",
+  "defaultTravelMode": "Default Travel Mode",
+  "reducedMotion": "Reduced Motion",
+  "lowDataMode": "Low Data Mode",
+  "dangerZone": "Danger Zone",
+  "wipeData": "Wipe All Local Data",
+  "wipeDataConfirm": "Are you sure you want to wipe all local data? This will reset your theme, language, and all saved preferences.",
+  "wipeDataAction": "Wipe Data",
+  "wipeDataSuccess": "All local data has been wiped.",
+  "accessibility": "Accessibility",
+  "settings_general": "General",
+  "settings_experience": "Experience",
+  "settingsError": "Failed to load settings"
 }

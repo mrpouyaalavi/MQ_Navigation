@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -9,7 +11,7 @@ val hasGoogleServicesJson = file("google-services.json").exists()
 
 // Load secrets from secrets.properties if it exists
 val secretsFile = rootProject.file("secrets.properties")
-val secrets = java.util.Properties()
+val secrets = Properties()
 if (secretsFile.exists()) {
     secretsFile.inputStream().use { secrets.load(it) }
 }
@@ -44,7 +46,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = "17"
     }
 
     defaultConfig {
