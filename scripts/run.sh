@@ -13,11 +13,17 @@
 #   ./scripts/run.sh                            # interactive device picker
 #   ./scripts/run.sh 1                          # pick device/emulator #1 from list
 #   ./scripts/run.sh chrome                     # web on Chrome
-#   ./scripts/run.sh macos                      # macOS desktop
-#   ./scripts/run.sh 00008150-000E7C6A1EF0401C  # specific device ID
+#   ./scripts/run.sh --release                  # interactive picker + release flag
+#   ./scripts/run.sh macos --debug              # macOS desktop with debug flag
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
+
+# ── Dependencies ─────────────────────────────────────────────────────────────
+if ! command -v flutter >/dev/null 2>&1; then
+  echo "Error: flutter command not found in PATH."
+  exit 1
+fi
 
 # ── .env check ───────────────────────────────────────────────────────────────
 ENV_FILE=".env"
@@ -30,7 +36,8 @@ fi
 # ── Read Google Maps API key from .env (if present) ─────────────────────────
 GOOGLE_MAPS_API_KEY_VALUE=""
 if grep -q '^GOOGLE_MAPS_API_KEY=' "$ENV_FILE"; then
-  GOOGLE_MAPS_API_KEY_VALUE="$(grep '^GOOGLE_MAPS_API_KEY=' "$ENV_FILE" | head -1 | cut -d= -f2-)"
+  # Extract value and strip quotes (single or double)
+  GOOGLE_MAPS_API_KEY_VALUE="$(grep '^GOOGLE_MAPS_API_KEY=' "$ENV_FILE" | head -1 | cut -d= -f2- | sed -e 's/^"//' -e 's/"$//' -e "s/^'//" -e "s/'$//")"
 fi
 
 # ── Platform config paths ───────────────────────────────────────────────────
@@ -42,6 +49,7 @@ WEB_MAPS_CONFIG="web/google_maps_config.js"
 cleanup() {
   # Remove key from android/gradle.properties (if added)
   if [[ -f "$ANDROID_PROPS" ]]; then
+    # Create a clean version without the key and without trailing empty lines added by us
     grep -v "^GOOGLE_MAPS_API_KEY=" "$ANDROID_PROPS" > "${ANDROID_PROPS}.tmp" || true
     mv "${ANDROID_PROPS}.tmp" "$ANDROID_PROPS"
   fi
@@ -55,11 +63,12 @@ trap cleanup EXIT
 if [[ -n "$GOOGLE_MAPS_API_KEY_VALUE" ]]; then
   echo "  ✔ GOOGLE_MAPS_API_KEY found in .env"
 
-  # Android – Append to gradle.properties
+  # Android – Update gradle.properties
   if [[ -f "$ANDROID_PROPS" ]]; then
+    # Ensure key isn't already there (clean start)
     grep -v "^GOOGLE_MAPS_API_KEY=" "$ANDROID_PROPS" > "${ANDROID_PROPS}.tmp" || true
     mv "${ANDROID_PROPS}.tmp" "$ANDROID_PROPS"
-    echo "" >> "$ANDROID_PROPS"
+    # Append key
     echo "GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY_VALUE}" >> "$ANDROID_PROPS"
   fi
 
@@ -78,65 +87,53 @@ else
 fi
 
 # ── Helpers ─────────────────────────────────────────────────────────────────
-# Connected devices (lines containing •)
 get_devices() {
   flutter devices 2>/dev/null | grep '•' | grep -v '^$' || true
 }
 
-# Available emulators (lines containing •, skip header)
 get_emulators() {
   flutter emulators 2>/dev/null | grep '•' | grep -v '^Id' | grep -v '^$' || true
 }
 
-# Extract emulator id from a line like: "apple_ios_simulator • iOS Simulator  • Apple • ios"
 emulator_id_from_line() {
   echo "$1" | awk -F '•' '{print $1}' | xargs
 }
 
-# Check if a device matching a platform keyword is already in the device list
 device_contains_platform() {
   local devices="$1"
   local keyword="$2"
-  echo "$devices" | grep -qi "$keyword"
+  printf "%s\n" "$devices" | grep -qi "$keyword"
 }
 
-# ── Device / emulator selection ─────────────────────────────────────────────
+# ── Argument Parsing ────────────────────────────────────────────────────────
 DEVICE_ARG=""
 EXTRA_ARGS=()
 
-if [[ $# -gt 0 ]]; then
+# If the first argument is NOT a flag (doesn't start with -), treat it as a target
+if [[ $# -gt 0 ]] && [[ ! "$1" =~ ^- ]]; then
   FIRST_ARG="$1"
   shift
   EXTRA_ARGS=("$@")
 
-  # Check if the first arg is a number (index from the combined list)
+  # Check if numeric selection
   if [[ "$FIRST_ARG" =~ ^[0-9]+$ ]] && [[ "$FIRST_ARG" -gt 0 ]]; then
-    # Build the same combined list used in interactive mode
     DEVICES="$(get_devices)"
     EMULATORS="$(get_emulators)"
 
-    # Compute running device IDs to filter out already-running emulators
     DEVICE_COUNT=0
     if [[ -n "$DEVICES" ]]; then
-      DEVICE_COUNT="$(echo "$DEVICES" | wc -l | xargs)"
+      DEVICE_COUNT="$(printf "%s\n" "$DEVICES" | wc -l | xargs)"
     fi
 
-    # Filter emulators to only show those not already running
     FILTERED_EMULATORS=""
     if [[ -n "$EMULATORS" ]]; then
       while IFS= read -r emu_line; do
         emu_platform="$(echo "$emu_line" | awk -F '•' '{print $4}' | xargs)"
-        # Skip if an Android emulator is listed and an android device is already connected
-        if [[ "$emu_platform" == "android" ]] && device_contains_platform "$DEVICES" "android"; then
-          continue
-        fi
-        # Skip if iOS simulator is listed and an iOS device is already connected
-        if [[ "$emu_platform" == "ios" ]] && device_contains_platform "$DEVICES" "ios"; then
-          continue
-        fi
+        if [[ "$emu_platform" == "android" ]] && device_contains_platform "$DEVICES" "android"; then continue; fi
+        if [[ "$emu_platform" == "ios" ]] && device_contains_platform "$DEVICES" "ios"; then continue; fi
+        
         if [[ -n "$FILTERED_EMULATORS" ]]; then
-          FILTERED_EMULATORS="${FILTERED_EMULATORS}
-${emu_line}"
+          FILTERED_EMULATORS="${FILTERED_EMULATORS}\n${emu_line}"
         else
           FILTERED_EMULATORS="$emu_line"
         fi
@@ -145,7 +142,7 @@ ${emu_line}"
 
     EMU_COUNT=0
     if [[ -n "$FILTERED_EMULATORS" ]]; then
-      EMU_COUNT="$(echo "$FILTERED_EMULATORS" | wc -l | xargs)"
+      EMU_COUNT="$(printf "%b\n" "$FILTERED_EMULATORS" | wc -l | xargs)"
     fi
 
     TOTAL=$((DEVICE_COUNT + EMU_COUNT))
@@ -155,49 +152,46 @@ ${emu_line}"
     fi
 
     if [[ "$FIRST_ARG" -le "$DEVICE_COUNT" ]]; then
-      # It's a running device
-      DEVICE_LINE="$(echo "$DEVICES" | sed -n "${FIRST_ARG}p")"
+      DEVICE_LINE="$(printf "%s\n" "$DEVICES" | sed -n "${FIRST_ARG}p")"
       DEVICE_ID="$(echo "$DEVICE_LINE" | awk -F '•' '{print $2}' | xargs)"
       echo "  ℹ Selected device #${FIRST_ARG}: $DEVICE_LINE"
       DEVICE_ARG="-d $DEVICE_ID"
     else
-      # It's an emulator to launch
       EMU_INDEX=$((FIRST_ARG - DEVICE_COUNT))
-      EMU_LINE="$(echo "$FILTERED_EMULATORS" | sed -n "${EMU_INDEX}p")"
+      EMU_LINE="$(printf "%b\n" "$FILTERED_EMULATORS" | sed -n "${EMU_INDEX}p")"
       EMU_ID="$(emulator_id_from_line "$EMU_LINE")"
       echo "  ℹ Launching emulator: $EMU_LINE"
-      echo ""
       flutter emulators --launch "$EMU_ID"
-      echo "  ⏳ Waiting for device to connect..."
+      echo "  ⏳ Waiting for device..."
       sleep 8
-      # Re-scan for devices after launch
       DEVICES="$(get_devices)"
       EMU_PLATFORM="$(echo "$EMU_LINE" | awk -F '•' '{print $4}' | xargs)"
       if [[ "$EMU_PLATFORM" == "ios" ]]; then
-        DEVICE_LINE="$(echo "$DEVICES" | grep -i 'iphone\|ipad\|simulator.*ios' | head -1)" || true
+        DEVICE_LINE="$(printf "%s\n" "$DEVICES" | grep -i 'iphone\|ipad\|simulator.*ios' | head -1)" || true
       else
-        DEVICE_LINE="$(echo "$DEVICES" | grep -i 'android\|emulator\|sdk' | head -1)" || true
+        DEVICE_LINE="$(printf "%s\n" "$DEVICES" | grep -i 'android\|emulator\|sdk' | head -1)" || true
       fi
       if [[ -z "$DEVICE_LINE" ]]; then
-        echo "  ✗ Emulator launched but device not detected. Try running the script again."
+        echo "  ✗ Device not detected after launch."
         exit 1
       fi
       DEVICE_ID="$(echo "$DEVICE_LINE" | awk -F '•' '{print $2}' | xargs)"
-      echo "  ✔ Connected: $DEVICE_LINE"
       DEVICE_ARG="-d $DEVICE_ID"
     fi
   else
-    # Direct device target (chrome, macos, device-id, etc.)
+    # Direct target string
     DEVICE_ARG="-d $FIRST_ARG"
   fi
 else
-  # ── Interactive picker ──────────────────────────────────────────────────
+  # No target specified or flags only — trigger interactive picker
+  EXTRA_ARGS=("$@")
+  
   echo ""
   echo "╔══════════════════════════════════════════════════════════════════╗"
   echo "║                    MQ Navigation — Run                         ║"
   echo "╚══════════════════════════════════════════════════════════════════╝"
   echo ""
-  echo "Scanning for devices & emulators..."
+  echo "Scanning for targets..."
   echo ""
 
   DEVICES="$(get_devices)"
@@ -205,23 +199,18 @@ else
 
   DEVICE_COUNT=0
   if [[ -n "$DEVICES" ]]; then
-    DEVICE_COUNT="$(echo "$DEVICES" | wc -l | xargs)"
+    DEVICE_COUNT="$(printf "%s\n" "$DEVICES" | wc -l | xargs)"
   fi
 
-  # Filter out emulators that already have a running device
   FILTERED_EMULATORS=""
   if [[ -n "$EMULATORS" ]]; then
     while IFS= read -r emu_line; do
       emu_platform="$(echo "$emu_line" | awk -F '•' '{print $4}' | xargs)"
-      if [[ "$emu_platform" == "android" ]] && device_contains_platform "$DEVICES" "android"; then
-        continue
-      fi
-      if [[ "$emu_platform" == "ios" ]] && device_contains_platform "$DEVICES" "ios"; then
-        continue
-      fi
+      if [[ "$emu_platform" == "android" ]] && device_contains_platform "$DEVICES" "android"; then continue; fi
+      if [[ "$emu_platform" == "ios" ]] && device_contains_platform "$DEVICES" "ios"; then continue; fi
+      
       if [[ -n "$FILTERED_EMULATORS" ]]; then
-        FILTERED_EMULATORS="${FILTERED_EMULATORS}
-${emu_line}"
+        FILTERED_EMULATORS="${FILTERED_EMULATORS}\n${emu_line}"
       else
         FILTERED_EMULATORS="$emu_line"
       fi
@@ -230,28 +219,19 @@ ${emu_line}"
 
   EMU_COUNT=0
   if [[ -n "$FILTERED_EMULATORS" ]]; then
-    EMU_COUNT="$(echo "$FILTERED_EMULATORS" | wc -l | xargs)"
+    EMU_COUNT="$(printf "%b\n" "$FILTERED_EMULATORS" | wc -l | xargs)"
   fi
 
   TOTAL=$((DEVICE_COUNT + EMU_COUNT))
 
   if [[ "$TOTAL" -eq 0 ]]; then
-    echo "  ✗ No devices or emulators found."
-    echo ""
-    echo "  Tips:"
-    echo "    • Install Xcode & run:       xcodebuild -downloadPlatform iOS"
-    echo "    • Create Android AVD via:     Android Studio → AVD Manager"
-    echo "    • Run on Chrome:              ./scripts/run.sh chrome"
-    echo "    • Run on macOS:               ./scripts/run.sh macos"
+    echo "  ✗ No targets found."
     exit 1
   fi
 
   echo "  Available targets:"
   echo "  ─────────────────────────────────────────────────────────────────"
-
   INDEX=1
-
-  # List running devices
   if [[ -n "$DEVICES" ]]; then
     echo "  Running devices:"
     while IFS= read -r line; do
@@ -259,49 +239,38 @@ ${emu_line}"
       INDEX=$((INDEX + 1))
     done <<< "$DEVICES"
   fi
-
-  # List launchable emulators
   if [[ -n "$FILTERED_EMULATORS" ]]; then
     echo ""
-    echo "  Available emulators (will be launched):"
+    echo "  Available emulators:"
     while IFS= read -r line; do
       printf "  %2d)  🚀 %s\n" "$INDEX" "$line"
       INDEX=$((INDEX + 1))
-    done <<< "$FILTERED_EMULATORS"
+    done <<< "$(printf "%b\n" "$FILTERED_EMULATORS")"
   fi
-
   echo "  ─────────────────────────────────────────────────────────────────"
   echo ""
-  printf "  Select a target [1-%s]: " "$TOTAL"
+  printf "  Select [1-%s]: " "$TOTAL"
   read -r SELECTION
 
-  # Validate selection
   if [[ ! "$SELECTION" =~ ^[0-9]+$ ]] || [[ "$SELECTION" -lt 1 ]] || [[ "$SELECTION" -gt "$TOTAL" ]]; then
     echo "  ✗ Invalid selection."
     exit 1
   fi
 
   if [[ "$SELECTION" -le "$DEVICE_COUNT" ]]; then
-    # Running device selected
-    DEVICE_LINE="$(echo "$DEVICES" | sed -n "${SELECTION}p")"
+    DEVICE_LINE="$(printf "%s\n" "$DEVICES" | sed -n "${SELECTION}p")"
     DEVICE_ID="$(echo "$DEVICE_LINE" | awk -F '•' '{print $2}' | xargs)"
-    echo ""
-    echo "  ✔ Selected: $DEVICE_LINE"
     DEVICE_ARG="-d $DEVICE_ID"
   else
-    # Emulator selected — launch it first
     EMU_INDEX=$((SELECTION - DEVICE_COUNT))
-    EMU_LINE="$(echo "$FILTERED_EMULATORS" | sed -n "${EMU_INDEX}p")"
+    EMU_LINE="$(printf "%b\n" "$FILTERED_EMULATORS" | sed -n "${EMU_INDEX}p")"
     EMU_ID="$(emulator_id_from_line "$EMU_LINE")"
     EMU_PLATFORM="$(echo "$EMU_LINE" | awk -F '•' '{print $4}' | xargs)"
     echo ""
     echo "  🚀 Launching: $EMU_LINE"
-    echo ""
     flutter emulators --launch "$EMU_ID"
     echo ""
-    echo "  ⏳ Waiting for device to become ready..."
-
-    # Poll for the device to appear (up to 60 seconds)
+    echo -n "  ⏳ Waiting for device"
     MAX_WAIT=60
     ELAPSED=0
     DEVICE_LINE=""
@@ -310,29 +279,21 @@ ${emu_line}"
       ELAPSED=$((ELAPSED + 3))
       DEVICES="$(get_devices)"
       if [[ "$EMU_PLATFORM" == "ios" ]]; then
-        DEVICE_LINE="$(echo "$DEVICES" | grep -i 'iphone\|ipad\|simulator.*ios' | head -1)" || true
+        DEVICE_LINE="$(printf "%s\n" "$DEVICES" | grep -i 'iphone\|ipad\|simulator.*ios' | head -1)" || true
       else
-        DEVICE_LINE="$(echo "$DEVICES" | grep -i 'android\|emulator\|sdk\|pixel' | head -1)" || true
+        DEVICE_LINE="$(printf "%s\n" "$DEVICES" | grep -i 'android\|emulator\|sdk\|pixel' | head -1)" || true
       fi
-      if [[ -n "$DEVICE_LINE" ]]; then
-        break
-      fi
-      printf "."
+      if [[ -n "$DEVICE_LINE" ]]; then break; fi
+      echo -n "."
     done
     echo ""
-
-    if [[ -z "$DEVICE_LINE" ]]; then
-      echo "  ✗ Timed out waiting for emulator. Try running the script again."
-      exit 1
-    fi
-
+    if [[ -z "$DEVICE_LINE" ]]; then echo "  ✗ Timed out."; exit 1; fi
     DEVICE_ID="$(echo "$DEVICE_LINE" | awk -F '•' '{print $2}' | xargs)"
-    echo "  ✔ Connected: $DEVICE_LINE"
     DEVICE_ARG="-d $DEVICE_ID"
   fi
 fi
 
 echo ""
 echo "Launching with dart-defines from .env..."
-export MACOSX_DEPLOYMENT_TARGET=11.0
+export MACOSX_DEPLOYMENT_TARGET=13.0
 flutter run $DEVICE_ARG --dart-define-from-file="$ENV_FILE" ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"}

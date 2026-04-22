@@ -1722,3 +1722,28 @@ Raouf:
   - `flutter test test/features/map/map_controller_test.dart` → all tests passed
 - Follow-ups:
   - Monitor runtime logs on-device; if needed, add telemetry around constraint and bounds values at map init.
+
+### Raouf: 2026-04-22 (AEST) — Run script robustness & parsing fix
+**Scope:** `scripts/run.sh` script improvement.
+**Summary:** Improved the `run.sh` script to handle Flutter flags (e.g., `--release`) more gracefully when no device target is specified. Added robust quote stripping for `GOOGLE_MAPS_API_KEY` to ensure the value is clean when injected into `google_maps_config.js` and `gradle.properties`. Refactored `gradle.properties` modification to be cleaner and more idempotent. Replaced `echo` with `printf` for safer handling of variables that might start with hyphens. Added an early exit if the `flutter` command is missing.
+**Files Changed:**
+- `scripts/run.sh`
+**Verification:**
+- `bash -n scripts/run.sh` → success (syntax check).
+
+### Raouf: 2026-04-22 (AEST) — Local environment initialization
+**Scope:** Environment configuration.
+**Summary:** Created the local `.env` file from the `.env.example` template. This file is required for the `scripts/run.sh` script to successfully inject API keys into platform-specific configurations (Android gradle properties, iOS xcconfig, and Web JS config).
+**Files Created:**
+- `.env` (gitignored)
+**Verification:**
+- Verified `.env` file existence and key structure.
+
+### Raouf: 2026-04-22 (AEST) — macOS deployment target synchronization
+**Scope:** macOS build configuration.
+**Summary:**
+Updated `MACOSX_DEPLOYMENT_TARGET` from 11.0 to 13.0 in the Xcode project file (`macos/Runner.xcodeproj/project.pbxproj`) across all build configurations and shell script phases. This synchronizes the project with the earlier Podfile change and resolves compilation errors in the `app_links` plugin.
+**Files Changed:**
+- `macos/Runner.xcodeproj/project.pbxproj`
+**Verification:**
+- Confirmed all occurrences of 11.0 in `pbxproj` were updated to 13.0.

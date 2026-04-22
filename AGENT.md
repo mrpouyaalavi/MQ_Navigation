@@ -47,6 +47,19 @@ lib/
 - SUPABASE_URL, SUPABASE_ANON_KEY, GOOGLE_MAPS_API_KEY, APP_ENV
 - DEV_SUPABASE_URL, DEV_SUPABASE_ANON_KEY, DEV_GOOGLE_MAPS_API_KEY (debug-only fallbacks)
 - All keys loaded via `--dart-define-from-file=.env` — never hardcoded in source
+- Use `scripts/run.sh` to launch with native key injection for Maps SDKs
+
+### Raouf: 2026-04-22 (AEST) — Environment setup
+**Scope:** `.env` creation.
+**Summary:** Created a `.env` file from `.env.example` template with placeholders for Supabase and Google Maps credentials. This enables usage of `scripts/run.sh` and proper environment configuration.
+**Files Changed:** `.env` (new, gitignored)
+**Verification:** File exists and matches `.env.example` structure.
+
+### Raouf: 2026-04-22 (AEST) — Run script robustness & parsing fix
+**Scope:** `scripts/run.sh` logic improvement.
+**Summary:** Refined argument parsing to distinguish between device targets and Flutter flags. Added quote stripping for API keys from `.env` to prevent JS/native syntax errors. Optimized `gradle.properties` modification to be idempotent. Added early `flutter` command check and switched `echo` to `printf` for safe variable handling.
+**Files Changed:** `scripts/run.sh`
+**Verification:** `bash -n scripts/run.sh` passed.
 
 ## Coding Conventions
 - Use Riverpod providers (not setState or Bloc)
@@ -78,3 +91,21 @@ See `CHANGELOG.md` for full development history.
 ### Summary
 
 The project was built through phases 0–5, originally including auth, calendar, event feed, profile management, and gamification features. These were subsequently removed to focus the Flutter app on campus navigation: 3-tab nav (Home/Map/Settings), local-only settings, FCM push + study prompt notifications, and dual-renderer campus map with building search and routing via Edge Function proxy.
+
+### Raouf: 2026-04-22 (AEST) — macOS deployment target synchronization
+**Scope:** macOS build configuration.
+**Summary:** Updated MACOSX_DEPLOYMENT_TARGET from 11.0 to 13.0 in `macos/Runner.xcodeproj/project.pbxproj` (both build settings and shell script phases) to align with Podfile and resolve plugin compilation errors (specifically for `app_links`).
+**Files Changed:** `macos/Runner.xcodeproj/project.pbxproj`
+**Verification:** Synchronized with Podfile and run.sh; ready for build retry.
+
+### Raouf: 2026-04-22 (AEST) — Environment setup
+**Scope:** `.env` creation.
+**Summary:** Created a `.env` file from `.env.example` template with placeholders for Supabase and Google Maps credentials. This enables usage of `scripts/run.sh` and proper environment configuration.
+**Files Changed:** `.env` (new, gitignored)
+**Verification:** File exists and matches `.env.example` structure.
+
+### Raouf: 2026-04-22 (AEST) — Run script robustness & parsing fix
+**Scope:** `scripts/run.sh` logic improvement.
+**Summary:** Refined argument parsing to distinguish between device targets and Flutter flags. Added quote stripping for API keys from `.env` to prevent JS/native syntax errors. Optimized `gradle.properties` modification to be idempotent. Added early `flutter` command check and switched `echo` to `printf` for safe variable handling.
+**Files Changed:** `scripts/run.sh`
+**Verification:** `bash -n scripts/run.sh` passed.
