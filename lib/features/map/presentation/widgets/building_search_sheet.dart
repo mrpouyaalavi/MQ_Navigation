@@ -11,6 +11,7 @@ import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
 import 'package:mq_navigation/features/map/domain/services/building_search.dart';
 import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -70,13 +71,21 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
       return;
     }
 
-    _placesDebounce = Timer(MqAnimations.slow, () {
+    _placesDebounce = Timer(MqAnimations.adaptive(MqAnimations.slow, ref), () {
       final requestId = ++_placesRequestVersion;
       _fetchPlaceSuggestions(query, requestId);
     });
   }
 
   Future<void> _fetchPlaceSuggestions(String query, int requestId) async {
+    final lowDataMode =
+        ref.read(settingsControllerProvider).value?.lowDataMode ?? false;
+
+    // Low Data Guard: skip calling maps-places Edge Function entirely
+    if (lowDataMode) {
+      return;
+    }
+
     final state = ref.read(mapControllerProvider).value;
     final results = state?.searchResults ?? const <Building>[];
     final normalized = normalizeMapSearch(query);
@@ -141,8 +150,12 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
     final state = ref.watch(mapControllerProvider).value;
     final results = state?.searchResults ?? const <Building>[];
     final query = _controller.text.trim();
+    final lowDataMode =
+        ref.watch(settingsControllerProvider).value?.lowDataMode ?? false;
     final showPlacesSection =
-        query.length >= 3 && (_placeSuggestions.isNotEmpty || _isLoadingPlaces);
+        !lowDataMode &&
+        query.length >= 3 &&
+        (_placeSuggestions.isNotEmpty || _isLoadingPlaces);
 
     return DraggableScrollableSheet(
       expand: false,

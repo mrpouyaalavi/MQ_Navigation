@@ -1764,3 +1764,26 @@ Remediated the accidental exposure of the Google Maps API key in `android/gradle
 **Verification:**
 - Verified `.gitignore` blocks `android/secrets.properties`.
 - Verified `build.gradle.kts` logic for property loading.
+
+### Raouf: 2026-04-22 (AEST) — Zero-data features & settings implementation
+**Scope:** Core architecture & user settings.
+**Summary:**
+Expanded the local settings stack to support "zero-data" features and enhanced accessibility.
+1. **Data**: Added `defaultRenderer`, `defaultTravelMode`, `lowDataMode`, and `reducedMotion` to `UserPreferences`.
+2. **Persistence**: Updated `SettingsRepository` to persist these new fields securely.
+3. **Guards**:
+    - **Low Data**: Building search now skips remote Google Places calls when enabled.
+    - **Reduced Motion**: Centralized animation duration helper returns `Duration.zero` when enabled.
+4. **Wipe Data**: Implemented "Nuclear Reset" to clear all local app data with user confirmation.
+5. **UI**: Built the new settings cards and toggles in `SettingsPage` following the brand design system.
+**Files Changed:**
+- `lib/shared/models/user_preferences.dart`
+- `lib/features/settings/data/repositories/settings_repository.dart`
+- `lib/features/settings/presentation/controllers/settings_controller.dart`
+- `lib/features/map/presentation/controllers/map_controller.dart`
+- `lib/app/theme/mq_animations.dart`
+- `lib/features/map/presentation/widgets/building_search_sheet.dart`
+- `lib/features/settings/presentation/pages/settings_page.dart`
+**Verification:**
+- Logic review of the search and animation guards.
+- Verified state refresh logic after data wipe.

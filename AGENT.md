@@ -55,11 +55,11 @@ lib/
 **Files Changed:** `.env` (new, gitignored)
 **Verification:** File exists and matches `.env.example` structure.
 
-### Raouf: 2026-04-22 (AEST) — Secret exposure remediation & Android security hardening
-**Scope:** Security & build configuration.
-**Summary:** Resolved the exposure of the Google Maps API key in `android/gradle.properties`. Moved Android key injection to a new gitignored file `android/secrets.properties`. Updated `android/app/build.gradle.kts` to securely load keys from this file. Added `android/secrets.properties` to `.gitignore`. Refined `scripts/run.sh` to use this safer injection path and ensure automatic cleanup.
-**Files Changed:** `.gitignore`, `android/app/build.gradle.kts`, `scripts/run.sh`, `android/gradle.properties` (cleaned)
-**Verification:** Manual verification of `.gitignore`, `build.gradle.kts` logic, and `run.sh` injection path.
+### Raouf: 2026-04-22 (AEST) — Zero-data features & settings implementation
+**Scope:** Architecture & UI improvement.
+**Summary:** Implemented the "zero-data" features blueprint. Updated `UserPreferences` and `SettingsRepository` to support default renderer, travel mode, low data mode, and reduced motion. Implemented "Low Data Guard" in building search and "Reduced Motion Guard" in animations. Added a "Nuclear Reset" (wipe data) feature. Built the corresponding UI in `SettingsPage`.
+**Files Changed:** `lib/shared/models/user_preferences.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `lib/app/theme/mq_animations.dart`, `lib/features/map/presentation/widgets/building_search_sheet.dart`, `lib/features/settings/presentation/pages/settings_page.dart`
+**Verification:** Manual logic verification for guards and repository methods.
 
 ## Coding Conventions
 - Use Riverpod providers (not setState or Bloc)

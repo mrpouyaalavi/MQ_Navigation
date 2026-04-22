@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 
@@ -122,6 +124,86 @@ class SettingsPage extends ConsumerWidget {
                     ),
                     const SizedBox(height: MqSpacing.space6),
 
+                    // ── Map Preferences section ───────────────────
+                    _SectionHeader(title: l10n.settings_experience), // Using experience for map prefs
+                    _SettingsCard(
+                      children: [
+                        _TapRow(
+                          icon: Icons.map_outlined,
+                          label: l10n.defaultRenderer,
+                          value: preferences.defaultRenderer == MapRendererType.campus
+                              ? l10n.campusRenderer
+                              : l10n.googleRenderer,
+                          semanticLabel: l10n.defaultRenderer,
+                          onTap: () => _showPicker<MapRendererType>(
+                            context: context,
+                            title: l10n.defaultRenderer,
+                            current: preferences.defaultRenderer,
+                            items: MapRendererType.values,
+                            labelOf: (v) => v == MapRendererType.campus
+                                ? l10n.campusRenderer
+                                : l10n.googleRenderer,
+                            onSelect: (v) => ref
+                                .read(settingsControllerProvider.notifier)
+                                .updateDefaultRenderer(v),
+                          ),
+                        ),
+                        _TapRow(
+                          icon: Icons.directions_walk_outlined,
+                          label: l10n.defaultTravelMode,
+                          value: switch (preferences.defaultTravelMode) {
+                            TravelMode.walk => l10n.walk,
+                            TravelMode.drive => l10n.drive,
+                            TravelMode.bike => l10n.bike,
+                            TravelMode.transit => l10n.transit,
+                          },
+                          semanticLabel: l10n.defaultTravelMode,
+                          onTap: () => _showPicker<TravelMode>(
+                            context: context,
+                            title: l10n.defaultTravelMode,
+                            current: preferences.defaultTravelMode,
+                            items: TravelMode.values,
+                            labelOf: (v) => switch (v) {
+                              TravelMode.walk => l10n.walk,
+                              TravelMode.drive => l10n.drive,
+                              TravelMode.bike => l10n.bike,
+                              TravelMode.transit => l10n.transit,
+                            },
+                            onSelect: (v) => ref
+                                .read(settingsControllerProvider.notifier)
+                                .updateDefaultTravelMode(v),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: MqSpacing.space6),
+
+                    // ── Accessibility & Data section ────────────
+                    _SectionHeader(title: l10n.accessibility),
+                    _SettingsCard(
+                      children: [
+                        _ToggleRow(
+                          icon: Icons.motion_photos_off_outlined,
+                          label: l10n.reducedMotion,
+                          value: preferences.reducedMotion,
+                          semanticLabel: l10n.reducedMotion,
+                          onChanged: (v) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateReducedMotion(v),
+                        ),
+                        _ToggleRow(
+                          icon: Icons.data_usage_outlined,
+                          label: l10n.lowDataMode,
+                          value: preferences.lowDataMode,
+                          semanticLabel: l10n.lowDataMode,
+                          onChanged: (v) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateLowDataMode(v),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: MqSpacing.space6),
+
                     // ── Notifications section ───────────────────
                     _SectionHeader(title: l10n.notifications),
                     _SettingsCard(
@@ -144,14 +226,18 @@ class SettingsPage extends ConsumerWidget {
                     ),
                     const SizedBox(height: MqSpacing.space6),
 
-                    // ── Experience section ───────────────────────
-                    _SectionHeader(title: l10n.settings_experience),
+                    // ── Danger Zone section ──────────────────────
+                    _SectionHeader(title: l10n.dangerZone),
                     _SettingsCard(
                       children: [
-                        _InfoRow(
-                          icon: Icons.map_outlined,
-                          label: l10n.campusMapLabel,
-                          subtitle: l10n.campusMapDesc,
+                        _TapRow(
+                          icon: Icons.delete_forever_outlined,
+                          label: l10n.wipeData,
+                          value: '',
+                          labelColor: MqColors.vividRed,
+                          iconColor: MqColors.vividRed,
+                          semanticLabel: l10n.wipeData,
+                          onTap: () => _confirmWipe(context, ref, l10n),
                         ),
                       ],
                     ),
@@ -213,6 +299,42 @@ class SettingsPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _confirmWipe(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.wipeData),
+        content: Text(l10n.wipeDataConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: MqColors.vividRed),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.wipeDataAction),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && context.mounted) {
+      final msg = await ref
+          .read(settingsControllerProvider.notifier)
+          .wipeAllLocalData();
+      if (msg != null && context.mounted) {
+        context.showSnackBar(msg, isError: true);
+      } else if (context.mounted) {
+        context.showSnackBar(l10n.wipeDataSuccess);
+      }
+    }
   }
 
   // ── Bottom-sheet picker ──────────────────────────────────
@@ -503,6 +625,8 @@ class _TapRow extends StatelessWidget {
     required this.value,
     required this.onTap,
     this.semanticLabel,
+    this.labelColor,
+    this.iconColor,
   });
 
   final IconData icon;
@@ -510,6 +634,8 @@ class _TapRow extends StatelessWidget {
   final String value;
   final VoidCallback onTap;
   final String? semanticLabel;
+  final Color? labelColor;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -529,7 +655,7 @@ class _TapRow extends StatelessWidget {
                 Icon(
                   icon,
                   size: 22,
-                  color: dark ? MqColors.slate500 : MqColors.charcoal600,
+                  color: iconColor ?? (dark ? MqColors.slate500 : MqColors.charcoal600),
                 ),
                 const SizedBox(width: MqSpacing.space4),
                 Expanded(
@@ -537,24 +663,26 @@ class _TapRow extends StatelessWidget {
                     label,
                     style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: dark
+                      color: labelColor ?? (dark
                           ? MqColors.contentPrimaryDark
-                          : MqColors.contentPrimary,
+                          : MqColors.contentPrimary),
                     ),
                   ),
                 ),
-                Text(
-                  value,
-                  style: context.textTheme.bodyMedium?.copyWith(
+                if (value.isNotEmpty) ...[
+                  Text(
+                    value,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: dark ? MqColors.slate500 : MqColors.charcoal600,
+                    ),
+                  ),
+                  const SizedBox(width: MqSpacing.space1),
+                  Icon(
+                    Icons.arrow_drop_down_rounded,
+                    size: 20,
                     color: dark ? MqColors.slate500 : MqColors.charcoal600,
                   ),
-                ),
-                const SizedBox(width: MqSpacing.space1),
-                Icon(
-                  Icons.arrow_drop_down_rounded,
-                  size: 20,
-                  color: dark ? MqColors.slate500 : MqColors.charcoal600,
-                ),
+                ],
               ],
             ),
           ),

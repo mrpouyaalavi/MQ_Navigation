@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
 import 'package:mq_navigation/features/notifications/presentation/controllers/notifications_controller.dart';
 import 'package:mq_navigation/features/settings/data/repositories/settings_repository.dart';
@@ -59,6 +61,41 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
       );
     }
     return result;
+  }
+
+  Future<String?> updateDefaultRenderer(MapRendererType renderer) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(currentPreferences.copyWith(defaultRenderer: renderer));
+  }
+
+  Future<String?> updateDefaultTravelMode(TravelMode mode) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(currentPreferences.copyWith(defaultTravelMode: mode));
+  }
+
+  Future<String?> updateLowDataMode(bool enabled) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(currentPreferences.copyWith(lowDataMode: enabled));
+  }
+
+  Future<String?> updateReducedMotion(bool enabled) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(currentPreferences.copyWith(reducedMotion: enabled));
+  }
+
+  /// Wipes all local data and resets the controller to its initial state.
+  ///
+  /// This will reset theme, locale, and all other preferences to defaults.
+  Future<String?> wipeAllLocalData() async {
+    try {
+      await ref.read(settingsRepositoryProvider).wipeAllLocalData();
+      // Reload the state to ensure everything is reset to defaults.
+      state = AsyncData(await build());
+      return null;
+    } catch (error, stackTrace) {
+      AppLogger.error('Failed to wipe data', error, stackTrace);
+      return 'Unable to wipe data.';
+    }
   }
 
   Future<String?> _save(UserPreferences preferences) async {

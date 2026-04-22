@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:mq_navigation/core/security/secure_storage_service.dart';
+import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
+import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/shared/models/user_preferences.dart';
 
 const _themeModeKey = 'settings.theme_mode';
 const _localeCodeKey = 'settings.locale_code';
 const _notificationsEnabledKey = 'settings.notifications_enabled';
+const _defaultRendererKey = 'settings.default_renderer';
+const _defaultTravelModeKey = 'settings.default_travel_mode';
+const _lowDataModeKey = 'settings.low_data_mode';
+const _reducedMotionKey = 'settings.reduced_motion';
 
 /// Data source for persisting and retrieving user settings.
 ///
@@ -16,6 +22,7 @@ const _notificationsEnabledKey = 'settings.notifications_enabled';
 abstract interface class SettingsRepository {
   Future<UserPreferences> loadPreferences();
   Future<UserPreferences> savePreferences(UserPreferences preferences);
+  Future<void> wipeAllLocalData();
 }
 
 final settingsRepositoryProvider = Provider<SettingsRepository>((ref) {
@@ -32,22 +39,37 @@ class LocalSettingsRepository implements SettingsRepository {
   @override
   Future<UserPreferences> loadPreferences() async {
     try {
-      // Keys are read individually rather than as a JSON blob so that
-      // failure to parse one key doesn't corrupt the entire preference state.
       final themeModeString = await _storage.read(_themeModeKey);
       final localeCode = await _storage.read(_localeCodeKey);
-      final notificationsEnabled = await _storage.read(
-        _notificationsEnabledKey,
-      );
+      final notificationsEnabled = await _storage.read(_notificationsEnabledKey);
+      final defaultRendererString = await _storage.read(_defaultRendererKey);
+      final defaultTravelModeString = await _storage.read(_defaultTravelModeKey);
+      final lowDataMode = await _storage.read(_lowDataModeKey);
+      final reducedMotion = await _storage.read(_reducedMotionKey);
+
       final localThemeMode = ThemeMode.values.firstWhere(
         (mode) => mode.name == themeModeString,
         orElse: () => ThemeMode.system,
+      );
+
+      final defaultRenderer = MapRendererType.values.firstWhere(
+        (m) => m.name == defaultRendererString,
+        orElse: () => MapRendererType.campus,
+      );
+
+      final defaultTravelMode = TravelMode.values.firstWhere(
+        (m) => m.name == defaultTravelModeString,
+        orElse: () => TravelMode.walk,
       );
 
       return UserPreferences(
         themeMode: localThemeMode,
         localeCode: localeCode,
         notificationsEnabled: notificationsEnabled != 'false',
+        defaultRenderer: defaultRenderer,
+        defaultTravelMode: defaultTravelMode,
+        lowDataMode: lowDataMode == 'true',
+        reducedMotion: reducedMotion == 'true',
       );
     } catch (error, stackTrace) {
       AppLogger.error('Failed to load user preferences', error, stackTrace);
@@ -68,9 +90,24 @@ class LocalSettingsRepository implements SettingsRepository {
         _notificationsEnabledKey,
         preferences.notificationsEnabled.toString(),
       );
+      await _storage.write(_defaultRendererKey, preferences.defaultRenderer.name);
+      await _storage.write(_defaultTravelModeKey, preferences.defaultTravelMode.name);
+      await _storage.write(_lowDataModeKey, preferences.lowDataMode.toString());
+      await _storage.write(_reducedMotionKey, preferences.reducedMotion.toString());
       return preferences;
     } catch (error, stackTrace) {
       AppLogger.error('Failed to save user preferences', error, stackTrace);
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> wipeAllLocalData() async {
+    try {
+      await _storage.deleteAll();
+      AppLogger.info('All local data wiped by user.');
+    } catch (e, stack) {
+      AppLogger.error('Failed to wipe data', e, stack);
       rethrow;
     }
   }

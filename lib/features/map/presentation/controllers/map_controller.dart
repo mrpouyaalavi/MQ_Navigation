@@ -10,7 +10,7 @@ import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dar
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/domain/services/building_search.dart';
 import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum MapStateError {
@@ -155,7 +155,6 @@ class MapController extends AsyncNotifier<MapState> {
   static const _arrivalThresholdMetres = 30.0;
   static const _recalcThresholdMetres = 80.0;
   static const _offRouteThresholdMetres = 50.0;
-  static const _travelModeKey = 'travelMode';
 
   StreamSubscription<LocationSample>? _locationSubscription;
   int _routeRequestVersion = 0;
@@ -165,15 +164,18 @@ class MapController extends AsyncNotifier<MapState> {
   Future<MapState> build() async {
     ref.onDispose(() => _locationSubscription?.cancel());
     final buildings = await ref.read(mapRepositoryProvider).getBuildings();
-    final savedMode = await _loadTravelMode();
+    
+    // Load defaults from user preferences
+    final prefs = await ref.watch(settingsControllerProvider.future);
+    
     return MapState(
-      renderer: MapRendererType.campus,
+      renderer: prefs.defaultRenderer,
       buildings: buildings,
       searchResults: searchCampusBuildings(
         buildings,
         '',
       ).take(_defaultVisibleBuildings).toList(),
-      travelMode: savedMode,
+      travelMode: prefs.defaultTravelMode,
       permissionState: LocationPermissionState.denied,
     );
   }
@@ -410,7 +412,6 @@ class MapController extends AsyncNotifier<MapState> {
         hasArrived: false,
       ),
     );
-    unawaited(_saveTravelMode(travelMode));
     if (current.selectedBuilding != null && current.route != null) {
       await loadRoute();
     }
@@ -672,28 +673,6 @@ class MapController extends AsyncNotifier<MapState> {
 
     if (distFromLastFetch > _recalcThresholdMetres || isOffRoute) {
       unawaited(loadRoute());
-    }
-  }
-
-  static Future<TravelMode> _loadTravelMode() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final stored = prefs.getString(_travelModeKey);
-      return TravelMode.values.firstWhere(
-        (m) => m.name == stored,
-        orElse: () => TravelMode.walk,
-      );
-    } catch (_) {
-      return TravelMode.walk;
-    }
-  }
-
-  static Future<void> _saveTravelMode(TravelMode mode) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_travelModeKey, mode.name);
-    } catch (_) {
-      // Ignore — preference persistence is best-effort.
     }
   }
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 
 /// Macquarie University animation timing tokens.
 ///
@@ -14,4 +16,12 @@ abstract final class MqAnimations {
   // ── Curves ───────────────────────────────────────────────
   static const Curve defaultCurve = Curves.easeInOut;
   static const Curve sheetCurve = Curves.easeOutCubic;
+
+  /// Returns the provided [duration] unless the user has enabled
+  /// "Reduced Motion" in settings, in which case it returns [Duration.zero].
+  static Duration adaptive(Duration duration, WidgetRef ref) {
+    final reducedMotion =
+        ref.watch(settingsControllerProvider).value?.reducedMotion ?? false;
+    return reducedMotion ? Duration.zero : duration;
+  }
 }
