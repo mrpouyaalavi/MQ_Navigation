@@ -94,7 +94,7 @@ The project was built through phases 0–5, originally including auth, calendar,
 
 ### Raouf: 2026-04-22 (AEST) — iOS deployment target synchronization & build fixes
 **Scope:** iOS build configuration.
-**Summary:** Updated IPHONEOS_DEPLOYMENT_TARGET from 13.0 to 15.0 in `ios/Runner.xcodeproj/project.pbxproj` and `ios/Podfile` to resolve version conflicts with Firebase 12.12.0+. Synchronized `ios/Podfile.lock` via `pod update`. Added warning suppressions for third-party pods to ensure clean CI logs.
+**Summary:** Updated IPHONEOS_DEPLOYMENT_TARGET from 13.0 to 17.0 in `ios/Runner.xcodeproj/project.pbxproj` and `ios/Podfile` to resolve version conflicts with Firebase 12.12.0+ and fix a compilation error in `connectivity_plus` (^7.0.0) which requires the iOS 17 SDK for `isUltraConstrained`. Synchronized `ios/Podfile.lock` via `pod update`. Added warning suppressions for third-party pods to ensure clean CI logs.
 **Files Changed:** `ios/Runner.xcodeproj/project.pbxproj`, `ios/Podfile`, `ios/Podfile.lock`
 **Verification:** `pod update` successful; ready for CI retry.
 
