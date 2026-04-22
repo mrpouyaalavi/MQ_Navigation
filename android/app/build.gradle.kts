@@ -6,8 +6,17 @@ plugins {
 }
 
 val hasGoogleServicesJson = file("google-services.json").exists()
+
+// Load secrets from secrets.properties if it exists
+val secretsFile = rootProject.file("secrets.properties")
+val secrets = java.util.Properties()
+if (secretsFile.exists()) {
+    secretsFile.inputStream().use { secrets.load(it) }
+}
+
 val googleMapsApiKey: String =
-    (project.findProperty("GOOGLE_MAPS_API_KEY") as String?).takeIf { !it.isNullOrEmpty() }
+    (secrets.getProperty("GOOGLE_MAPS_API_KEY"))
+        ?: (project.findProperty("GOOGLE_MAPS_API_KEY") as String?).takeIf { !it.isNullOrEmpty() }
         ?: System.getenv("GOOGLE_MAPS_API_KEY").orEmpty().ifEmpty { null }
         ?: ""
 

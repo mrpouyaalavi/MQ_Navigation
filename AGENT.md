@@ -55,11 +55,11 @@ lib/
 **Files Changed:** `.env` (new, gitignored)
 **Verification:** File exists and matches `.env.example` structure.
 
-### Raouf: 2026-04-22 (AEST) — Run script robustness & parsing fix
-**Scope:** `scripts/run.sh` logic improvement.
-**Summary:** Refined argument parsing to distinguish between device targets and Flutter flags. Added quote stripping for API keys from `.env` to prevent JS/native syntax errors. Optimized `gradle.properties` modification to be idempotent. Added early `flutter` command check and switched `echo` to `printf` for safe variable handling.
-**Files Changed:** `scripts/run.sh`
-**Verification:** `bash -n scripts/run.sh` passed.
+### Raouf: 2026-04-22 (AEST) — Secret exposure remediation & Android security hardening
+**Scope:** Security & build configuration.
+**Summary:** Resolved the exposure of the Google Maps API key in `android/gradle.properties`. Moved Android key injection to a new gitignored file `android/secrets.properties`. Updated `android/app/build.gradle.kts` to securely load keys from this file. Added `android/secrets.properties` to `.gitignore`. Refined `scripts/run.sh` to use this safer injection path and ensure automatic cleanup.
+**Files Changed:** `.gitignore`, `android/app/build.gradle.kts`, `scripts/run.sh`, `android/gradle.properties` (cleaned)
+**Verification:** Manual verification of `.gitignore`, `build.gradle.kts` logic, and `run.sh` injection path.
 
 ## Coding Conventions
 - Use Riverpod providers (not setState or Bloc)

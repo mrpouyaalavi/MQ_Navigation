@@ -61,6 +61,9 @@ ios/Flutter/Secrets.xcconfig
 google-services.json
 GoogleService-Info.plist
 
+# Android secrets
+android/secrets.properties
+
 # Flutter plugins file
 .flutter-plugins
 

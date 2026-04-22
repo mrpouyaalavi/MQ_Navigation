@@ -1747,3 +1747,20 @@ Updated `MACOSX_DEPLOYMENT_TARGET` from 11.0 to 13.0 in the Xcode project file (
 - `macos/Runner.xcodeproj/project.pbxproj`
 **Verification:**
 - Confirmed all occurrences of 11.0 in `pbxproj` were updated to 13.0.
+
+### Raouf: 2026-04-22 (AEST) — Secret exposure remediation & Android security hardening
+**Scope:** Security.
+**Summary:**
+Remediated the accidental exposure of the Google Maps API key in `android/gradle.properties`. Implemented a more secure injection mechanism:
+1. Created `android/secrets.properties` (gitignored) to hold the injected keys.
+2. Modified `android/app/build.gradle.kts` to prioritize keys from `secrets.properties`.
+3. Updated `scripts/run.sh` to target the new properties file and ensure clean removal on exit.
+4. Cleaned the leaked key from `android/gradle.properties`.
+**Files Changed:**
+- `.gitignore`
+- `android/app/build.gradle.kts`
+- `scripts/run.sh`
+- `android/gradle.properties`
+**Verification:**
+- Verified `.gitignore` blocks `android/secrets.properties`.
+- Verified `build.gradle.kts` logic for property loading.
