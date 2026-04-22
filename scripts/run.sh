@@ -4,10 +4,13 @@
 #
 # Injects GOOGLE_MAPS_API_KEY from .env into every platform:
 #   Dart (all)  → --dart-define-from-file=.env
-#   Android     → android/gradle.properties  → manifestPlaceholders in build.gradle.kts
+#   Android     → android/secrets.properties  → manifestPlaceholders in build.gradle.kts
 #   iOS         → ios/Flutter/Secrets.xcconfig  → $(GOOGLE_MAPS_API_KEY) in Info.plist
 #   Web         → web/google_maps_config.js     → window.GOOGLE_MAPS_API_KEY
 #   macOS       → --dart-define-from-file only  (flutter_map OSM fallback on desktop)
+#
+# These platform files are gitignored so they are safe to keep on disk between
+# runs. They are (re-)written on every run so your key stays in sync with .env.
 #
 # Examples:
 #   ./scripts/run.sh                            # interactive device picker
@@ -45,13 +48,6 @@ ANDROID_SECRETS="android/secrets.properties"
 IOS_SECRETS_XCCONFIG="ios/Flutter/Secrets.xcconfig"
 WEB_MAPS_CONFIG="web/google_maps_config.js"
 
-# ── Cleanup: remove generated secret files on exit ──────────────────────────
-cleanup() {
-  rm -f "$ANDROID_SECRETS"
-  rm -f "$IOS_SECRETS_XCCONFIG"
-  rm -f "$WEB_MAPS_CONFIG"
-}
-trap cleanup EXIT
 
 # ── Inject key into platform configs ────────────────────────────────────────
 if [[ -n "$GOOGLE_MAPS_API_KEY_VALUE" ]]; then

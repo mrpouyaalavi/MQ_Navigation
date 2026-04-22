@@ -14,8 +14,16 @@ if (secretsFile.exists()) {
     secretsFile.inputStream().use { secrets.load(it) }
 }
 
+// Also load local.properties for IDE / direct flutter run fallback
+val localPropertiesFile = rootProject.file("local.properties")
+val localProps = java.util.Properties()
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { localProps.load(it) }
+}
+
 val googleMapsApiKey: String =
     (secrets.getProperty("GOOGLE_MAPS_API_KEY"))
+        ?: (localProps.getProperty("GOOGLE_MAPS_API_KEY"))
         ?: (project.findProperty("GOOGLE_MAPS_API_KEY") as String?).takeIf { !it.isNullOrEmpty() }
         ?: System.getenv("GOOGLE_MAPS_API_KEY").orEmpty().ifEmpty { null }
         ?: ""
