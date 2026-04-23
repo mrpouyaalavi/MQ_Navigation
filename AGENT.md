@@ -101,6 +101,20 @@ See `CHANGELOG.md` for full development history.
 **Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
 **Follow-ups:** Deploy `tfnsw-proxy` after secret sync to make location-aware filtering active in production.
 
+### Raouf: 2026-04-23 (AEST) — Home hero sentence readability hardening
+**Scope:** Home hero visual contrast on top of background image.
+**Summary:** Improved the visibility of the “Find your way…” hero subtitle by using stronger content tokens in both themes and adding a subtle text shadow shared with the hero title. This keeps the sentence readable over the campus background image without changing copy or layout.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+**Follow-ups:** Validate on physical devices under bright-screen and low-brightness conditions.
+
+### Raouf: 2026-04-23 (AEST) — Supabase secret sync fallback for Google routes key
+**Scope:** Edge-function secret sync robustness for Google routing.
+**Summary:** Updated `scripts/sync_supabase_secrets.sh` so `GOOGLE_ROUTES_API_KEY` is populated from `GOOGLE_MAPS_API_KEY` when a separate routes key is not present in `.env`. Re-synced secrets and verified `maps-routes` returns a successful Google route response (`HTTP 200`) instead of key-related failures.
+**Files Changed:** `scripts/sync_supabase_secrets.sh`.
+**Verification:** `./scripts/sync_supabase_secrets.sh`; direct `curl` POST to `${SUPABASE_URL}/functions/v1/maps-routes` with `renderer=google` + `travelMode=WALK` returned route payload (`HTTP 200`).
+**Follow-ups:** Add `TFNSW_API_KEY` to `.env` if transit APIs should be fully enabled.
+
 ### Raouf: 2026-04-23 (AEST) — Localization parity fix for newly added Home/Settings keys
 **Scope:** Internationalization consistency across all locale ARB files.
 **Summary:** Added the 11 newly introduced `app_en.arb` keys to all 34 non-English locale ARB files using English fallback values to restore key parity and eliminate `flutter gen-l10n` untranslated warnings during app launch/run.

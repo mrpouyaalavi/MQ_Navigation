@@ -36,8 +36,27 @@ set_secret_if_present() {
   echo "  - Set ${secret_name}"
 }
 
+set_google_routes_secret() {
+  local value
+  value="$(extract_env "GOOGLE_ROUTES_API_KEY")"
+  if [[ -n "$value" ]]; then
+    supabase secrets set "GOOGLE_ROUTES_API_KEY=${value}" >/dev/null
+    echo "  - Set GOOGLE_ROUTES_API_KEY (from GOOGLE_ROUTES_API_KEY)"
+    return
+  fi
+
+  value="$(extract_env "GOOGLE_MAPS_API_KEY")"
+  if [[ -n "$value" ]]; then
+    supabase secrets set "GOOGLE_ROUTES_API_KEY=${value}" >/dev/null
+    echo "  - Set GOOGLE_ROUTES_API_KEY (from GOOGLE_MAPS_API_KEY fallback)"
+    return
+  fi
+
+  echo "  - Skipping GOOGLE_ROUTES_API_KEY (both GOOGLE_ROUTES_API_KEY and GOOGLE_MAPS_API_KEY missing)"
+}
+
 echo "Syncing Supabase secrets from .env..."
-set_secret_if_present "GOOGLE_ROUTES_API_KEY" "GOOGLE_ROUTES_API_KEY"
+set_google_routes_secret
 set_secret_if_present "ORS_API_KEY" "ORS_API_KEY"
 set_secret_if_present "TFNSW_API_KEY" "TFNSW_API_KEY"
 set_secret_if_present "TFNSW_STOP_ID" "TFNSW_STOP_ID"

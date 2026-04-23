@@ -375,8 +375,17 @@ class _HeroSection extends StatelessWidget {
     final titleColor = dark
         ? MqColors.contentPrimaryDark
         : MqColors.contentPrimary;
-    final subtitleColor = dark ? MqColors.slate500 : MqColors.charcoal700;
+    final subtitleColor = dark
+        ? MqColors.contentPrimaryDark.withValues(alpha: 0.92)
+        : MqColors.contentPrimary.withValues(alpha: 0.92);
     final ctaColor = dark ? MqColors.vividRed : MqColors.red;
+    final heroTextShadow = [
+      Shadow(
+        blurRadius: 16,
+        color: Colors.black.withValues(alpha: dark ? 0.36 : 0.24),
+        offset: const Offset(0, 2),
+      ),
+    ];
 
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
@@ -402,6 +411,7 @@ class _HeroSection extends StatelessWidget {
               height: 1.2,
               letterSpacing: -0.5,
               color: titleColor,
+              shadows: heroTextShadow,
             ),
           ),
           const SizedBox(height: MqSpacing.space2),
@@ -412,6 +422,8 @@ class _HeroSection extends StatelessWidget {
               color: subtitleColor,
               fontSize: 16,
               height: 1.4,
+              fontWeight: FontWeight.w500,
+              shadows: heroTextShadow,
             ),
           ),
           const SizedBox(height: MqSpacing.space5),
