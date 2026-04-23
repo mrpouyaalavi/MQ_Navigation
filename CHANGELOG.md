@@ -4,6 +4,20 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-04-23 (AEST) — Home background image dark-mode + clarity fix
+
+**Scope:** Home background image rendering and visual clarity.
+
+**Summary:**
+Fixed Home background photo visibility in dark mode by always rendering the campus background layer (instead of hiding it for dark theme). Reduced overlay strength to avoid the “blurry/foggy” appearance while preserving text contrast. Light mode wash changed from `MqColors.alabaster` alpha `0.78` to `0.50`; dark mode now applies `MqColors.charcoal950` alpha `0.42`.
+
+**Files Changed:**
+- `lib/features/home/presentation/pages/home_page.dart`
+- `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh --quick` → **5/5 passed** (pub get, format, analyze clean, 144 tests passed, gen-l10n clean).
+
 ### Raouf: 2026-04-23 (AEST) — Home tactical UI refresh (tactile + kinetic + bento)
 
 **Scope:** Home UX enhancement with tactile interactions and asymmetric quick access layout.

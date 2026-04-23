@@ -39,7 +39,7 @@ class HomePage extends ConsumerWidget {
       backgroundColor: dark ? MqColors.charcoal850 : MqColors.alabaster,
       body: Stack(
         children: [
-          if (!dark) const _CampusBackground(asset: _backgroundAsset),
+          _CampusBackground(asset: _backgroundAsset, isDark: dark),
           // Settings-parity red radial glow — dark mode only.
           if (dark)
             Positioned(
@@ -105,13 +105,14 @@ class HomePage extends ConsumerWidget {
 }
 
 // -------------------------------------------------------------------------- //
-// CAMPUS BACKGROUND (LIGHT-MODE ONLY) //
+// CAMPUS BACKGROUND //
 // -------------------------------------------------------------------------- //
 
 class _CampusBackground extends StatelessWidget {
-  const _CampusBackground({required this.asset});
+  const _CampusBackground({required this.asset, required this.isDark});
 
   final String asset;
+  final bool isDark;
 
   @override
   Widget build(BuildContext context) {
@@ -122,11 +123,16 @@ class _CampusBackground extends StatelessWidget {
           Image.asset(
             asset,
             fit: BoxFit.cover,
+            filterQuality: FilterQuality.high,
             errorBuilder: (_, _, _) =>
                 const ColoredBox(color: MqColors.alabaster),
           ),
-          // Soft ivory veil — visible campus image but readable cards.
-          Container(color: MqColors.alabaster.withValues(alpha: 0.78)),
+          // Lighter overlay keeps text readable without making image look blurry.
+          Container(
+            color: isDark
+                ? MqColors.charcoal950.withValues(alpha: 0.42)
+                : MqColors.alabaster.withValues(alpha: 0.50),
+          ),
         ],
       ),
     );

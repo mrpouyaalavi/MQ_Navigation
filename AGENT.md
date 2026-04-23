@@ -88,6 +88,12 @@ Located in project root:
 
 See `CHANGELOG.md` for full development history.
 
+### Raouf: 2026-04-23 (AEST) — Home background image dark-mode + clarity fix
+**Scope:** Home background image rendering and visual clarity.
+**Summary:** Fixed Home background photo visibility in dark mode by always rendering the campus background layer (instead of conditionally hiding it in dark mode). Reduced the background wash/veil opacity to avoid the “blurry/foggy” look: light overlay changed to `MqColors.alabaster` alpha `0.50` (from `0.78`) and dark overlay uses `MqColors.charcoal950` alpha `0.42` to preserve readability while keeping image detail visible.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
 ### Raouf: 2026-04-23 (AEST) — Home tactical UI refresh (tactile + kinetic + bento)
 **Scope:** Home UX enhancement with tactile interactions and asymmetric quick access layout.
 **Summary:** Added reusable `MqTactileButton` (`lib/shared/widgets/mq_tactile_button.dart`) with press-scale animation, drop-shadow depth, and configurable haptic feedback. Upgraded home hero text to a kinetic intro using `TweenAnimationBuilder` (fade + slide-up). Replaced the old symmetric quick-access grid with an asymmetrical Bento layout (hero card + stacked compact cards), while preserving tokenized styling and localized labels. Wired haptic preference from `SettingsController` into all home tactile cards.
