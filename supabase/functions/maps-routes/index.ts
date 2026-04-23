@@ -15,6 +15,8 @@ import {
 
 const GOOGLE_ROUTES_URL =
   "https://routes.googleapis.com/directions/v2:computeRoutes";
+const TFNSW_TRIP_PLANNER_URL =
+  "https://api.transport.nsw.gov.au/v1/tp/trip";
 const ORS_BASE_URL = Deno.env.get("ORS_BASE_URL") ??
   "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
 const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -390,6 +392,154 @@ function normaliseCampusRoute(
   };
 }
 
+function formatTfnswCoord(coordinate: CoordinatePayload): string {
+  return `${coordinate.longitude}:${coordinate.latitude}:EPSG:4326`;
+}
+
+function normaliseTfnswTransitRoute(
+  origin: CoordinatePayload,
+  destination: CoordinatePayload,
+  payload: Record<string, unknown>,
+): NormalizedRoute {
+  const journeys =
+    (payload.journeys as Array<Record<string, unknown>> | undefined) ?? [];
+  if (journeys.length === 0) {
+    throw new Error("No TfNSW transit journeys were returned");
+  }
+
+  const legs =
+    (journeys[0].legs as Array<Record<string, unknown>> | undefined) ?? [];
+  if (legs.length === 0) {
+    throw new Error("TfNSW journey did not include any legs");
+  }
+
+  const points: Array<{ lat: number; lng: number }> = [];
+  const steps: NormalizedStep[] = [];
+  let distanceMeters = 0;
+  let durationSeconds = 0;
+
+  for (const leg of legs) {
+    distanceMeters += Number(leg.distance ?? 0);
+    durationSeconds += Number(leg.duration ?? 0);
+
+    const legCoords = (leg.coords as Array<Array<number>> | undefined) ?? [];
+    for (const coord of legCoords) {
+      if (coord.length < 2) {
+        continue;
+      }
+      const point = { lat: Number(coord[0]), lng: Number(coord[1]) };
+      if (!Number.isFinite(point.lat) || !Number.isFinite(point.lng)) {
+        continue;
+      }
+      const previous = points[points.length - 1];
+      if (
+        previous != null &&
+        previous.lat === point.lat &&
+        previous.lng === point.lng
+      ) {
+        continue;
+      }
+      points.push(point);
+    }
+
+    const pathDescriptions =
+      (leg.pathDescriptions as Array<Record<string, unknown>> | undefined) ?? [];
+    for (const path of pathDescriptions) {
+      const instruction = String(path.desc ?? "").trim();
+      if (instruction.length === 0) {
+        continue;
+      }
+      steps.push({
+        instruction,
+        distanceMeters: Number(path.distance ?? 0),
+        durationSeconds: Number(path.duration ?? 0),
+        travelMode: "TRANSIT",
+      });
+    }
+  }
+
+  if (points.isEmpty()) {
+    points.push(
+      { lat: origin.latitude, lng: origin.longitude },
+      { lat: destination.latitude, lng: destination.longitude },
+    );
+  }
+
+  return {
+    renderer: "google",
+    mode: "TRANSIT",
+    distanceMeters,
+    durationSeconds,
+    encodedPolyline: "",
+    points,
+    steps,
+    arrivalEstimate: toArrivalEstimate(durationSeconds),
+  };
+}
+
+async function fetchTfnswTransitRoute(
+  origin: CoordinatePayload,
+  destination: CoordinatePayload,
+): Promise<NormalizedRoute> {
+  const apiKey = requireEnv("TFNSW_API_KEY");
+  const now = new Date();
+  const itdDate = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
+  const itdTime =
+    `${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`;
+
+  const params = new URLSearchParams({
+    outputFormat: "rapidJSON",
+    coordOutputFormat: "EPSG:4326",
+    depArrMacro: "dep",
+    itdDate,
+    itdTime,
+    type_origin: "coord",
+    name_origin: formatTfnswCoord(origin),
+    type_destination: "coord",
+    name_destination: formatTfnswCoord(destination),
+    calcNumberOfTrips: "1",
+    TfNSWTR: "true",
+    version: "10.2.1.42",
+  });
+
+  const upstream = await fetch(`${TFNSW_TRIP_PLANNER_URL}?${params}`, {
+    headers: {
+      Authorization: `apikey ${apiKey}`,
+    },
+    signal: AbortSignal.timeout(10_000),
+  });
+
+  if (!upstream.ok) {
+    throw new Error("TfNSW trip planner service error");
+  }
+
+  const upstreamJson = await upstream.json() as Record<string, unknown>;
+  return normaliseTfnswTransitRoute(origin, destination, upstreamJson);
+}
+
+async function fetchTransitRouteWithFallback(
+  renderer: RouteRenderer,
+  origin: CoordinatePayload,
+  destination: CoordinatePayload,
+  languageCode: string,
+): Promise<NormalizedRoute> {
+  try {
+    return await fetchTfnswTransitRoute(origin, destination);
+  } catch (tfnswError) {
+    console.warn(
+      "TfNSW transit routing failed, falling back to Google",
+      tfnswError,
+    );
+    return await fetchGoogleRoute(
+      renderer,
+      origin,
+      destination,
+      "TRANSIT",
+      languageCode,
+    );
+  }
+}
+
 async function fetchGoogleRoute(
   renderer: RouteRenderer,
   origin: CoordinatePayload,
@@ -583,6 +733,13 @@ Deno.serve(async (req) => {
 
     const route = renderer === "campus"
       ? await fetchCampusRoute(origin, destination, travelMode)
+      : travelMode === "TRANSIT"
+      ? await fetchTransitRouteWithFallback(
+        renderer,
+        origin,
+        destination,
+        languageCode,
+      )
       : await fetchGoogleRoute(
         renderer,
         origin,

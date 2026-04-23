@@ -88,6 +88,24 @@ Located in project root:
 
 See `CHANGELOG.md` for full development history.
 
+### Raouf: 2026-04-23 (AEST) — Supabase CLI secret sync + function deployment setup
+**Scope:** Environment/secrets operational setup for TfNSW and routing edge functions.
+**Summary:** Added `scripts/sync_supabase_secrets.sh` to map server-side API/env values from local `.env` into Supabase edge secrets, and extended env docs/templates to include TfNSW and routing server keys (`TFNSW_API_KEY`, `TFNSW_STOP_ID`, `GOOGLE_ROUTES_API_KEY`, `ALLOWED_WEB_ORIGINS`). Deployed `maps-routes`, `tfnsw-proxy`, and `maps-places` via Supabase CLI.
+**Files Changed:** `.env.example`, `env_inventory.md`, `scripts/sync_supabase_secrets.sh` (and local `.env` for placeholders).
+**Verification:** `./scripts/sync_supabase_secrets.sh`, `supabase functions deploy maps-routes`, `supabase functions deploy tfnsw-proxy`, `supabase functions deploy maps-places`, `./scripts/check.sh --quick` (5/5 passed).
+
+### Raouf: 2026-04-23 (AEST) — Transit routing fallback hardening (TfNSW -> Google)
+**Scope:** Edge routing resiliency improvement for transit mode.
+**Summary:** Added fallback logic in `maps-routes` so transit requests try TfNSW Trip Planner first and automatically fall back to Google transit routes when TfNSW errors or returns no usable journey data, keeping API response shape stable for the Flutter client.
+**Files Changed:** `supabase/functions/maps-routes/index.ts`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — TfNSW Trip Planner API integrated into routing proxy
+**Scope:** Supabase edge routing logic enhancement for transit mode.
+**Summary:** Parsed the provided `tripplanner_v1_swag_efa11_20251002.yml` spec and integrated TfNSW `/trip` API usage into `maps-routes` for transit requests. Added normalization from TfNSW journey legs into existing route payload fields (points/steps/distance/duration), keeping `TFNSW_API_KEY` on the server and preserving the Flutter-side contract.
+**Files Changed:** `supabase/functions/maps-routes/index.ts`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
 ### Raouf: 2026-04-23 (AEST) — TfNSW + timetable import + offline tiles implementation
 **Scope:** Feature expansion across Home, Settings, map fallback renderer, and Supabase Edge Functions.
 **Summary:** Implemented the remaining three blueprint features: new `tfnsw-proxy` edge function + Home metro polling card, local `.ics` timetable import and persistence with Home next-class card map jump, and offline tile caching with `flutter_map_tile_caching` including backend initialisation, cached tile provider integration in desktop fallback maps, and Settings controls for enabling/downloading offline campus tiles.

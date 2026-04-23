@@ -4,6 +4,55 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-04-23 (AEST) — Supabase CLI secret sync + function deployment setup
+
+**Scope:** Environment/secrets operational setup for TfNSW and routing edge functions.
+
+**Summary:**
+Added an operational script (`scripts/sync_supabase_secrets.sh`) that reads supported server-side API keys from `.env` and syncs them into Supabase Edge Function secrets via CLI. Extended `.env.example` and `env_inventory.md` with TfNSW and server routing key fields (`TFNSW_API_KEY`, `TFNSW_STOP_ID`, `GOOGLE_ROUTES_API_KEY`, `ALLOWED_WEB_ORIGINS`). Executed Supabase CLI deployments for `maps-routes`, `tfnsw-proxy`, and `maps-places`; synced `TFNSW_STOP_ID` successfully, while missing values in local `.env` were safely skipped.
+
+**Files Changed:**
+- `.env` (local-only, gitignored)
+- `.env.example`
+- `env_inventory.md`
+- `scripts/sync_supabase_secrets.sh`
+- `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/sync_supabase_secrets.sh` executed successfully (with skip reporting for missing keys).
+- `supabase functions deploy maps-routes`
+- `supabase functions deploy tfnsw-proxy`
+- `supabase functions deploy maps-places`
+- `./scripts/check.sh --quick` → **5/5 passed**.
+
+### Raouf: 2026-04-23 (AEST) — Transit routing fallback hardening (TfNSW -> Google)
+
+**Scope:** Edge routing resiliency improvement for transit mode.
+
+**Summary:**
+Hardened transit route generation in `maps-routes` by introducing an automatic fallback chain: attempt TfNSW Trip Planner first, then transparently fall back to Google transit route calculation when TfNSW errors or returns unusable data. This keeps transit routing available even during TfNSW outages while preserving the same normalized response contract consumed by Flutter.
+
+**Files Changed:**
+- `supabase/functions/maps-routes/index.ts`
+- `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh --quick` → **5/5 passed** (pub get, format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — TfNSW Trip Planner API integrated into routing proxy
+
+**Scope:** Supabase edge routing logic enhancement for transit mode.
+
+**Summary:**
+Parsed `tripplanner_v1_swag_efa11_20251002.yml` and integrated the TfNSW `/trip` API into `maps-routes` for transit routing. The edge function now calls TfNSW Trip Planner when `travelMode=TRANSIT` on the Google renderer path, normalizes journey legs/coordinates/path descriptions into the existing `MapRoute` contract (`points`, `steps`, distance, duration), and preserves key security constraints by reading `TFNSW_API_KEY` server-side only.
+
+**Files Changed:**
+- `supabase/functions/maps-routes/index.ts`
+- `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh --quick` → **5/5 passed** (pub get, format, analyze, 144 tests, gen-l10n).
+
 ### Raouf: 2026-04-23 (AEST) — TfNSW + timetable import + offline tiles implementation
 
 **Scope:** Feature expansion across Home, Settings, map fallback renderer, and Supabase Edge Functions.

@@ -24,6 +24,8 @@ All environment variables used by MQ Navigation, categorised by client/server ex
 | `SUPABASE_SERVICE_ROLE_KEY` | Edge Functions | Bypasses RLS — never in client code |
 | `GOOGLE_ROUTES_API_KEY` | `maps-routes` EF | Google Routes API key for Google map mode |
 | `ORS_API_KEY` | `maps-routes` EF | Optional OpenRouteService key for campus routing |
+| `TFNSW_API_KEY` | `maps-routes`, `tfnsw-proxy` EF | TfNSW Open Data API key (`Authorization: apikey <token>`) |
+| `TFNSW_STOP_ID` | `tfnsw-proxy` EF | Optional station stop ID override (defaults to `10101403`) |
 | `FIREBASE_SERVICE_ACCOUNT_JSON` | `notify` EF | Firebase service account JSON for FCM HTTP v1 |
 | `CRON_SECRET` | `cleanup-cron` EF | Protects cron endpoints |
 | `ALLOWED_WEB_ORIGINS` | `maps-routes`, `maps-places` EF | Optional comma-separated browser origin allowlist |
