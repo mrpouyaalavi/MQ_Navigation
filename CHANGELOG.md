@@ -4,6 +4,20 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-04-23 (AEST) — Localization parity fix for newly added Home/Settings keys
+
+**Scope:** Internationalization consistency across all Flutter locale ARB files.
+
+**Summary:**
+Resolved `flutter gen-l10n` untranslated warnings by propagating the 11 newly introduced keys from `app_en.arb` into all 34 non-English locale ARB files using English fallback values (consistent with existing project convention). This restores locale key parity and removes startup/run-time untranslated message warnings.
+
+**Files Changed:**
+- `lib/app/l10n/app_ar.arb`, `app_bn.arb`, `app_cs.arb`, `app_da.arb`, `app_de.arb`, `app_el.arb`, `app_es.arb`, `app_fa.arb`, `app_fi.arb`, `app_fr.arb`, `app_he.arb`, `app_hi.arb`, `app_hu.arb`, `app_id.arb`, `app_it.arb`, `app_ja.arb`, `app_ko.arb`, `app_ms.arb`, `app_ne.arb`, `app_nl.arb`, `app_no.arb`, `app_pl.arb`, `app_pt.arb`, `app_ro.arb`, `app_ru.arb`, `app_si.arb`, `app_sv.arb`, `app_ta.arb`, `app_th.arb`, `app_tr.arb`, `app_uk.arb`, `app_ur.arb`, `app_vi.arb`, `app_zh.arb`
+- `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh --quick` → **5/5 passed** (pub get, format, analyze, 144 tests, gen-l10n).
+
 ### Raouf: 2026-04-23 (AEST) — Supabase CLI secret sync + function deployment setup
 
 **Scope:** Environment/secrets operational setup for TfNSW and routing edge functions.

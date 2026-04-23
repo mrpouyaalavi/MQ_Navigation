@@ -2081,5 +2081,23 @@
   "home_faculty": "Faculty",
   "home_campusHub": "Campus Hub",
   "home_transport": "Transport",
-  "home_studentServices": "Student Services"
+  "home_studentServices": "Student Services",
+  "importTimetable": "Import Timetable",
+  "importTimetableDone": "Timetable imported",
+  "offlineCampusMaps": "Offline Campus Maps",
+  "offlineCampusMapsDownload": "Download Campus Maps for Offline Use",
+  "offlineCampusMapsDownloading": "Downloading offline campus maps...",
+  "offlineCampusMapsReady": "Offline campus maps are ready",
+  "homeNextClassLabel": "Next Class",
+  "homeNextClassEmpty": "No classes remaining today",
+  "homeNextMetroLabel": "Next Metro",
+  "homeNextMetroEmpty": "No upcoming metro departures",
+  "minutesShort": "{minutes} min",
+  "@minutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  }
 }

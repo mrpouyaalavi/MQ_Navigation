@@ -88,6 +88,12 @@ Located in project root:
 
 See `CHANGELOG.md` for full development history.
 
+### Raouf: 2026-04-23 (AEST) — Localization parity fix for newly added Home/Settings keys
+**Scope:** Internationalization consistency across all locale ARB files.
+**Summary:** Added the 11 newly introduced `app_en.arb` keys to all 34 non-English locale ARB files using English fallback values to restore key parity and eliminate `flutter gen-l10n` untranslated warnings during app launch/run.
+**Files Changed:** `lib/app/l10n/app_*.arb` (34 locales excluding English).
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
 ### Raouf: 2026-04-23 (AEST) — Supabase CLI secret sync + function deployment setup
 **Scope:** Environment/secrets operational setup for TfNSW and routing edge functions.
 **Summary:** Added `scripts/sync_supabase_secrets.sh` to map server-side API/env values from local `.env` into Supabase edge secrets, and extended env docs/templates to include TfNSW and routing server keys (`TFNSW_API_KEY`, `TFNSW_STOP_ID`, `GOOGLE_ROUTES_API_KEY`, `ALLOWED_WEB_ORIGINS`). Deployed `maps-routes`, `tfnsw-proxy`, and `maps-places` via Supabase CLI.
