@@ -37,6 +37,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="io.mqnavigation" android:host="callback"/>
+                <data android:scheme="io.mqnavigation" android:host="meet"/>
             </intent-filter>
             <!-- App Links: verified domain links (requires assetlinks.json) -->
             <intent-filter android:autoVerify="true">

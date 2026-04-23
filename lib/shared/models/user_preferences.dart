@@ -21,6 +21,7 @@ class UserPreferences {
     this.quietHoursStart = '23:00',
     this.quietHoursEnd = '08:00',
     this.highContrastMap = false,
+    this.offlineCampusMapsEnabled = false,
   });
 
   final ThemeMode themeMode;
@@ -35,6 +36,7 @@ class UserPreferences {
   final String quietHoursStart;
   final String quietHoursEnd;
   final bool highContrastMap;
+  final bool offlineCampusMapsEnabled;
 
   Locale? get locale => localeCode == null ? null : Locale(localeCode!);
 
@@ -52,6 +54,7 @@ class UserPreferences {
     String? quietHoursStart,
     String? quietHoursEnd,
     bool? highContrastMap,
+    bool? offlineCampusMapsEnabled,
   }) {
     return UserPreferences(
       themeMode: themeMode ?? this.themeMode,
@@ -66,6 +69,8 @@ class UserPreferences {
       quietHoursStart: quietHoursStart ?? this.quietHoursStart,
       quietHoursEnd: quietHoursEnd ?? this.quietHoursEnd,
       highContrastMap: highContrastMap ?? this.highContrastMap,
+      offlineCampusMapsEnabled:
+          offlineCampusMapsEnabled ?? this.offlineCampusMapsEnabled,
     );
   }
 
@@ -85,7 +90,8 @@ class UserPreferences {
           quietHoursEnabled == other.quietHoursEnabled &&
           quietHoursStart == other.quietHoursStart &&
           quietHoursEnd == other.quietHoursEnd &&
-          highContrastMap == other.highContrastMap;
+          highContrastMap == other.highContrastMap &&
+          offlineCampusMapsEnabled == other.offlineCampusMapsEnabled;
 
   @override
   int get hashCode => Object.hash(
@@ -101,5 +107,6 @@ class UserPreferences {
     quietHoursStart,
     quietHoursEnd,
     highContrastMap,
+    offlineCampusMapsEnabled,
   );
 }

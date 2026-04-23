@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/features/timetable/domain/entities/timetable_class.dart';
+import 'package:mq_navigation/features/timetable/presentation/providers/timetable_provider.dart';
+import 'package:mq_navigation/features/transit/domain/entities/metro_departure.dart';
+import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
 
@@ -34,6 +39,8 @@ class HomePage extends ConsumerWidget {
     final dark = context.isDarkMode;
     final hapticsEnabled =
         ref.watch(settingsControllerProvider).value?.hapticsEnabled ?? true;
+    final nextClass = ref.watch(nextTimetableClassProvider);
+    final metroDepartures = ref.watch(tfnswMetroProvider);
     return Scaffold(
       backgroundColor: dark ? MqColors.charcoal850 : MqColors.alabaster,
       body: Stack(
@@ -78,6 +85,18 @@ class HomePage extends ConsumerWidget {
                       children: [
                         const _HeroSection(),
                         const SizedBox(height: MqSpacing.space8),
+                        _LiveCardsSection(
+                          hapticsEnabled: hapticsEnabled,
+                          metroDepartures: metroDepartures,
+                          nextClass: nextClass,
+                          onTapClass: (location) {
+                            ref
+                                .read(mapControllerProvider.notifier)
+                                .updateSearchQuery(location);
+                            context.goNamed(RouteNames.map);
+                          },
+                        ),
+                        const SizedBox(height: MqSpacing.space8),
                         _QuickAccessSection(
                           hapticsEnabled: hapticsEnabled,
                           onTapCategory: (query) {
@@ -98,6 +117,137 @@ class HomePage extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _LiveCardsSection extends StatelessWidget {
+  const _LiveCardsSection({
+    required this.hapticsEnabled,
+    required this.metroDepartures,
+    required this.nextClass,
+    required this.onTapClass,
+  });
+
+  final bool hapticsEnabled;
+  final AsyncValue<List<MetroDeparture>> metroDepartures;
+  final AsyncValue<TimetableClass?> nextClass;
+  final void Function(String location) onTapClass;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final dark = context.isDarkMode;
+    final metro = metroDepartures.asData?.value;
+    final upcomingClass = nextClass.asData?.value;
+    final classTime = upcomingClass == null
+        ? null
+        : DateFormat.Hm().format(upcomingClass.startTime);
+
+    final metroSubtitle = (metro == null || metro.isEmpty)
+        ? l10n.homeNextMetroEmpty
+        : '${metro.first.destination} • ${l10n.minutesShort(metro.first.minutesUntilDeparture)}';
+
+    final classSubtitle = upcomingClass == null
+        ? l10n.homeNextClassEmpty
+        : '$classTime • ${upcomingClass.name}';
+
+    return Column(
+      children: [
+        _LiveInfoCard(
+          hapticsEnabled: hapticsEnabled,
+          icon: Icons.directions_transit,
+          isDark: dark,
+          subtitle: metroSubtitle,
+          title: l10n.homeNextMetroLabel,
+        ),
+        const SizedBox(height: MqSpacing.space3),
+        _LiveInfoCard(
+          hapticsEnabled: hapticsEnabled,
+          icon: Icons.calendar_today_outlined,
+          isDark: dark,
+          subtitle: classSubtitle,
+          title: l10n.homeNextClassLabel,
+          onTap: upcomingClass == null
+              ? null
+              : () => onTapClass(upcomingClass.location),
+        ),
+      ],
+    );
+  }
+}
+
+class _LiveInfoCard extends StatelessWidget {
+  const _LiveInfoCard({
+    required this.hapticsEnabled,
+    required this.icon,
+    required this.isDark,
+    required this.subtitle,
+    required this.title,
+    this.onTap,
+  });
+
+  final bool hapticsEnabled;
+  final IconData icon;
+  final bool isDark;
+  final String subtitle;
+  final String title;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return MqTactileButton(
+      hapticsEnabled: hapticsEnabled,
+      onTap: onTap ?? () {},
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: isDark
+              ? MqColors.charcoal850
+              : Colors.white.withValues(alpha: 0.88),
+          borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
+          border: Border.all(
+            color: isDark ? Colors.white.withAlpha(13) : MqColors.sand200,
+          ),
+        ),
+        padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
+        child: Row(
+          children: [
+            Icon(icon, color: isDark ? MqColors.vividRed : MqColors.red),
+            const SizedBox(width: MqSpacing.space3),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: context.textTheme.titleSmall?.copyWith(
+                      color: isDark
+                          ? MqColors.contentPrimaryDark
+                          : MqColors.contentPrimary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: MqSpacing.space1),
+                  Text(
+                    subtitle,
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: isDark
+                          ? MqColors.contentSecondaryDark
+                          : MqColors.contentSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (onTap != null)
+              Icon(
+                Icons.chevron_right,
+                color: isDark ? Colors.white70 : MqColors.contentTertiary,
+              ),
+          ],
+        ),
       ),
     );
   }

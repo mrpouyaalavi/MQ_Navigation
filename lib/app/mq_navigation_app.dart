@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
@@ -12,11 +15,55 @@ import 'package:mq_navigation/features/settings/presentation/controllers/setting
 /// Composes global app state including routing, theme, and localization.
 /// Also observes the notifications controller so that push notification
 /// setup side-effects execute immediately upon app startup.
-class MqNavigationApp extends ConsumerWidget {
+class MqNavigationApp extends ConsumerStatefulWidget {
   const MqNavigationApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MqNavigationApp> createState() => _MqNavigationAppState();
+}
+
+class _MqNavigationAppState extends ConsumerState<MqNavigationApp> {
+  final AppLinks _appLinks = AppLinks();
+  StreamSubscription<Uri>? _linkSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _listenForDeepLinks();
+  }
+
+  @override
+  void dispose() {
+    _linkSubscription?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _listenForDeepLinks() async {
+    final initial = await _appLinks.getInitialLink();
+    if (initial != null && mounted) {
+      _handleDeepLink(initial);
+    }
+    _linkSubscription = _appLinks.uriLinkStream.listen((uri) {
+      if (!mounted) {
+        return;
+      }
+      _handleDeepLink(uri);
+    });
+  }
+
+  void _handleDeepLink(Uri uri) {
+    if (uri.host != 'meet' || uri.scheme != 'io.mqnavigation') {
+      return;
+    }
+
+    final lat = uri.queryParameters['lat'];
+    final lng = uri.queryParameters['lng'];
+    final router = ref.read(appRouterProvider);
+    router.go('/meet?lat=$lat&lng=$lng');
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // Watch global navigation state.
     final router = ref.watch(appRouterProvider);
 

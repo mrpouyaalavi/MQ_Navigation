@@ -4,6 +4,72 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-04-23 (AEST) — TfNSW + timetable import + offline tiles implementation
+
+**Scope:** Feature expansion across Home, Settings, map fallback renderer, and Supabase Edge Functions.
+
+**Summary:**
+Implemented the remaining three blueprint items after deep links: (1) a new `tfnsw-proxy` Supabase Edge Function plus Riverpod polling provider to surface upcoming metro departures on Home; (2) `.ics` timetable import using `file_picker` + `icalendar_parser`, persisted to `SharedPreferences`, with a Home "Next Class" card that jumps to map search by class location; and (3) offline tile architecture via `flutter_map_tile_caching`, including backend initialisation, cached tile provider usage in desktop OSM fallback renderer, and Settings controls to enable and download campus tiles for zoom levels 15–18.
+
+**Files Changed:**
+- `pubspec.yaml`, `pubspec.lock`
+- `lib/app/bootstrap/bootstrap.dart`
+- `lib/app/l10n/app_en.arb`
+- `lib/features/home/presentation/pages/home_page.dart`
+- `lib/features/map/data/services/offline_maps_service.dart`
+- `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`
+- `lib/features/settings/data/repositories/settings_repository.dart`
+- `lib/features/settings/presentation/controllers/settings_controller.dart`
+- `lib/features/settings/presentation/pages/settings_page.dart`
+- `lib/features/timetable/data/repositories/timetable_repository.dart`
+- `lib/features/timetable/data/services/timetable_import_service.dart`
+- `lib/features/timetable/domain/entities/timetable_class.dart`
+- `lib/features/timetable/presentation/providers/timetable_provider.dart`
+- `lib/features/transit/domain/entities/metro_departure.dart`
+- `lib/features/transit/presentation/providers/tfnsw_provider.dart`
+- `lib/shared/models/user_preferences.dart`
+- `supabase/functions/tfnsw-proxy/index.ts`
+- Generated plugin registrants: `macos/Flutter/GeneratedPluginRegistrant.swift`, `windows/flutter/generated_plugin_registrant.cc`, `windows/flutter/generated_plugins.cmake`
+- `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh` → **6/6 passed** (pub get, format, analyze, 144 tests, gen-l10n, debug APK build).
+
+### Raouf: 2026-04-23 (AEST) — Meet Me Here deep-link routing + map share
+
+**Scope:** Deep-link navigation wiring for shared map points.
+
+**Summary:**
+Implemented the first blueprint feature end-to-end: custom `io.mqnavigation://meet` links now route into the app and open a meet point on the map. Added a dedicated `/meet` route, app-level incoming link handling via `app_links`, and a long-press share action on the campus map using `share_plus`. Meet links now preselect a coordinate destination and immediately trigger route loading from the user location.
+
+**Files Changed:**
+- `pubspec.yaml`
+- `lib/app/mq_navigation_app.dart`
+- `android/app/src/main/AndroidManifest.xml`
+- `lib/app/router/app_router.dart`
+- `lib/app/router/route_names.dart`
+- `lib/features/map/presentation/controllers/map_controller.dart`
+- `lib/features/map/presentation/pages/map_page.dart`
+- `lib/features/map/presentation/widgets/campus/campus_map_view.dart`
+- `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh --quick` → **5/5 passed** (pub get, format, analyze clean, 144 tests passed, gen-l10n clean).
+
+### Raouf: 2026-04-23 (AEST) — Dark/Light parity audit hardening
+
+**Scope:** Final cross-mode parity and contrast audit for Home + Settings.
+
+**Summary:**
+Performed an additional hardening pass on dark/light parity after the previous audit. Confirmed mode parity for scaffold backgrounds, radial glow layers, card surfaces/borders, and header accents. Fixed one remaining contrast defect in Settings Danger Zone where light mode subtitle color used a dark-mode token; updated to `MqColors.contentSecondary` for proper readability and visual consistency.
+
+**Files Changed:**
+- `lib/features/settings/presentation/pages/settings_page.dart`
+- `AGENT.md`, `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh --quick` → **5/5 passed** (pub get, format, analyze clean, 144 tests passed, gen-l10n clean).
+
 ### Raouf: 2026-04-23 (AEST) — Dark/Light parity audit pass (Home + Settings)
 
 **Scope:** Visual parity verification for dark mode and light mode branches.

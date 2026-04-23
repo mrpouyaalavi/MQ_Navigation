@@ -18,6 +18,7 @@ const _quietHoursEnabledKey = 'settings.quiet_hours_enabled';
 const _quietHoursStartKey = 'settings.quiet_hours_start';
 const _quietHoursEndKey = 'settings.quiet_hours_end';
 const _highContrastMapKey = 'settings.high_contrast_map';
+const _offlineCampusMapsEnabledKey = 'settings.offline_campus_maps_enabled';
 
 /// Data source for persisting and retrieving user settings.
 ///
@@ -60,6 +61,9 @@ class LocalSettingsRepository implements SettingsRepository {
       final quietHoursStart = await _storage.read(_quietHoursStartKey);
       final quietHoursEnd = await _storage.read(_quietHoursEndKey);
       final highContrastMap = await _storage.read(_highContrastMapKey);
+      final offlineCampusMapsEnabled = await _storage.read(
+        _offlineCampusMapsEnabledKey,
+      );
 
       final localThemeMode = ThemeMode.values.firstWhere(
         (mode) => mode.name == themeModeString,
@@ -89,6 +93,7 @@ class LocalSettingsRepository implements SettingsRepository {
         quietHoursStart: quietHoursStart ?? '23:00',
         quietHoursEnd: quietHoursEnd ?? '08:00',
         highContrastMap: highContrastMap == 'true',
+        offlineCampusMapsEnabled: offlineCampusMapsEnabled == 'true',
       );
     } catch (error, stackTrace) {
       AppLogger.error('Failed to load user preferences', error, stackTrace);
@@ -135,6 +140,10 @@ class LocalSettingsRepository implements SettingsRepository {
       await _storage.write(
         _highContrastMapKey,
         preferences.highContrastMap.toString(),
+      );
+      await _storage.write(
+        _offlineCampusMapsEnabledKey,
+        preferences.offlineCampusMapsEnabled.toString(),
       );
       return preferences;
     } catch (error, stackTrace) {

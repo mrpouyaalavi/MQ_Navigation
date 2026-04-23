@@ -108,6 +108,13 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     return _save(currentPreferences.copyWith(highContrastMap: enabled));
   }
 
+  Future<String?> updateOfflineCampusMapsEnabled(bool enabled) async {
+    final currentPreferences = state.value ?? const UserPreferences();
+    return _save(
+      currentPreferences.copyWith(offlineCampusMapsEnabled: enabled),
+    );
+  }
+
   /// Wipes all local data and resets the controller to its initial state.
   ///
   /// This will reset theme, locale, and all other preferences to defaults.

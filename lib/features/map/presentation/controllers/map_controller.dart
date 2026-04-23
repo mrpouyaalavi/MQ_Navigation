@@ -309,6 +309,27 @@ class MapController extends AsyncNotifier<MapState> {
     }
   }
 
+  Future<void> selectMeetPoint({
+    required double latitude,
+    required double longitude,
+  }) async {
+    final current = state.value;
+    if (current == null) {
+      return;
+    }
+
+    final meetPoint = Building(
+      code: '${latitude.toStringAsFixed(5)}, ${longitude.toStringAsFixed(5)}',
+      id: 'meet_${latitude}_$longitude',
+      latitude: latitude,
+      longitude: longitude,
+      name: '${latitude.toStringAsFixed(5)}, ${longitude.toStringAsFixed(5)}',
+    );
+
+    selectBuilding(meetPoint);
+    await loadRoute();
+  }
+
   Future<void> loadRoute() async {
     final current = state.value;
     if (current?.selectedBuilding == null) {

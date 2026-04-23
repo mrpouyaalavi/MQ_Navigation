@@ -2071,6 +2071,24 @@
   "quietHoursStart": "Starts at",
   "quietHoursEnd": "Ends at",
   "highContrastMap": "High-Contrast Map",
+  "importTimetable": "Import Timetable",
+  "importTimetableDone": "Timetable imported",
+  "offlineCampusMaps": "Offline Campus Maps",
+  "offlineCampusMapsDownload": "Download Campus Maps for Offline Use",
+  "offlineCampusMapsDownloading": "Downloading offline campus maps...",
+  "offlineCampusMapsReady": "Offline campus maps are ready",
+  "homeNextClassLabel": "Next Class",
+  "homeNextClassEmpty": "No classes remaining today",
+  "homeNextMetroLabel": "Next Metro",
+  "homeNextMetroEmpty": "No upcoming metro departures",
+  "minutesShort": "{minutes} min",
+  "@minutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
   "devDiagnostics": "Dev Diagnostics",
   "buildVersion": "Build: 2026.04.22-beta",
   "renderer": "Renderer: CrsSimple (Campus)",

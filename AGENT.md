@@ -88,6 +88,24 @@ Located in project root:
 
 See `CHANGELOG.md` for full development history.
 
+### Raouf: 2026-04-23 (AEST) — TfNSW + timetable import + offline tiles implementation
+**Scope:** Feature expansion across Home, Settings, map fallback renderer, and Supabase Edge Functions.
+**Summary:** Implemented the remaining three blueprint features: new `tfnsw-proxy` edge function + Home metro polling card, local `.ics` timetable import and persistence with Home next-class card map jump, and offline tile caching with `flutter_map_tile_caching` including backend initialisation, cached tile provider integration in desktop fallback maps, and Settings controls for enabling/downloading offline campus tiles.
+**Files Changed:** `pubspec.yaml`, `pubspec.lock`, `lib/app/bootstrap/bootstrap.dart`, `lib/app/l10n/app_en.arb`, `lib/features/home/presentation/pages/home_page.dart`, `lib/features/map/data/services/offline_maps_service.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/timetable/data/repositories/timetable_repository.dart`, `lib/features/timetable/data/services/timetable_import_service.dart`, `lib/features/timetable/domain/entities/timetable_class.dart`, `lib/features/timetable/presentation/providers/timetable_provider.dart`, `lib/features/transit/domain/entities/metro_departure.dart`, `lib/features/transit/presentation/providers/tfnsw_provider.dart`, `lib/shared/models/user_preferences.dart`, `supabase/functions/tfnsw-proxy/index.ts`.
+**Verification:** `./scripts/check.sh` → 6/6 passed (format, analyze, 144 tests, gen-l10n, debug APK build).
+
+### Raouf: 2026-04-23 (AEST) — Dark/Light parity audit hardening
+**Scope:** Final cross-mode parity and contrast audit for Home + Settings.
+**Summary:** Re-audited dark/light branches for all custom Home and Settings surfaces, accents, and interactive cards. Confirmed parity for scaffold backgrounds, radial glow behavior, card border tokens, and section-header accents. Fixed one remaining contrast mismatch in `SettingsPage` Danger Zone subtitle where light mode mistakenly used a dark-mode content token (`contentPrimaryDark`), replacing it with `contentSecondary` for correct light-mode readability.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
+### Raouf: 2026-04-23 (AEST) — Meet Me Here deep-link routing + map share
+**Scope:** Deep-link navigation wiring for shared map points.
+**Summary:** Implemented `io.mqnavigation://meet` deep-link support with a dedicated `/meet` route, app-level incoming deep-link handling, and campus map long-press sharing. Added meet-point preselection in `MapPage`/`MapController` so incoming shared coordinates open directly as a destination and immediately trigger route loading.
+**Files Changed:** `pubspec.yaml`, `android/app/src/main/AndroidManifest.xml`, `lib/app/mq_navigation_app.dart`, `lib/app/router/app_router.dart`, `lib/app/router/route_names.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/campus/campus_map_view.dart`.
+**Verification:** `./scripts/check.sh --quick` → 5/5 passed (format, analyze, 144 tests, gen-l10n).
+
 ### Raouf: 2026-04-23 (AEST) — Dark/Light parity audit pass (Home + Settings)
 **Scope:** Visual parity verification for dark mode and light mode branches.
 **Summary:** Performed a full parity audit across `HomePage` and `SettingsPage` surface/background/accent usage. Confirmed shared scaffold backgrounds (`alabaster` light / `charcoal850` dark), matching dark-mode radial glow treatment, and consistent card token usage (`sand200`/`white-13%` borders, `charcoal850` dark surfaces). Fixed one remaining mismatch by aligning Home section-header light accent from `brightRed` to `red` so it matches Settings headers exactly. Also corrected stale Home documentation comment to reflect that the background photo now renders in both theme modes.

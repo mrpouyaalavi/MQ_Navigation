@@ -22,6 +22,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       // Notifications sits outside the shell so it covers the bottom nav bar.
       GoRoute(
+        path: '/meet',
+        name: RouteNames.meet,
+        builder: (context, state) {
+          final lat = double.tryParse(state.uri.queryParameters['lat'] ?? '');
+          final lng = double.tryParse(state.uri.queryParameters['lng'] ?? '');
+          return MapPage(meetLat: lat, meetLng: lng);
+        },
+      ),
+      GoRoute(
         path: '/notifications',
         name: RouteNames.notifications,
         builder: (context, state) => const NotificationsPage(),

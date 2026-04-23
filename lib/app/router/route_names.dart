@@ -1,5 +1,6 @@
 /// Named route constants used throughout the app.
 abstract final class RouteNames {
+  static const String meet = 'meet';
   static const String notifications = 'notifications';
 
   // Shell tabs

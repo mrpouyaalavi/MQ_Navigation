@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart' as latlong;
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
@@ -15,7 +17,7 @@ import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers
 /// Uses `flutter_map` with OpenStreetMap tiles to provide a real interactive
 /// map experience. Supports building markers, route polylines, user location,
 /// and camera animations just like the native Google Maps renderer.
-class DesktopMapFallbackView extends StatefulWidget {
+class DesktopMapFallbackView extends ConsumerStatefulWidget {
   const DesktopMapFallbackView({
     super.key,
     required this.searchResults,
@@ -36,15 +38,24 @@ class DesktopMapFallbackView extends StatefulWidget {
   final ValueChanged<Building> onSelectBuilding;
 
   @override
-  State<DesktopMapFallbackView> createState() => _DesktopMapFallbackViewState();
+  ConsumerState<DesktopMapFallbackView> createState() =>
+      _DesktopMapFallbackViewState();
 }
 
-class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
+class _DesktopMapFallbackViewState
+    extends ConsumerState<DesktopMapFallbackView> {
   final MapController _controller = MapController();
+  late final TileProvider _tileProvider;
   bool _hasFitRouteBounds = false;
 
   static const _campusCenter = latlong.LatLng(-33.7738, 151.1130);
   static const _initialZoom = 15.5;
+
+  @override
+  void initState() {
+    super.initState();
+    _tileProvider = ref.read(offlineMapsServiceProvider).tileProvider();
+  }
 
   @override
   void didUpdateWidget(covariant DesktopMapFallbackView oldWidget) {
@@ -141,6 +152,7 @@ class _DesktopMapFallbackViewState extends State<DesktopMapFallbackView> {
           subdomains: isDark ? const ['a', 'b', 'c', 'd'] : const [],
           userAgentPackageName: 'io.mqnavigation.mq_navigation',
           retinaMode: true,
+          tileProvider: _tileProvider,
         ),
         // Route polylines
         if (widget.route != null) _buildRouteLayer(),

@@ -9,6 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:mq_navigation/core/config/env_config.dart';
 import 'package:mq_navigation/core/error/error_boundary.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
+import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
 import 'package:mq_navigation/features/notifications/data/datasources/fcm_service.dart';
 
 /// Initialises all critical services before the widget tree mounts.
@@ -57,6 +58,7 @@ Future<void> bootstrap(Widget Function() appBuilder) async {
       );
 
       AppLogger.info('Supabase initialised', EnvConfig.appEnv);
+      await const OfflineMapsService().initializeBackend();
 
       // Start the app wrapped in Riverpod's ProviderScope for state management
       // and a top-level ErrorBoundary to catch rendering exceptions.

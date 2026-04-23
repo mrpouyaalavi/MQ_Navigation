@@ -6,7 +6,10 @@ import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/core/utils/haptics.dart';
 import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
+import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/features/timetable/data/services/timetable_import_service.dart';
+import 'package:mq_navigation/features/timetable/presentation/providers/timetable_provider.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
 import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
@@ -243,6 +246,62 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     _SectionHeader(title: l10n.accessibility),
                     _SettingsCard(
                       children: [
+                        _TapRow(
+                          icon: Icons.calendar_month_outlined,
+                          label: l10n.importTimetable,
+                          value: '',
+                          semanticLabel: l10n.importTimetable,
+                          hapticsEnabled: preferences.hapticsEnabled,
+                          onTap: () async {
+                            final count = await ref
+                                .read(timetableImportServiceProvider)
+                                .importFromPicker();
+                            ref.invalidate(timetableClassesProvider);
+                            ref.invalidate(nextTimetableClassProvider);
+                            if (!context.mounted) {
+                              return;
+                            }
+                            if (count > 0) {
+                              context.showSnackBar(
+                                '${l10n.importTimetableDone}: $count',
+                              );
+                            }
+                          },
+                        ),
+                        _ToggleRow(
+                          icon: Icons.download_for_offline_outlined,
+                          label: l10n.offlineCampusMaps,
+                          value: preferences.offlineCampusMapsEnabled,
+                          semanticLabel: l10n.offlineCampusMaps,
+                          hapticsEnabled: preferences.hapticsEnabled,
+                          onChanged: (v) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateOfflineCampusMapsEnabled(v),
+                        ),
+                        if (preferences.offlineCampusMapsEnabled)
+                          _TapRow(
+                            icon: Icons.cloud_download_outlined,
+                            label: l10n.offlineCampusMapsDownload,
+                            value: '',
+                            semanticLabel: l10n.offlineCampusMapsDownload,
+                            hapticsEnabled: preferences.hapticsEnabled,
+                            onTap: () async {
+                              if (!context.mounted) {
+                                return;
+                              }
+                              context.showSnackBar(
+                                l10n.offlineCampusMapsDownloading,
+                              );
+                              await ref
+                                  .read(offlineMapsServiceProvider)
+                                  .downloadCampusTiles();
+                              if (context.mounted) {
+                                context.showSnackBar(
+                                  l10n.offlineCampusMapsReady,
+                                );
+                              }
+                            },
+                          ),
                         _ToggleRow(
                           icon: Icons.motion_photos_off_outlined,
                           label: l10n.reducedMotion,
@@ -784,9 +843,7 @@ class _DangerZoneCard extends StatelessWidget {
                       style: context.textTheme.bodySmall?.copyWith(
                         color: dark
                             ? Colors.white.withValues(alpha: 0.75)
-                            : MqColors.contentPrimaryDark.withValues(
-                                alpha: 0.75,
-                              ),
+                            : MqColors.contentSecondary.withValues(alpha: 0.85),
                       ),
                     ),
                   ],

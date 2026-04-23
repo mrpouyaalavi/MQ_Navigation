@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart' as latlong;
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/core/utils/haptics.dart';
 import 'package:mq_navigation/features/map/data/datasources/map_assets_source.dart';
 import 'package:mq_navigation/features/map/data/mappers/campus_projection_impl.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
@@ -18,6 +19,7 @@ import 'package:mq_navigation/features/map/presentation/widgets/campus/campus_ma
 import 'package:mq_navigation/features/map/presentation/widgets/campus/campus_overlay_layers.dart';
 import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 import 'package:mq_navigation/shared/widgets/mq_card.dart';
+import 'package:share_plus/share_plus.dart';
 
 /// The primary `flutter_map` renderer for the 2D illustrated campus map.
 ///
@@ -101,6 +103,26 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
       );
       return;
     }
+  }
+
+  void _shareCustomLocation({
+    required BuildContext context,
+    required double latitude,
+    required double longitude,
+  }) {
+    final l10n = AppLocalizations.of(context)!;
+    MqHaptics.heavy(true);
+    final uri = Uri(
+      scheme: 'io.mqnavigation',
+      host: 'meet',
+      queryParameters: {
+        'lat': latitude.toString(),
+        'lng': longitude.toString(),
+      },
+    );
+    SharePlus.instance.share(
+      ShareParams(text: '${l10n.appName} ${uri.toString()}'),
+    );
   }
 
   @override
@@ -215,6 +237,13 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                   maxZoom: meta.maxZoom,
                   // Constrain the camera to the campus bounds so users don't pan into the void.
                   cameraConstraint: CameraConstraint.contain(bounds: bounds),
+                  onLongPress: (tapPosition, latLng) {
+                    _shareCustomLocation(
+                      context: context,
+                      latitude: latLng.latitude,
+                      longitude: latLng.longitude,
+                    );
+                  },
                   onMapReady: () => _handleMapReady(meta, projection),
                 ),
                 children: [

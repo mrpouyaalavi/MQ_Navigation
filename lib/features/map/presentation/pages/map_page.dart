@@ -24,10 +24,18 @@ import 'package:mq_navigation/shared/widgets/mq_button.dart';
 /// its unified state down to the active renderer ([CampusMapView] or
 /// [GoogleMapView]). Also manages bottom sheets for search and overlays.
 class MapPage extends ConsumerStatefulWidget {
-  const MapPage({super.key, this.initialBuildingId, this.initialSearchQuery});
+  const MapPage({
+    super.key,
+    this.initialBuildingId,
+    this.initialSearchQuery,
+    this.meetLat,
+    this.meetLng,
+  });
 
   final String? initialBuildingId;
   final String? initialSearchQuery;
+  final double? meetLat;
+  final double? meetLng;
 
   @override
   ConsumerState<MapPage> createState() => _MapPageState();
@@ -62,8 +70,16 @@ class _MapPageState extends ConsumerState<MapPage> {
   void initState() {
     super.initState();
     final buildingId = widget.initialBuildingId;
+    final meetLat = widget.meetLat;
+    final meetLng = widget.meetLng;
     final searchQuery = widget.initialSearchQuery;
-    if (buildingId != null) {
+    if (meetLat != null && meetLng != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .read(mapControllerProvider.notifier)
+            .selectMeetPoint(latitude: meetLat, longitude: meetLng);
+      });
+    } else if (buildingId != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(mapControllerProvider.notifier).selectBuildingById(buildingId);
       });
