@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mq_navigation/app/router/app_shell.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/core/config/env_config.dart';
+import 'package:mq_navigation/features/deep_link/deep_link_contract.dart';
 import 'package:mq_navigation/features/home/presentation/pages/home_page.dart';
 import 'package:mq_navigation/features/map/presentation/pages/map_page.dart';
 import 'package:mq_navigation/features/notifications/presentation/pages/notifications_page.dart';
@@ -20,6 +21,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/home',
     debugLogDiagnostics: EnvConfig.isDevelopment,
     routes: [
+      // Syllabus Sync integration entry point.
+      //
+      // Stable, versioned public URL — see deep_link_contract.dart for the
+      // supported payload shape. Internal routes may change; this one may
+      // NOT change without a compatibility plan for Syllabus Sync clients.
+      GoRoute(
+        path: '/open',
+        redirect: (context, state) {
+          final target = parseMqNavDeepLink(state.uri.queryParameters);
+          return switch (target) {
+            DeepLinkBuilding(:final buildingId) =>
+              '/map/building/${Uri.encodeComponent(buildingId)}',
+            DeepLinkSearch(:final query) =>
+              '/map?q=${Uri.encodeQueryComponent(query)}',
+            DeepLinkMeetAt(:final latitude, :final longitude) =>
+              '/meet?lat=$latitude&lng=$longitude',
+            DeepLinkFallback() => '/map',
+          };
+        },
+      ),
       // Notifications sits outside the shell so it covers the bottom nav bar.
       GoRoute(
         path: '/meet',

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/map/presentation/controllers/map_controller.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
-import 'package:mq_navigation/features/timetable/domain/entities/timetable_class.dart';
-import 'package:mq_navigation/features/timetable/presentation/providers/timetable_provider.dart';
 import 'package:mq_navigation/features/transit/domain/entities/metro_departure.dart';
 import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
@@ -18,18 +15,15 @@ import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
 
 /// Home screen for the MQ Navigation app.
 ///
-/// Visual language is locked in 100% parity with [SettingsPage]:
-/// * Dual-theme tokens only — light & dark branches for every surface,
-///   border and content colour.
-/// * Dark mode wears the same red radial glow that sits on top of the
-///   Settings page.
-/// * Section headers use the Settings "uppercase / letter-spaced / red"
-///   treatment.
-/// * Cards share the same `charcoal850 / white`, `sand200 / white-13%`
-///   border, `radiusXl` rounding as Settings cards.
+/// Structure (top → bottom):
+///   1. Branded header
+///   2. Hero (welcome + CTA)
+///   3. Metro Countdown glanceable card (configurable from Settings)
+///   4. Quick Access bento grid — campus navigation categories only
 ///
-/// Both theme branches keep the branded campus photograph with an adaptive
-/// overlay so contrast stays readable in light and dark mode.
+/// Removed intentionally: "Next Class" card (no timetable ingestion) and
+/// the "Events" tile from Quick Access — both sit outside the app's
+/// navigation-focused scope.
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
@@ -38,18 +32,16 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dark = context.isDarkMode;
-    final hapticsEnabled =
-        ref.watch(settingsControllerProvider).value?.hapticsEnabled ?? true;
     final preferences =
         ref.watch(settingsControllerProvider).value ?? const UserPreferences();
-    final nextClass = ref.watch(nextTimetableClassProvider);
+    final hapticsEnabled = preferences.hapticsEnabled;
     final metroDepartures = ref.watch(tfnswMetroProvider);
+
     return Scaffold(
       backgroundColor: dark ? MqColors.charcoal850 : MqColors.alabaster,
       body: Stack(
         children: [
           _CampusBackground(asset: _backgroundAsset, isDark: dark),
-          // Settings-parity red radial glow — dark mode only.
           if (dark)
             Positioned(
               top: -80,
@@ -88,18 +80,13 @@ class HomePage extends ConsumerWidget {
                       children: [
                         const _HeroSection(),
                         const SizedBox(height: MqSpacing.space8),
-                        _LiveCardsSection(
+                        _MetroCountdownCard(
                           commuteMode: preferences.commuteMode,
                           favoriteRoute: preferences.favoriteRoute,
                           hapticsEnabled: hapticsEnabled,
                           metroDepartures: metroDepartures,
-                          nextClass: nextClass,
-                          onTapClass: (location) {
-                            ref
-                                .read(mapControllerProvider.notifier)
-                                .updateSearchQuery(location);
-                            context.goNamed(RouteNames.map);
-                          },
+                          onConfigureTap: () =>
+                              context.goNamed(RouteNames.settings),
                         ),
                         const SizedBox(height: MqSpacing.space8),
                         _QuickAccessSection(
@@ -127,159 +114,279 @@ class HomePage extends ConsumerWidget {
   }
 }
 
-class _LiveCardsSection extends StatelessWidget {
-  const _LiveCardsSection({
+// -------------------------------------------------------------------------- //
+// METRO COUNTDOWN CARD                                                       //
+// -------------------------------------------------------------------------- //
+
+/// Compact, glanceable card showing the next departure for the user's
+/// configured commute line. If no commute has been set up yet, the card
+/// shows a friendly "Set up your commute" CTA that routes to Settings.
+class _MetroCountdownCard extends StatelessWidget {
+  const _MetroCountdownCard({
     required this.commuteMode,
     required this.favoriteRoute,
     required this.hapticsEnabled,
     required this.metroDepartures,
-    required this.nextClass,
-    required this.onTapClass,
+    required this.onConfigureTap,
   });
 
   final String commuteMode;
   final String favoriteRoute;
   final bool hapticsEnabled;
   final AsyncValue<List<MetroDeparture>> metroDepartures;
-  final AsyncValue<TimetableClass?> nextClass;
-  final void Function(String location) onTapClass;
+  final VoidCallback onConfigureTap;
+
+  bool get _isConfigured => commuteMode != 'none';
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
-    final metro = metroDepartures.asData?.value;
-    final upcomingClass = nextClass.asData?.value;
-    final classTime = upcomingClass == null
-        ? null
-        : DateFormat.Hm().format(upcomingClass.startTime);
 
-    final departures = metro ?? const <MetroDeparture>[];
-    final metroSubtitle = departures.isEmpty
-        ? l10n.homeNextMetroEmpty
-        : '${departures.first.destination} • ${l10n.minutesShort(departures.first.minutesUntilDeparture)}';
+    final surface = dark
+        ? MqColors.charcoal850
+        : Colors.white.withValues(alpha: 0.88);
+    final border = dark ? Colors.white.withAlpha(13) : MqColors.sand200;
+    final accent = dark ? MqColors.vividRed : MqColors.red;
+    final titleColor = dark
+        ? MqColors.contentPrimaryDark
+        : MqColors.contentPrimary;
+    final subtitleColor = dark
+        ? MqColors.contentSecondaryDark
+        : MqColors.contentSecondary;
 
-    final metroTitle = commuteMode == 'none'
-        ? l10n.homeNextMetroLabel
-        : l10n.homeCommuteCountdownLabel(switch (commuteMode) {
-            'metro' => l10n.commuteModeMetro,
-            'bus' => l10n.commuteModeBus,
-            'train' => l10n.commuteModeTrain,
-            _ => l10n.commuteModeNotSet,
-          });
+    final modeIcon = switch (commuteMode) {
+      'metro' => Icons.directions_subway,
+      'bus' => Icons.directions_bus,
+      'train' => Icons.directions_train,
+      _ => Icons.directions_transit_outlined,
+    };
+    final modeLabel = switch (commuteMode) {
+      'metro' => l10n.commuteModeMetro,
+      'bus' => l10n.commuteModeBus,
+      'train' => l10n.commuteModeTrain,
+      _ => l10n.commuteModeNotSet,
+    };
 
-    final classSubtitle = upcomingClass == null
-        ? l10n.homeNextClassEmpty
-        : '$classTime • ${upcomingClass.name}';
-
-    return Column(
-      children: [
-        _LiveInfoCard(
-          hapticsEnabled: hapticsEnabled,
-          icon: Icons.directions_transit,
-          isDark: dark,
-          subtitle: metroSubtitle,
-          title: metroTitle,
+    Widget content;
+    if (!_isConfigured) {
+      content = _EmptyState(
+        accent: accent,
+        subtitleColor: subtitleColor,
+        titleColor: titleColor,
+      );
+    } else {
+      content = metroDepartures.when(
+        data: (list) => _DepartureBody(
+          accent: accent,
+          favoriteRoute: favoriteRoute,
+          modeIcon: modeIcon,
+          modeLabel: modeLabel,
+          departures: list,
+          subtitleColor: subtitleColor,
+          titleColor: titleColor,
         ),
-        const SizedBox(height: MqSpacing.space3),
-        _LiveInfoCard(
-          hapticsEnabled: hapticsEnabled,
-          icon: Icons.calendar_today_outlined,
-          isDark: dark,
-          subtitle: classSubtitle,
-          title: l10n.homeNextClassLabel,
-          onTap: upcomingClass == null
-              ? null
-              : () => onTapClass(upcomingClass.location),
+        loading: () => _LoadingBody(subtitleColor: subtitleColor),
+        error: (_, _) => _ErrorBody(subtitleColor: subtitleColor),
+      );
+    }
+
+    return MqTactileButton(
+      hapticsEnabled: hapticsEnabled,
+      onTap: onConfigureTap,
+      borderRadius: MqSpacing.radiusXl,
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: surface,
+          borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
+          border: Border.all(color: border),
+        ),
+        padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: accent.withValues(alpha: dark ? 0.22 : 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(modeIcon, color: accent, size: 22),
+            ),
+            const SizedBox(width: MqSpacing.space3),
+            Expanded(child: content),
+            Icon(
+              Icons.tune_rounded,
+              size: 20,
+              color: dark ? Colors.white54 : MqColors.contentTertiary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState({
+    required this.accent,
+    required this.subtitleColor,
+    required this.titleColor,
+  });
+
+  final Color accent;
+  final Color subtitleColor;
+  final Color titleColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          l10n.homeNextMetroLabel,
+          style: context.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: titleColor,
+          ),
+        ),
+        const SizedBox(height: MqSpacing.space1),
+        Text(
+          l10n.commuteModeNotSet,
+          style: context.textTheme.bodySmall?.copyWith(color: subtitleColor),
         ),
       ],
     );
   }
 }
 
-class _LiveInfoCard extends StatelessWidget {
-  const _LiveInfoCard({
-    required this.hapticsEnabled,
-    required this.icon,
-    required this.isDark,
-    required this.subtitle,
-    required this.title,
-    this.onTap,
-  });
+class _LoadingBody extends StatelessWidget {
+  const _LoadingBody({required this.subtitleColor});
 
-  final bool hapticsEnabled;
-  final IconData icon;
-  final bool isDark;
-  final String subtitle;
-  final String title;
-  final VoidCallback? onTap;
+  final Color subtitleColor;
 
   @override
   Widget build(BuildContext context) {
-    final card = Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: isDark
-            ? MqColors.charcoal850
-            : Colors.white.withValues(alpha: 0.88),
-        borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
-        border: Border.all(
-          color: isDark ? Colors.white.withAlpha(13) : MqColors.sand200,
+    final l10n = AppLocalizations.of(context)!;
+    return Row(
+      children: [
+        SizedBox(
+          width: 14,
+          height: 14,
+          child: CircularProgressIndicator(strokeWidth: 2, color: subtitleColor),
         ),
-      ),
-      padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
-      child: Row(
-        children: [
-          Icon(icon, color: isDark ? MqColors.vividRed : MqColors.red),
-          const SizedBox(width: MqSpacing.space3),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: context.textTheme.titleSmall?.copyWith(
-                    color: isDark
-                        ? MqColors.contentPrimaryDark
-                        : MqColors.contentPrimary,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: MqSpacing.space1),
-                Text(
-                  subtitle,
-                  style: context.textTheme.bodySmall?.copyWith(
-                    color: isDark
-                        ? MqColors.contentSecondaryDark
-                        : MqColors.contentSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (onTap != null)
-            Icon(
-              Icons.chevron_right,
-              color: isDark ? Colors.white70 : MqColors.contentTertiary,
-            ),
-        ],
-      ),
+        const SizedBox(width: MqSpacing.space2),
+        Text(
+          l10n.loading,
+          style: context.textTheme.bodySmall?.copyWith(color: subtitleColor),
+        ),
+      ],
     );
+  }
+}
 
-    if (onTap == null) {
-      return card;
-    }
+class _ErrorBody extends StatelessWidget {
+  const _ErrorBody({required this.subtitleColor});
 
-    return MqTactileButton(
-      hapticsEnabled: hapticsEnabled,
-      onTap: onTap!,
-      child: card,
+  final Color subtitleColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Text(
+      l10n.homeNextMetroEmpty,
+      style: context.textTheme.bodySmall?.copyWith(color: subtitleColor),
+    );
+  }
+}
+
+class _DepartureBody extends StatelessWidget {
+  const _DepartureBody({
+    required this.accent,
+    required this.favoriteRoute,
+    required this.modeIcon,
+    required this.modeLabel,
+    required this.departures,
+    required this.subtitleColor,
+    required this.titleColor,
+  });
+
+  final Color accent;
+  final String favoriteRoute;
+  final IconData modeIcon;
+  final String modeLabel;
+  final List<MetroDeparture> departures;
+  final Color subtitleColor;
+  final Color titleColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final next = departures.isEmpty ? null : departures.first;
+    final routeSuffix = favoriteRoute.trim().isEmpty
+        ? ''
+        : ' • $favoriteRoute';
+
+    final title = next == null
+        ? l10n.homeNextMetroLabel
+        : l10n.minutesShort(next.minutesUntilDeparture);
+    final subtitle = next == null
+        ? l10n.homeNextMetroEmpty
+        : '${next.destination}$routeSuffix';
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Text(
+              '$modeLabel  ·  ',
+              style: context.textTheme.labelSmall?.copyWith(
+                color: accent,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.0,
+              ),
+            ),
+            Flexible(
+              child: Text(
+                next == null ? '—' : l10n.homeNextMetroLabel,
+                style: context.textTheme.labelSmall?.copyWith(
+                  color: subtitleColor,
+                  letterSpacing: 0.6,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 2),
+        Text(
+          title,
+          style: context.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w800,
+            color: titleColor,
+            letterSpacing: -0.2,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          subtitle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: context.textTheme.bodySmall?.copyWith(color: subtitleColor),
+        ),
+      ],
     );
   }
 }
 
 // -------------------------------------------------------------------------- //
-// CAMPUS BACKGROUND //
+// CAMPUS BACKGROUND                                                          //
 // -------------------------------------------------------------------------- //
 
 class _CampusBackground extends StatelessWidget {
@@ -301,7 +408,6 @@ class _CampusBackground extends StatelessWidget {
             errorBuilder: (_, _, _) =>
                 const ColoredBox(color: MqColors.alabaster),
           ),
-          // Lighter overlay keeps text readable without making image look blurry.
           Container(
             color: isDark
                 ? MqColors.charcoal950.withValues(alpha: 0.42)
@@ -314,7 +420,7 @@ class _CampusBackground extends StatelessWidget {
 }
 
 // -------------------------------------------------------------------------- //
-// BRANDED TOP HEADER //
+// BRANDED TOP HEADER                                                         //
 // -------------------------------------------------------------------------- //
 
 class _HomeHeader extends StatelessWidget {
@@ -325,7 +431,6 @@ class _HomeHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
 
-    // Matches the Settings card border / divider convention exactly.
     final borderColor = dark ? Colors.white.withAlpha(13) : MqColors.sand200;
     final surfaceColor = dark
         ? MqColors.charcoal850.withValues(alpha: 0.92)
@@ -361,7 +466,7 @@ class _HomeHeader extends StatelessWidget {
 }
 
 // -------------------------------------------------------------------------- //
-// WELCOME + CTA HERO //
+// WELCOME + CTA HERO                                                         //
 // -------------------------------------------------------------------------- //
 
 class _HeroSection extends StatelessWidget {
@@ -460,9 +565,12 @@ class _HeroSection extends StatelessWidget {
 }
 
 // -------------------------------------------------------------------------- //
-// QUICK ACCESS GRID //
+// QUICK ACCESS                                                               //
 // -------------------------------------------------------------------------- //
 
+/// Bento layout tuned for balance without Events:
+///   Row 1  |  Hero: Student Services  |  Stack: Parking + Campus Hub
+///   Row 2  |  3 equal tiles:  Faculty · Food & Drink · Transport
 class _QuickAccessSection extends StatelessWidget {
   const _QuickAccessSection({
     required this.hapticsEnabled,
@@ -475,7 +583,6 @@ class _QuickAccessSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-
     final dark = context.isDarkMode;
 
     return Column(
@@ -513,10 +620,10 @@ class _QuickAccessSection extends StatelessWidget {
                     Expanded(
                       child: _BentoCompactCard(
                         hapticsEnabled: hapticsEnabled,
-                        icon: Icons.event,
+                        icon: Icons.account_balance,
                         isDark: dark,
-                        label: l10n.events,
-                        onTap: () => onTapCategory('events'),
+                        label: l10n.home_campusHub,
+                        onTap: () => onTapCategory('campus hub'),
                       ),
                     ),
                   ],
@@ -526,7 +633,7 @@ class _QuickAccessSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: MqSpacing.space4),
-        _SecondaryQuickRow(
+        _TertiaryQuickRow(
           hapticsEnabled: hapticsEnabled,
           items: [
             _QuickAccessItem(
@@ -535,19 +642,14 @@ class _QuickAccessSection extends StatelessWidget {
               searchQuery: 'faculty',
             ),
             _QuickAccessItem(
-              icon: Icons.account_balance,
-              label: l10n.home_campusHub,
-              searchQuery: 'campus hub',
+              icon: Icons.restaurant,
+              label: l10n.home_foodDrink,
+              searchQuery: 'food',
             ),
             _QuickAccessItem(
               icon: Icons.directions_bus,
               label: l10n.home_transport,
               searchQuery: 'bus',
-            ),
-            _QuickAccessItem(
-              icon: Icons.restaurant,
-              label: l10n.home_foodDrink,
-              searchQuery: 'food',
             ),
           ],
           onTapCategory: onTapCategory,
@@ -569,7 +671,6 @@ class _QuickAccessItem {
   final String searchQuery;
 }
 
-/// Uppercase red section header — identical treatment to [SettingsPage].
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({required this.title});
 
@@ -729,8 +830,10 @@ class _BentoHeroCard extends StatelessWidget {
   }
 }
 
-class _SecondaryQuickRow extends StatelessWidget {
-  const _SecondaryQuickRow({
+/// 3-across compact row — replaces the 4-item wrap grid so the
+/// tertiary tiles feel intentional after Events was removed.
+class _TertiaryQuickRow extends StatelessWidget {
+  const _TertiaryQuickRow({
     required this.hapticsEnabled,
     required this.items,
     required this.onTapCategory,
@@ -743,20 +846,16 @@ class _SecondaryQuickRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
-    return Wrap(
-      spacing: MqSpacing.space3,
-      runSpacing: MqSpacing.space3,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (final item in items)
-          SizedBox(
-            width:
-                (context.screenWidth -
-                    (MqSpacing.space5 * 2) -
-                    MqSpacing.space3) /
-                2,
+        for (var i = 0; i < items.length; i++) ...[
+          if (i != 0) const SizedBox(width: MqSpacing.space3),
+          Expanded(
             child: MqTactileButton(
               hapticsEnabled: hapticsEnabled,
-              onTap: () => onTapCategory(item.searchQuery),
+              onTap: () => onTapCategory(items[i].searchQuery),
+              borderRadius: MqSpacing.radiusLg,
               child: Container(
                 decoration: BoxDecoration(
                   color: isDark
@@ -771,27 +870,27 @@ class _SecondaryQuickRow extends StatelessWidget {
                 ),
                 padding: const EdgeInsetsDirectional.symmetric(
                   horizontal: MqSpacing.space3,
-                  vertical: MqSpacing.space3,
+                  vertical: MqSpacing.space4,
                 ),
-                child: Row(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      item.icon,
+                      items[i].icon,
                       size: MqSpacing.iconMd,
                       color: isDark ? MqColors.vividRed : MqColors.red,
                     ),
-                    const SizedBox(width: MqSpacing.space2),
-                    Expanded(
-                      child: Text(
-                        item.label,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: isDark
-                              ? MqColors.contentPrimaryDark
-                              : MqColors.contentPrimary,
-                        ),
+                    const SizedBox(height: MqSpacing.space2),
+                    Text(
+                      items[i].label,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: context.textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: isDark
+                            ? MqColors.contentPrimaryDark
+                            : MqColors.contentPrimary,
                       ),
                     ),
                   ],
@@ -799,6 +898,7 @@ class _SecondaryQuickRow extends StatelessWidget {
               ),
             ),
           ),
+        ],
       ],
     );
   }
