@@ -14,11 +14,13 @@ class OfflineMapsService {
   const OfflineMapsService();
 
   Future<void> ensureStore() async {
-    await FMTCStore(campusOfflineStoreName).manage.create();
+    await const FMTCStore(campusOfflineStoreName).manage.create();
   }
 
   TileProvider tileProvider() {
-    return FMTCStore(campusOfflineStoreName).getTileProvider();
+    return FMTCTileProvider(
+      stores: const {campusOfflineStoreName: null},
+    );
   }
 
   Future<void> downloadCampusTiles() async {
@@ -35,7 +37,7 @@ class OfflineMapsService {
       ),
     ).toDownloadable(minZoom: 15, maxZoom: 18, options: tileLayer);
 
-    final streams = FMTCStore(
+    final streams = const FMTCStore(
       campusOfflineStoreName,
     ).download.startForeground(region: region, skipExistingTiles: true);
     await streams.downloadProgress.last;
