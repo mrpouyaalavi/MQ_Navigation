@@ -846,8 +846,8 @@ class _TertiaryQuickRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return IntrinsicHeight(
+      child: Row(
       children: [
         for (var i = 0; i < items.length; i++) ...[
           if (i != 0) const SizedBox(width: MqSpacing.space3),
@@ -900,6 +900,7 @@ class _TertiaryQuickRow extends StatelessWidget {
           ),
         ],
       ],
+      ),
     );
   }
 }
