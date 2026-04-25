@@ -150,7 +150,8 @@ class MapShell extends StatelessWidget {
         if (renderer == MapRendererType.campus && onOpenOverlayPicker != null)
           Positioned(
             left: MqSpacing.space4,
-            bottom: safeBottom +
+            bottom:
+                safeBottom +
                 (footerWidget != null ? _footerClearance : MqSpacing.space4),
             child: _GlassIconButton(
               isDark: isDark,
@@ -163,7 +164,8 @@ class MapShell extends StatelessWidget {
         // ── Location button — bottom-right ─────────────────
         Positioned(
           right: MqSpacing.space4,
-          bottom: safeBottom +
+          bottom:
+              safeBottom +
               (footerWidget != null ? _footerClearance : MqSpacing.space4),
           child: _BrandCircleButton(
             icon: Icons.my_location,
