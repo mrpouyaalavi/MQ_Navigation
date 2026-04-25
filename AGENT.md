@@ -88,6 +88,13 @@ Located in project root:
 
 See `CHANGELOG.md` for full development history.
 
+### Raouf: 2026-04-25 (AEST) — Stop picker overflow + live TfNSW departures fix
+**Scope:** Settings stop picker layout and Home live commute departures.
+**Summary:** Fixed the yellow Flutter bottom overflow stripe by padding the Preferred Stop bottom sheet against the active keyboard inset. Fixed the deployed TfNSW departure proxy so live commute cards parse `stopEvents` responses, request real-time departure monitor output, and filter transport modes with TfNSW `excludedMeans`/`exclMOT_*` parameters instead of the ineffective `itdMot` parameter.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/home/presentation/pages/home_page.dart`, `supabase/functions/tfnsw-proxy/index.ts`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `flutter analyze` → no issues; `flutter test` → 151/151 passed; `deno fmt --check supabase/functions/tfnsw-proxy/index.ts` → pass; `deno check supabase/functions/tfnsw-proxy/index.ts` → pass; `supabase functions deploy tfnsw-proxy --no-verify-jwt` → success; deployed metro endpoint for stop `211310` returned 3 live M1 departures; deployed bus endpoint for stop `G2113230` returned 3 live bus departures; `ReadLints` on edited Flutter files → no linter errors.
+**Follow-ups:** Reopen the app or refresh Home so the stream hits the newly deployed `tfnsw-proxy`.
+
 ### Raouf: 2026-04-23 (AEST) — Commute Preferences in Settings + Home countdown filtering
 **Scope:** Settings personalization and Home live departure behavior.
 **Summary:** Added persisted `commuteMode` and `favoriteRoute` preferences, a new Settings commute card (transport picker + route input dialog), and Home live-card filtering so departure countdown focuses on the user’s saved route/line preference. Added all new copy via i18n keys and synchronized them to all locale ARB files.

@@ -446,11 +446,11 @@ class _HomeHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.school, color: accent, size: MqSpacing.iconDefault),
+          const Icon(Icons.school, color: accent, size: MqSpacing.iconDefault),
           const SizedBox(width: MqSpacing.space2),
           Text(
             l10n.home_brandTitle,
-            style: TextStyle(
+            style: const TextStyle(
               color: accent,
               fontWeight: FontWeight.w700,
               fontSize: 16,

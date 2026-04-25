@@ -1,3 +1,25 @@
+### Raouf: 2026-04-25 (AEST) — Stop picker overflow + live TfNSW departures fix
+**Scope:** Settings Preferred Stop sheet layout and Home commute live departure data.
+**Summary:** Removed the yellow Flutter overflow stripe by letting the Preferred Stop bottom sheet move above the keyboard using `MediaQuery.viewInsets`. Fixed the live TfNSW commute feed by parsing `stopEvents`, extracting the new departure event fields, enabling TfNSW real-time departure monitor output, and replacing the ineffective `itdMot` filter with official `excludedMeans`/`exclMOT_*` filtering. Redeployed `tfnsw-proxy` so Home now receives live metro and bus departures from the runtime backend.
+**Files Changed:**
+- `lib/features/settings/presentation/pages/settings_page.dart`
+- `lib/features/home/presentation/pages/home_page.dart`
+- `supabase/functions/tfnsw-proxy/index.ts`
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- `flutter analyze` → no issues.
+- `flutter test` → **151/151 passed**.
+- `deno fmt --check supabase/functions/tfnsw-proxy/index.ts` → pass.
+- `deno check supabase/functions/tfnsw-proxy/index.ts` → pass.
+- `supabase functions deploy tfnsw-proxy --no-verify-jwt` → success.
+- Deployed endpoint: `mode=metro&stopId=211310` → 3 live M1 metro departures.
+- Deployed endpoint: `mode=metro&stopId=211310&route=M1` → 3 live M1 metro departures.
+- Deployed endpoint: `mode=bus&stopId=G2113230` → 3 live bus departures.
+- `ReadLints` on edited Flutter files → no linter errors.
+**Follow-ups:**
+- Reopen the app or refresh Home so the metro card starts a fresh stream against the newly deployed proxy.
+
 ### Raouf: 2026-04-25 (AEST) — Mode-aware Preferred Stop picker + bottom-sheet lifecycle fix
 **Scope:** Settings Preferred Stop picker stability and transport-mode filtering.
 **Summary:** Replaced the Preferred Stop `AlertDialog` with a Settings-style modal bottom sheet to avoid the Flutter `AnimatedDefaultTextStyle` dirty-widget/build-scope route error during picker rebuilds and dismissals. Passed the active commute mode into `tfnswStopSearchProvider` and `tfnsw-proxy?action=stop-search`, then added server-side mode filtering so metro/train searches show station results while bus searches show bus/interchange-style stops. Redeployed `tfnsw-proxy` and verified the deployed endpoint returns different results for metro/train/bus.

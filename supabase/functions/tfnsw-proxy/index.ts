@@ -44,6 +44,23 @@ function modeToMotType(mode: string): string | null {
   }[mode] ?? null;
 }
 
+function applyModeExclusions(
+  params: URLSearchParams,
+  mode: "none" | "metro" | "bus" | "train",
+): void {
+  const selectedMotType = modeToMotType(mode);
+  if (selectedMotType == null) {
+    return;
+  }
+
+  params.set("excludedMeans", "checkbox");
+  for (const motType of ["1", "2", "4", "5", "7", "9", "11"]) {
+    if (motType !== selectedMotType) {
+      params.set(`exclMOT_${motType}`, "1");
+    }
+  }
+}
+
 function normalizeMode(
   value: string | null,
 ): "none" | "metro" | "bus" | "train" {
@@ -243,6 +260,8 @@ Deno.serve(async (req) => {
       ? preferredStopId
       : stopIdFromLocation ?? Deno.env.get("TFNSW_STOP_ID") ?? "10101403";
     const params = new URLSearchParams({
+      coordOutputFormat: "EPSG:4326",
+      departureMonitorMacro: "true",
       outputFormat: "rapidJSON",
       type_dm: "stop",
       name_dm: stopId,
@@ -251,10 +270,7 @@ Deno.serve(async (req) => {
       TfNSWDM: "true",
       version: "10.2.1.42",
     });
-    const motType = modeToMotType(commuteMode);
-    if (motType != null) {
-      params.set("itdMot", motType);
-    }
+    applyModeExclusions(params, commuteMode);
     const endpoint =
       `https://api.transport.nsw.gov.au/v1/tp/departure_mon?${params}`;
 
@@ -275,11 +291,24 @@ Deno.serve(async (req) => {
 
     const payload = await upstream.json() as {
       departures?: Array<Record<string, unknown>>;
+      stopEvents?: Array<Record<string, unknown>>;
     };
 
-    const departures: Departure[] = (payload.departures ?? [])
+    const rawDepartures = payload.stopEvents ?? payload.departures ?? [];
+    const departures: Departure[] = rawDepartures
       .map((item) => {
         const itemObj = item as {
+          departureTimeBaseTimetable?: string;
+          departureTimeEstimated?: string;
+          departureTimePlanned?: string;
+          location?: {
+            name?: string;
+            properties?: {
+              platform?: string;
+              platformName?: string;
+              plannedPlatformName?: string;
+            };
+          };
           platform?: {
             name?: string;
             direction?: {
@@ -303,28 +332,44 @@ Deno.serve(async (req) => {
           };
           when?: string;
           transportation?: {
+            destination?: {
+              name?: string;
+            };
+            disassembledName?: string;
             product?: {
               class?: string;
               name?: string;
               number?: string;
             };
+            number?: string;
           };
         };
         const when = itemObj.when ??
+          itemObj.departureTimeEstimated ??
+          itemObj.departureTimePlanned ??
+          itemObj.departureTimeBaseTimetable ??
           itemObj.stop?.parent?.departures ??
           itemObj.platform?.stop?.parent?.departures;
         const line =
           itemObj.platform?.direction?.line?.transportation?.number ??
             itemObj.transportation?.product?.number ??
+            itemObj.transportation?.number ??
+            itemObj.transportation?.disassembledName ??
             "";
-        const destination = itemObj.platform?.direction?.name ?? "";
+        const destination = itemObj.transportation?.destination?.name ??
+          itemObj.platform?.direction?.name ?? "";
         const mode = inferMode(item as Record<string, unknown>);
         return {
           destination,
           line,
           mode,
           minutesUntilDeparture: when == null ? 0 : toMinutes(when),
-          platform: itemObj.platform?.name ?? "",
+          platform: itemObj.location?.properties?.platformName ??
+            itemObj.location?.properties?.plannedPlatformName ??
+            itemObj.location?.properties?.platform ??
+            itemObj.location?.name ??
+            itemObj.platform?.name ??
+            "",
           stopId,
         };
       })
