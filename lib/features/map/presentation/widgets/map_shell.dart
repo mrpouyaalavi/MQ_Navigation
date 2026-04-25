@@ -37,6 +37,10 @@ class MapShell extends StatelessWidget {
   final Widget? footer;
   final Widget? filterChips;
 
+  /// Vertical gap kept between the floating controls and the top edge of the
+  /// footer panel so neither element overlaps the other.
+  static const double _footerClearance = 80;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -125,59 +129,46 @@ class MapShell extends StatelessWidget {
           ),
         ),
 
-        // ── Bottom section: side controls + footer ─────────
-        Positioned(
-          bottom: safeBottom,
-          left: 0,
-          right: 0,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Side controls row
-              Padding(
-                padding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: MqSpacing.space4,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    // Left: layers button (campus mode only)
-                    if (renderer == MapRendererType.campus &&
-                        onOpenOverlayPicker != null)
-                      _GlassIconButton(
-                        isDark: isDark,
-                        icon: Icons.layers_outlined,
-                        tooltip: l10n.mapLayers,
-                        onPressed: onOpenOverlayPicker!,
-                      )
-                    else
-                      const SizedBox.shrink(),
-
-                    // Right: location button (brand red circle)
-                    _BrandCircleButton(
-                      icon: Icons.my_location,
-                      tooltip: l10n.centerOnLocation,
-                      onPressed: onCenterOnLocation,
-                    ),
-                  ],
-                ),
+        // ── Footer panel (route panel / building list) ─────
+        if (footerWidget != null)
+          Positioned(
+            bottom: safeBottom,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(
+                MqSpacing.space4,
+                0,
+                MqSpacing.space4,
+                MqSpacing.space4,
               ),
+              child: footerWidget,
+            ),
+          ),
 
-              if (footerWidget != null) ...[
-                const SizedBox(height: MqSpacing.space3),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(
-                    MqSpacing.space4,
-                    0,
-                    MqSpacing.space4,
-                    MqSpacing.space4,
-                  ),
-                  child: footerWidget,
-                ),
-              ] else
-                const SizedBox(height: MqSpacing.space4),
-            ],
+        // ── Layers button — bottom-left ────────────────────
+        if (renderer == MapRendererType.campus && onOpenOverlayPicker != null)
+          Positioned(
+            left: MqSpacing.space4,
+            bottom: safeBottom +
+                (footerWidget != null ? _footerClearance : MqSpacing.space4),
+            child: _GlassIconButton(
+              isDark: isDark,
+              icon: Icons.layers_outlined,
+              tooltip: l10n.mapLayers,
+              onPressed: onOpenOverlayPicker!,
+            ),
+          ),
+
+        // ── Location button — bottom-right ─────────────────
+        Positioned(
+          right: MqSpacing.space4,
+          bottom: safeBottom +
+              (footerWidget != null ? _footerClearance : MqSpacing.space4),
+          child: _BrandCircleButton(
+            icon: Icons.my_location,
+            tooltip: l10n.centerOnLocation,
+            onPressed: onCenterOnLocation,
           ),
         ),
       ],

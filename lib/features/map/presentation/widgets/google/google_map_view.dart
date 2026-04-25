@@ -165,6 +165,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
       },
       mapToolbarEnabled: false,
       zoomControlsEnabled: false,
+      compassEnabled: false,
       myLocationEnabled: widget.currentLocation != null,
       myLocationButtonEnabled: false,
       markers: {
