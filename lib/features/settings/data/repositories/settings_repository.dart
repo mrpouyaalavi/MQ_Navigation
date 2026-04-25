@@ -22,6 +22,7 @@ const _offlineCampusMapsEnabledKey = 'settings.offline_campus_maps_enabled';
 const _commuteModeKey = 'settings.commute_mode';
 const _favoriteRouteKey = 'settings.favorite_route';
 const _favoriteStopIdKey = 'settings.favorite_stop_id';
+const _favoriteStopNameKey = 'settings.favorite_stop_name';
 
 /// Data source for persisting and retrieving user settings.
 ///
@@ -70,6 +71,7 @@ class LocalSettingsRepository implements SettingsRepository {
       final commuteMode = await _storage.read(_commuteModeKey);
       final favoriteRoute = await _storage.read(_favoriteRouteKey);
       final favoriteStopId = await _storage.read(_favoriteStopIdKey);
+      final favoriteStopName = await _storage.read(_favoriteStopNameKey);
 
       final localThemeMode = ThemeMode.values.firstWhere(
         (mode) => mode.name == themeModeString,
@@ -100,9 +102,10 @@ class LocalSettingsRepository implements SettingsRepository {
         quietHoursEnd: quietHoursEnd ?? '08:00',
         highContrastMap: highContrastMap == 'true',
         offlineCampusMapsEnabled: offlineCampusMapsEnabled == 'true',
-        commuteMode: commuteMode ?? 'none',
+        commuteMode: _normalizeCommuteMode(commuteMode),
         favoriteRoute: favoriteRoute ?? '',
         favoriteStopId: favoriteStopId ?? '',
+        favoriteStopName: favoriteStopName ?? '',
       );
     } catch (error, stackTrace) {
       AppLogger.error('Failed to load user preferences', error, stackTrace);
@@ -157,6 +160,7 @@ class LocalSettingsRepository implements SettingsRepository {
       await _storage.write(_commuteModeKey, preferences.commuteMode);
       await _storage.write(_favoriteRouteKey, preferences.favoriteRoute);
       await _storage.write(_favoriteStopIdKey, preferences.favoriteStopId);
+      await _storage.write(_favoriteStopNameKey, preferences.favoriteStopName);
       return preferences;
     } catch (error, stackTrace) {
       AppLogger.error('Failed to save user preferences', error, stackTrace);
@@ -174,4 +178,11 @@ class LocalSettingsRepository implements SettingsRepository {
       rethrow;
     }
   }
+}
+
+String _normalizeCommuteMode(String? mode) {
+  return switch (mode?.trim()) {
+    'metro' || 'bus' || 'train' => mode!.trim(),
+    _ => 'none',
+  };
 }

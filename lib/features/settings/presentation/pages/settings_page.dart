@@ -8,7 +8,10 @@ import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dar
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
+import 'package:mq_navigation/features/transit/presentation/providers/tfnsw_provider.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:mq_navigation/shared/models/user_preferences.dart';
 import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
 import 'package:mq_navigation/shared/widgets/mq_input.dart';
 import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
@@ -301,14 +304,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                           _TapRow(
                             icon: Icons.pin_drop_outlined,
                             label: l10n.favoriteStopIdLabel,
-                            value: preferences.favoriteStopId.trim().isEmpty
-                                ? l10n.setStopIdPrompt
-                                : preferences.favoriteStopId,
+                            value: _preferredStopLabel(preferences, l10n),
                             semanticLabel: l10n.favoriteStopIdLabel,
                             hapticsEnabled: preferences.hapticsEnabled,
-                            onTap: () => _showStopIdInputDialog(
+                            onTap: () => _showStopSearchDialog(
                               context: context,
-                              currentStopId: preferences.favoriteStopId,
                               ref: ref,
                             ),
                           ),
@@ -594,82 +594,70 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }) async {
     final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController(text: currentRoute);
-    final saved = await showDialog<String>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        backgroundColor: Colors.white,
-        title: Text(
-          l10n.favoriteRouteTitle,
-          style: const TextStyle(color: MqColors.contentPrimary),
-        ),
-        content: MqInput(
-          controller: controller,
-          hint: l10n.favoriteRouteHint,
-          label: l10n.favoriteRouteLine,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: Text(
-              l10n.cancel,
-              style: const TextStyle(color: MqColors.contentSecondary),
+    try {
+      final saved = await showDialog<String>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          backgroundColor: Colors.white,
+          title: Text(
+            l10n.favoriteRouteTitle,
+            style: const TextStyle(color: MqColors.contentPrimary),
+          ),
+          content: MqInput(
+            controller: controller,
+            hint: l10n.favoriteRouteHint,
+            label: l10n.favoriteRouteLine,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: Text(
+                l10n.cancel,
+                style: const TextStyle(color: MqColors.contentSecondary),
+              ),
             ),
-          ),
-          TextButton(
-            onPressed: () =>
-                Navigator.pop(dialogContext, controller.text.trim()),
-            child: Text(l10n.save, style: const TextStyle(color: MqColors.red)),
-          ),
-        ],
-      ),
-    );
-    if (saved != null) {
-      await ref
-          .read(settingsControllerProvider.notifier)
-          .updateCommutePreferences(favoriteRoute: saved);
+            TextButton(
+              onPressed: () =>
+                  Navigator.pop(dialogContext, controller.text.trim()),
+              child: Text(
+                l10n.save,
+                style: const TextStyle(color: MqColors.red),
+              ),
+            ),
+          ],
+        ),
+      );
+      if (saved != null && context.mounted) {
+        final message = await ref
+            .read(settingsControllerProvider.notifier)
+            .updateCommutePreferences(favoriteRoute: saved);
+        if (message != null && context.mounted) {
+          context.showSnackBar(message, isError: true);
+        }
+      }
+    } finally {
+      controller.dispose();
     }
   }
 
-  Future<void> _showStopIdInputDialog({
+  Future<void> _showStopSearchDialog({
     required BuildContext context,
-    required String currentStopId,
     required WidgetRef ref,
   }) async {
-    final l10n = AppLocalizations.of(context)!;
-    final controller = TextEditingController(text: currentStopId);
-    final saved = await showDialog<String>(
+    final selected = await showDialog<TransitStop>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        backgroundColor: Colors.white,
-        title: Text(
-          l10n.favoriteStopIdTitle,
-          style: const TextStyle(color: MqColors.contentPrimary),
-        ),
-        content: MqInput(
-          controller: controller,
-          hint: l10n.favoriteStopIdHint,
-          label: l10n.favoriteStopIdLabel,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
-            child: Text(
-              l10n.cancel,
-              style: const TextStyle(color: MqColors.contentSecondary),
-            ),
-          ),
-          TextButton(
-            onPressed: () =>
-                Navigator.pop(dialogContext, controller.text.trim()),
-            child: Text(l10n.save, style: const TextStyle(color: MqColors.red)),
-          ),
-        ],
-      ),
+      builder: (_) => const _StopSearchDialog(),
     );
-    if (saved != null) {
-      await ref
+    if (selected != null && context.mounted) {
+      final message = await ref
           .read(settingsControllerProvider.notifier)
-          .updateCommutePreferences(favoriteStopId: saved);
+          .updateCommutePreferences(
+            favoriteStopId: selected.id,
+            favoriteStopName: selected.name,
+          );
+      if (message != null && context.mounted) {
+        context.showSnackBar(message, isError: true);
+      }
     }
   }
 
@@ -763,7 +751,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     if (selected != null && context.mounted) {
       final message = await onSelect(selected.value);
       if (message != null && context.mounted) {
-        context.showSnackBar(message);
+        context.showSnackBar(message, isError: true);
       }
     }
   }
@@ -807,6 +795,23 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     'vi',
     'zh',
   ];
+
+  static String _preferredStopLabel(
+    UserPreferences preferences,
+    AppLocalizations l10n,
+  ) {
+    final stopName = preferences.favoriteStopName.trim();
+    if (stopName.isNotEmpty) {
+      return stopName;
+    }
+
+    final stopId = preferences.favoriteStopId.trim();
+    if (stopId.isNotEmpty) {
+      return l10n.favoriteStopIdFallback(stopId);
+    }
+
+    return l10n.setStopIdPrompt;
+  }
 
   static String _languageLabel(String? code, AppLocalizations l10n) {
     return switch (code) {
@@ -861,6 +866,145 @@ class _PickerItem<T> {
   const _PickerItem({required this.index, required this.value});
   final int index;
   final T value;
+}
+
+class _StopSearchDialog extends ConsumerStatefulWidget {
+  const _StopSearchDialog();
+
+  @override
+  ConsumerState<_StopSearchDialog> createState() => _StopSearchDialogState();
+}
+
+class _StopSearchDialogState extends ConsumerState<_StopSearchDialog> {
+  late final TextEditingController _controller;
+  String _query = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final trimmedQuery = _query.trim();
+    final searchResults = ref.watch(tfnswStopSearchProvider(trimmedQuery));
+
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      title: Text(
+        l10n.favoriteStopIdTitle,
+        style: const TextStyle(color: MqColors.contentPrimary),
+      ),
+      content: SizedBox(
+        width: 420,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            MqInput(
+              controller: _controller,
+              hint: l10n.favoriteStopIdHint,
+              label: l10n.favoriteStopSearchLabel,
+              prefixIcon: Icons.search_rounded,
+              onChanged: (value) => setState(() => _query = value),
+            ),
+            const SizedBox(height: MqSpacing.space4),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 280),
+              child: trimmedQuery.length < 2
+                  ? _StopSearchMessage(text: l10n.favoriteStopSearchPrompt)
+                  : searchResults.when(
+                      data: (stops) {
+                        if (stops.isEmpty) {
+                          return _StopSearchMessage(
+                            text: l10n.favoriteStopSearchEmpty,
+                          );
+                        }
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: stops.length,
+                          separatorBuilder: (_, _) => const Divider(height: 1),
+                          itemBuilder: (context, index) {
+                            final stop = stops[index];
+                            return ListTile(
+                              leading: const Icon(
+                                Icons.train_rounded,
+                                color: MqColors.red,
+                              ),
+                              title: Text(
+                                stop.name,
+                                style: context.textTheme.titleSmall?.copyWith(
+                                  color: MqColors.contentPrimary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              subtitle: Text(
+                                stop.id,
+                                style: context.textTheme.bodySmall?.copyWith(
+                                  color: MqColors.contentSecondary,
+                                ),
+                              ),
+                              onTap: () => Navigator.pop(context, stop),
+                            );
+                          },
+                        );
+                      },
+                      error: (_, _) => _StopSearchMessage(
+                        text: l10n.favoriteStopSearchError,
+                      ),
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(color: MqColors.red),
+                      ),
+                    ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () =>
+              Navigator.pop(context, const TransitStop(id: '', name: '')),
+          child: Text(
+            l10n.clearPreferredStop,
+            style: const TextStyle(color: MqColors.red),
+          ),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            l10n.cancel,
+            style: const TextStyle(color: MqColors.contentSecondary),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _StopSearchMessage extends StatelessWidget {
+  const _StopSearchMessage({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: context.textTheme.bodyMedium?.copyWith(
+          color: MqColors.contentSecondary,
+        ),
+      ),
+    );
+  }
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

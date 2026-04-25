@@ -8,13 +8,19 @@ import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:mq_navigation/features/map/data/datasources/location_source.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:mq_navigation/features/transit/domain/entities/metro_departure.dart';
+import 'package:mq_navigation/features/transit/domain/entities/transit_stop.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final tfnswMetroProvider = StreamProvider.autoDispose<List<MetroDeparture>>((
   ref,
 ) async* {
+  final preferences = await ref.watch(settingsControllerProvider.future);
+  if (preferences.commuteMode == 'none') {
+    yield const [];
+    return;
+  }
+
   while (true) {
-    final preferences = await ref.read(settingsControllerProvider.future);
     final location = await ref
         .read(locationSourceProvider)
         .getCurrentLocation();
@@ -28,6 +34,11 @@ final tfnswMetroProvider = StreamProvider.autoDispose<List<MetroDeparture>>((
     await Future<void>.delayed(const Duration(seconds: 60));
   }
 });
+
+final tfnswStopSearchProvider = FutureProvider.autoDispose
+    .family<List<TransitStop>, String>((ref, query) {
+      return _searchStops(query);
+    });
 
 Future<List<MetroDeparture>> _fetchDepartures({
   required String favoriteRoute,
@@ -67,6 +78,41 @@ Future<List<MetroDeparture>> _fetchDepartures({
     return list;
   } catch (error, stackTrace) {
     AppLogger.warning('TfNSW proxy request failed', error, stackTrace);
+    return const [];
+  }
+}
+
+Future<List<TransitStop>> _searchStops(String query) async {
+  final trimmed = query.trim();
+  if (trimmed.length < 2) {
+    return const [];
+  }
+
+  try {
+    final token = Supabase.instance.client.auth.currentSession?.accessToken;
+    final response = await http.get(
+      Uri.parse(
+        '${EnvConfig.supabaseUrl}/functions/v1/tfnsw-proxy',
+      ).replace(queryParameters: {'action': 'stop-search', 'q': trimmed}),
+      headers: {
+        if (token != null) 'Authorization': 'Bearer $token',
+        'apikey': EnvConfig.supabaseAnonKey,
+      },
+    );
+
+    if (response.statusCode != 200) {
+      return const [];
+    }
+
+    final dynamic decoded = jsonDecode(response.body);
+    final list = (decoded as List<dynamic>)
+        .whereType<Map<String, dynamic>>()
+        .map(TransitStop.fromJson)
+        .where((stop) => stop.id.isNotEmpty && stop.name.isNotEmpty)
+        .toList();
+    return list;
+  } catch (error, stackTrace) {
+    AppLogger.warning('TfNSW stop search failed', error, stackTrace);
     return const [];
   }
 }

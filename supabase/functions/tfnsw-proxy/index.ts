@@ -9,6 +9,11 @@ type Departure = {
   stopId: string;
 };
 
+type StopSearchResult = {
+  id: string;
+  name: string;
+};
+
 function getAllowedWebOrigins(): string[] {
   return (Deno.env.get("ALLOWED_WEB_ORIGINS") ?? "")
     .split(",")
@@ -39,7 +44,9 @@ function modeToMotType(mode: string): string | null {
   }[mode] ?? null;
 }
 
-function normalizeMode(value: string | null): "none" | "metro" | "bus" | "train" {
+function normalizeMode(
+  value: string | null,
+): "none" | "metro" | "bus" | "train" {
   if (value === "metro" || value === "bus" || value === "train") {
     return value;
   }
@@ -84,7 +91,8 @@ async function resolveNearestStopId({
     name_sf: nameSf,
     version: "10.2.1.42",
   });
-  const endpoint = `https://api.transport.nsw.gov.au/v1/tp/stop_finder?${params}`;
+  const endpoint =
+    `https://api.transport.nsw.gov.au/v1/tp/stop_finder?${params}`;
   const upstream = await fetch(endpoint, {
     headers: {
       Authorization: `apikey ${apiKey}`,
@@ -106,7 +114,70 @@ async function resolveNearestStopId({
     (location.type ?? "").toLowerCase().includes("stop") ||
     (location.type ?? "").toLowerCase().includes("platform")
   );
-  return firstStop?.id ?? firstStop?.parent?.id ?? firstStop?.disassembledName ?? null;
+  return firstStop?.id ?? firstStop?.parent?.id ??
+    firstStop?.disassembledName ?? null;
+}
+
+async function searchStops({
+  apiKey,
+  query,
+}: {
+  apiKey: string;
+  query: string;
+}): Promise<StopSearchResult[]> {
+  if (query.trim().length < 2) {
+    return [];
+  }
+
+  const params = new URLSearchParams({
+    coordOutputFormat: "EPSG:4326",
+    name_sf: query.trim(),
+    outputFormat: "rapidJSON",
+    type_sf: "any",
+    version: "10.2.1.42",
+  });
+  const endpoint =
+    `https://api.transport.nsw.gov.au/v1/tp/stop_finder?${params}`;
+  const upstream = await fetch(endpoint, {
+    headers: {
+      Authorization: `apikey ${apiKey}`,
+    },
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!upstream.ok) {
+    return [];
+  }
+
+  const payload = await upstream.json() as {
+    locations?: Array<{
+      disassembledName?: string;
+      id?: string;
+      name?: string;
+      parent?: { id?: string };
+      type?: string;
+    }>;
+  };
+
+  const seenIds = new Set<string>();
+  return (payload.locations ?? [])
+    .filter((location) => {
+      const type = (location.type ?? "").toLowerCase();
+      return type.includes("stop") || type.includes("platform");
+    })
+    .map((location) => {
+      const id = location.id ?? location.parent?.id ?? "";
+      const name = location.disassembledName ?? location.name ?? id;
+      return { id, name };
+    })
+    .filter((stop) => stop.id.length > 0 && stop.name.length > 0)
+    .filter((stop) => {
+      if (seenIds.has(stop.id)) {
+        return false;
+      }
+      seenIds.add(stop.id);
+      return true;
+    })
+    .slice(0, 8);
 }
 
 Deno.serve(async (req) => {
@@ -119,8 +190,22 @@ Deno.serve(async (req) => {
   try {
     const apiKey = getEnvOrThrow("TFNSW_API_KEY");
     const url = new URL(req.url);
+    if (url.searchParams.get("action") === "stop-search") {
+      const stops = await searchStops({
+        apiKey,
+        query: url.searchParams.get("q") ?? "",
+      });
+      return new Response(JSON.stringify(stops), {
+        headers: {
+          ...jsonCorsHeaders(req, { allowedOrigins }),
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
     const commuteMode = normalizeMode(url.searchParams.get("mode"));
-    const favoriteRoute = (url.searchParams.get("route") ?? "").trim().toLowerCase();
+    const favoriteRoute = (url.searchParams.get("route") ?? "").trim()
+      .toLowerCase();
     const preferredStopId = (url.searchParams.get("stopId") ?? "").trim();
     const latitude = Number(url.searchParams.get("lat"));
     const longitude = Number(url.searchParams.get("lng"));
@@ -145,7 +230,8 @@ Deno.serve(async (req) => {
     if (motType != null) {
       params.set("itdMot", motType);
     }
-    const endpoint = `https://api.transport.nsw.gov.au/v1/tp/departure_mon?${params}`;
+    const endpoint =
+      `https://api.transport.nsw.gov.au/v1/tp/departure_mon?${params}`;
 
     const upstream = await fetch(endpoint, {
       headers: {
@@ -169,13 +255,19 @@ Deno.serve(async (req) => {
     const departures: Departure[] = (payload.departures ?? [])
       .map((item) => {
         const itemObj = item as {
-        platform?: {
-          name?: string;
-          direction?: {
+          platform?: {
             name?: string;
-            line?: {
-              transportation?: {
-                number?: string;
+            direction?: {
+              name?: string;
+              line?: {
+                transportation?: {
+                  number?: string;
+                };
+              };
+            };
+            stop?: {
+              parent?: {
+                departures?: string;
               };
             };
           };
@@ -184,29 +276,22 @@ Deno.serve(async (req) => {
               departures?: string;
             };
           };
-        };
-        stop?: {
-          parent?: {
-            departures?: string;
+          when?: string;
+          transportation?: {
+            product?: {
+              class?: string;
+              name?: string;
+              number?: string;
+            };
           };
         };
-        when?: string;
-        transportation?: {
-          product?: {
-            class?: string;
-            name?: string;
-            number?: string;
-          };
-        };
-      };
-        const when =
-          itemObj.when ??
+        const when = itemObj.when ??
           itemObj.stop?.parent?.departures ??
           itemObj.platform?.stop?.parent?.departures;
         const line =
           itemObj.platform?.direction?.line?.transportation?.number ??
-          itemObj.transportation?.product?.number ??
-          "";
+            itemObj.transportation?.product?.number ??
+            "";
         const destination = itemObj.platform?.direction?.name ?? "";
         const mode = inferMode(item as Record<string, unknown>);
         return {
@@ -218,9 +303,10 @@ Deno.serve(async (req) => {
           stopId,
         };
       })
-      .filter((item) => item.destination.isNotEmpty)
+      .filter((item) => item.destination.length > 0)
       .filter((item) =>
-        commuteMode === "none" || item.mode === commuteMode || item.mode === "unknown"
+        commuteMode === "none" || item.mode === commuteMode ||
+        item.mode === "unknown"
       )
       .filter((item) =>
         favoriteRoute.length === 0 ||

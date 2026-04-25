@@ -97,6 +97,63 @@ void main() {
       ).called(1);
     });
 
+    test('updateCommutePreferences updates state and repository', () async {
+      final container = createContainer();
+      final controller = container.read(settingsControllerProvider.notifier);
+
+      await controller.updateCommutePreferences(
+        commuteMode: 'metro',
+        favoriteRoute: 'M1',
+        favoriteStopId: '10101403',
+        favoriteStopName: 'Macquarie University Station',
+      );
+
+      final state = container.read(settingsControllerProvider).value;
+      expect(state?.commuteMode, 'metro');
+      expect(state?.favoriteRoute, 'M1');
+      expect(state?.favoriteStopId, '10101403');
+      expect(state?.favoriteStopName, 'Macquarie University Station');
+      verify(
+        () => repository.savePreferences(
+          any(
+            that: isA<UserPreferences>()
+                .having((p) => p.commuteMode, 'commuteMode', 'metro')
+                .having((p) => p.favoriteRoute, 'favoriteRoute', 'M1')
+                .having((p) => p.favoriteStopId, 'favoriteStopId', '10101403')
+                .having(
+                  (p) => p.favoriteStopName,
+                  'favoriteStopName',
+                  'Macquarie University Station',
+                ),
+          ),
+        ),
+      ).called(1);
+    });
+
+    test(
+      'updateCommutePreferences normalizes unsupported commute mode',
+      () async {
+        final container = createContainer();
+        final controller = container.read(settingsControllerProvider.notifier);
+
+        await controller.updateCommutePreferences(commuteMode: 'ferry');
+
+        final state = container.read(settingsControllerProvider).value;
+        expect(state?.commuteMode, 'none');
+        verify(
+          () => repository.savePreferences(
+            any(
+              that: isA<UserPreferences>().having(
+                (p) => p.commuteMode,
+                'commuteMode',
+                'none',
+              ),
+            ),
+          ),
+        ).called(1);
+      },
+    );
+
     test('updateQuietHours settings updates state and repository', () async {
       final container = createContainer();
       final controller = container.read(settingsControllerProvider.notifier);

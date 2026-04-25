@@ -1,3 +1,68 @@
+### Raouf: 2026-04-25 (AEST) — Preferred Stop implementation part-by-part verification
+**Scope:** Test hardening and runtime validation for Preferred Stop name search.
+**Summary:** Added focused repository and stop-entity tests to verify `favoriteStopId`/`favoriteStopName` persistence and stop-search JSON parsing below the controller layer. Ran part-by-part validation for model/controller/repository, localization parity, Edge Function format/type checks, full Flutter checks, and live TfNSW `stop_finder` request shape. The live check exposed POI results from `type_sf=any`, so the edge search now filters results to stop/platform types before returning them to the picker.
+**Files Changed:**
+- `supabase/functions/tfnsw-proxy/index.ts`
+- `test/features/settings/settings_repository_test.dart`
+- `test/features/transit/transit_stop_test.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- Focused Flutter tests (`settings_controller_test.dart`, `settings_repository_test.dart`, `transit_stop_test.dart`) → **12/12 passed**.
+- ARB key parity script for stop-search keys → pass.
+- `flutter gen-l10n` → pass.
+- Live TfNSW `stop_finder` request for `Macquarie University` → returned stop-filtered sample including `Macquarie University Station`.
+- `deno fmt --check supabase/functions/tfnsw-proxy/index.ts` → pass.
+- `deno check supabase/functions/tfnsw-proxy/index.ts` → pass.
+- `./scripts/check.sh --quick` → **5/5 passed** (pub get, format, analyze, 151 tests, gen-l10n).
+- `ReadLints` on edited Dart files → no linter errors.
+**Follow-ups:**
+- Local Edge Function serving is blocked until Docker Desktop is running; deploy `tfnsw-proxy` or start Docker to test the exact Edge HTTP path end-to-end.
+
+### Raouf: 2026-04-25 (AEST) — Preferred Stop name search picker
+**Scope:** Commute Preferences stop selection and TfNSW stop search integration.
+**Summary:** Replaced manual Preferred Stop ID entry with a searchable stop/station picker backed by the TfNSW Trip Planner `stop_finder` API through the existing `tfnsw-proxy` Edge Function. Added `favoriteStopName` alongside `favoriteStopId` so Settings displays a readable stop name while Home/TfNSW departures continue using the stable stop ID. Added clear-stop support, localized all new picker text, persisted the new stop name, added a `TransitStop` entity/provider, updated controller tests, and fixed a TypeScript `isNotEmpty` typo caught by `deno check`.
+**Files Changed:**
+- `lib/shared/models/user_preferences.dart`
+- `lib/features/settings/data/repositories/settings_repository.dart`
+- `lib/features/settings/presentation/controllers/settings_controller.dart`
+- `lib/features/settings/presentation/pages/settings_page.dart`
+- `lib/features/transit/domain/entities/transit_stop.dart`
+- `lib/features/transit/presentation/providers/tfnsw_provider.dart`
+- `lib/app/l10n/app_en.arb`
+- `lib/app/l10n/app_*.arb` (34 locale files)
+- `supabase/functions/tfnsw-proxy/index.ts`
+- `test/features/settings/settings_controller_test.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- `flutter gen-l10n`
+- `flutter test test/features/settings/settings_controller_test.dart` → **7/7 passed**.
+- `deno fmt supabase/functions/tfnsw-proxy/index.ts`
+- `deno check supabase/functions/tfnsw-proxy/index.ts` → pass.
+- `./scripts/check.sh --quick` → **5/5 passed** (pub get, format, analyze, 146 tests, gen-l10n).
+- `ReadLints` on edited Dart files → no linter errors.
+**Follow-ups:**
+- Deploy `tfnsw-proxy` so the new `action=stop-search` branch is available outside local code.
+
+### Raouf: 2026-04-25 (AEST) — Commute tracking end-to-end audit + refresh hardening
+**Scope:** Commute Preferences, Home transit countdown, and TfNSW polling flow.
+**Summary:** Audited commute tracking end to end across Settings UI, `SettingsController`, secure-storage persistence, `UserPreferences`, Home countdown consumption, and `tfnswMetroProvider`. Fixed the transit stream so it watches settings changes, refreshes immediately when commute preferences change, and avoids TfNSW/location work while commute mode is `none`. Added commute mode normalization in controller/repository paths, surfaced route/stop save errors from dialogs, disposed dialog text controllers, and added settings controller tests for commute persistence and unsupported-mode normalization.
+**Files Changed:**
+- `lib/features/settings/presentation/pages/settings_page.dart`
+- `lib/features/settings/presentation/controllers/settings_controller.dart`
+- `lib/features/settings/data/repositories/settings_repository.dart`
+- `lib/features/transit/presentation/providers/tfnsw_provider.dart`
+- `test/features/settings/settings_controller_test.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- `flutter test test/features/settings/settings_controller_test.dart` → **7/7 passed**.
+- `./scripts/check.sh --quick` → **5/5 passed** (pub get, format, analyze, 146 tests, gen-l10n).
+- `ReadLints` on edited Dart files → no linter errors.
+**Follow-ups:**
+- Runtime-test with a valid `TFNSW_API_KEY`/stop ID to confirm live external departure data from TfNSW in the simulator/device.
+
 ### Raouf: 2026-04-25 (AEST) — Danger Zone solid red parity
 **Scope:** Settings Danger Zone visual correction.
 **Summary:** Updated the Danger Zone action card so it renders as a solid danger-red surface in both light and dark mode instead of the previous charcoal/dark gradient. Switched the warning icon, title, and subtitle to white text/icons for contrast on the red danger background.

@@ -119,13 +119,17 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
     String? commuteMode,
     String? favoriteRoute,
     String? favoriteStopId,
+    String? favoriteStopName,
   }) async {
     final currentPreferences = state.value ?? const UserPreferences();
     return _save(
       currentPreferences.copyWith(
-        commuteMode: commuteMode,
+        commuteMode: commuteMode == null
+            ? null
+            : _normalizeCommuteMode(commuteMode),
         favoriteRoute: favoriteRoute,
         favoriteStopId: favoriteStopId,
+        favoriteStopName: favoriteStopName,
       ),
     );
   }
@@ -166,4 +170,11 @@ class SettingsController extends AsyncNotifier<UserPreferences> {
   }
 
   static const _saveErrorMessage = 'Unable to save settings.';
+
+  static String _normalizeCommuteMode(String mode) {
+    return switch (mode.trim()) {
+      'metro' || 'bus' || 'train' => mode.trim(),
+      _ => 'none',
+    };
+  }
 }
