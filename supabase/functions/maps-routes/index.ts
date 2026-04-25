@@ -458,7 +458,7 @@ function normaliseTfnswTransitRoute(
     }
   }
 
-  if (points.isEmpty()) {
+  if (points.length === 0) {
     points.push(
       { lat: origin.latitude, lng: origin.longitude },
       { lat: destination.latitude, lng: destination.longitude },
