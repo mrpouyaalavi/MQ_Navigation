@@ -541,30 +541,29 @@ class _CategoryFilterChips extends StatelessWidget {
   final String activeQuery;
   final ValueChanged<String> onSelect;
 
-  // Transport intentionally absent — surfaced via Home's Metro Countdown
-  // card, so a duplicate Map filter chip would only add noise.
-  static const List<({IconData icon, String label, String query})> _categories =
-      [
-        (icon: Icons.restaurant, label: 'Food', query: 'food'),
-        (icon: Icons.local_parking, label: 'Parking', query: 'parking'),
-        (icon: Icons.menu_book, label: 'Library', query: 'library'),
-        (icon: Icons.school, label: 'Student Centre', query: 'student'),
-        (icon: Icons.support_agent, label: 'Services', query: 'services'),
-      ];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = context.isDarkMode;
     final normalizedActive = activeQuery.trim().toLowerCase();
+    // Transport intentionally absent — surfaced via Home's Metro Countdown
+    // card, so a duplicate Map filter chip would only add noise.
+    final categories = <({IconData icon, String label, String query})>[
+      (icon: Icons.restaurant, label: l10n.food, query: 'food'),
+      (icon: Icons.local_parking, label: l10n.parking, query: 'parking'),
+      (icon: Icons.menu_book, label: l10n.mapCategoryLibrary, query: 'library'),
+      (icon: Icons.school, label: l10n.home_studentServices, query: 'student'),
+      (icon: Icons.support_agent, label: l10n.services, query: 'services'),
+    ];
 
     return SizedBox(
       height: 40,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        itemCount: _categories.length,
+        itemCount: categories.length,
         separatorBuilder: (_, _) => const SizedBox(width: MqSpacing.space2),
         itemBuilder: (context, index) {
-          final category = _categories[index];
+          final category = categories[index];
           final isActive = normalizedActive == category.query;
           return _CategoryChip(
             icon: category.icon,

@@ -1,3 +1,20 @@
+### Raouf: 2026-04-28 (AEST) — Map i18n hardcoded-text cleanup (next audit pass)
+**Scope:** Map UI localization hardening after functional audit.
+**Summary:** Continued the map audit by replacing remaining hardcoded user-visible map labels with localization keys. Category chips in `MapPage` now use `AppLocalizations` keys (`food`, `parking`, `services`, `home_studentServices`, `mapCategoryLibrary`) and the desktop OSM fallback badge now uses a dedicated `mapOsmFallbackBadge` key instead of inline text.
+**Files Changed:**
+- `lib/features/map/presentation/pages/map_page.dart`
+- `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`
+- `lib/app/l10n/app_en.arb`
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- `dart format` on edited map files → pass.
+- `flutter analyze lib/features/map` → no issues.
+- `flutter test test/features/map/map_controller_test.dart` → **10/10 passed**.
+- `ReadLints` on edited files → no linter errors.
+**Follow-ups:**
+- Add `mapCategoryLibrary` and `mapOsmFallbackBadge` to non-English ARB files for full locale parity (current non-English locales fall back to English for these new keys).
+
 ### Raouf: 2026-04-28 (AEST) — Full map audit follow-up + reliable live-location recenter
 **Scope:** End-to-end map interaction audit with explicit center-on-location camera behavior.
 **Summary:** Completed a deeper map audit across campus, native Google, and desktop fallback renderers to ensure core actions are functional and non-decorative. Added a map-state `locationCenterRequestToken` that increments whenever `centerOnCurrentLocation()` is pressed, then wired all renderers to react to token changes by moving the camera to the latest location even if coordinates are unchanged. This fixes the “pressed but did not visually recenter” behavior and keeps location recenter semantics consistent across all map engines.

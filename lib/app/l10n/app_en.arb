@@ -1126,6 +1126,8 @@
   "processing": "Processing...",
   "mapLayers": "Map Layers",
   "mapLayersDesc": "Toggle campus information overlays",
+  "mapCategoryLibrary": "Library",
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
   "showLayers": "Show Layers",
   "hideLayers": "Hide Layers",
   "overlayParking": "Parking",

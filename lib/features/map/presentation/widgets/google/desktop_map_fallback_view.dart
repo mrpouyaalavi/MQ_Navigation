@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart' as latlong;
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/map/data/services/offline_maps_service.dart';
@@ -390,6 +391,7 @@ class _OsmFallbackBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
       color: isDark
@@ -408,7 +410,7 @@ class _OsmFallbackBadge extends StatelessWidget {
             const Icon(Icons.info_outline, size: 14, color: MqColors.info),
             const SizedBox(width: MqSpacing.space2),
             Text(
-              'OpenStreetMap fallback · add a Maps API key to use Google',
+              l10n.mapOsmFallbackBadge,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: isDark ? Colors.white70 : MqColors.contentSecondary,
               ),

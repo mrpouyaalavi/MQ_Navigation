@@ -69,6 +69,13 @@ lib/
 **Verification:** `dart format` on edited files; `flutter analyze lib/features/map` (no issues); `flutter test test/features/map/map_controller_test.dart` (10/10 passed); `ReadLints` on edited files (no linter errors).
 **Follow-ups:** Continue strict i18n audit in map UI by migrating remaining hardcoded category-chip labels to localization keys.
 
+### Raouf: 2026-04-28 (AEST) — Map i18n hardcoded-text cleanup (next audit pass)
+**Scope:** Map UI localization hardening after functional audit.
+**Summary:** Replaced remaining hardcoded map UI labels with localization keys. Category chips in `MapPage` now use localized labels (`food`, `parking`, `services`, `home_studentServices`, `mapCategoryLibrary`) and the desktop OSM fallback badge now uses `mapOsmFallbackBadge` instead of inline text.
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `lib/app/l10n/app_en.arb`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on edited files; `flutter analyze lib/features/map` (no issues); `flutter test test/features/map/map_controller_test.dart` (10/10 passed); `ReadLints` on edited files (no linter errors).
+**Follow-ups:** Add the new map localization keys to non-English `app_*.arb` files to restore full locale parity.
+
 ### Raouf: 2026-04-22 (AEST) — Zero-data features & settings implementation
 **Scope:** Architecture & UI improvement.
 **Summary:** Implemented the "zero-data" features blueprint. Updated `UserPreferences` and `SettingsRepository` to support default renderer, travel mode, low data mode, and reduced motion. Implemented "Low Data Guard" in building search and "Reduced Motion Guard" in animations. Added a "Nuclear Reset" (wipe data) feature. Built the corresponding UI in `SettingsPage`.
