@@ -104,7 +104,9 @@ function normalizeCacheKey(
   return `maps-places:${query.trim().toLowerCase()}:${lat}:${lng}`;
 }
 
-async function getCachedResponse(cacheKey: string): Promise<CachePayload | null> {
+async function getCachedResponse(
+  cacheKey: string,
+): Promise<CachePayload | null> {
   const supabase = getAdminClient();
   const now = new Date().toISOString();
   const { data, error } = await supabase

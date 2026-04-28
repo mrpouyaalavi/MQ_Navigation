@@ -1,3 +1,20 @@
+### Raouf: 2026-04-28 (AEST) — Full map/navigation API and function verification run
+**Scope:** End-to-end validation of map/navigation Flutter flows plus Supabase map edge functions.
+**Summary:** Executed a comprehensive verification sweep across map/navigation analyzers, map domain/controller tests, edge-function format/type checks, and the project quick-check pipeline. The only blocker found was a formatting drift in `maps-places` edge function, which was fixed with `deno fmt`; all subsequent checks passed with no functional failures.
+**Files Changed:**
+- `supabase/functions/maps-places/index.ts`
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- `flutter analyze lib/features/map lib/features/transit` → no issues.
+- `flutter test test/features/map/map_controller_test.dart test/features/map/map_route_test.dart test/features/map/map_overlay_entity_test.dart test/features/map/maps_routes_remote_source_test.dart` → all passed.
+- `deno fmt --check supabase/functions/maps-routes/index.ts supabase/functions/maps-places/index.ts supabase/functions/tfnsw-proxy/index.ts` → pass after formatting `maps-places`.
+- `deno check` for `maps-routes`, `maps-places`, `tfnsw-proxy` → pass.
+- `./scripts/check.sh --quick` → **5/5 passed** (analyze, 154 tests, gen-l10n).
+- `ReadLints` on edited edge file → no linter errors.
+**Follow-ups:**
+- Optional: add dedicated unit tests for edge functions (`maps-routes` / `maps-places` / `tfnsw-proxy`) to avoid relying only on type/format validation for API behavior.
+
 ### Raouf: 2026-04-28 (AEST) — Live navigation/routing validation with Context7 alignment
 **Scope:** Full map routing audit against latest `google_maps_flutter` and `flutter_map` documentation patterns.
 **Summary:** Pulled current docs via Context7 (`/websites/pub_dev_google_maps_flutter`, `/fleaflet/flutter_map`) and validated local map/routing behavior end-to-end. Fixed campus renderer mode mismatch by constraining campus route modes to walking and normalizing controller state when switching renderers/modes. Prevented non-navigation camera snapback by removing passive location-update recenter branches so camera now recenters only on explicit recenter requests or active navigation follow. Corrected navigation action semantics by relabeling in-route stop action to localized `stopNavigation`. Hardened TfNSW transit coordinate parsing in `maps-routes` with lat/lng range validation and automatic coordinate-order swap fallback for mixed payload ordering.

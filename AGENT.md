@@ -83,6 +83,13 @@ lib/
 **Verification:** `dart format` on edited Dart files; `deno fmt supabase/functions/maps-routes/index.ts`; `deno check supabase/functions/maps-routes/index.ts`; `flutter analyze lib/features/map` (no issues); `flutter test test/features/map/map_controller_test.dart` (12/12 passed); `ReadLints` on edited files (no linter errors).
 **Follow-ups:** Add dedicated unit tests for TfNSW transit coordinate-order normalization.
 
+### Raouf: 2026-04-28 (AEST) — Full map/navigation API and function verification run
+**Scope:** End-to-end validation of map/navigation Flutter flows plus Supabase map edge functions.
+**Summary:** Ran a full verification sweep over map/navigation analyzers, map tests, edge-function format/type checks, and project quick-check. Resolved one blocking issue: `maps-places` edge function formatting drift (`deno fmt`), then reran checks to confirm all map/navigation and related API paths are green.
+**Files Changed:** `supabase/functions/maps-places/index.ts`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `flutter analyze lib/features/map lib/features/transit` (no issues); focused map tests (all passed); `deno fmt --check` + `deno check` for `maps-routes`, `maps-places`, `tfnsw-proxy` (pass after formatting); `./scripts/check.sh --quick` (5/5 passed, 154 tests); `ReadLints` on edited file (no linter errors).
+**Follow-ups:** Add edge-function unit/integration tests for runtime API behavior (maps-routes/maps-places/tfnsw-proxy) to complement current static/type checks.
+
 ### Raouf: 2026-04-22 (AEST) — Zero-data features & settings implementation
 **Scope:** Architecture & UI improvement.
 **Summary:** Implemented the "zero-data" features blueprint. Updated `UserPreferences` and `SettingsRepository` to support default renderer, travel mode, low data mode, and reduced motion. Implemented "Low Data Guard" in building search and "Reduced Motion Guard" in animations. Added a "Nuclear Reset" (wipe data) feature. Built the corresponding UI in `SettingsPage`.
