@@ -35,6 +35,7 @@ class CampusMapView extends ConsumerStatefulWidget {
     required this.selectedBuilding,
     required this.route,
     required this.currentLocation,
+    required this.locationCenterRequestToken,
     required this.isNavigating,
     required this.onSelectBuilding,
     this.activeOverlayIds = const {},
@@ -45,6 +46,7 @@ class CampusMapView extends ConsumerStatefulWidget {
   final Building? selectedBuilding;
   final MapRoute? route;
   final LocationSample? currentLocation;
+  final int locationCenterRequestToken;
   final bool isNavigating;
   final ValueChanged<Building> onSelectBuilding;
   final Set<String> activeOverlayIds;
@@ -74,6 +76,22 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
     super.didUpdateWidget(oldWidget);
     final projection = _projection;
     if (projection == null) {
+      return;
+    }
+
+    // Explicit location-center requests should always move camera, even when
+    // location coordinates have not changed.
+    if (widget.locationCenterRequestToken !=
+        oldWidget.locationCenterRequestToken) {
+      final location = widget.currentLocation;
+      if (location != null) {
+        _moveMap(
+          projection.gpsToMapPoint(
+            latitude: location.latitude,
+            longitude: location.longitude,
+          ),
+        );
+      }
       return;
     }
 

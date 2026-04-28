@@ -1,3 +1,38 @@
+### Raouf: 2026-04-28 (AEST) — Full map audit follow-up + reliable live-location recenter
+**Scope:** End-to-end map interaction audit with explicit center-on-location camera behavior.
+**Summary:** Completed a deeper map audit across campus, native Google, and desktop fallback renderers to ensure core actions are functional and non-decorative. Added a map-state `locationCenterRequestToken` that increments whenever `centerOnCurrentLocation()` is pressed, then wired all renderers to react to token changes by moving the camera to the latest location even if coordinates are unchanged. This fixes the “pressed but did not visually recenter” behavior and keeps location recenter semantics consistent across all map engines.
+**Files Changed:**
+- `lib/features/map/presentation/controllers/map_controller.dart`
+- `lib/features/map/presentation/pages/map_page.dart`
+- `lib/features/map/presentation/widgets/campus/campus_map_view.dart`
+- `lib/features/map/presentation/widgets/google/google_map_view.dart`
+- `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`
+- `test/features/map/map_controller_test.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- `dart format` on all edited map/controller/test files → pass.
+- `flutter analyze lib/features/map` → no issues.
+- `flutter test test/features/map/map_controller_test.dart` → **10/10 passed**.
+- `ReadLints` on edited files → no linter errors.
+**Follow-ups:**
+- Continue full map audit for strict i18n compliance by replacing remaining hardcoded map-chip labels in `MapPage` with localization keys.
+
+### Raouf: 2026-04-28 (AEST) — Campus map routing panel functional parity audit
+**Scope:** Map screen functional parity between campus and google renderers.
+**Summary:** Completed a campus-map-first functionality audit and removed the orientation-only campus destination panel that made core actions feel decorative. Wired selected-building state in campus mode to the same `RoutePanel` used by google mode, enabling real in-app route loading, travel-mode switching, step list, start/stop navigation, clear route, Street View, and external Google Maps handoff without forcing a renderer switch.
+**Files Changed:**
+- `lib/features/map/presentation/pages/map_page.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- `dart format lib/features/map/presentation/pages/map_page.dart` → pass.
+- `flutter analyze lib/features/map/presentation/pages/map_page.dart` → no issues.
+- `flutter test test/features/map/map_controller_test.dart` → **9/9 passed**.
+- `ReadLints` on `lib/features/map/presentation/pages/map_page.dart` → no linter errors.
+**Follow-ups:**
+- Continue the map audit on the next pass by converting remaining hardcoded category-chip labels in `MapPage` to localization keys for full i18n compliance.
+
 ### Raouf: 2026-04-25 (AEST) — Faster live commute refresh + direction targeting
 **Scope:** Home commute card freshness, Settings commute targeting, persisted preferences, and TfNSW proxy filtering.
 **Summary:** Made commute tracking faster and more precise by reducing the active Home transit polling interval from 60 seconds to 20 seconds, adding a manual refresh button on the Home commute card, and introducing persisted Metro direction targeting for `Any direction`, `Tallawong`, and `Sydenham`. The direction value now flows from Settings through `UserPreferences`, `SettingsRepository`, `SettingsController`, `tfnswMetroProvider`, and `tfnsw-proxy`, where departures are filtered by destination direction with a safe fallback to avoid false empty states. Added localized labels for direction and refresh controls across all ARB locale files, and added tests covering favorite direction persistence and controller wiring.

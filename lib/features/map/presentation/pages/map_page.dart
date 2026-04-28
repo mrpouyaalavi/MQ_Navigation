@@ -119,6 +119,7 @@ class _MapPageState extends ConsumerState<MapPage> {
               selectedBuilding: mapState.selectedBuilding,
               route: mapState.route,
               currentLocation: mapState.currentLocation,
+              locationCenterRequestToken: mapState.locationCenterRequestToken,
               isNavigating: mapState.isNavigating,
               onSelectBuilding: controller.selectBuilding,
               activeOverlayIds: mapState.activeOverlayIds,
@@ -129,6 +130,7 @@ class _MapPageState extends ConsumerState<MapPage> {
               selectedBuilding: mapState.selectedBuilding,
               route: mapState.route,
               currentLocation: mapState.currentLocation,
+              locationCenterRequestToken: mapState.locationCenterRequestToken,
               isNavigating: mapState.isNavigating,
               onSelectBuilding: controller.selectBuilding,
             ),
@@ -166,32 +168,23 @@ class _MapPageState extends ConsumerState<MapPage> {
                     onClear: controller.clearSelection,
                   )
                 : mapState.selectedBuilding != null
-                ? (mapState.renderer == MapRendererType.campus
-                      ? _CampusDestinationPanel(
-                          building: mapState.selectedBuilding!,
-                          onClose: controller.clearSelection,
-                          onSwitchToGoogleMaps: () {
-                            controller.setRenderer(MapRendererType.google);
-                          },
-                          onOpenInGoogleMaps: controller.openInGoogleMaps,
-                        )
-                      : RoutePanel(
-                          selectedBuilding: mapState.selectedBuilding,
-                          route: mapState.route,
-                          travelMode: mapState.travelMode,
-                          isLoading: mapState.isLoadingRoute,
-                          isNavigating: mapState.isNavigating,
-                          hasArrived: mapState.hasArrived,
-                          onLoadRoute: controller.loadRoute,
-                          onClearRoute: controller.clearRoute,
-                          onClearSelection: controller.clearSelection,
-                          onTravelModeChanged: controller.setTravelMode,
-                          onStartNavigation: controller.startNavigation,
-                          onStopNavigation: controller.stopNavigation,
-                          onDismissArrival: controller.dismissArrival,
-                          onOpenInGoogleMaps: controller.openInGoogleMaps,
-                          onOpenStreetView: controller.openStreetView,
-                        ))
+                ? RoutePanel(
+                    selectedBuilding: mapState.selectedBuilding,
+                    route: mapState.route,
+                    travelMode: mapState.travelMode,
+                    isLoading: mapState.isLoadingRoute,
+                    isNavigating: mapState.isNavigating,
+                    hasArrived: mapState.hasArrived,
+                    onLoadRoute: controller.loadRoute,
+                    onClearRoute: controller.clearRoute,
+                    onClearSelection: controller.clearSelection,
+                    onTravelModeChanged: controller.setTravelMode,
+                    onStartNavigation: controller.startNavigation,
+                    onStopNavigation: controller.stopNavigation,
+                    onDismissArrival: controller.dismissArrival,
+                    onOpenInGoogleMaps: controller.openInGoogleMaps,
+                    onOpenStreetView: controller.openStreetView,
+                  )
                 : null,
           );
         },
@@ -649,247 +642,6 @@ class _CategoryChip extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Lean destination card shown on the **campus** renderer.
-///
-/// The campus renderer is a static PDF-style leaflet of MQ — we highlight the
-/// destination but students find their way themselves. For turn-by-turn
-/// directions, they switch to the Google Maps renderer or hand off to the
-/// native Google Maps app.
-class _CampusDestinationPanel extends StatelessWidget {
-  const _CampusDestinationPanel({
-    required this.building,
-    required this.onClose,
-    required this.onSwitchToGoogleMaps,
-    required this.onOpenInGoogleMaps,
-  });
-
-  final Building building;
-  final VoidCallback onClose;
-  final VoidCallback onSwitchToGoogleMaps;
-  final VoidCallback onOpenInGoogleMaps;
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = context.isDarkMode;
-    final l10n = AppLocalizations.of(context)!;
-    final theme = Theme.of(context);
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: MqSpacing.space3,
-          sigmaY: MqSpacing.space3,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: isDark
-                ? MqColors.charcoal850.withValues(alpha: 0.88)
-                : Colors.white.withValues(alpha: 0.92),
-            borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
-            border: Border.all(
-              color: isDark
-                  ? Colors.white.withValues(alpha: 0.08)
-                  : Colors.black.withValues(alpha: 0.06),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.18),
-                blurRadius: 24,
-                offset: const Offset(0, -4),
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.all(MqSpacing.space5),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Handle bar
-              Center(
-                child: Container(
-                  width: 44,
-                  height: 5,
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.2)
-                        : Colors.black.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                ),
-              ),
-              const SizedBox(height: MqSpacing.space4),
-
-              // Name + close
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          building.name,
-                          style: theme.textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: isDark
-                                ? Colors.white
-                                : MqColors.contentPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: MqSpacing.space1),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: Text(
-                                '${l10n.buildingCode}: ${building.code}',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: isDark
-                                      ? Colors.white.withValues(alpha: 0.6)
-                                      : MqColors.contentTertiary,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            if (building.category !=
-                                BuildingCategory.other) ...[
-                              const SizedBox(width: MqSpacing.space2),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: MqSpacing.space3,
-                                  vertical: MqSpacing.space1,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: MqColors.vividRed.withValues(
-                                    alpha: 0.15,
-                                  ),
-                                  borderRadius: BorderRadius.circular(
-                                    MqSpacing.radiusFull,
-                                  ),
-                                ),
-                                child: Text(
-                                  building.category.name.toUpperCase(),
-                                  style: theme.textTheme.labelSmall?.copyWith(
-                                    fontWeight: FontWeight.w700,
-                                    color: MqColors.vividRed,
-                                    letterSpacing: 1.2,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.5)
-                          : MqColors.contentTertiary,
-                    ),
-                    tooltip: l10n.clear,
-                    onPressed: onClose,
-                  ),
-                ],
-              ),
-
-              if (building.address != null &&
-                  building.address!.trim().isNotEmpty) ...[
-                const SizedBox(height: MqSpacing.space2),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.place_outlined,
-                      size: 16,
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.6)
-                          : MqColors.contentTertiary,
-                    ),
-                    const SizedBox(width: MqSpacing.space2),
-                    Expanded(
-                      child: Text(
-                        building.address!,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: isDark
-                              ? Colors.white.withValues(alpha: 0.7)
-                              : MqColors.contentSecondary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-
-              const SizedBox(height: MqSpacing.space3),
-
-              // Info hint: campus map is for orientation only
-              Container(
-                padding: const EdgeInsets.all(MqSpacing.space3),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.06)
-                      : MqColors.vividRed.withValues(alpha: 0.06),
-                  borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.info_outline,
-                      size: 16,
-                      color: MqColors.vividRed,
-                    ),
-                    const SizedBox(width: MqSpacing.space2),
-                    Expanded(
-                      child: Text(
-                        'Your destination is highlighted on the campus map. '
-                        'For step-by-step directions, switch to Google Maps.',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: isDark
-                              ? Colors.white.withValues(alpha: 0.8)
-                              : MqColors.contentSecondary,
-                          height: 1.35,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: MqSpacing.space4),
-
-              // Primary action: switch to Google Maps renderer (in-app directions)
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  icon: const Icon(Icons.directions),
-                  label: const Text('Navigate with Google Maps'),
-                  onPressed: onSwitchToGoogleMaps,
-                ),
-              ),
-
-              const SizedBox(height: MqSpacing.space2),
-
-              // Secondary: hand off to external Google Maps app
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton.icon(
-                  icon: const Icon(Icons.open_in_new, size: 18),
-                  label: Text(l10n.openInGoogleMaps),
-                  onPressed: onOpenInGoogleMaps,
-                ),
-              ),
-            ],
           ),
         ),
       ),

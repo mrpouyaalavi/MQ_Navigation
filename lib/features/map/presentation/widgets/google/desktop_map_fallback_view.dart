@@ -25,6 +25,7 @@ class DesktopMapFallbackView extends ConsumerStatefulWidget {
     required this.selectedBuilding,
     required this.route,
     required this.currentLocation,
+    required this.locationCenterRequestToken,
     required this.isNavigating,
     required this.onSelectBuilding,
   });
@@ -34,6 +35,7 @@ class DesktopMapFallbackView extends ConsumerStatefulWidget {
   final Building? selectedBuilding;
   final MapRoute? route;
   final LocationSample? currentLocation;
+  final int locationCenterRequestToken;
   final bool isNavigating;
   final ValueChanged<Building> onSelectBuilding;
 
@@ -60,6 +62,15 @@ class _DesktopMapFallbackViewState
   @override
   void didUpdateWidget(covariant DesktopMapFallbackView oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (widget.locationCenterRequestToken !=
+        oldWidget.locationCenterRequestToken) {
+      final location = widget.currentLocation;
+      if (location != null) {
+        _moveToLatLng(latlong.LatLng(location.latitude, location.longitude));
+      }
+      return;
+    }
 
     // Follow user during active navigation
     if (widget.isNavigating) {

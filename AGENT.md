@@ -55,6 +55,20 @@ lib/
 **Files Changed:** `.env` (new, gitignored)
 **Verification:** File exists and matches `.env.example` structure.
 
+### Raouf: 2026-04-28 (AEST) — Campus map routing panel functional parity audit
+**Scope:** Map screen functional parity between campus and google renderers.
+**Summary:** Completed a campus-map-first functionality audit and removed the orientation-only campus destination panel that made key actions feel decorative in campus mode. Wired selected-building state in campus mode to the shared `RoutePanel` so route loading, travel mode switching, step-by-step navigation controls, and map handoff actions work directly on the campus renderer.
+**Files Changed:** `lib/features/map/presentation/pages/map_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/pages/map_page.dart`; `flutter analyze lib/features/map/presentation/pages/map_page.dart` (no issues); `flutter test test/features/map/map_controller_test.dart` (9/9 passed); `ReadLints` on edited map page (no linter errors).
+**Follow-ups:** Continue map audit by localizing remaining hardcoded category-chip labels in `MapPage` for strict i18n compliance.
+
+### Raouf: 2026-04-28 (AEST) — Full map audit follow-up + reliable live-location recenter
+**Scope:** End-to-end map interaction audit with explicit center-on-location camera behavior.
+**Summary:** Completed a deeper map audit across campus, native Google, and desktop fallback renderers to ensure key controls are functional and non-decorative. Added `locationCenterRequestToken` to map state and incremented it on `centerOnCurrentLocation()` so every location-button press forces a camera recenter to the latest location even when latitude/longitude values are unchanged.
+**Files Changed:** `lib/features/map/presentation/controllers/map_controller.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `test/features/map/map_controller_test.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on edited files; `flutter analyze lib/features/map` (no issues); `flutter test test/features/map/map_controller_test.dart` (10/10 passed); `ReadLints` on edited files (no linter errors).
+**Follow-ups:** Continue strict i18n audit in map UI by migrating remaining hardcoded category-chip labels to localization keys.
+
 ### Raouf: 2026-04-22 (AEST) — Zero-data features & settings implementation
 **Scope:** Architecture & UI improvement.
 **Summary:** Implemented the "zero-data" features blueprint. Updated `UserPreferences` and `SettingsRepository` to support default renderer, travel mode, low data mode, and reduced motion. Implemented "Low Data Guard" in building search and "Reduced Motion Guard" in animations. Added a "Nuclear Reset" (wipe data) feature. Built the corresponding UI in `SettingsPage`.

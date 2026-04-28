@@ -37,6 +37,7 @@ class MapState {
     this.isNavigating = false,
     this.isLoadingRoute = false,
     this.hasArrived = false,
+    this.locationCenterRequestToken = 0,
     this.activeOverlayIds = const {},
     this.error,
   });
@@ -53,6 +54,7 @@ class MapState {
   final bool isNavigating;
   final bool isLoadingRoute;
   final bool hasArrived;
+  final int locationCenterRequestToken;
   final Set<String> activeOverlayIds;
   final MapStateError? error;
 
@@ -72,6 +74,7 @@ class MapState {
     bool? isNavigating,
     bool? isLoadingRoute,
     bool? hasArrived,
+    int? locationCenterRequestToken,
     Set<String>? activeOverlayIds,
     MapStateError? error,
     bool clearError = false,
@@ -93,6 +96,8 @@ class MapState {
       isNavigating: isNavigating ?? this.isNavigating,
       isLoadingRoute: isLoadingRoute ?? this.isLoadingRoute,
       hasArrived: hasArrived ?? this.hasArrived,
+      locationCenterRequestToken:
+          locationCenterRequestToken ?? this.locationCenterRequestToken,
       activeOverlayIds: activeOverlayIds ?? this.activeOverlayIds,
       error: clearError ? null : error ?? this.error,
     );
@@ -115,6 +120,7 @@ class MapState {
         other.isNavigating == isNavigating &&
         other.isLoadingRoute == isLoadingRoute &&
         other.hasArrived == hasArrived &&
+        other.locationCenterRequestToken == locationCenterRequestToken &&
         setEquals(other.activeOverlayIds, activeOverlayIds) &&
         other.error == error;
   }
@@ -133,6 +139,7 @@ class MapState {
         isNavigating.hashCode ^
         isLoadingRoute.hashCode ^
         hasArrived.hashCode ^
+        locationCenterRequestToken.hashCode ^
         activeOverlayIds.hashCode ^
         error.hashCode;
   }
@@ -454,6 +461,7 @@ class MapController extends AsyncNotifier<MapState> {
     state = AsyncData(
       current.copyWith(
         currentLocation: effectiveLocation,
+        locationCenterRequestToken: current.locationCenterRequestToken + 1,
         permissionState: permissionState,
         clearError: true,
       ),

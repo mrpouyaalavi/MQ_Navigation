@@ -161,6 +161,32 @@ void main() {
       },
     );
 
+    test('increments location center token when center is requested', () async {
+      final repository = _FakeMapRepository(buildings: [building]);
+      final container = ProviderContainer(
+        overrides: [
+          mapRepositoryProvider.overrideWithValue(repository),
+          settingsControllerProvider.overrideWith(
+            () => _FakeSettingsController(),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      await container.read(mapControllerProvider.future);
+      final notifier = container.read(mapControllerProvider.notifier);
+      final before = container.read(mapControllerProvider).value!;
+
+      await notifier.centerOnCurrentLocation();
+
+      final after = container.read(mapControllerProvider).value!;
+      expect(
+        after.locationCenterRequestToken,
+        before.locationCenterRequestToken + 1,
+      );
+      expect(after.currentLocation, isNotNull);
+    });
+
     test(
       'marks arrival and stops navigation when user reaches destination',
       () async {

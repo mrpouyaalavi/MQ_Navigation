@@ -26,6 +26,7 @@ class GoogleMapView extends StatefulWidget {
     required this.selectedBuilding,
     required this.route,
     required this.currentLocation,
+    required this.locationCenterRequestToken,
     required this.isNavigating,
     required this.onSelectBuilding,
   });
@@ -35,6 +36,7 @@ class GoogleMapView extends StatefulWidget {
   final Building? selectedBuilding;
   final MapRoute? route;
   final LocationSample? currentLocation;
+  final int locationCenterRequestToken;
   final bool isNavigating;
   final ValueChanged<Building> onSelectBuilding;
 
@@ -57,6 +59,15 @@ class _GoogleMapViewState extends State<GoogleMapView> {
   @override
   void didUpdateWidget(covariant GoogleMapView oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    if (widget.locationCenterRequestToken !=
+        oldWidget.locationCenterRequestToken) {
+      final location = widget.currentLocation;
+      if (_controller != null && location != null) {
+        _focusLocation(location);
+      }
+      return;
+    }
 
     // Follow user during active navigation
     if (widget.isNavigating) {
@@ -125,6 +136,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
         selectedBuilding: widget.selectedBuilding,
         route: widget.route,
         currentLocation: widget.currentLocation,
+        locationCenterRequestToken: widget.locationCenterRequestToken,
         isNavigating: widget.isNavigating,
         onSelectBuilding: widget.onSelectBuilding,
       );
@@ -143,6 +155,7 @@ class _GoogleMapViewState extends State<GoogleMapView> {
         selectedBuilding: widget.selectedBuilding,
         route: widget.route,
         currentLocation: widget.currentLocation,
+        locationCenterRequestToken: widget.locationCenterRequestToken,
         isNavigating: widget.isNavigating,
         onSelectBuilding: widget.onSelectBuilding,
       );
