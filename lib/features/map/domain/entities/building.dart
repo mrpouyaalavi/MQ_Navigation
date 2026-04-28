@@ -173,6 +173,10 @@ enum BuildingCategory {
   venue,
   research,
   residential,
+  parking,
+  transport,
+  security,
+  smoking,
   other;
 
   static BuildingCategory fromString(String value) {
