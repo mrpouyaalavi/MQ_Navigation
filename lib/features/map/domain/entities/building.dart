@@ -175,7 +175,6 @@ enum BuildingCategory {
   residential,
   parking,
   transport,
-  security,
   smoking,
   other;
 
