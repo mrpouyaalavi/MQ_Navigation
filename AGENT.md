@@ -55,6 +55,13 @@ lib/
 **Files Changed:** `.env` (new, gitignored)
 **Verification:** File exists and matches `.env.example` structure.
 
+### Raouf: 2026-04-30 (AEST) — Live navigation smooth-follow hardening + runtime diagnostics
+**Scope:** Real-device navigation smoothness and live-location observability across map renderers and controller.
+**Summary:** Added a navigation follow throttle in both `GoogleMapView` and `DesktopMapFallbackView` to reduce camera jitter from noisy high-frequency location ticks: after initial forced follow, camera updates now require both a minimum 900ms interval and at least 3m movement. This keeps navigation readable without lagging behind real movement. Added controller-level structured diagnostics logs for `startNavigation`, `stopNavigation`, arrival detection, recalculation triggers, and a throttled (5s) navigation diagnostics payload (`accuracyMetres`, `distFromLastFetchMetres`, `distToDestinationMetres`, `isOffRoute`, `routeDistanceMeters`) to support real-device debugging.
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `dart format` on edited files (pass); `flutter analyze lib/features/map` (no issues); `flutter test test/features/map` (71/71 passed); `./scripts/check.sh --quick` (5/5 passed, 155 tests).
+**Follow-ups:** Add heading-aware camera bearing/tilt follow once heading quality and reduced-motion gating are finalized.
+
 ### Raouf: 2026-04-30 (AEST) — Live navigation/location production audit + stale-state race fix (Context7 aligned)
 **Scope:** End-to-end audit of map live navigation and locate-me behavior across controller + renderers, with documentation verification.
 **Summary:** Audited the complete live-location/live-navigation pipeline against current Context7 docs for `geolocator`, `google_maps_flutter`, and `flutter_map`. Existing implementation already covered most production patterns (permission checks, platform-specific settings, stream-based updates, explicit camera zoom behavior). Identified one race condition in `MapController.centerOnCurrentLocation`: async permission/location awaits could complete after other user actions and overwrite newer map state because updates were based on a stale pre-await snapshot. Updated the method to re-read `state.value` after awaits and apply changes to the latest state only, preventing selection/route rollback during in-flight locate-me requests. Added regression coverage in `map_controller_test.dart`.

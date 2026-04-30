@@ -176,6 +176,7 @@ class MapController extends AsyncNotifier<MapState> {
   StreamSubscription<LocationSample>? _locationSubscription;
   int _routeRequestVersion = 0;
   LocationSample? _lastRouteFetchLocation;
+  DateTime? _lastNavDiagnosticsAt;
 
   @override
   Future<MapState> build() async {
@@ -606,6 +607,11 @@ class MapController extends AsyncNotifier<MapState> {
     if (current == null || current.route == null) {
       return;
     }
+    AppLogger.info('Navigation started', {
+      'destination': current.selectedBuilding?.id,
+      'renderer': current.renderer.name,
+      'travelMode': current.travelMode.name,
+    });
     state = AsyncData(
       current.copyWith(isNavigating: true, hasArrived: false, clearError: true),
     );
@@ -616,6 +622,9 @@ class MapController extends AsyncNotifier<MapState> {
     if (current == null) {
       return;
     }
+    AppLogger.info('Navigation stopped', {
+      'destination': current.selectedBuilding?.id,
+    });
     state = AsyncData(current.copyWith(isNavigating: false, clearError: true));
   }
 
@@ -750,6 +759,10 @@ class MapController extends AsyncNotifier<MapState> {
     if (distToDestination <= _arrivalThresholdMetres) {
       _locationSubscription?.cancel();
       _locationSubscription = null;
+      AppLogger.info('Navigation arrived', {
+        'destination': destination.id,
+        'distanceToDestinationMetres': distToDestination.toStringAsFixed(1),
+      });
       state = AsyncData(
         current.copyWith(
           currentLocation: location,
@@ -779,9 +792,44 @@ class MapController extends AsyncNotifier<MapState> {
       }
     }
 
+    _logNavigationDiagnostics(
+      location: location,
+      distFromLastFetch: distFromLastFetch,
+      distToDestination: distToDestination,
+      isOffRoute: isOffRoute,
+      routeDistanceMeters: current.route?.distanceMeters,
+    );
+
     if (distFromLastFetch > _recalcThresholdMetres || isOffRoute) {
+      AppLogger.info('Navigation route recalculation triggered', {
+        'distFromLastFetchMetres': distFromLastFetch.toStringAsFixed(1),
+        'distToDestinationMetres': distToDestination.toStringAsFixed(1),
+        'isOffRoute': isOffRoute,
+      });
       unawaited(loadRoute());
     }
+  }
+
+  void _logNavigationDiagnostics({
+    required LocationSample location,
+    required double distFromLastFetch,
+    required double distToDestination,
+    required bool isOffRoute,
+    required int? routeDistanceMeters,
+  }) {
+    final now = DateTime.now();
+    final last = _lastNavDiagnosticsAt;
+    if (last != null && now.difference(last) < const Duration(seconds: 5)) {
+      return;
+    }
+    _lastNavDiagnosticsAt = now;
+    AppLogger.debug('Navigation diagnostics', {
+      'accuracyMetres': location.accuracy?.toStringAsFixed(1),
+      'distFromLastFetchMetres': distFromLastFetch.toStringAsFixed(1),
+      'distToDestinationMetres': distToDestination.toStringAsFixed(1),
+      'isOffRoute': isOffRoute,
+      'routeDistanceMeters': routeDistanceMeters,
+    });
   }
 
   int _beginRouteRequest() {

@@ -50,6 +50,8 @@ class _DesktopMapFallbackViewState
   final MapController _controller = MapController();
   late final TileProvider _tileProvider;
   bool _hasFitRouteBounds = false;
+  DateTime? _lastNavigationCameraUpdateAt;
+  LocationSample? _lastNavigationCameraLocation;
 
   // 18 Wally's Walk entrance — kept in sync with MapController._campusFallback
   // and GoogleMapView's initial camera position so all renderers open on the
@@ -59,6 +61,10 @@ class _DesktopMapFallbackViewState
   // Mirrors GoogleMapView so all renderers behave identically.
   static const double _locateZoom = 17;
   static const double _navigationFollowZoom = 18;
+  static const Duration _navigationCameraMinInterval = Duration(
+    milliseconds: 900,
+  );
+  static const double _navigationCameraMinMoveMetres = 3;
 
   @override
   void initState() {
@@ -97,13 +103,22 @@ class _DesktopMapFallbackViewState
               newLocation.latitude != oldLocation.latitude ||
               newLocation.longitude != oldLocation.longitude);
       if (newLocation != null &&
-          (justStartedNavigating || movedSinceLastTick)) {
+          (justStartedNavigating || movedSinceLastTick) &&
+          _shouldFollowNavigationCamera(
+            location: newLocation,
+            force: justStartedNavigating,
+          )) {
         _controller.move(
           latlong.LatLng(newLocation.latitude, newLocation.longitude),
           _navigationFollowZoom,
         );
+        _lastNavigationCameraUpdateAt = DateTime.now();
+        _lastNavigationCameraLocation = newLocation;
         return;
       }
+    } else if (oldWidget.isNavigating && !widget.isNavigating) {
+      _lastNavigationCameraUpdateAt = null;
+      _lastNavigationCameraLocation = null;
     }
 
     // Focus on newly selected building
@@ -388,6 +403,32 @@ class _DesktopMapFallbackViewState
       TravelMode.bike => const Color(0xFF2E8B57),
       TravelMode.transit => const Color(0xFFF57C00),
     };
+  }
+
+  bool _shouldFollowNavigationCamera({
+    required LocationSample location,
+    required bool force,
+  }) {
+    if (force) {
+      return true;
+    }
+    final now = DateTime.now();
+    final lastAt = _lastNavigationCameraUpdateAt;
+    if (lastAt != null &&
+        now.difference(lastAt) < _navigationCameraMinInterval) {
+      return false;
+    }
+    final lastLocation = _lastNavigationCameraLocation;
+    if (lastLocation == null) {
+      return true;
+    }
+    final movedMetres = haversineMetres(
+      lat1: lastLocation.latitude,
+      lng1: lastLocation.longitude,
+      lat2: location.latitude,
+      lng2: location.longitude,
+    );
+    return movedMetres >= _navigationCameraMinMoveMetres;
   }
 }
 

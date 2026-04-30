@@ -1,3 +1,20 @@
+### Raouf: 2026-04-30 (AEST) — Live navigation smooth-follow hardening + runtime diagnostics
+**Scope:** Real-device navigation camera smoothness in both renderers and controller-level navigation diagnostics logging.
+**Summary:** Completed a second production pass focused on live navigation smoothness and observability. Added camera follow throttling in both `google_maps_flutter` and desktop `flutter_map` renderers so navigation follow no longer reacts to every micro-update: camera recenter now requires either a forced first-follow tick or both a minimum elapsed interval (900ms) and a minimum movement delta (3m). This removes jitter from noisy GPS ticks while keeping route-follow responsive. Added structured `AppLogger` instrumentation in `MapController` for navigation start/stop/arrival/recalculation and periodic (5s) diagnostics snapshots including accuracy, distance-to-destination, and off-route state for faster real-device triage.
+**Files Changed:**
+- `lib/features/map/presentation/widgets/google/google_map_view.dart`
+- `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`
+- `lib/features/map/presentation/controllers/map_controller.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- `dart format` on edited files → pass.
+- `flutter analyze lib/features/map` → no issues.
+- `flutter test test/features/map` → 71/71 passed.
+- `./scripts/check.sh --quick` → 5/5 passed (155 tests).
+**Follow-ups:**
+- Optional: wire heading into camera bearing/tilt once a heading signal with stable filtering is available, and guard with reduced-motion preference.
+
 ### Raouf: 2026-04-30 (AEST) — Live navigation/location production audit + stale-state race fix (Context7 aligned)
 **Scope:** End-to-end audit of live location + live navigation flow across controller/state, Geolocator source, Google renderer, and desktop fallback renderer.
 **Summary:** Performed a production-readiness audit against current Context7 docs for `geolocator` (`/baseflow/flutter-geolocator`), `google_maps_flutter` (`/websites/pub_dev_google_maps_flutter`), and `flutter_map` (`/fleaflet/flutter_map`). Existing implementation already matched key guidance in most areas (explicit permission flow handling, platform-specific location settings, stream-based navigation tracking, and explicit camera zoom for locate-me/navigation follow). Found one concrete race condition: `MapController.centerOnCurrentLocation()` captured `current` before awaiting permission/location futures, then wrote `current.copyWith(...)` afterward, which could roll back newer state (for example, user selecting another building while locate-me was in flight). Fixed by writing from `latest = state.value` after awaits and guarding null state, preserving all intermediate user interactions while still updating location/error state.

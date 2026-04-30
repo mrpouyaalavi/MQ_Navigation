@@ -47,6 +47,8 @@ class GoogleMapView extends StatefulWidget {
 class _GoogleMapViewState extends State<GoogleMapView> {
   GoogleMapController? _controller;
   bool _hasFitRouteBounds = false;
+  DateTime? _lastNavigationCameraUpdateAt;
+  LocationSample? _lastNavigationCameraLocation;
 
   /// Camera zoom used when the user presses the "locate me" button.
   /// Must be high enough that pressing the button while already centred
@@ -58,6 +60,10 @@ class _GoogleMapViewState extends State<GoogleMapView> {
   /// Camera zoom held during active navigation. Tighter than the
   /// locate-me zoom so the user feels they are following the route.
   static const double _navigationFollowZoom = 18;
+  static const Duration _navigationCameraMinInterval = Duration(
+    milliseconds: 900,
+  );
+  static const double _navigationCameraMinMoveMetres = 3;
 
   @override
   void dispose() {
@@ -107,7 +113,11 @@ class _GoogleMapViewState extends State<GoogleMapView> {
               newLocation.longitude != oldLocation.longitude);
       if (_controller != null &&
           newLocation != null &&
-          (justStartedNavigating || movedSinceLastTick)) {
+          (justStartedNavigating || movedSinceLastTick) &&
+          _shouldFollowNavigationCamera(
+            location: newLocation,
+            force: justStartedNavigating,
+          )) {
         unawaited(
           _controller!.animateCamera(
             CameraUpdate.newLatLngZoom(
@@ -116,8 +126,13 @@ class _GoogleMapViewState extends State<GoogleMapView> {
             ),
           ),
         );
+        _lastNavigationCameraUpdateAt = DateTime.now();
+        _lastNavigationCameraLocation = newLocation;
         return;
       }
+    } else if (oldWidget.isNavigating && !widget.isNavigating) {
+      _lastNavigationCameraUpdateAt = null;
+      _lastNavigationCameraLocation = null;
     }
 
     // Focus on newly selected building
@@ -401,5 +416,31 @@ class _GoogleMapViewState extends State<GoogleMapView> {
       TravelMode.bike => const Color(0xFF2E8B57),
       TravelMode.transit => const Color(0xFFF57C00),
     };
+  }
+
+  bool _shouldFollowNavigationCamera({
+    required LocationSample location,
+    required bool force,
+  }) {
+    if (force) {
+      return true;
+    }
+    final now = DateTime.now();
+    final lastAt = _lastNavigationCameraUpdateAt;
+    if (lastAt != null &&
+        now.difference(lastAt) < _navigationCameraMinInterval) {
+      return false;
+    }
+    final lastLocation = _lastNavigationCameraLocation;
+    if (lastLocation == null) {
+      return true;
+    }
+    final movedMetres = haversineMetres(
+      lat1: lastLocation.latitude,
+      lng1: lastLocation.longitude,
+      lat2: location.latitude,
+      lng2: location.longitude,
+    );
+    return movedMetres >= _navigationCameraMinMoveMetres;
   }
 }
