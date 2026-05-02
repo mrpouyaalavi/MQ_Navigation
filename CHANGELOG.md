@@ -1,3 +1,34 @@
+### Raouf: 2026-05-02 (AEST) — UI/UX Audit and Accessibility Fix for Home Page
+**Scope:** Full UI/UX audit of the home page file (`lib/features/home/presentation/pages/home_page.dart`) and accessibility hardening.
+
+**Summary:**
+Conducted a comprehensive file-by-file UI/UX audit of the home page against project constraints (MqColors/MqSpacing usage, minimum tap targets, RTL support, and semantic labels). Identified that the tertiary quick-access buttons (`_TertiaryQuickRow`) lacked accessibility semantics because `MqTactileButton` does not include an intrinsic `Semantics` wrapper. Wrapped the tertiary quick access `MqTactileButton` elements in a `Semantics` widget with the localized label to restore accessibility parity with the rest of the layout.
+
+**Files Changed:**
+- `lib/features/home/presentation/pages/home_page.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+
+**Verification:**
+- `dart format lib/features/home/presentation/pages/home_page.dart` (pass)
+- `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues)
+
+**Follow-ups:**
+- None.
+
+### Raouf: 2026-05-01 (AEST) — Google Geocoding v4 `GeocodeResult.place` notice — repo audit (no code change)
+**Scope:** Compliance review for Google Maps Platform email ([Action Required] Update Geocoding v4 API `GeocodeResult.place` by May 31, 2026).
+**Summary:** Searched the entire codebase for Geocoding v4 (`v4alpha`, `v4beta`, `GeocodeResult`, `places.googleapis.com` geocode flows, and `//places.googleapis.com/places/` resource-name parsing). **This app does not use Geocoding API v4.** Map-related server calls are `maps-places` (classic Places Autocomplete REST at `maps.googleapis.com/maps/api/place/autocomplete/json`, returning `place_id` strings) and `maps-routes` (Routes API v2 `computeRoutes`). No client or Edge Function parses `GeocodeResult.place`. The GCP project named in the notice (`gen-lang-client-0843778974`) may be a different console project than the one backing `GOOGLE_MAPS_API_KEY` / Supabase secrets — verify in Google Cloud Console which project owns the keys you use for Maps.
+**Files Changed:**
+- `AGENT.md`
+- `CHANGELOG.md`
+**Verification:**
+- Repository-wide search for geocoding v4 / `GeocodeResult` / `places.googleapis.com` geocode usage → **no matches**.
+- `read_file` / `grep` on `supabase/functions/maps-places/index.ts`, `supabase/functions/maps-routes/index.ts`, `lib/features/map/data/datasources/places_search_source.dart` → confirms classic Autocomplete + Routes v2 only.
+**Follow-ups:**
+- If another service under the same GCP project uses Geocoding v4 preview, update it to accept `places/{placeID}` and prefer the dedicated `place_id` field when available.
+- Optionally migrate production workloads to Geocoding v4 GA per Google’s recommendation.
+
 ### Raouf: 2026-04-30 (AEST) — Bottom tab label updated to Navigation + emulator cleanup
 **Scope:** Bottom taskbar copy adjustment and local emulator process cleanup.
 **Summary:** Updated only the map section label in the persistent bottom taskbar from `Campus Map` to `Navigation` by switching the tab destination label in `AppShell` from `l10n.map` to `l10n.navigation`. This preserves existing `Campus Map` wording in map renderer toggles and settings, as requested. Also terminated Android emulator background processes and verified none remained.

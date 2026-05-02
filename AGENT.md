@@ -166,6 +166,20 @@ lib/
 **Files Changed:** `lib/shared/models/user_preferences.dart`, `lib/features/settings/data/repositories/settings_repository.dart`, `lib/features/settings/presentation/controllers/settings_controller.dart`, `lib/features/map/presentation/controllers/map_controller.dart`, `lib/app/theme/mq_animations.dart`, `lib/features/map/presentation/widgets/building_search_sheet.dart`, `lib/features/settings/presentation/pages/settings_page.dart`
 **Verification:** Manual logic verification for guards and repository methods.
 
+### Raouf: 2026-05-01 (AEST) — Google Geocoding v4 `place` format notice — audit only
+**Scope:** Google Maps Platform notice about `GeocodeResult.place` changing from `//places.googleapis.com/places/{placeID}` to `places/{placeID}` (deadline May 31, 2026).
+**Summary:** Full-repo audit confirms MQ Navigation does **not** call Geocoding API v4 or depend on that resource string. Maps integrations remain classic Places Autocomplete (`maps-places`) and Routes API v2 (`maps-routes`). Treat the listed GCP project id as potentially distinct from this app’s key project until verified in console.
+**Files Changed:** `AGENT.md`, `CHANGELOG.md`
+**Verification:** ripgrep/code review across repo for geocoding v4 endpoints and `GeocodeResult` → none found.
+**Follow-ups:** Update any *other* workloads that share the billed GCP project if they use Geocoding v4 preview.
+
+### Raouf: 2026-05-02 (AEST) — UI/UX Audit and Accessibility Fix for Home Page
+**Scope:** Full UI/UX audit of the home page file (`lib/features/home/presentation/pages/home_page.dart`) and accessibility hardening.
+**Summary:** Conducted a comprehensive file-by-file UI/UX audit of the home page against project constraints (MqColors/MqSpacing usage, minimum tap targets, RTL support, and semantic labels). Identified that the tertiary quick-access buttons (`_TertiaryQuickRow`) lacked accessibility semantics because `MqTactileButton` does not include an intrinsic `Semantics` wrapper. Wrapped the tertiary quick access `MqTactileButton` elements in a `Semantics` widget with the localized label to restore accessibility parity with the rest of the layout.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart` (pass); `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** None.
+
 ## Coding Conventions
 - Use Riverpod providers (not setState or Bloc)
 - Use go_router named routes (RouteNames constants)

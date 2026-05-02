@@ -870,48 +870,52 @@ class _TertiaryQuickRow extends StatelessWidget {
           for (var i = 0; i < items.length; i++) ...[
             if (i != 0) const SizedBox(width: MqSpacing.space3),
             Expanded(
-              child: MqTactileButton(
-                hapticsEnabled: hapticsEnabled,
-                onTap: () => onTapCategory(items[i].searchQuery),
-                borderRadius: MqSpacing.radiusLg,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? MqColors.charcoal850
-                        : Colors.white.withValues(alpha: 0.88),
-                    borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
-                    border: Border.all(
+              child: Semantics(
+                button: true,
+                label: items[i].label,
+                child: MqTactileButton(
+                  hapticsEnabled: hapticsEnabled,
+                  onTap: () => onTapCategory(items[i].searchQuery),
+                  borderRadius: MqSpacing.radiusLg,
+                  child: Container(
+                    decoration: BoxDecoration(
                       color: isDark
-                          ? Colors.white.withAlpha(13)
-                          : MqColors.sand200,
+                          ? MqColors.charcoal850
+                          : Colors.white.withValues(alpha: 0.88),
+                      borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+                      border: Border.all(
+                        color: isDark
+                            ? Colors.white.withAlpha(13)
+                            : MqColors.sand200,
+                      ),
                     ),
-                  ),
-                  padding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: MqSpacing.space3,
-                    vertical: MqSpacing.space4,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        items[i].icon,
-                        size: MqSpacing.iconMd,
-                        color: MqColors.red,
-                      ),
-                      const SizedBox(height: MqSpacing.space2),
-                      Text(
-                        items[i].label,
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: isDark
-                              ? MqColors.contentPrimaryDark
-                              : MqColors.contentPrimary,
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: MqSpacing.space3,
+                      vertical: MqSpacing.space4,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          items[i].icon,
+                          size: MqSpacing.iconMd,
+                          color: MqColors.red,
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: MqSpacing.space2),
+                        Text(
+                          items[i].label,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.textTheme.labelMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: isDark
+                                ? MqColors.contentPrimaryDark
+                                : MqColors.contentPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
