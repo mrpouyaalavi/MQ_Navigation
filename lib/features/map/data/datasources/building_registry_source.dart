@@ -7,7 +7,18 @@ import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:mq_navigation/core/security/secure_storage_service.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
 
-const _cacheKey = 'building_registry';
+/// Versioned cache key. **Bump the suffix whenever `buildings.json`
+/// changes shape (new tags, new aliases, schema changes)** — every
+/// install will invalidate its previous cache on next launch and
+/// re-hydrate from the bundled asset. The previous unversioned key
+/// (`'building_registry'`) is intentionally never re-used so installs
+/// upgrading from older builds never serve stale enrichment data.
+///
+/// Version history:
+///   v2 — Open Day 2026 release: `faculty`, `campus hub`, and
+///        `student services` tags, plus 66 cross-departmental aliases
+///        and the Gale History Museum entry.
+const _cacheKey = 'building_registry.v2';
 const _assetPath = 'assets/data/buildings.json';
 
 /// Data source for the campus building registry.

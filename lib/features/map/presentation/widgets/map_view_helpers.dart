@@ -2,6 +2,17 @@ import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/domain/services/map_polyline_codec.dart';
 
+/// Decides which buildings the renderer should show as markers.
+///
+/// **Contract**:
+///   * **Focused state** (`selectedBuilding != null`) — show ONLY the
+///     selected building. The user explicitly drilled into one
+///     destination; surfacing siblings creates a visual "where am I?"
+///     conflict.
+///   * **Category browse** (query active, no selection) — show every
+///     match. The list and the markers stay in sync.
+///   * **Idle** — show nothing; an empty map is the correct neutral
+///     state until the user expresses intent.
 List<Building> resolveVisibleBuildings({
   required List<Building> searchResults,
   required String searchQuery,
@@ -15,18 +26,9 @@ List<Building> resolveVisibleBuildings({
   }
 
   if (selectedBuilding != null) {
-    final visibleBuildings = <Building>[
-      if (isRenderable(selectedBuilding)) selectedBuilding,
-    ];
-    if (searchQuery.trim().isNotEmpty) {
-      visibleBuildings.addAll(
-        searchResults.where(
-          (building) =>
-              isRenderable(building) && building.id != selectedBuilding.id,
-        ),
-      );
-    }
-    return visibleBuildings;
+    return isRenderable(selectedBuilding)
+        ? <Building>[selectedBuilding]
+        : const <Building>[];
   }
 
   if (searchQuery.trim().isNotEmpty) {

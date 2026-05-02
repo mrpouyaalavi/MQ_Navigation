@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
@@ -29,6 +31,22 @@ class OpenDayPage extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        // GoRouter renders `/open-day` outside the bottom-nav shell, so
+        // `automaticallyImplyLeading` doesn't always discover a back
+        // affordance reliably. Wire one explicitly: pop if there's a
+        // route to pop to (deep-link from Home), otherwise route the
+        // user to Home — never a dead screen.
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          tooltip: 'Back',
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.goNamed(RouteNames.home);
+            }
+          },
+        ),
         title: Text(
           'Open Day',
           style: context.textTheme.titleLarge?.copyWith(

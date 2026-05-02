@@ -100,7 +100,15 @@ class LocalNotificationsService {
       scheduledDate: scheduledAt,
       notificationDetails: _detailsFor(request.type),
       payload: request.encodedPayload,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      // **Inexact** scheduling — Android Doze/standby may shift the
+      // delivery by a few minutes, which is fine for reminders. Using
+      // exact alarms triggers `exact_alarms_not_permitted` on Android
+      // 12+ unless the SCHEDULE_EXACT_ALARM permission is granted, which
+      // is heavy lifting for a feature whose contract is "remind me
+      // around N minutes before". Reserve exact alarms for genuine
+      // wake-the-user-now use cases (deadlines, exams) — not soft
+      // event nudges.
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: request.repeatsDaily
           ? DateTimeComponents.time
           : null,

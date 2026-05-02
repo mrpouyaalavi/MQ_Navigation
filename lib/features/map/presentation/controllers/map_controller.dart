@@ -575,7 +575,19 @@ class MapController extends AsyncNotifier<MapState> {
     );
   }
 
-  /// Fully resets the map: clears selected building, route, and search query.
+  /// Closes the currently-focused destination.
+  ///
+  /// **Contextual semantics**:
+  ///   * If a search/category query is active, this returns the user
+  ///     to the **category browse state** — selected building cleared,
+  ///     route cleared, but the query and its result list are preserved
+  ///     so the markers and the list footer reappear automatically.
+  ///   * If there is no active query, this is a full reset — the map
+  ///     drops back to its idle empty state.
+  ///
+  /// This means the close-X on `RoutePanel` *just works* whether the
+  /// user got there via direct search, via a category chip, or via a
+  /// deep-link — the right "back" destination is inferred from state.
   void clearSelection() {
     final current = state.value;
     if (current == null) {
@@ -585,6 +597,24 @@ class MapController extends AsyncNotifier<MapState> {
     _locationSubscription?.cancel();
     _locationSubscription = null;
     _lastRouteFetchLocation = null;
+
+    final hasActiveQuery = current.searchQuery.trim().isNotEmpty;
+    if (hasActiveQuery) {
+      // Preserve query + results so the category list footer and
+      // multi-marker browse state reappear automatically.
+      state = AsyncData(
+        current.copyWith(
+          clearSelectedBuilding: true,
+          clearRoute: true,
+          isNavigating: false,
+          hasArrived: false,
+          isLoadingRoute: false,
+          clearError: true,
+        ),
+      );
+      return;
+    }
+
     state = AsyncData(
       current.copyWith(
         clearSelectedBuilding: true,

@@ -1,13 +1,9 @@
-import 'dart:io' show Platform;
-
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
-import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:mq_navigation/features/map/data/datasources/building_registry_source.dart';
 import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dart';
@@ -15,19 +11,25 @@ import 'package:mq_navigation/features/map/presentation/controllers/map_controll
 import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
 import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// Bottom sheet shown when the user taps the direction icon on an event.
 ///
-/// Two actions, deliberately distinct:
-///   1. **View in Campus Map** — switches the in-app renderer to
-///      `MapRendererType.campus`, focuses the venue, then navigates to
-///      the building-detail route. Single-marker focused state, user
-///      stays inside MQ Navigation.
-///   2. **Navigate with Google Maps** — opens the **native** Google
-///      Maps app on the device with turn-by-turn directions to the
-///      venue. Uses platform-specific URL schemes; falls back to the
-///      universal https URL only when the native app isn't installed.
+/// Two actions, both routing **through the in-app Navigation tab** —
+/// they differ only in which renderer the user lands inside:
+///   1. **View in Campus Map** → Navigation tab + Campus Map renderer,
+///      single-marker focused state on the venue.
+///   2. **Navigate with Google Maps** → Navigation tab + Google Maps
+///      renderer, single-marker focused state on the venue. The
+///      embedded Google Maps view supports gesture-based zoom/pan and
+///      uses the user's current location for spatial context, while
+///      keeping the user *inside* MQ Navigation rather than booting
+///      out to the OS-level Maps app.
+///
+/// Implementation note: both actions perform two side effects in
+/// sequence — `mapController.setRenderer(...)` then
+/// `goNamed(buildingDetail, …)`. The order matters: setting the
+/// renderer first means the destination page builds in the right mode
+/// from frame zero (no flash of the wrong renderer).
 class EventActionsSheet extends ConsumerWidget {
   const EventActionsSheet({super.key, required this.event});
 
@@ -47,6 +49,8 @@ class EventActionsSheet extends ConsumerWidget {
     final dark = context.isDarkMode;
     final buildingsAsync = ref.watch(buildingRegistryProvider);
     final building = _resolveBuilding(buildingsAsync.value, event.buildingCode);
+    final hasResolvedBuilding =
+        event.buildingCode != null && building != null;
 
     return MqBottomSheet(
       child: Padding(
@@ -89,10 +93,10 @@ class EventActionsSheet extends ConsumerWidget {
                 ),
               ),
             ),
-            // Primary: View in Campus Map. Hidden gracefully if the
-            // building isn't in the registry — the sheet never offers
-            // a broken action.
-            if (event.buildingCode != null && building != null)
+            // Both actions are gated on a resolved building — without
+            // a known buildingCode there's nothing to focus, so the
+            // sheet never offers a broken action.
+            if (hasResolvedBuilding) ...[
               Semantics(
                 button: true,
                 label: 'View ${event.venueName} in Campus Map',
@@ -108,45 +112,73 @@ class EventActionsSheet extends ConsumerWidget {
                     ),
                   ),
                   subtitle: const Text('Open inside MQ Navigation'),
-                  onTap: () => _openInCampusMap(context, ref),
-                ),
-              ),
-            Semantics(
-              button: true,
-              label: 'Navigate to ${event.venueName} with Google Maps',
-              child: ListTile(
-                leading: Icon(
-                  Icons.navigation_rounded,
-                  color: dark
-                      ? Colors.white.withValues(alpha: 0.85)
-                      : MqColors.contentPrimary,
-                ),
-                title: Text(
-                  'Navigate with Google Maps',
-                  style: context.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
+                  onTap: () => _routeToMap(
+                    context,
+                    ref,
+                    renderer: MapRendererType.campus,
                   ),
                 ),
-                subtitle: const Text('Open external turn-by-turn directions'),
-                onTap: () => _navigateWithGoogleMaps(context, building),
               ),
-            ),
+              Semantics(
+                button: true,
+                label:
+                    'Navigate to ${event.venueName} with Google Maps in MQ Navigation',
+                child: ListTile(
+                  leading: Icon(
+                    Icons.navigation_rounded,
+                    color: dark
+                        ? Colors.white.withValues(alpha: 0.85)
+                        : MqColors.contentPrimary,
+                  ),
+                  title: Text(
+                    'Navigate with Google Maps',
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  subtitle: const Text(
+                    'Open Google Maps inside MQ Navigation',
+                  ),
+                  onTap: () => _routeToMap(
+                    context,
+                    ref,
+                    renderer: MapRendererType.google,
+                  ),
+                ),
+              ),
+            ] else
+              const Padding(
+                padding: EdgeInsetsDirectional.all(MqSpacing.space4),
+                child: Text(
+                  'No mappable venue for this event yet.',
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 
-  /// Switches the in-app map to the campus renderer, focuses the venue,
-  /// and routes to the building-detail page so the user lands in
-  /// single-marker focused state automatically.
-  void _openInCampusMap(BuildContext context, WidgetRef ref) {
+  /// Routes the user to the in-app Navigation tab with the given
+  /// renderer active and the venue selected as the single focused
+  /// destination.
+  ///
+  /// Why both side effects rather than just navigating: the renderer
+  /// state lives on `mapControllerProvider` and persists across route
+  /// transitions, so setting it *before* `goNamed` ensures `MapPage`
+  /// rebuilds in the right mode immediately rather than briefly
+  /// flashing the user's previous default renderer.
+  void _routeToMap(
+    BuildContext context,
+    WidgetRef ref, {
+    required MapRendererType renderer,
+  }) {
     Navigator.pop(context);
-    // Force the campus renderer regardless of the user's default —
-    // "View in Campus Map" is an explicit user choice for that mode.
-    ref
-        .read(mapControllerProvider.notifier)
-        .setRenderer(MapRendererType.campus);
+    ref.read(mapControllerProvider.notifier).setRenderer(renderer);
+    // `/map/building/:id` lives inside the Map shell branch, so
+    // GoRouter switches into the Map tab *and* `MapPage._initState`
+    // reads `initialBuildingId` and calls `selectBuildingById` —
+    // landing the user in single-focused-marker state automatically.
     Future<void>.delayed(const Duration(milliseconds: 250), () {
       if (!context.mounted) return;
       context.goNamed(
@@ -154,85 +186,6 @@ class EventActionsSheet extends ConsumerWidget {
         pathParameters: {'buildingId': event.buildingCode!},
       );
     });
-  }
-
-  /// Launches the **native** Google Maps app with turn-by-turn directions.
-  ///
-  /// Per-platform strategy:
-  ///   * **Android** — `google.navigation:` intent starts navigation in
-  ///     the Google Maps app immediately. Walking mode is requested
-  ///     because campus is pedestrian-first.
-  ///   * **iOS** — `comgooglemaps://?daddr=...&directionsmode=walking`
-  ///     opens the Google Maps app if installed.
-  ///   * **Fallback** — when neither native scheme can be launched (Maps
-  ///     not installed, web/desktop), falls back to the universal
-  ///     `https://www.google.com/maps/dir/?api=1&destination=...&travelmode=walking`
-  ///     URL which the OS routes to whichever maps handler is present.
-  Future<void> _navigateWithGoogleMaps(
-    BuildContext context,
-    Building? building,
-  ) async {
-    Navigator.pop(context);
-
-    final lat = building?.latitude;
-    final lng = building?.longitude;
-    final hasCoords = lat != null && lng != null;
-
-    // Build candidate URIs in launch-priority order.
-    final candidates = <Uri>[];
-    if (!kIsWeb) {
-      if (Platform.isAndroid && hasCoords) {
-        // Native Android intent — opens directly in turn-by-turn mode.
-        candidates.add(Uri.parse('google.navigation:q=$lat,$lng&mode=w'));
-      } else if (Platform.isIOS && hasCoords) {
-        // iOS scheme for the Google Maps app.
-        candidates.add(
-          Uri.parse(
-            'comgooglemaps://?daddr=$lat,$lng&directionsmode=walking',
-          ),
-        );
-      }
-    }
-    // Universal fallback — works in browser and on devices without the
-    // Google Maps app, and when coords are missing falls back to a
-    // text query for the venue.
-    if (hasCoords) {
-      candidates.add(
-        Uri.parse(
-          'https://www.google.com/maps/dir/?api=1'
-          '&destination=$lat,$lng'
-          '&travelmode=walking',
-        ),
-      );
-    } else {
-      final q = Uri.encodeQueryComponent(
-        '${event.venueName} Macquarie University',
-      );
-      candidates.add(
-        Uri.parse(
-          'https://www.google.com/maps/dir/?api=1'
-          '&destination=$q'
-          '&travelmode=walking',
-        ),
-      );
-    }
-
-    // Try each candidate in order; the first one that opens wins.
-    for (final uri in candidates) {
-      try {
-        final ok = await launchUrl(
-          uri,
-          mode: LaunchMode.externalApplication,
-        );
-        if (ok) return;
-      } catch (error, stackTrace) {
-        AppLogger.warning(
-          'Google Maps launch attempt failed: $uri',
-          error,
-          stackTrace,
-        );
-      }
-    }
   }
 
   Building? _resolveBuilding(List<Building>? buildings, String? code) {

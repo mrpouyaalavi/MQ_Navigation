@@ -222,12 +222,15 @@ class _GoogleMapViewState extends State<GoogleMapView> {
             Marker(
               markerId: MarkerId(building.id),
               position: LatLng(target.latitude, target.longitude),
+              // All destination markers use the same red hue so the
+              // user reads them all as "campus destinations". Selection
+              // is communicated via full alpha + raised z-index, not
+              // a hue swap. Browsing a category should look like a
+              // family of red destinations, not a mixed blue/red set.
               icon: BitmapDescriptor.defaultMarkerWithHue(
-                widget.selectedBuilding?.id == building.id
-                    ? BitmapDescriptor.hueRed
-                    : BitmapDescriptor.hueAzure,
+                BitmapDescriptor.hueRed,
               ),
-              alpha: widget.selectedBuilding?.id == building.id ? 1.0 : 0.6,
+              alpha: widget.selectedBuilding?.id == building.id ? 1.0 : 0.85,
               zIndexInt: widget.selectedBuilding?.id == building.id ? 1 : 0,
               infoWindow: InfoWindow(
                 title: building.name,
