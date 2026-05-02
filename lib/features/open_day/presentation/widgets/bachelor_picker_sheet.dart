@@ -198,29 +198,34 @@ class _AreaSection extends StatelessWidget {
           ),
         ),
         for (final b in bachelors)
-          ListTile(
-            dense: true,
-            title: Text(
-              b.name,
-              style: context.textTheme.bodyLarge?.copyWith(
-                fontWeight: b.id == selectedId
-                    ? FontWeight.w700
-                    : FontWeight.w500,
-                color: b.id == selectedId
-                    ? (dark ? MqColors.vividRed : MqColors.red)
-                    : (dark
-                          ? MqColors.contentPrimaryDark
-                          : MqColors.contentPrimary),
+          Semantics(
+            button: true,
+            selected: b.id == selectedId,
+            label: b.name,
+            child: ListTile(
+              dense: true,
+              title: Text(
+                b.name,
+                style: context.textTheme.bodyLarge?.copyWith(
+                  fontWeight: b.id == selectedId
+                      ? FontWeight.w700
+                      : FontWeight.w500,
+                  color: b.id == selectedId
+                      ? (dark ? MqColors.vividRed : MqColors.red)
+                      : (dark
+                            ? MqColors.contentPrimaryDark
+                            : MqColors.contentPrimary),
+                ),
               ),
+              trailing: b.id == selectedId
+                  ? const Icon(
+                      Icons.check_rounded,
+                      color: MqColors.vividRed,
+                      size: 20,
+                    )
+                  : null,
+              onTap: () => onSelect(b),
             ),
-            trailing: b.id == selectedId
-                ? const Icon(
-                    Icons.check_rounded,
-                    color: MqColors.vividRed,
-                    size: 20,
-                  )
-                : null,
-            onTap: () => onSelect(b),
           ),
       ],
     );

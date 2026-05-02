@@ -201,6 +201,13 @@ lib/
 **Verification:** `dart format lib/features/open_day/` (pass); `flutter analyze lib/features/open_day/` (no issues).
 **Follow-ups:** None.
 
+### Raouf: 2026-05-02 (AEST) — UI/UX Audit and Accessibility Fix for Open Day Feature
+**Scope:** Full UI/UX audit of all presentation files in `lib/features/open_day/presentation/` to ensure adherence to UI constraints (MqColors/MqSpacing, RTL layout, minimum tap targets, and semantic labels).
+**Summary:** Conducted a comprehensive audit of the open day feature. Confirmed the consistent use of `MqSpacing`/`MqColors` and directional paddings. Fixed violations where interactive elements lacked explicit semantic labels for screen readers. Added `Semantics` wrappers with descriptive labels to the `MqTactileButton` elements in `open_day_home_card.dart`, the `ListTile` elements in `bachelor_picker_sheet.dart`, and the location action `ListTile` elements in `event_actions_sheet.dart`.
+**Files Changed:** `open_day_home_card.dart`, `bachelor_picker_sheet.dart`, `event_actions_sheet.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/open_day/` (pass); `flutter analyze lib/features/open_day/` (no issues).
+**Follow-ups:** None.
+
 ## Coding Conventions
 - Use Riverpod providers (not setState or Bloc)
 - Use go_router named routes (RouteNames constants)

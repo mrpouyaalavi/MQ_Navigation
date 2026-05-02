@@ -86,47 +86,55 @@ class EventActionsSheet extends ConsumerWidget {
             // building isn't in the registry (so the sheet never offers
             // a broken action).
             if (event.buildingCode != null && building != null)
-              ListTile(
-                leading: const Icon(
-                  Icons.location_on_rounded,
-                  color: MqColors.vividRed,
+              Semantics(
+                button: true,
+                label: 'View ${event.venueName} in Campus Map',
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.location_on_rounded,
+                    color: MqColors.vividRed,
+                  ),
+                  title: Text(
+                    'View in Campus Map',
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  subtitle: const Text('Open inside MQ Navigation'),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    // Allow bottom sheet to close before transitioning to heavy map
+                    await Future.delayed(const Duration(milliseconds: 300));
+                    if (!context.mounted) return;
+                    context.goNamed(
+                      RouteNames.buildingDetail,
+                      pathParameters: {'buildingId': event.buildingCode!},
+                    );
+                  },
+                ),
+              ),
+            Semantics(
+              button: true,
+              label: 'Navigate to ${event.venueName} with Google Maps',
+              child: ListTile(
+                leading: Icon(
+                  Icons.navigation_rounded,
+                  color: dark
+                      ? Colors.white.withValues(alpha: 0.85)
+                      : MqColors.contentPrimary,
                 ),
                 title: Text(
-                  'View in Campus Map',
+                  'Navigate with Google Maps',
                   style: context.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                subtitle: const Text('Open inside MQ Navigation'),
+                subtitle: const Text('Open external turn-by-turn directions'),
                 onTap: () async {
                   Navigator.pop(context);
-                  // Allow bottom sheet to close before transitioning to heavy map
-                  await Future.delayed(const Duration(milliseconds: 300));
-                  if (!context.mounted) return;
-                  context.goNamed(
-                    RouteNames.buildingDetail,
-                    pathParameters: {'buildingId': event.buildingCode!},
-                  );
+                  await _openInGoogleMaps(building, event);
                 },
               ),
-            ListTile(
-              leading: Icon(
-                Icons.navigation_rounded,
-                color: dark
-                    ? Colors.white.withValues(alpha: 0.85)
-                    : MqColors.contentPrimary,
-              ),
-              title: Text(
-                'Navigate with Google Maps',
-                style: context.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              subtitle: const Text('Open external turn-by-turn directions'),
-              onTap: () async {
-                Navigator.pop(context);
-                await _openInGoogleMaps(building, event);
-              },
             ),
           ],
         ),
