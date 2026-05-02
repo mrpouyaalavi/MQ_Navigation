@@ -10,6 +10,7 @@ import 'package:mq_navigation/features/map/domain/entities/map_renderer_type.dar
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/features/map/domain/services/building_search.dart';
 import 'package:mq_navigation/features/map/domain/services/geo_utils.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/map_view_helpers.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -160,7 +161,6 @@ final mapControllerProvider = AsyncNotifierProvider<MapController, MapState>(
 class MapController extends AsyncNotifier<MapState> {
   static const _defaultVisibleBuildings = 15;
   static const _arrivalThresholdMetres = 30.0;
-  static const _recalcThresholdMetres = 80.0;
   static const _offRouteThresholdMetres = 50.0;
 
   TravelMode _normalizeTravelModeForRenderer(
@@ -787,8 +787,19 @@ class MapController extends AsyncNotifier<MapState> {
 
     var isOffRoute = false;
     if (current.route != null && distFromLastFetch > _offRouteThresholdMetres) {
-      if (distToDestination > current.route!.distanceMeters * 1.5) {
-        isOffRoute = true;
+      final routePoints = resolveRoutePoints(current.route!);
+      if (routePoints.isNotEmpty) {
+        final closestIdx = findClosestPointIndex(routePoints, location);
+        final closestPoint = routePoints[closestIdx];
+        final distToRoute = haversineMetres(
+          lat1: location.latitude,
+          lng1: location.longitude,
+          lat2: closestPoint.latitude,
+          lng2: closestPoint.longitude,
+        );
+        if (distToRoute > _offRouteThresholdMetres) {
+          isOffRoute = true;
+        }
       }
     }
 
@@ -800,7 +811,7 @@ class MapController extends AsyncNotifier<MapState> {
       routeDistanceMeters: current.route?.distanceMeters,
     );
 
-    if (distFromLastFetch > _recalcThresholdMetres || isOffRoute) {
+    if (isOffRoute) {
       AppLogger.info('Navigation route recalculation triggered', {
         'distFromLastFetchMetres': distFromLastFetch.toStringAsFixed(1),
         'distToDestinationMetres': distToDestination.toStringAsFixed(1),

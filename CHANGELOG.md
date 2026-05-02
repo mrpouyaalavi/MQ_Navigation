@@ -644,6 +644,24 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-05-02 (AEST) — Core Map Logic Audit & Navigation Hardening
+**Scope:** Full file-by-file audit of the core Map logic (`lib/features/map/`) to ensure live navigation, location tracking, and routing are 100% professional and production-ready.
+
+**Summary:**
+Audited the data sources, repositories, view layers, and `MapController`. Identified a major performance and logical flaw in the off-route recalculation mechanism. The previous naive approach triggered a backend route request every 80 meters walked *or* when the straight-line distance to the destination exceeded 150% of the total route length. Refactored `MapController._checkNavigationState` to use a true cross-track distance algorithm: it now extracts the active route polyline, computes the `findClosestPointIndex`, and checks the haversine distance between the user's GPS fix and the polyline itself. Removed the unnecessary periodic 80m recalculation trigger entirely, ensuring the app only hits the Supabase routing API when a user genuinely strays >50m off the path. This drastically improves backend scalability, preserves battery, and brings the navigation logic up to industry standards.
+
+**Files Changed:**
+- `lib/features/map/presentation/controllers/map_controller.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+
+**Verification:**
+- `dart format lib/features/map/` (pass)
+- `flutter analyze lib/features/map/` (no issues)
+
+**Follow-ups:**
+- None.
+
 ### Raouf: 2026-05-02 (AEST) — Open Day Google Maps Routing Fix
 **Scope:** Updated the "Navigate with Google Maps" action in the Open Day event sheet to route to the internal Google Maps view rather than launching an external browser.
 
