@@ -1501,6 +1501,12 @@ class _TapRow extends StatelessWidget {
                 ),
                 const SizedBox(width: MqSpacing.space4),
                 Expanded(
+                  // Label gets `flex: 3` and value gets `flex: 2` so the
+                  // value reliably has room to breathe even for short
+                  // labels like "Default Travel Mode" / "Drive". Without
+                  // this, `Expanded` would greedily eat all leftover
+                  // space and leave the value jammed against the chevron.
+                  flex: 3,
                   child: Text(
                     label,
                     style: context.textTheme.titleSmall?.copyWith(
@@ -1512,7 +1518,9 @@ class _TapRow extends StatelessWidget {
                   ),
                 ),
                 if (value.isNotEmpty) ...[
-                  Flexible(
+                  const SizedBox(width: MqSpacing.space3),
+                  Expanded(
+                    flex: 2,
                     child: Text(
                       value,
                       textAlign: TextAlign.end,
@@ -1525,8 +1533,8 @@ class _TapRow extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: MqSpacing.space1),
                 ],
+                const SizedBox(width: MqSpacing.space2),
                 Icon(
                   Icons.chevron_right_rounded,
                   size: 20,

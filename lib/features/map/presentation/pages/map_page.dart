@@ -556,14 +556,29 @@ class _CategoryFilterChips extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final isDark = context.isDarkMode;
     final normalizedActive = activeQuery.trim().toLowerCase();
-    // Transport intentionally absent — surfaced via Home's Metro Countdown
-    // card, so a duplicate Map filter chip would only add noise.
+    // Categories mirror the Home Quick Access set verbatim — same labels,
+    // same query strings, same iconography. Keeping these aligned is a
+    // hard product constraint: switching tabs must never relabel the
+    // same destination family.
+    //
+    // Transport is intentionally absent — surfaced via Home's Metro
+    // Countdown card, so a duplicate Map filter chip would only add
+    // noise. Library is folded into Campus Hub via tags in
+    // `assets/data/buildings.json`.
     final categories = <({IconData icon, String label, String query})>[
-      (icon: Icons.restaurant, label: l10n.food, query: 'food'),
-      (icon: Icons.local_parking, label: l10n.parking, query: 'parking'),
-      (icon: Icons.menu_book, label: l10n.mapCategoryLibrary, query: 'library'),
-      (icon: Icons.school, label: l10n.home_studentServices, query: 'student'),
-      (icon: Icons.support_agent, label: l10n.services, query: 'services'),
+      (
+        icon: Icons.support_agent,
+        label: l10n.home_studentServices,
+        query: 'student services',
+      ),
+      (icon: Icons.school, label: l10n.home_faculty, query: 'faculty'),
+      (
+        icon: Icons.account_balance,
+        label: l10n.home_campusHub,
+        query: 'campus hub',
+      ),
+      (icon: Icons.restaurant, label: l10n.home_foodDrink, query: 'food'),
+      (icon: Icons.local_parking, label: l10n.home_parking, query: 'parking'),
     ];
 
     return SizedBox(

@@ -213,13 +213,19 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
             // Clarity-safe zoom bounds for the illustrated campus raster.
             // - `mapMinZoom` (-4) keeps the campus from collapsing into a
             //   tiny island of empty space when the user pinches out.
-            // - `mapMaxZoom` caps zoom-in below the point at which the raster
-            //   visibly pixelates. Pinned to the lower of the metadata's
-            //   declared maxZoom and a 1.0 ceiling so future meta updates
-            //   cannot accidentally relax the cap past the safe range.
+            // - `mapMaxZoom` caps zoom-in below the point at which the
+            //   raster visibly pixelates. Hard-capped at 0.5 (down from
+            //   the prior 1.0 ceiling) because the illustrated PDF
+            //   overlay loses readability above that — text labels and
+            //   building outlines blur. Lower of the metadata's
+            //   declared maxZoom and 0.5 wins, so future meta updates
+            //   can only *tighten* the cap further.
             const double mapMinZoom = -4.0;
             const double initialFitMaxZoom = -3.0;
-            final double mapMaxZoom = meta.maxZoom < 1.0 ? meta.maxZoom : 1.0;
+            const double mapHardMaxZoom = 0.5;
+            final double mapMaxZoom = meta.maxZoom < mapHardMaxZoom
+                ? meta.maxZoom
+                : mapHardMaxZoom;
 
             return DecoratedBox(
               decoration: BoxDecoration(

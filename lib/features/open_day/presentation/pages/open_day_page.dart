@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
 import 'package:mq_navigation/features/open_day/domain/entities/open_day_data.dart';
+import 'package:mq_navigation/features/open_day/domain/services/open_day_time.dart';
 import 'package:mq_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
 import 'package:mq_navigation/features/open_day/presentation/widgets/event_actions_sheet.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
@@ -88,18 +88,23 @@ class _OpenDayBody extends StatelessWidget {
   }
 
   /// Builds a list of widgets where consecutive events sharing the same
-  /// hour are visually grouped under a single time header. This is the
-  /// product-level move that turns "raw spreadsheet dump" into a scannable
-  /// schedule.
+  /// hour are visually grouped under a single time header.
+  ///
+  /// Hour-grouping uses `OpenDayTime.sydneyHour` so events that share an
+  /// hour in Sydney always cluster together, regardless of device TZ.
+  /// Headers and tile times use the same Sydney-aware formatter, so a
+  /// 1:00 PM event reads as "1:00 PM" everywhere — never "3:00 AM" on
+  /// a UTC device.
   List<Widget> _groupedByHour(List<OpenDayEvent> events) {
-    final df = DateFormat('h:mm a');
     final out = <Widget>[];
-    String? currentHour;
+    int? currentHour;
     for (final e in events) {
-      final hourKey = '${e.startTime.hour}';
+      final hourKey = OpenDayTime.sydneyHour(e.startTime);
       if (hourKey != currentHour) {
         currentHour = hourKey;
-        out.add(_TimeBlockHeader(label: df.format(e.startTime)));
+        out.add(
+          _TimeBlockHeader(label: OpenDayTime.formatTimeOfDay(e.startTime)),
+        );
       }
       out.add(_EventTile(event: e));
       out.add(const SizedBox(height: MqSpacing.space3));
@@ -120,7 +125,7 @@ class _StudyInterestHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dark = context.isDarkMode;
-    final dateText = DateFormat('EEEE d MMMM y').format(openDayDate);
+    final dateText = OpenDayTime.formatLongDate(openDayDate);
 
     return Container(
       padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
@@ -225,9 +230,7 @@ class _EventTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = context.isDarkMode;
-    final timeRange =
-        '${DateFormat('h:mm').format(event.startTime)}'
-        ' – ${DateFormat('h:mm a').format(event.endTime)}';
+    final timeRange = OpenDayTime.formatTimeRange(event.startTime, event.endTime);
 
     return DecoratedBox(
       decoration: BoxDecoration(
