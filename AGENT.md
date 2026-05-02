@@ -194,6 +194,13 @@ lib/
 **Verification:** `dart format lib/features/settings/` (pass); `flutter analyze lib/features/settings/` (no issues).
 **Follow-ups:** None.
 
+### Raouf: 2026-05-02 (AEST) — Open Day Map Redirection Bug Fix
+**Scope:** Investigated and resolved a reported "glitchy" UI bug occurring when users tapped "View in Campus Map" from an Open Day event action sheet.
+**Summary:** Analyzed the routing flow between `EventActionsSheet` and the Map feature. Discovered that `Navigator.pop(context)` was immediately followed by a `goNamed(RouteNames.buildingDetail)` call. This concurrent execution caused the heavy map page to be pushed and rendered while the bottom sheet dismissal animation was still running, leading to severe frame drops and jank. Fixed the issue by introducing a `Future.delayed(const Duration(milliseconds: 300))` to `EventActionsSheet.dart` before triggering the `goNamed` transition, allowing the sheet to fully dismiss before the heavy map layout phase begins.
+**Files Changed:** `event_actions_sheet.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/open_day/` (pass); `flutter analyze lib/features/open_day/` (no issues).
+**Follow-ups:** None.
+
 ## Coding Conventions
 - Use Riverpod providers (not setState or Bloc)
 - Use go_router named routes (RouteNames constants)

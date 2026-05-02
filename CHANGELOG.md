@@ -644,6 +644,24 @@ All notable changes to the MQ Navigation Flutter app.
 
 ## [Unreleased]
 
+### Raouf: 2026-05-02 (AEST) — Open Day Map Redirection Bug Fix
+**Scope:** Investigated and resolved a reported "glitchy" UI bug occurring when users tapped "View in Campus Map" from an Open Day event action sheet.
+
+**Summary:**
+Analyzed the routing flow between `EventActionsSheet` and the Map feature. Discovered that `Navigator.pop(context)` was immediately followed by a `goNamed(RouteNames.buildingDetail)` call. This concurrent execution caused the heavy map page to be pushed and rendered while the bottom sheet dismissal animation was still running, leading to severe frame drops and jank. Fixed the issue by introducing a `Future.delayed(const Duration(milliseconds: 300))` to `EventActionsSheet.dart` before triggering the `goNamed` transition, allowing the sheet to fully dismiss before the heavy map layout phase begins.
+
+**Files Changed:**
+- `lib/features/open_day/presentation/widgets/event_actions_sheet.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+
+**Verification:**
+- `dart format lib/features/open_day/` (pass)
+- `flutter analyze lib/features/open_day/` (no issues)
+
+**Follow-ups:**
+- None.
+
 ### Raouf: 2026-05-02 (AEST) — UI/UX Audit and Accessibility Fix for Settings Feature
 **Scope:** Full UI/UX audit of all presentation files in `lib/features/settings/presentation/` to ensure adherence to UI constraints (MqColors/MqSpacing, RTL layout, minimum tap targets, and semantic labels).
 

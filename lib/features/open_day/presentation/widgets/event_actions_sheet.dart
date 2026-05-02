@@ -98,8 +98,11 @@ class EventActionsSheet extends ConsumerWidget {
                   ),
                 ),
                 subtitle: const Text('Open inside MQ Navigation'),
-                onTap: () {
+                onTap: () async {
                   Navigator.pop(context);
+                  // Allow bottom sheet to close before transitioning to heavy map
+                  await Future.delayed(const Duration(milliseconds: 300));
+                  if (!context.mounted) return;
                   context.goNamed(
                     RouteNames.buildingDetail,
                     pathParameters: {'buildingId': event.buildingCode!},
