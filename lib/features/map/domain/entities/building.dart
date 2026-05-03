@@ -24,6 +24,7 @@ class Building {
     this.gridRef,
     this.campusX,
     this.campusY,
+    this.facultyGroup,
   });
 
   final String id;
@@ -45,6 +46,16 @@ class Building {
   final String? gridRef;
   final double? campusX;
   final double? campusY;
+
+  /// Which of the four MQ faculty groups this building belongs to,
+  /// if any. Drives the **Faculty** category two-level drill-down on
+  /// the map: top level shows the four [FacultyGroup] cards, second
+  /// level shows only buildings whose `facultyGroup == selected`.
+  ///
+  /// `null` means the building is not assigned to a faculty group —
+  /// it can still be tagged `faculty` for legacy search tokens, but
+  /// it won't appear under any specific drill-down branch.
+  final FacultyGroup? facultyGroup;
 
   factory Building.fromJson(Map<String, dynamic> json) {
     final location = json['location'] as Map<String, dynamic>?;
@@ -87,6 +98,7 @@ class Building {
       campusY:
           (campusLocation?['y'] as num?)?.toDouble() ??
           (json['campusY'] as num?)?.toDouble(),
+      facultyGroup: FacultyGroup.fromJson(json['facultyGroup'] as String?),
     );
   }
 
@@ -117,6 +129,7 @@ class Building {
     'campusLocation': hasCampusCoordinates
         ? {'x': campusX, 'y': campusY}
         : null,
+    'facultyGroup': facultyGroup?.id,
   };
 
   /// Best coordinate for routing: entrance if available, otherwise building center.
@@ -183,5 +196,59 @@ enum BuildingCategory {
       (e) => e.name == value,
       orElse: () => BuildingCategory.other,
     );
+  }
+}
+
+/// The four top-level Macquarie University faculty groups used by
+/// the **Faculty** category browse drill-down. The order here is the
+/// canonical display order on the first-level faculty list.
+///
+/// The string [id] is the on-disk JSON identifier in
+/// `assets/data/buildings.json`. **Do not rename** these without also
+/// migrating the asset and bumping the building registry cache key.
+enum FacultyGroup {
+  arts(
+    id: 'arts',
+    label: 'Faculty of Arts',
+    description: 'Humanities, Law, Education, MMCCS',
+    icon: '\u{1F3DB}',
+  ),
+  business(
+    id: 'business',
+    label: 'Macquarie Business School',
+    description: 'Business, Economics, Marketing',
+    icon: '\u{1F4BC}',
+  ),
+  mhhs(
+    id: 'mhhs',
+    label: 'Faculty of Medicine, Health and Human Sciences',
+    description: 'Health Sciences, Psychology, Clinical',
+    icon: '\u{2695}',
+  ),
+  scienceEngineering(
+    id: 'science_engineering',
+    label: 'Faculty of Science and Engineering',
+    description: 'Sciences, Engineering, Computing',
+    icon: '\u{1F52C}',
+  );
+
+  const FacultyGroup({
+    required this.id,
+    required this.label,
+    required this.description,
+    required this.icon,
+  });
+
+  final String id;
+  final String label;
+  final String description;
+  final String icon;
+
+  static FacultyGroup? fromJson(String? value) {
+    if (value == null || value.isEmpty) return null;
+    for (final group in FacultyGroup.values) {
+      if (group.id == value) return group;
+    }
+    return null;
   }
 }

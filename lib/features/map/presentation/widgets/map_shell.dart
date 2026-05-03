@@ -37,9 +37,19 @@ class MapShell extends StatelessWidget {
   final Widget? footer;
   final Widget? filterChips;
 
-  /// Vertical gap kept between the floating controls and the top edge of the
-  /// footer panel so neither element overlaps the other.
-  static const double _footerClearance = 80;
+  /// Vertical space the floating bottom-corner controls reserve for
+  /// themselves above the safe-area inset. The footer panel docks
+  /// above this band so it never overlaps the buttons, **and the
+  /// buttons never have to slide up to clear the panel**. This keeps
+  /// the bottom-right location button and bottom-left layers button
+  /// anchored to a stable screen position regardless of whether a
+  /// category list, route panel, or nothing is on screen — no
+  /// "jumping" when the panel toggles.
+  ///
+  /// Sized to one IconButton tap target (~48dp) plus the symmetric
+  /// `space4` (24dp) gap below it, with a small breathing gap above
+  /// for the panel.
+  static const double _bottomControlsReservedHeight = 80;
 
   @override
   Widget build(BuildContext context) {
@@ -130,9 +140,12 @@ class MapShell extends StatelessWidget {
         ),
 
         // ── Footer panel (route panel / building list) ─────
+        // Anchored ABOVE the floating bottom controls so the buttons
+        // can stay pinned to their corners; opening the panel must
+        // not push the buttons upward.
         if (footerWidget != null)
           Positioned(
-            bottom: safeBottom,
+            bottom: safeBottom + _bottomControlsReservedHeight,
             left: 0,
             right: 0,
             child: Padding(
@@ -140,19 +153,18 @@ class MapShell extends StatelessWidget {
                 MqSpacing.space4,
                 0,
                 MqSpacing.space4,
-                MqSpacing.space4,
+                MqSpacing.space2,
               ),
               child: footerWidget,
             ),
           ),
 
         // ── Layers button — bottom-left ────────────────────
+        // **Stable anchor:** position is independent of footer state.
         if (renderer == MapRendererType.campus && onOpenOverlayPicker != null)
           PositionedDirectional(
             start: MqSpacing.space4,
-            bottom:
-                safeBottom +
-                (footerWidget != null ? _footerClearance : MqSpacing.space4),
+            bottom: safeBottom + MqSpacing.space4,
             child: _GlassIconButton(
               isDark: isDark,
               icon: Icons.layers_outlined,
@@ -162,11 +174,10 @@ class MapShell extends StatelessWidget {
           ),
 
         // ── Location button — bottom-right ─────────────────
+        // **Stable anchor:** position is independent of footer state.
         PositionedDirectional(
           end: MqSpacing.space4,
-          bottom:
-              safeBottom +
-              (footerWidget != null ? _footerClearance : MqSpacing.space4),
+          bottom: safeBottom + MqSpacing.space4,
           child: _BrandCircleButton(
             icon: Icons.my_location,
             tooltip: l10n.centerOnLocation,

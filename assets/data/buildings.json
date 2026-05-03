@@ -2,7 +2,7 @@
   {
     "id": "18WW",
     "code": "18WW",
-    "name": "18 Wally's Walk (Central Hub)",
+    "name": "18 Wally's Walk (Service Connect / IT / Learning Support)",
     "description": "Main student services building housing Service Connect, IT, HR, Financial Services, and administration offices.",
     "address": "18 Wally's Walk",
     "category": "services",
@@ -90,12 +90,13 @@
     "campusX": 2345,
     "campusY": 2388,
     "aliases": [
+      "16 Macquarie Walk",
+      "16 Macquarie Walk (Waranara Library)",
+      "Campus Security",
+      "Campus Security Office",
       "Lachlan Macquarie Room",
       "Library Café",
-      "Campus Security Office",
-      "Campus Security",
-      "Library Information Desk",
-      "16 Macquarie Walk"
+      "Library Information Desk"
     ],
     "tags": [
       "academic",
@@ -104,14 +105,14 @@
       "campus hub"
     ],
     "searchTokens": [
+      "after-hours security",
       "campus security",
-      "security office",
+      "campus shuttle",
+      "emergency 9999",
       "library information desk",
       "lost and found",
-      "campus shuttle",
-      "after-hours security",
       "security escort",
-      "emergency 9999"
+      "security office"
     ],
     "gridRef": "Q17",
     "levels": 8,
@@ -120,7 +121,7 @@
   {
     "id": "SEC",
     "code": "SEC",
-    "name": "Security & Emergency",
+    "name": "Security & Emergency (24/7)",
     "description": "Campus security headquarters and emergency first aid services. Available 24/7.",
     "address": "4 Link Road",
     "category": "services",
@@ -202,7 +203,8 @@
     ],
     "gridRef": "O13",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "arts"
   },
   {
     "id": "17WW",
@@ -258,7 +260,8 @@
     ],
     "gridRef": "O19",
     "levels": 3,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "arts"
   },
   {
     "id": "4ER",
@@ -292,7 +295,8 @@
     "searchTokens": [],
     "gridRef": "Q22",
     "levels": 8,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "business"
   },
   {
     "id": "75TAL",
@@ -322,7 +326,8 @@
     "searchTokens": [],
     "gridRef": "M28",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "mhhs"
   },
   {
     "id": "16UA",
@@ -392,7 +397,8 @@
     ],
     "gridRef": "T14",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "mhhs"
   },
   {
     "id": "9WW",
@@ -431,7 +437,8 @@
     ],
     "gridRef": "O22",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "science_engineering"
   },
   {
     "id": "4RPD",
@@ -459,7 +466,8 @@
     "searchTokens": [],
     "gridRef": "O26",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "science_engineering"
   },
   {
     "id": "12WW",
@@ -502,7 +510,8 @@
     ],
     "gridRef": "N20",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "science_engineering"
   },
   {
     "id": "6WW",
@@ -530,8 +539,7 @@
       "academic",
       "science",
       "research",
-      "faculty",
-      "campus hub"
+      "faculty"
     ],
     "searchTokens": [
       "frank the bear",
@@ -545,7 +553,8 @@
     ],
     "gridRef": "M23",
     "levels": 3,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "science_engineering"
   },
   {
     "id": "4WW",
@@ -571,12 +580,13 @@
     "searchTokens": [],
     "gridRef": "M24",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "science_engineering"
   },
   {
     "id": "LOTUS",
     "code": "LOTUS",
-    "name": "Lotus Theatre",
+    "name": "Lotus Theatre (T1 Lecture Theatre)",
     "description": "Major teaching and entertainment venue.",
     "address": "27 Wally's Walk",
     "category": "venue",
@@ -614,7 +624,8 @@
     ],
     "gridRef": "O11",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "science_engineering"
   },
   {
     "id": "MQTH",
@@ -739,7 +750,8 @@
     ],
     "gridRef": "N27",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "mhhs"
   },
   {
     "id": "HOSP",
@@ -856,7 +868,7 @@
   {
     "id": "SPORT",
     "code": "SPORT",
-    "name": "Sport & Aquatic Centre",
+    "name": "10 Gymnasium Road (Sport & Aquatic Centre)",
     "description": "Gym, swimming pool, sports facilities, Crunch Cafe, Sporting Hall of Fame Museum.",
     "address": "10 Gymnasium Road",
     "category": "sports",
@@ -1030,7 +1042,7 @@
   {
     "id": "8SCO",
     "code": "8SCO",
-    "name": "8 Sir Christopher Ondaatje Ave",
+    "name": "8 Sir Christopher Ondaatje Ave (Counselling & Wellbeing)",
     "description": "Future Students, MQ College, MQ Academy, Prayer Room, IELTS/PTE Test Centre, Access & Widening Participation.",
     "address": "8 Sir Christopher Ondaatje Ave, Macquarie Park, NSW",
     "category": "services",
@@ -1064,7 +1076,7 @@
   {
     "id": "16WW",
     "code": "16WW",
-    "name": "16 Wally's Walk (Research)",
+    "name": "16 Wally's Walk (Lincoln Building — Research Office)",
     "description": "Graduate Research Academy, Research Services, Commercialisation & Innovation.",
     "address": "16 Wally's Walk",
     "category": "research",
@@ -1086,8 +1098,7 @@
     "tags": [
       "research",
       "services",
-      "student services",
-      "campus hub"
+      "student services"
     ],
     "searchTokens": [
       "lincoln",
@@ -1261,7 +1272,7 @@
   {
     "id": "WALU",
     "code": "WALU",
-    "name": "Walanga Muru",
+    "name": "Walanga Muru (Indigenous Student Hub)",
     "description": "Indigenous student support and cultural services.",
     "address": "29 Wally's Walk",
     "category": "services",
@@ -1467,7 +1478,7 @@
   {
     "id": "METS",
     "code": "METS",
-    "name": "METS (Engineering Services)",
+    "name": "Macquarie Engineering & Technical Services (METS)",
     "description": "Macquarie Engineering Technical Services - workshop and technical support.",
     "address": "3 Science Road",
     "category": "services",
@@ -1591,7 +1602,7 @@
   {
     "id": "MQV",
     "code": "MQV",
-    "name": "MQ Village",
+    "name": "MQ Village (Residences / Eateries)",
     "description": "Student accommodation village.",
     "address": "122 Culloden Road",
     "category": "residential",
@@ -1665,8 +1676,8 @@
     "campusX": 3085,
     "campusY": 1600,
     "aliases": [
-      "Biological Sciences Museum",
-      "6 Science Road"
+      "6 Science Road",
+      "Biological Sciences Museum"
     ],
     "tags": [
       "science",
@@ -1675,11 +1686,11 @@
       "campus hub"
     ],
     "searchTokens": [
-      "biological sciences museum",
-      "biology specimens",
-      "australian fauna",
-      "biology discovery centre",
       "6 science",
+      "australian fauna",
+      "biological sciences museum",
+      "biology discovery centre",
+      "biology specimens",
       "science road"
     ],
     "gridRef": "L23",
@@ -1689,7 +1700,7 @@
   {
     "id": "11WW",
     "code": "11WW",
-    "name": "11 Wally's Walk",
+    "name": "11 Wally's Walk (Tutorial Rooms)",
     "description": "Academic building on Wallys Walk.",
     "address": "11 Wally's Walk",
     "category": "academic",
@@ -1720,7 +1731,8 @@
     ],
     "gridRef": "N22",
     "levels": 4,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "science_engineering"
   },
   {
     "id": "13RPD",
@@ -1749,7 +1761,7 @@
   {
     "id": "6ER",
     "code": "6ER",
-    "name": "6 Eastern Road",
+    "name": "6 Eastern Road (Business)",
     "description": "Academic building on Eastern Road.",
     "address": "6 Eastern Road, Macquarie Park, NSW",
     "category": "academic",
@@ -1769,12 +1781,13 @@
     "searchTokens": [],
     "gridRef": "Q21",
     "levels": 4,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "business"
   },
   {
     "id": "1CC",
     "code": "1CC",
-    "name": "1 Central Courtyard",
+    "name": "1 Central Courtyard (The Hub / Student Life)",
     "description": "Central Courtyard building and student hub.",
     "address": "1 Central Courtyard",
     "category": "services",
@@ -1891,7 +1904,7 @@
   {
     "id": "14ER",
     "code": "14ER",
-    "name": "14 Eastern Road",
+    "name": "14 Eastern Road (Business)",
     "description": "Academic building on Eastern Road. Faculty of Science.",
     "address": "14 Eastern Road",
     "category": "academic",
@@ -1911,40 +1924,8 @@
     "searchTokens": [],
     "gridRef": "P22",
     "levels": null,
-    "wheelchair": false
-  },
-  {
-    "id": "6SR",
-    "code": "6SR",
-    "name": "6 Science Road",
-    "description": "Science building on Science Road.",
-    "address": "6 Science Road, Macquarie Park, NSW",
-    "category": "academic",
-    "latitude": -33.7736165,
-    "longitude": 151.1159258,
-    "entranceLatitude": null,
-    "entranceLongitude": null,
-    "googlePlaceId": null,
-    "campusX": 3108,
-    "campusY": 1546,
-    "aliases": [
-      "Biological Sciences Museum",
-      "6 Science Road"
-    ],
-    "tags": [
-      "academic",
-      "science",
-      "labs",
-      "campus hub"
-    ],
-    "searchTokens": [
-      "biological sciences museum",
-      "6 science",
-      "science road"
-    ],
-    "gridRef": "M23",
-    "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "business"
   },
   {
     "id": "14FW",
@@ -1970,12 +1951,13 @@
     "searchTokens": [],
     "gridRef": "O10",
     "levels": null,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "arts"
   },
   {
     "id": "14SCO",
     "code": "14SCO",
-    "name": "14 Sir Christopher Ondaatje Ave",
+    "name": "14 Sir Christopher Ondaatje Ave (Lecture Theatres / Mason Theatre)",
     "description": "Academic building with teaching spaces and exam halls. Faculty of Sciences.",
     "address": "14 Sir Christopher Ondaatje Ave",
     "category": "academic",
@@ -2046,7 +2028,8 @@
     ],
     "gridRef": "N20",
     "levels": 7,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "science_engineering"
   },
   {
     "id": "4WR",
@@ -2773,33 +2756,6 @@
     "wheelchair": false
   },
   {
-    "id": "16MW",
-    "code": "16MW",
-    "name": "16 Macquarie Walk (Waranara Library)",
-    "description": "Main campus library with study spaces, Library Cafe, and extensive collections.",
-    "address": null,
-    "category": "academic",
-    "latitude": -33.775621,
-    "longitude": 151.113441,
-    "entranceLatitude": null,
-    "entranceLongitude": null,
-    "googlePlaceId": null,
-    "campusX": 2401,
-    "campusY": 2427,
-    "aliases": [],
-    "tags": [
-      "academic",
-      "study",
-      "library",
-      "resources",
-      "campus hub"
-    ],
-    "searchTokens": [],
-    "gridRef": null,
-    "levels": 8,
-    "wheelchair": false
-  },
-  {
     "id": "LAKESIDEHO",
     "code": "LAKESIDEHO",
     "name": "Lakeside Hotel & Conference Centre",
@@ -2947,7 +2903,7 @@
   {
     "id": "29WW",
     "code": "29WW",
-    "name": "29WW",
+    "name": "29 Wally's Walk (Faculty of Arts)",
     "description": "29WW building.",
     "address": "29 Wally's Walk",
     "category": "academic",
@@ -2981,7 +2937,8 @@
     ],
     "gridRef": null,
     "levels": 1,
-    "wheelchair": false
+    "wheelchair": false,
+    "facultyGroup": "arts"
   },
   {
     "id": "25WW",
@@ -4311,7 +4268,7 @@
   {
     "id": "GALEHIST",
     "code": "GALEHIST",
-    "name": "The Gale History Museum",
+    "name": "Macquarie University History Museum",
     "description": "Macquarie University history museum housing artefacts, archives, and exhibits about the University and the Wallumattagal Campus.",
     "address": "25C Wally's Walk",
     "category": "venue",

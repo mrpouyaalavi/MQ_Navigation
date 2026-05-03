@@ -42,7 +42,18 @@ import 'package:mq_navigation/features/map/domain/entities/building.dart';
 ///        aliases on BIODISC and 6SR; parking-on-campus tokens on
 ///        every parking entry. Four duplicate stubs removed (27WW,
 ///        16UAAUSTRA, 25CWW, 1WW).
-const _cacheKey = 'building_registry.v4';
+///   v5 — Category browse refresh: introduces `facultyGroup` per
+///        faculty building (4 groups: arts / business / mhhs /
+///        science_engineering) to power the two-level Faculty
+///        drill-down. Cleaner Student Services + Campus Hub labels
+///        (Service Connect / IT / Learning Support; Lincoln Building;
+///        Counselling & Wellbeing; The Hub / Student Life; etc.).
+///        Removed duplicate stubs 16MW (folded into LIB) and 6SR
+///        (folded into BIODISC). Demoted 6WW and 16WW from the
+///        Campus Hub bucket — they're primarily Faculty/Research
+///        buildings, not student-life destinations. 11WW labelled as
+///        Tutorial Rooms; LOTUS labelled as T1 Lecture Theatre.
+const _cacheKey = 'building_registry.v5';
 const _assetPath = 'assets/data/buildings.json';
 
 /// Data source for the campus building registry.

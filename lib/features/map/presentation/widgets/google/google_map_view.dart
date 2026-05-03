@@ -211,11 +211,19 @@ class _GoogleMapViewState extends State<GoogleMapView> {
         _controller = controller;
         _syncCameraToState();
       },
+      // **All native Google Maps chrome disabled** so the only floating
+      // controls visible to the user are our own custom red location
+      // button and glass layers button (rendered by `MapShell`). Without
+      // this, Google's default toolbar / compass / indoor floor picker
+      // can appear under our buttons and clutter the bottom-right.
       mapToolbarEnabled: false,
       zoomControlsEnabled: false,
       compassEnabled: false,
       myLocationEnabled: widget.currentLocation != null,
       myLocationButtonEnabled: false,
+      indoorViewEnabled: false,
+      buildingsEnabled: false,
+      trafficEnabled: false,
       markers: {
         for (final building in visibleBuildings)
           if (resolveBuildingGeographicTarget(building) case final target?)

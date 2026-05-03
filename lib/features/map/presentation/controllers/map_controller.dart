@@ -41,6 +41,7 @@ class MapState {
     this.locationCenterRequestToken = 0,
     this.activeOverlayIds = const {},
     this.error,
+    this.selectedFacultyGroup,
   });
 
   final MapRendererType renderer;
@@ -58,6 +59,18 @@ class MapState {
   final int locationCenterRequestToken;
   final Set<String> activeOverlayIds;
   final MapStateError? error;
+
+  /// When the user is browsing the **Faculty** category, this drives
+  /// the two-level drill-down:
+  ///
+  ///   * `null` — show the four [FacultyGroup] cards (top level).
+  ///   * non-null — show only buildings whose [Building.facultyGroup]
+  ///     matches (second level).
+  ///
+  /// Always `null` outside the Faculty category. The category panel
+  /// reads this together with [searchQuery] to decide which footer to
+  /// render.
+  final FacultyGroup? selectedFacultyGroup;
 
   MapState copyWith({
     MapRendererType? renderer,
@@ -79,6 +92,8 @@ class MapState {
     Set<String>? activeOverlayIds,
     MapStateError? error,
     bool clearError = false,
+    FacultyGroup? selectedFacultyGroup,
+    bool clearSelectedFacultyGroup = false,
   }) {
     return MapState(
       renderer: renderer ?? this.renderer,
@@ -101,6 +116,9 @@ class MapState {
           locationCenterRequestToken ?? this.locationCenterRequestToken,
       activeOverlayIds: activeOverlayIds ?? this.activeOverlayIds,
       error: clearError ? null : error ?? this.error,
+      selectedFacultyGroup: clearSelectedFacultyGroup
+          ? null
+          : selectedFacultyGroup ?? this.selectedFacultyGroup,
     );
   }
 
@@ -123,7 +141,8 @@ class MapState {
         other.hasArrived == hasArrived &&
         other.locationCenterRequestToken == locationCenterRequestToken &&
         setEquals(other.activeOverlayIds, activeOverlayIds) &&
-        other.error == error;
+        other.error == error &&
+        other.selectedFacultyGroup == selectedFacultyGroup;
   }
 
   @override
@@ -142,7 +161,8 @@ class MapState {
         hasArrived.hashCode ^
         locationCenterRequestToken.hashCode ^
         activeOverlayIds.hashCode ^
-        error.hashCode;
+        error.hashCode ^
+        selectedFacultyGroup.hashCode;
   }
 }
 
@@ -297,6 +317,38 @@ class MapController extends AsyncNotifier<MapState> {
         clearRoute: selectionChanged && current.route != null,
         isNavigating: selectionChanged ? false : current.isNavigating,
         isLoadingRoute: selectionChanged ? false : current.isLoadingRoute,
+        clearError: true,
+        // Any query change resets the faculty drill-down so that
+        // (re-)entering the Faculty category lands on the 4-group
+        // top level rather than a stale Arts/Business/MHHS/FSE list.
+        clearSelectedFacultyGroup: true,
+      ),
+    );
+  }
+
+  /// Sets the active faculty drill-down group, or returns to the
+  /// top-level 4-group list when called with `null`.
+  ///
+  /// Has no effect outside the Faculty category (the panel won't be
+  /// rendering the drill-down in that case anyway, but we still
+  /// short-circuit to avoid stashing dead state).
+  void selectFacultyGroup(FacultyGroup? group) {
+    final current = state.value;
+    if (current == null) {
+      return;
+    }
+    if (current.searchQuery.trim().toLowerCase() != 'faculty') {
+      return;
+    }
+    state = AsyncData(
+      current.copyWith(
+        selectedFacultyGroup: group,
+        clearSelectedFacultyGroup: group == null,
+        clearSelectedBuilding: true,
+        clearRoute: true,
+        isNavigating: false,
+        hasArrived: false,
+        isLoadingRoute: false,
         clearError: true,
       ),
     );
@@ -604,6 +656,7 @@ class MapController extends AsyncNotifier<MapState> {
         hasArrived: false,
         isLoadingRoute: false,
         clearError: true,
+        clearSelectedFacultyGroup: true,
       ),
     );
   }
@@ -661,6 +714,7 @@ class MapController extends AsyncNotifier<MapState> {
         hasArrived: false,
         isLoadingRoute: false,
         clearError: true,
+        clearSelectedFacultyGroup: true,
       ),
     );
   }

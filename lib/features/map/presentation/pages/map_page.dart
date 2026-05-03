@@ -113,9 +113,34 @@ class _MapPageState extends ConsumerState<MapPage> {
               mapState.selectedBuilding == null &&
               mapState.searchResults.length > 1;
 
+          // Faculty drill-down: special-case "faculty" category so the
+          // first level is the four [FacultyGroup] cards, the second
+          // level is the buildings filtered by the selected group.
+          final isFacultyCategory =
+              mapState.searchQuery.trim().toLowerCase() == 'faculty';
+          final facultyTopLevel =
+              isFacultyCategory && mapState.selectedFacultyGroup == null;
+          final facultySubLevel =
+              isFacultyCategory && mapState.selectedFacultyGroup != null;
+          final facultyBuildings = facultySubLevel
+              ? mapState.searchResults
+                    .where(
+                      (b) => b.facultyGroup == mapState.selectedFacultyGroup,
+                    )
+                    .toList()
+              : const <Building>[];
+
+          // When the faculty drill-down is at the second level, narrow
+          // the on-map markers to only the chosen group. Without this,
+          // tapping "Arts" in the panel would still show all 18 faculty
+          // markers — defeating the purpose of the drill-down.
+          final List<Building> rendererSearchResults = facultySubLevel
+              ? facultyBuildings
+              : mapState.searchResults;
+
           final mapView = switch (mapState.renderer) {
             MapRendererType.campus => CampusMapView(
-              searchResults: mapState.searchResults,
+              searchResults: rendererSearchResults,
               searchQuery: mapState.searchQuery,
               selectedBuilding: mapState.selectedBuilding,
               route: mapState.route,
@@ -126,7 +151,7 @@ class _MapPageState extends ConsumerState<MapPage> {
               activeOverlayIds: mapState.activeOverlayIds,
             ),
             MapRendererType.google => GoogleMapView(
-              searchResults: mapState.searchResults,
+              searchResults: rendererSearchResults,
               searchQuery: mapState.searchQuery,
               selectedBuilding: mapState.selectedBuilding,
               route: mapState.route,
@@ -161,7 +186,23 @@ class _MapPageState extends ConsumerState<MapPage> {
                         ? controller.openLocationSettings
                         : controller.openAppSettings,
                   ),
-            footer: isCategoryBrowse
+            footer: facultyTopLevel
+                ? _FacultyGroupPanel(
+                    buildings: mapState.searchResults,
+                    onSelectGroup: controller.selectFacultyGroup,
+                    onClear: controller.clearCategoryBrowse,
+                  )
+                : facultySubLevel
+                ? _CategoryBuildingList(
+                    buildings: facultyBuildings,
+                    searchQuery: mapState.selectedFacultyGroup!.label,
+                    onSelectBuilding: controller.selectBuilding,
+                    // Back chevron returns to the four-group top level.
+                    // X exits Faculty browsing entirely.
+                    onBack: () => controller.selectFacultyGroup(null),
+                    onClear: controller.clearCategoryBrowse,
+                  )
+                : isCategoryBrowse
                 ? _CategoryBuildingList(
                     buildings: mapState.searchResults,
                     searchQuery: mapState.searchQuery,
@@ -356,18 +397,26 @@ class _MapErrorBanner extends StatelessWidget {
 }
 
 /// Glass-styled scrollable list of buildings for category browse mode.
+///
+/// `onBack`, when non-null, renders a leading back chevron in the
+/// header — used by the Faculty drill-down's second level to return
+/// to the four-group top level without exiting the category. Without
+/// `onBack`, the panel renders without a leading affordance (the
+/// trailing X close button still appears).
 class _CategoryBuildingList extends StatelessWidget {
   const _CategoryBuildingList({
     required this.buildings,
     required this.searchQuery,
     required this.onSelectBuilding,
     required this.onClear,
+    this.onBack,
   });
 
   final List<Building> buildings;
   final String searchQuery;
   final ValueChanged<Building> onSelectBuilding;
   final VoidCallback onClear;
+  final VoidCallback? onBack;
 
   static String _capitalize(String value) {
     if (value.isEmpty) return value;
@@ -440,14 +489,26 @@ class _CategoryBuildingList extends StatelessWidget {
 
               // Header
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(
-                  MqSpacing.space4,
+                padding: EdgeInsetsDirectional.fromSTEB(
+                  onBack != null ? MqSpacing.space2 : MqSpacing.space4,
                   MqSpacing.space3,
                   MqSpacing.space2,
                   0,
                 ),
                 child: Row(
                   children: [
+                    if (onBack != null)
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          size: 20,
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.7)
+                              : MqColors.contentSecondary,
+                        ),
+                        tooltip: l10n.back,
+                        onPressed: onBack,
+                      ),
                     Expanded(
                       child: Text(
                         '${_capitalize(searchQuery.trim())} (${validBuildings.length})',
@@ -525,6 +586,204 @@ class _CategoryBuildingList extends StatelessWidget {
                             : MqColors.charcoal600,
                       ),
                       onTap: () => onSelectBuilding(building),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Top level of the **Faculty** category drill-down. Renders the
+/// four [FacultyGroup] cards as the entry point so students see a
+/// structured "pick your faculty" choice rather than a flat list of
+/// 18 buildings. Tapping a group narrows the map markers and the
+/// list panel to just that faculty's buildings.
+///
+/// Visual style intentionally mirrors [_CategoryBuildingList] (glass
+/// + handle bar + close X) so the transition between top and second
+/// levels feels like one continuous panel, not two different sheets.
+class _FacultyGroupPanel extends StatelessWidget {
+  const _FacultyGroupPanel({
+    required this.buildings,
+    required this.onSelectGroup,
+    required this.onClear,
+  });
+
+  /// All faculty-tagged buildings — used to compute the per-group
+  /// counts shown on each card so empty groups (if any) are visible
+  /// and students can gauge what they're drilling into.
+  final List<Building> buildings;
+  final ValueChanged<FacultyGroup> onSelectGroup;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = context.isDarkMode;
+    final l10n = AppLocalizations.of(context)!;
+
+    // Pre-compute per-group counts. Buildings without coordinates
+    // are excluded so the count matches what the user can actually
+    // tap to on the map.
+    final countsByGroup = <FacultyGroup, int>{
+      for (final group in FacultyGroup.values)
+        group: buildings
+            .where(
+              (b) =>
+                  b.facultyGroup == group &&
+                  b.latitude != null &&
+                  b.longitude != null,
+            )
+            .length,
+    };
+
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(
+        top: Radius.circular(MqSpacing.radiusXl),
+        bottom: Radius.circular(MqSpacing.radiusXl),
+      ),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: MqSpacing.space3,
+          sigmaY: MqSpacing.space3,
+        ),
+        child: Container(
+          constraints: const BoxConstraints(maxHeight: 360),
+          decoration: BoxDecoration(
+            color: isDark
+                ? MqColors.charcoal850.withValues(alpha: 0.88)
+                : Colors.white.withValues(alpha: 0.85),
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(MqSpacing.radiusXl),
+              bottom: Radius.circular(MqSpacing.radiusXl),
+            ),
+            border: Border.all(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.05)
+                  : Colors.black.withValues(alpha: 0.08),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.15),
+                blurRadius: 24,
+                offset: const Offset(0, -4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Handle bar
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  top: MqSpacing.space3,
+                ),
+                child: Center(
+                  child: Container(
+                    width: 48,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.white.withValues(alpha: 0.2)
+                          : Colors.black.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  ),
+                ),
+              ),
+
+              // Header: "Faculty" + close X
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(
+                  MqSpacing.space4,
+                  MqSpacing.space3,
+                  MqSpacing.space2,
+                  0,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        l10n.home_faculty,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: isDark
+                                  ? Colors.white
+                                  : MqColors.contentPrimary,
+                            ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        size: 20,
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.5)
+                            : MqColors.contentTertiary,
+                      ),
+                      tooltip: l10n.clear,
+                      onPressed: onClear,
+                    ),
+                  ],
+                ),
+              ),
+
+              // Four faculty group rows
+              Flexible(
+                child: ListView.separated(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                    MqSpacing.space2,
+                    0,
+                    MqSpacing.space2,
+                    MqSpacing.space3,
+                  ),
+                  itemCount: FacultyGroup.values.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 0),
+                  itemBuilder: (context, index) {
+                    final group = FacultyGroup.values[index];
+                    final count = countsByGroup[group] ?? 0;
+                    return ListTile(
+                      dense: false,
+                      leading: const Icon(
+                        Icons.school,
+                        color: MqColors.vividRed,
+                        size: 22,
+                      ),
+                      title: Text(
+                        group.label,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: isDark
+                              ? Colors.white
+                              : MqColors.contentPrimary,
+                        ),
+                      ),
+                      subtitle: Text(
+                        '${group.description}  ·  $count',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: isDark
+                              ? Colors.white.withValues(alpha: 0.5)
+                              : MqColors.charcoal600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: Icon(
+                        Icons.chevron_right,
+                        size: 20,
+                        color: isDark
+                            ? Colors.white.withValues(alpha: 0.3)
+                            : MqColors.charcoal600,
+                      ),
+                      onTap: () => onSelectGroup(group),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(MqSpacing.radiusMd),
                       ),
