@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart'
     show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:mq_navigation/core/logging/app_logger.dart';
 import 'package:mq_navigation/features/notifications/domain/entities/app_notification.dart';
@@ -34,7 +33,6 @@ class LocalNotificationsService {
       return;
     }
 
-    tz.initializeTimeZones();
 
     const settings = InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
@@ -120,6 +118,10 @@ class LocalNotificationsService {
   }
 
   Future<void> cancelManagedNotificationsExcept(Set<int> retainedIds) async {
+    // Guard: plugin is not set up on web or before initialize() completes.
+    if (!_isInitialised || !_isSupported) {
+      return;
+    }
     // We only cancel notifications created by this app (tagged in payload).
     // This allows other plugins or modules to use the local notifications
     // system without us accidentally clearing their scheduled items.

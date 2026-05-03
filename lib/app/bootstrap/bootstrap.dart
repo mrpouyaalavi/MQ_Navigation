@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:timezone/data/latest.dart' as tz;
 import 'package:mq_navigation/core/config/env_config.dart';
 import 'package:mq_navigation/core/error/error_boundary.dart';
 import 'package:mq_navigation/core/logging/app_logger.dart';
@@ -22,6 +23,11 @@ Future<void> bootstrap(Widget Function() appBuilder) async {
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      // Initialise the timezone database so that any code calling
+      // tz.getLocation() (e.g. OpenDayTime) works on all platforms,
+      // including web where LocalNotificationsService is never initialised.
+      tz.initializeTimeZones();
 
       // Install global error handlers.
       installErrorHandlers();
