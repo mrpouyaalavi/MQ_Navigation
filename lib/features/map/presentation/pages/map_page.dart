@@ -674,9 +674,9 @@ class _CategoryBuildingList extends StatelessWidget {
                     final building = validBuildings[index];
                     return ListTile(
                       dense: true,
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.location_on,
-                        color: MqColors.vividRed,
+                        color: isDark ? MqColors.black : MqColors.red,
                         size: 20,
                       ),
                       title: Text(
@@ -882,7 +882,7 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
                       dense: false,
                       leading: Icon(
                         leadingIcon,
-                        color: MqColors.vividRed,
+                        color: isDark ? MqColors.black : MqColors.red,
                         size: 22,
                       ),
                       title: Text(
@@ -1010,7 +1010,7 @@ class _CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const activeBg = MqColors.vividRed;
+    final activeBg = isDark ? MqColors.black : MqColors.red;
     final inactiveBg = isDark
         ? MqColors.charcoal850.withValues(alpha: 0.85)
         : Colors.white.withValues(alpha: 0.9);

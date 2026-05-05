@@ -1446,9 +1446,9 @@ class _OpenDaySection extends ConsumerWidget {
               ListTile(
                 title: Text(l10n.openDay_minutesOption(m)),
                 trailing: m == current
-                    ? const Icon(
+                    ? Icon(
                         Icons.check_rounded,
-                        color: MqColors.vividRed,
+                        color: dark ? MqColors.black : MqColors.red,
                         size: 20,
                       )
                     : null,

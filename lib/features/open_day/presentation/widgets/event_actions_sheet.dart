@@ -100,9 +100,9 @@ class EventActionsSheet extends ConsumerWidget {
                 button: true,
                 label: 'View ${event.venueName} in Campus Map',
                 child: ListTile(
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.location_on_rounded,
-                    color: MqColors.vividRed,
+                    color: dark ? MqColors.black : MqColors.red,
                   ),
                   title: Text(
                     'View in Campus Map',

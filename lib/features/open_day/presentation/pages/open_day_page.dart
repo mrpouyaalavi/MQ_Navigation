@@ -148,13 +148,11 @@ class _StudyInterestHeader extends ConsumerWidget {
     return Container(
       padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
       decoration: BoxDecoration(
-        color: dark
-            ? MqColors.vividRed.withAlpha(20)
-            : MqColors.red.withAlpha(14),
+        color: dark ? MqColors.black.withAlpha(20) : MqColors.red.withAlpha(14),
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
           color: dark
-              ? MqColors.vividRed.withAlpha(70)
+              ? MqColors.black.withAlpha(70)
               : MqColors.red.withAlpha(40),
         ),
       ),
@@ -166,7 +164,7 @@ class _StudyInterestHeader extends ConsumerWidget {
             style: context.textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w800,
               letterSpacing: 1.4,
-              color: dark ? MqColors.vividRed : MqColors.red,
+              color: dark ? MqColors.black : MqColors.red,
             ),
           ),
           const SizedBox(height: MqSpacing.space1),
@@ -198,7 +196,7 @@ class _StudyInterestHeader extends ConsumerWidget {
             child: TextButton.icon(
               onPressed: () => BachelorPickerSheet.show(context),
               style: TextButton.styleFrom(
-                foregroundColor: dark ? MqColors.vividRed : MqColors.red,
+                foregroundColor: dark ? MqColors.black : MqColors.red,
                 padding: const EdgeInsetsDirectional.symmetric(
                   horizontal: MqSpacing.space3,
                   vertical: MqSpacing.space1,
@@ -233,7 +231,7 @@ class _TimeBlockHeader extends StatelessWidget {
         style: context.textTheme.labelMedium?.copyWith(
           fontWeight: FontWeight.w800,
           letterSpacing: 1.2,
-          color: dark ? MqColors.vividRed : MqColors.red,
+          color: dark ? MqColors.black : MqColors.red,
         ),
       ),
     );
@@ -317,7 +315,7 @@ class _EventTile extends StatelessWidget {
                 child: Icon(
                   Icons.directions_rounded,
                   size: 24,
-                  color: dark ? MqColors.vividRed : MqColors.red,
+                  color: dark ? MqColors.black : MqColors.red,
                 ),
               ),
             ),

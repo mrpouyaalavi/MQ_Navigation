@@ -3067,6 +3067,7 @@ Addressed the failing iOS CI build by synchronizing deployment targets and updat
 1. Defined a new exact brand black color `#383a36` as `MqColors.black` along with its constant alpha variations (`black87`, `black54`, `black38`, `black26`, `black12`) in `lib/app/theme/mq_colors.dart`.
 2. Automatically searched and replaced all scattered usages of `Colors.black` (and its alpha variants) across the `lib/` directory with the new `MqColors.black` semantic token to enforce strict adherence to brand guidelines and remove magic numbers.
 3. Removed `const` declarations in widget files that were implicitly relying on `Colors.black` as a compile-time constant to support the `MqColors` constants instead.
+4. Replaced unconditional usages of `MqColors.vividRed` with `isDark ? MqColors.black : MqColors.red` (or equivalent) in widgets so light mode retains the brand red while dark mode correctly uses the new black highlight.
 
 **Files Changed:**
 - `lib/app/theme/mq_colors.dart`

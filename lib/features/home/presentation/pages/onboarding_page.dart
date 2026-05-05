@@ -116,7 +116,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      MqColors.vividRed.withValues(alpha: 0.15),
+                      (isDark ? MqColors.black : MqColors.red).withValues(
+                        alpha: 0.15,
+                      ),
                       Colors.transparent,
                     ],
                   ),
@@ -203,7 +205,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                       decoration: BoxDecoration(
                                         color: _currentIndex == index
                                             ? (isDark
-                                                  ? MqColors.vividRed
+                                                  ? MqColors.black
                                                   : MqColors.red)
                                             : Colors.grey.withValues(
                                                 alpha: 0.3,
@@ -229,9 +231,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                   vertical: MqSpacing.space4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: isDark
-                                      ? MqColors.vividRed
-                                      : MqColors.red,
+                                  color: isDark ? MqColors.black : MqColors.red,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Text(
@@ -286,7 +286,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               child: Icon(
                 slide.icon,
                 size: 80,
-                color: isDark ? MqColors.vividRed : MqColors.red,
+                color: isDark ? MqColors.black : MqColors.red,
               ),
             ),
           ),
@@ -343,7 +343,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                         borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
                         border: Border.all(
                           color: selectedBachelorId != null
-                              ? (isDark ? MqColors.vividRed : MqColors.red)
+                              ? (isDark ? MqColors.black : MqColors.red)
                               : (isDark ? Colors.white24 : MqColors.black12),
                           width: selectedBachelorId != null ? 2 : 1,
                         ),
@@ -356,7 +356,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                 ? Icons.check_circle_rounded
                                 : Icons.school_rounded,
                             color: selectedBachelorId != null
-                                ? (isDark ? MqColors.vividRed : MqColors.red)
+                                ? (isDark ? MqColors.black : MqColors.red)
                                 : (isDark
                                       ? Colors.white70
                                       : MqColors.black.withValues(alpha: 0.54)),

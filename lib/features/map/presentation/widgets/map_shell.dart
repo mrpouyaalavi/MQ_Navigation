@@ -249,11 +249,14 @@ class _BrandCircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
-      color: MqColors.vividRed,
+      color: isDark ? MqColors.black : MqColors.red,
       shape: const CircleBorder(),
       elevation: 6,
-      shadowColor: MqColors.vividRed.withValues(alpha: 0.4),
+      shadowColor: (isDark ? MqColors.black : MqColors.red).withValues(
+        alpha: 0.4,
+      ),
       child: IconButton(
         icon: Icon(icon, color: Colors.white),
         tooltip: tooltip,

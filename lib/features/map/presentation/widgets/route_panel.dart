@@ -187,9 +187,9 @@ class _RoutePanelState extends State<RoutePanel> {
                                     vertical: MqSpacing.space1,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: MqColors.vividRed.withValues(
-                                      alpha: 0.15,
-                                    ),
+                                    color:
+                                        (isDark ? MqColors.black : MqColors.red)
+                                            .withValues(alpha: 0.15),
                                     borderRadius: BorderRadius.circular(
                                       MqSpacing.radiusFull,
                                     ),
@@ -202,7 +202,9 @@ class _RoutePanelState extends State<RoutePanel> {
                                         .labelSmall
                                         ?.copyWith(
                                           fontWeight: FontWeight.w700,
-                                          color: MqColors.vividRed,
+                                          color: isDark
+                                              ? MqColors.black
+                                              : MqColors.red,
                                           letterSpacing: 1.2,
                                         ),
                                   ),
@@ -474,14 +476,18 @@ class _TravelModePills extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? MqColors.vividRed.withValues(alpha: 0.15)
+                        ? (isDark ? MqColors.black : MqColors.red).withValues(
+                            alpha: 0.15,
+                          )
                         : isDark
                         ? Colors.white.withValues(alpha: 0.06)
                         : MqColors.black.withValues(alpha: 0.04),
                     borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
                     border: Border.all(
                       color: isSelected
-                          ? MqColors.vividRed.withValues(alpha: 0.4)
+                          ? (isDark ? MqColors.black : MqColors.red).withValues(
+                              alpha: 0.4,
+                            )
                           : isDark
                           ? Colors.white.withValues(alpha: 0.08)
                           : MqColors.black.withValues(alpha: 0.08),
@@ -494,7 +500,7 @@ class _TravelModePills extends StatelessWidget {
                         _iconFor(mode),
                         size: MqSpacing.iconSm,
                         color: isSelected
-                            ? MqColors.vividRed
+                            ? (isDark ? MqColors.black : MqColors.red)
                             : isDark
                             ? Colors.white.withValues(alpha: 0.5)
                             : MqColors.contentTertiary,
@@ -508,7 +514,7 @@ class _TravelModePills extends StatelessWidget {
                               ? FontWeight.w600
                               : FontWeight.w500,
                           color: isSelected
-                              ? MqColors.vividRed
+                              ? (isDark ? MqColors.black : MqColors.red)
                               : isDark
                               ? Colors.white.withValues(alpha: 0.6)
                               : MqColors.contentSecondary,
@@ -771,6 +777,7 @@ class _BrandActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final effectiveOnPressed = isLoading ? null : onPressed;
 
     return Semantics(
@@ -778,11 +785,13 @@ class _BrandActionButton extends StatelessWidget {
       label: label,
       child: Material(
         color: effectiveOnPressed == null
-            ? MqColors.vividRed.withValues(alpha: 0.5)
-            : MqColors.vividRed,
+            ? (isDark ? MqColors.black : MqColors.red).withValues(alpha: 0.5)
+            : (isDark ? MqColors.black : MqColors.red),
         borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
         elevation: effectiveOnPressed == null ? 0 : 4,
-        shadowColor: MqColors.vividRed.withValues(alpha: 0.3),
+        shadowColor: (isDark ? MqColors.black : MqColors.red).withValues(
+          alpha: 0.3,
+        ),
         child: InkWell(
           onTap: effectiveOnPressed,
           borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
