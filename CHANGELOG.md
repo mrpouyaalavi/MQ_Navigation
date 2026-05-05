@@ -1,3 +1,36 @@
+### Raouf: 2026-05-07 (AEST) — Onboarding Feature + Open Day Integration
+**Scope:** Onboarding improvements and Open Day feature integration.
+
+**Summary:**
+1. **Onboarding Hardening:**
+   - Replaced hardcoded slide count (2) with dynamic `slides.length - 1` to prevent breakage if slides change
+   - Removed index-dependent animation delay that caused lag/flicker
+   - Added `_OnboardingSlideData` data class for strong typing
+   - Fixed unlocalized "Skip" text → use `l10n.onboardingSkip`
+
+2. **Open Day Feature Integration:**
+   - Added new "Open Day Ready" slide with localized title/body
+   - Added interactive "Select study interest" button directly on slide
+   - Button changes to "Study interest saved" visual feedback when bachelor is selected
+   - Button triggers `BachelorPickerSheet.show(context)` for study interest selection
+
+3. **New Localization Keys:**
+   - Added `onboardingOpenDayTitle`, `onboardingOpenDayBody`, `onboardingSkip` to app_en.arb
+
+**Files Changed:**
+- `lib/features/home/presentation/pages/onboarding_page.dart`
+- `lib/app/l10n/app_en.arb` (3 new keys)
+- `AGENT.md`
+- `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh` → 6/6 passed
+- `flutter analyze` → 0 issues
+- `dart format` → 0 changes
+
+**Follow-ups:**
+- None
+
 ### Raouf: 2026-05-06 (AEST) — Onboarding Feature Full Audit & UI/UX Improvements
 **Scope:** Full audit of onboarding_page.dart with UI/UX and accessibility enhancements.
 

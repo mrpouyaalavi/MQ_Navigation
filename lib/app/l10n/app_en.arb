@@ -2180,6 +2180,9 @@
   "onboardingTransitBody": "Track real-time TfNSW Metro and Bus departures directly from the home screen.",
   "onboardingPrivacyTitle": "Privacy First",
   "onboardingPrivacyBody": "No accounts, no tracking. Your location and timetable stay entirely on your device.",
+  "onboardingOpenDayTitle": "Open Day Ready",
+  "onboardingOpenDayBody": "Discover campus events, track schedule, and get notified for the Open Day.",
+  "onboardingSkip": "Skip",
   "onboardingNext": "Next",
   "onboardingStart": "Start Exploring"
 }

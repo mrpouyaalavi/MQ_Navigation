@@ -5,8 +5,23 @@ import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
+import 'package:mq_navigation/features/open_day/presentation/widgets/bachelor_picker_sheet.dart';
 import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
 import 'package:mq_navigation/features/settings/presentation/controllers/settings_controller.dart';
+
+class _OnboardingSlideData {
+  final IconData icon;
+  final String title;
+  final String body;
+  final bool isOpenDay;
+
+  const _OnboardingSlideData({
+    required this.icon,
+    required this.title,
+    required this.body,
+    this.isOpenDay = false,
+  });
+}
 
 class OnboardingPage extends ConsumerStatefulWidget {
   const OnboardingPage({super.key});
@@ -27,8 +42,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
-  void _onNext() {
-    if (_currentIndex == 2) {
+  void _onNext(int totalSlides) {
+    if (_currentIndex == totalSlides - 1) {
       ref.read(settingsControllerProvider.notifier).completeOnboarding();
       context.goNamed(RouteNames.home);
     } else {
@@ -57,22 +72,33 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final mediaQuery = MediaQuery.of(context);
     final bottomPadding = mediaQuery.padding.bottom;
 
-    final List<Map<String, dynamic>> slides = [
-      {
-        'icon': Icons.map_rounded,
-        'title': l10n.onboardingMapTitle,
-        'body': l10n.onboardingMapBody,
-      },
-      {
-        'icon': Icons.train_rounded,
-        'title': l10n.onboardingTransitTitle,
-        'body': l10n.onboardingTransitBody,
-      },
-      {
-        'icon': Icons.security_rounded,
-        'title': l10n.onboardingPrivacyTitle,
-        'body': l10n.onboardingPrivacyBody,
-      },
+    final selectedBachelorId = ref
+        .watch(settingsControllerProvider)
+        .value
+        ?.selectedBachelorId;
+
+    final List<_OnboardingSlideData> slides = [
+      _OnboardingSlideData(
+        icon: Icons.map_rounded,
+        title: l10n.onboardingMapTitle,
+        body: l10n.onboardingMapBody,
+      ),
+      _OnboardingSlideData(
+        icon: Icons.train_rounded,
+        title: l10n.onboardingTransitTitle,
+        body: l10n.onboardingTransitBody,
+      ),
+      _OnboardingSlideData(
+        icon: Icons.event_available_rounded,
+        title: l10n.onboardingOpenDayTitle,
+        body: l10n.onboardingOpenDayBody,
+        isOpenDay: true,
+      ),
+      _OnboardingSlideData(
+        icon: Icons.security_rounded,
+        title: l10n.onboardingPrivacyTitle,
+        body: l10n.onboardingPrivacyBody,
+      ),
     ];
 
     return Scaffold(
@@ -115,7 +141,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                         child: TextButton(
                           onPressed: _onSkip,
                           child: Text(
-                            'Skip',
+                            l10n.onboardingSkip,
                             style: TextStyle(
                               color: isDark
                                   ? MqColors.alabaster.withValues(alpha: 0.7)
@@ -134,7 +160,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                         setState(() => _currentIndex = index),
                     itemCount: slides.length,
                     itemBuilder: (context, index) {
-                      return _buildSlideContent(slides[index], isDark, index);
+                      return _buildSlideContent(
+                        slide: slides[index],
+                        isDark: isDark,
+                        selectedBachelorId: selectedBachelorId,
+                      );
                     },
                   ),
                 ),
@@ -192,7 +222,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                 : 'Go to next slide',
                             button: true,
                             child: MqTactileButton(
-                              onTap: _onNext,
+                              onTap: () => _onNext(slides.length),
                               child: Container(
                                 padding: const EdgeInsetsDirectional.symmetric(
                                   horizontal: MqSpacing.space8,
@@ -229,11 +259,11 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     );
   }
 
-  Widget _buildSlideContent(
-    Map<String, dynamic> slide,
-    bool isDark,
-    int index,
-  ) {
+  Widget _buildSlideContent({
+    required _OnboardingSlideData slide,
+    required bool isDark,
+    required String? selectedBachelorId,
+  }) {
     return Padding(
       padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
       child: Column(
@@ -241,7 +271,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Semantics(
-            label: '${slide['title']} icon',
+            label: '${slide.title} icon',
             child: Container(
               padding: const EdgeInsetsDirectional.all(MqSpacing.space8),
               decoration: BoxDecoration(
@@ -254,7 +284,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 ),
               ),
               child: Icon(
-                slide['icon'],
+                slide.icon,
                 size: 80,
                 color: isDark ? MqColors.vividRed : MqColors.red,
               ),
@@ -263,7 +293,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
           const SizedBox(height: 48),
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.0, end: 1.0),
-            duration: Duration(milliseconds: 500 + (index * 100)),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeOutCubic,
             builder: (context, value, child) {
               return Opacity(
@@ -278,10 +308,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Semantics(
-                  label: slide['title'],
+                  label: slide.title,
                   header: true,
                   child: Text(
-                    slide['title'],
+                    slide.title,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                       letterSpacing: -0.5,
@@ -290,15 +320,61 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 ),
                 const SizedBox(height: 16),
                 Semantics(
-                  label: slide['body'],
+                  label: slide.body,
                   child: Text(
-                    slide['body'],
+                    slide.body,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: isDark ? Colors.white70 : Colors.black87,
                       height: 1.5,
                     ),
                   ),
                 ),
+                if (slide.isOpenDay) ...[
+                  const SizedBox(height: MqSpacing.space6),
+                  MqTactileButton(
+                    onTap: () => BachelorPickerSheet.show(context),
+                    child: Container(
+                      padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: MqSpacing.space4,
+                        vertical: MqSpacing.space3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isDark ? MqColors.charcoal800 : Colors.white,
+                        borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
+                        border: Border.all(
+                          color: selectedBachelorId != null
+                              ? (isDark ? MqColors.vividRed : MqColors.red)
+                              : (isDark ? Colors.white24 : Colors.black12),
+                          width: selectedBachelorId != null ? 2 : 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            selectedBachelorId != null
+                                ? Icons.check_circle_rounded
+                                : Icons.school_rounded,
+                            color: selectedBachelorId != null
+                                ? (isDark ? MqColors.vividRed : MqColors.red)
+                                : (isDark ? Colors.white70 : Colors.black54),
+                            size: 20,
+                          ),
+                          const SizedBox(width: MqSpacing.space2),
+                          Text(
+                            selectedBachelorId != null
+                                ? 'Study interest saved'
+                                : 'Select study interest',
+                            style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black87,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
