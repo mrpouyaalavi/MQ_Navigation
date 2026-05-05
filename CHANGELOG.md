@@ -1,3 +1,40 @@
+### Raouf: 2026-05-06 (AEST) — Onboarding Feature Full Audit & UI/UX Improvements
+**Scope:** Full audit of onboarding_page.dart with UI/UX and accessibility enhancements.
+
+**Summary:**
+Completed comprehensive onboarding audit and improvements:
+
+1. **Accessibility Enhancements:**
+   - Added skip button in top-right corner for users who want to bypass onboarding
+   - Wrapped all interactive elements (buttons, indicators, text) with `Semantics` for screen reader support
+   - Added `header: true` semantics for slide titles
+   - Added descriptive labels: "Page N of M", "Go to slide N", "Start using the app", "Go to next slide"
+
+2. **UI/UX Improvements:**
+   - Made page indicators directly tappable via `GestureDetector` for direct slide navigation
+   - Replaced hardcoded pixel values with `MqSpacing` tokens (space2, space4, space6, space8)
+   - Fixed MqSpacing getter errors: changed `md`→`space4`, `sm`→`space2`, `lg`→`space6`, `xl`→`space8`
+   - Added staggered animation delay per slide index for more polished feel
+
+3. **Architecture Alignment:**
+   - Consistent use of MqColors semantic tokens
+   - Proper EdgeInsetsDirectional for RTL support
+   - 48dp minimum tap targets via MqTactileButton
+   - Safe area handling for notched devices
+
+**Files Changed:**
+- `lib/features/home/presentation/pages/onboarding_page.dart`
+- `AGENT.md`
+- `CHANGELOG.md`
+
+**Verification:**
+- `./scripts/check.sh --quick` → 5/5 passed
+- `flutter analyze` → 4 info-level linter suggestions (prefer_const_constructors)
+- All 182 tests pass
+
+**Follow-ups:**
+- Add onboarding localization keys to non-English ARB files for full i18n parity
+
 ### Raouf: 2026-05-06 (AEST) — Onboarding Feature Implementation
 **Scope:** First-launch onboarding feature for new users.
 

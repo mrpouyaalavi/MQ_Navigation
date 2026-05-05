@@ -222,6 +222,13 @@ lib/
 **Verification:** `dart format lib/features/map/` (pass); `flutter analyze lib/features/map/` (no issues).
 **Follow-ups:** None.
 
+### Raouf: 2026-05-06 (AEST) — Onboarding Feature Full Audit & Improvements
+**Scope:** Full audit of onboarding feature with UI/UX and accessibility improvements.
+**Summary:** Completed comprehensive audit of onboarding_page.dart. Added skip button for accessibility, wrapped all interactive elements with Semantics for screen readers, made page indicators tappable for direct navigation, replaced hardcoded pixel values with MqSpacing tokens (space2, space4, space6, space8), added header: true semantics for titles, added proper label semantics for page position and actions. Fixed MqSpacing getter errors (changed md→space4, sm→space2, lg→space6, xl→space8).
+**Files Changed:** `lib/features/home/presentation/pages/onboarding_page.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `./scripts/check.sh --quick` (5/5 passed, 4 info-level linter suggestions only); `flutter analyze` (4 info issues).
+**Follow-ups:** Propagate MqSpacing tokens to other features audited in same session.
+
 ### Raouf: 2026-05-06 (AEST) — Onboarding Feature Implementation
 **Scope:** First-launch onboarding feature for new users.
 **Summary:** Implemented a complete onboarding feature guiding users through three slides (Map, Transit, Privacy) with `MqTactileButton` feedback, dark-mode radial glow, and kinetic text animations. Added `hasCompletedOnboarding` to `UserPreferences`, persistence via `SettingsRepository`, redirect logic in `app_router.dart` to force new users to onboarding, and routing gatekeeper to prevent existing users from revisiting.
