@@ -131,10 +131,7 @@ class Building {
     );
   }
 
-  static List<T> _parseGroupList<T>(
-    Object? raw,
-    T? Function(String?) parser,
-  ) {
+  static List<T> _parseGroupList<T>(Object? raw, T? Function(String?) parser) {
     if (raw is! List) return const [];
     final out = <T>[];
     for (final item in raw) {

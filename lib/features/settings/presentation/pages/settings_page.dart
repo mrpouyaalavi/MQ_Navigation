@@ -120,9 +120,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         center: const Alignment(0, -1.2),
                         radius: 1.1,
                         colors: [
-                          MqColors.red.withValues(
-                            alpha: dark ? 0.15 : 0.08,
-                          ),
+                          MqColors.red.withValues(alpha: dark ? 0.15 : 0.08),
                           Colors.transparent,
                         ],
                       ),

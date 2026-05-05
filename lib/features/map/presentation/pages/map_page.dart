@@ -139,29 +139,33 @@ class _MapPageState extends ConsumerState<MapPage> {
 
           final isStudentServicesCategory =
               normalizedQuery == 'student services';
-          final studentServicesTopLevel = isStudentServicesCategory &&
+          final studentServicesTopLevel =
+              isStudentServicesCategory &&
               mapState.selectedStudentServicesGroup == null;
-          final studentServicesSubLevel = isStudentServicesCategory &&
+          final studentServicesSubLevel =
+              isStudentServicesCategory &&
               mapState.selectedStudentServicesGroup != null;
           final studentServicesBuildings = studentServicesSubLevel
               ? mapState.searchResults
                     .where(
-                      (b) => b.studentServicesGroups
-                          .contains(mapState.selectedStudentServicesGroup),
+                      (b) => b.studentServicesGroups.contains(
+                        mapState.selectedStudentServicesGroup,
+                      ),
                     )
                     .toList()
               : const <Building>[];
 
           final isCampusHubCategory = normalizedQuery == 'campus hub';
-          final campusHubTopLevel = isCampusHubCategory &&
-              mapState.selectedCampusHubGroup == null;
-          final campusHubSubLevel = isCampusHubCategory &&
-              mapState.selectedCampusHubGroup != null;
+          final campusHubTopLevel =
+              isCampusHubCategory && mapState.selectedCampusHubGroup == null;
+          final campusHubSubLevel =
+              isCampusHubCategory && mapState.selectedCampusHubGroup != null;
           final campusHubBuildings = campusHubSubLevel
               ? mapState.searchResults
                     .where(
-                      (b) => b.campusHubGroups
-                          .contains(mapState.selectedCampusHubGroup),
+                      (b) => b.campusHubGroups.contains(
+                        mapState.selectedCampusHubGroup,
+                      ),
                     )
                     .toList()
               : const <Building>[];
@@ -287,11 +291,9 @@ class _MapPageState extends ConsumerState<MapPage> {
                 : studentServicesSubLevel
                 ? _CategoryBuildingList(
                     buildings: studentServicesBuildings,
-                    searchQuery:
-                        mapState.selectedStudentServicesGroup!.label,
+                    searchQuery: mapState.selectedStudentServicesGroup!.label,
                     onSelectBuilding: controller.selectBuilding,
-                    onBack: () =>
-                        controller.selectStudentServicesGroup(null),
+                    onBack: () => controller.selectStudentServicesGroup(null),
                     onClear: controller.clearCategoryBrowse,
                   )
                 : campusHubTopLevel
@@ -320,8 +322,7 @@ class _MapPageState extends ConsumerState<MapPage> {
                     buildings: campusHubBuildings,
                     searchQuery: mapState.selectedCampusHubGroup!.label,
                     onSelectBuilding: controller.selectBuilding,
-                    onBack: () =>
-                        controller.selectCampusHubGroup(null),
+                    onBack: () => controller.selectCampusHubGroup(null),
                     onClear: controller.clearCategoryBrowse,
                   )
                 : isCategoryBrowse
