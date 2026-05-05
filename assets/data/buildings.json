@@ -93,7 +93,8 @@
       "admin",
       "academic",
       "it",
-      "careers"
+      "careers",
+      "security"
     ],
     "campusHubGroups": []
   },
@@ -117,7 +118,7 @@
       "Campus Security",
       "Campus Security Office",
       "Lachlan Macquarie Room",
-      "Library Caf\u00e9",
+      "Library Café",
       "Library Information Desk"
     ],
     "tags": [
@@ -148,7 +149,9 @@
     "campusHubGroups": [
       "study"
     ],
-    "studentServicesGroups": []
+    "studentServicesGroups": [
+      "academic"
+    ]
   },
   {
     "id": "SEC",
@@ -164,7 +167,11 @@
     "googlePlaceId": null,
     "campusX": 232,
     "campusY": 2213,
-    "aliases": [],
+    "aliases": [
+      "Security & Information",
+      "Emergency & First Aid",
+      "Campus Security"
+    ],
     "tags": [
       "services",
       "safety",
@@ -178,7 +185,11 @@
       "emergency help point",
       "blue help point",
       "first aid",
-      "campus security"
+      "campus security",
+      "security building",
+      "help point hub",
+      "first aid room",
+      "after hours security"
     ],
     "gridRef": "P2",
     "levels": null,
@@ -221,7 +232,7 @@
       "Arts Precinct Building",
       "Faculty of Arts Offices",
       "FOA",
-      "Cult Caf\u00e9",
+      "Cult Café",
       "Cult Eatery",
       "The Gale History Museum"
     ],
@@ -661,7 +672,8 @@
       "academic",
       "science",
       "research",
-      "faculty"
+      "faculty",
+      "campus hub"
     ],
     "searchTokens": [
       "frank the bear",
@@ -681,7 +693,9 @@
     "wheelchair": false,
     "facultyGroup": "science_engineering",
     "studentServicesGroups": [],
-    "campusHubGroups": []
+    "campusHubGroups": [
+      "museums"
+    ]
   },
   {
     "id": "4WW",
@@ -743,8 +757,7 @@
     "tags": [
       "venue",
       "teaching",
-      "events",
-      "faculty"
+      "events"
     ],
     "searchTokens": [
       "lotus theatre",
@@ -760,7 +773,7 @@
     "gridRef": "O11",
     "levels": null,
     "wheelchair": false,
-    "facultyGroup": "science_engineering",
+    "facultyGroup": null,
     "campusHubGroups": [
       "student_life"
     ],
@@ -818,17 +831,28 @@
     "googlePlaceId": null,
     "campusX": 1872,
     "campusY": 1956,
-    "aliases": [],
+    "aliases": [
+      "Price Theatre",
+      "23 Wally's Walk"
+    ],
     "tags": [
       "venue",
-      "teaching"
+      "teaching",
+      "campus hub"
     ],
-    "searchTokens": [],
+    "searchTokens": [
+      "price theatre",
+      "23 wally's walk",
+      "teaching venue",
+      "lecture theatre"
+    ],
     "gridRef": "O14",
     "levels": null,
     "wheelchair": false,
     "studentServicesGroups": [],
-    "campusHubGroups": []
+    "campusHubGroups": [
+      "student_life"
+    ]
   },
   {
     "id": "LIGHT",
@@ -1070,7 +1094,7 @@
       "Macquarie University Sport and Aquatic Centre",
       "Sport and Aquatic Centre",
       "10 Gymnasium Road",
-      "Crunch Caf\u00e9"
+      "Crunch Café"
     ],
     "tags": [
       "sports",
@@ -1100,16 +1124,17 @@
     "levels": null,
     "wheelchair": true,
     "campusHubGroups": [
-      "sport"
+      "sport",
+      "museums"
     ],
     "studentServicesGroups": []
   },
   {
     "id": "FIELDS",
     "code": "FIELDS",
-    "name": "Sports Fields & Tennis",
+    "name": "Sports Fields & Tennis Centre",
     "description": "Outdoor sports fields and tennis centre.",
-    "address": "15-17 Gymnasium Road",
+    "address": "Corner Talavera Road & Culloden Roads",
     "category": "sports",
     "latitude": -33.7734239,
     "longitude": 151.1127799,
@@ -1129,7 +1154,10 @@
       "sport facilities",
       "tennis",
       "sports fields",
-      "Talavera Road"
+      "Talavera Road",
+      "corner talavera",
+      "culloden road",
+      "tennis centre"
     ],
     "gridRef": "K16",
     "levels": null,
@@ -1200,7 +1228,7 @@
     "campusX": 2424,
     "campusY": 1799,
     "aliases": [
-      "Cult Caf\u00e9",
+      "Cult Café",
       "Cult Cafe",
       "Cult Eatery",
       "25B Wally's Walk",
@@ -1213,10 +1241,10 @@
     "searchTokens": [
       "cult",
       "cult cafe",
-      "cult caf\u00e9",
+      "cult café",
       "arts precinct cafe",
       "cafe",
-      "caf\u00e9",
+      "café",
       "coffee"
     ],
     "gridRef": "O13",
@@ -1307,14 +1335,15 @@
     "wheelchair": false,
     "studentServicesGroups": [
       "support",
-      "inclusion"
+      "inclusion",
+      "admin"
     ],
     "campusHubGroups": []
   },
   {
     "id": "16WW",
     "code": "16WW",
-    "name": "16 Wally's Walk (Lincoln Building \u2014 Research Office)",
+    "name": "16 Wally's Walk (Lincoln Building — Research Office)",
     "description": "Graduate Research Academy, Research Services, Commercialisation & Innovation.",
     "address": "16 Wally's Walk",
     "category": "research",
@@ -1419,8 +1448,7 @@
     "campusY": 1290,
     "aliases": [
       "Chancellery",
-      "Archives & Records Management",
-      "Art Gallery"
+      "Archives & Records Management"
     ],
     "tags": [
       "administration",
@@ -1433,7 +1461,6 @@
       "archives",
       "records management",
       "chancellery",
-      "art gallery",
       "19ERTHECHA"
     ],
     "gridRef": "H20",
@@ -1502,19 +1529,27 @@
       "services",
       "business",
       "innovation",
-      "student services"
+      "student services",
+      "campus hub"
     ],
     "searchTokens": [
       "8 hadenfeld avenue",
       "macquarie university incubator",
       "incubator",
-      "8HA"
+      "8HA",
+      "startup",
+      "entrepreneurship",
+      "innovation hub"
     ],
     "gridRef": "S8",
     "levels": null,
     "wheelchair": false,
-    "studentServicesGroups": [],
-    "campusHubGroups": []
+    "studentServicesGroups": [
+      "careers"
+    ],
+    "campusHubGroups": [
+      "student_life"
+    ]
   },
   {
     "id": "WALU",
@@ -1580,14 +1615,21 @@
     "googlePlaceId": null,
     "campusX": 1129,
     "campusY": 2173,
-    "aliases": [],
+    "aliases": [
+      "Banksia Cottage"
+    ],
     "tags": [
       "services",
       "childcare",
       "student services"
     ],
     "searchTokens": [
-      "8LR"
+      "8LR",
+      "banksia cottage",
+      "childcare",
+      "child care",
+      "8 link road",
+      "banksia"
     ],
     "gridRef": "P8",
     "levels": null,
@@ -1595,7 +1637,9 @@
     "campusHubGroups": [
       "childcare"
     ],
-    "studentServicesGroups": []
+    "studentServicesGroups": [
+      "support"
+    ]
   },
   {
     "id": "GUMNUT",
@@ -1611,20 +1655,30 @@
     "googlePlaceId": null,
     "campusX": 2046,
     "campusY": 3067,
-    "aliases": [],
+    "aliases": [
+      "Gumnut Cottage"
+    ],
     "tags": [
       "services",
       "childcare",
       "student services"
     ],
-    "searchTokens": [],
+    "searchTokens": [
+      "gumnut cottage",
+      "childcare",
+      "child care",
+      "17 university avenue",
+      "gumnut"
+    ],
     "gridRef": "V15",
     "levels": null,
     "wheelchair": false,
     "campusHubGroups": [
       "childcare"
     ],
-    "studentServicesGroups": []
+    "studentServicesGroups": [
+      "support"
+    ]
   },
   {
     "id": "MIAMIA",
@@ -1663,7 +1717,9 @@
     "campusHubGroups": [
       "childcare"
     ],
-    "studentServicesGroups": []
+    "studentServicesGroups": [
+      "support"
+    ]
   },
   {
     "id": "WARATAH",
@@ -1679,20 +1735,30 @@
     "googlePlaceId": null,
     "campusX": 2362,
     "campusY": 3137,
-    "aliases": [],
+    "aliases": [
+      "Waratah Childcare"
+    ],
     "tags": [
       "services",
       "childcare",
       "student services"
     ],
-    "searchTokens": [],
+    "searchTokens": [
+      "waratah",
+      "childcare",
+      "child care",
+      "11 university avenue",
+      "waratah childcare"
+    ],
     "gridRef": "W17",
     "levels": null,
     "wheelchair": false,
     "campusHubGroups": [
       "childcare"
     ],
-    "studentServicesGroups": []
+    "studentServicesGroups": [
+      "support"
+    ]
   },
   {
     "id": "NEXTSENSE",
@@ -1764,7 +1830,9 @@
     "campusX": 3334,
     "campusY": 1478,
     "aliases": [
-      "3 Science Road"
+      "3 Science Road",
+      "METS",
+      "Macquarie Engineering Technical Services"
     ],
     "tags": [
       "services",
@@ -1777,12 +1845,17 @@
       "3 science road",
       "engineering services",
       "technical services",
-      "3SR"
+      "3SR",
+      "mets",
+      "workshop",
+      "engineering workshop"
     ],
     "gridRef": "K24",
     "levels": null,
     "wheelchair": false,
-    "studentServicesGroups": [],
+    "studentServicesGroups": [
+      "academic"
+    ],
     "campusHubGroups": []
   },
   {
@@ -1961,14 +2034,22 @@
     "googlePlaceId": null,
     "campusX": 2929,
     "campusY": 2062,
-    "aliases": [],
+    "aliases": [
+      "MQ Art Gallery",
+      "Macquarie Art Gallery"
+    ],
     "tags": [
       "arts",
       "gallery",
       "culture",
       "campus hub"
     ],
-    "searchTokens": [],
+    "searchTokens": [
+      "art gallery",
+      "19 eastern road",
+      "gallery",
+      "MQ art gallery"
+    ],
     "gridRef": "H20",
     "levels": null,
     "wheelchair": false,
@@ -2151,7 +2232,7 @@
       "1cc",
       "graduation venue"
     ],
-    "gridRef": "K19",
+    "gridRef": "K18",
     "levels": null,
     "wheelchair": false,
     "campusHubGroups": [
@@ -2534,31 +2615,6 @@
     "campusHubGroups": []
   },
   {
-    "id": "1EXR",
-    "code": "1EXR",
-    "name": "1 Executive Road",
-    "description": "Academic building.",
-    "address": "1 Executive Road Macquarie Park NSW",
-    "category": "academic",
-    "latitude": -33.771097,
-    "longitude": 151.115913,
-    "entranceLatitude": null,
-    "entranceLongitude": null,
-    "googlePlaceId": null,
-    "campusX": 3108,
-    "campusY": 761,
-    "aliases": [],
-    "tags": [
-      "academic"
-    ],
-    "searchTokens": [],
-    "gridRef": null,
-    "levels": null,
-    "wheelchair": false,
-    "studentServicesGroups": [],
-    "campusHubGroups": []
-  },
-  {
     "id": "2FW",
     "code": "2FW",
     "name": "2 First Walk",
@@ -2656,44 +2712,6 @@
     "levels": null,
     "wheelchair": false,
     "studentServicesGroups": [],
-    "campusHubGroups": []
-  },
-  {
-    "id": "4LR",
-    "code": "4LR",
-    "name": "4 Link Road",
-    "description": "Academic building.",
-    "address": "4 Link Road",
-    "category": "academic",
-    "latitude": -33.775259,
-    "longitude": 151.106101,
-    "entranceLatitude": null,
-    "entranceLongitude": null,
-    "googlePlaceId": null,
-    "campusX": 237,
-    "campusY": 2208,
-    "aliases": [
-      "Security & Information",
-      "Emergency & First Aid",
-      "Campus Security"
-    ],
-    "tags": [
-      "academic",
-      "student services"
-    ],
-    "searchTokens": [
-      "4 link road",
-      "security building",
-      "help point hub",
-      "first aid room",
-      "after hours security"
-    ],
-    "gridRef": null,
-    "levels": null,
-    "wheelchair": false,
-    "studentServicesGroups": [
-      "security"
-    ],
     "campusHubGroups": []
   },
   {
@@ -3082,13 +3100,14 @@
       "multifaith",
       "spiritual support"
     ],
-    "gridRef": null,
+    "gridRef": "R6",
     "levels": 1,
     "wheelchair": false,
     "studentServicesGroups": [
       "support"
     ],
-    "campusHubGroups": []
+    "campusHubGroups": [],
+    "facultyGroup": "arts"
   },
   {
     "id": "MACQUARIEC",
@@ -3898,7 +3917,7 @@
     "code": "CCMQ",
     "name": "Crunch Cafe",
     "description": "Cafe near the Sport & Aquatic Centre.",
-    "address": "Gymnasium Road",
+    "address": "10 Gymnasium Road",
     "category": "food",
     "latitude": -33.772214,
     "longitude": 151.110554,
@@ -3907,14 +3926,21 @@
     "googlePlaceId": null,
     "campusX": 1527,
     "campusY": 1131,
-    "aliases": [],
+    "aliases": [
+      "Crunch Café"
+    ],
     "tags": [
       "food",
       "cafe",
       "coffee"
     ],
-    "searchTokens": [],
-    "gridRef": null,
+    "searchTokens": [
+      "crunch cafe",
+      "crunch café",
+      "cafe",
+      "10 gymnasium road"
+    ],
+    "gridRef": "J12",
     "levels": null,
     "wheelchair": false,
     "studentServicesGroups": [],
@@ -4478,7 +4504,7 @@
   {
     "id": "BIKEF01",
     "code": "BIKEF01",
-    "name": "Bike Rack \u2014 Department of Media",
+    "name": "Bike Rack — Department of Media",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4508,7 +4534,7 @@
   {
     "id": "BIKEF02",
     "code": "BIKEF02",
-    "name": "Bike Rack \u2014 Department of Media",
+    "name": "Bike Rack — Department of Media",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4538,7 +4564,7 @@
   {
     "id": "BIKEF03",
     "code": "BIKEF03",
-    "name": "Bike Rack \u2014 Department of Media",
+    "name": "Bike Rack — Department of Media",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4568,7 +4594,7 @@
   {
     "id": "BIKEF04",
     "code": "BIKEF04",
-    "name": "Bike Rack \u2014 Incubator",
+    "name": "Bike Rack — Incubator",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4598,7 +4624,7 @@
   {
     "id": "BIKEF05",
     "code": "BIKEF05",
-    "name": "Bike Rack \u2014 History Museum",
+    "name": "Bike Rack — History Museum",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4628,7 +4654,7 @@
   {
     "id": "BIKEF06",
     "code": "BIKEF06",
-    "name": "Bike Rack \u2014 History Museum",
+    "name": "Bike Rack — History Museum",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4658,7 +4684,7 @@
   {
     "id": "BIKEF07",
     "code": "BIKEF07",
-    "name": "Bike Rack \u2014 Mars Creek",
+    "name": "Bike Rack — Mars Creek",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4688,7 +4714,7 @@
   {
     "id": "BIKEF08",
     "code": "BIKEF08",
-    "name": "Bike Rack \u2014 29 Wally's Walk",
+    "name": "Bike Rack — 29 Wally's Walk",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4718,7 +4744,7 @@
   {
     "id": "BIKEF09",
     "code": "BIKEF09",
-    "name": "Bike Rack \u2014 Faculty of Arts",
+    "name": "Bike Rack — Faculty of Arts",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4748,7 +4774,7 @@
   {
     "id": "BIKEF10",
     "code": "BIKEF10",
-    "name": "Bike Rack \u2014 Price Theatre",
+    "name": "Bike Rack — Price Theatre",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4778,7 +4804,7 @@
   {
     "id": "BIKEF11",
     "code": "BIKEF11",
-    "name": "Bike Rack \u2014 MUSE",
+    "name": "Bike Rack — MUSE",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4808,7 +4834,7 @@
   {
     "id": "BIKEF12",
     "code": "BIKEF12",
-    "name": "Bike Rack \u2014 MUSE",
+    "name": "Bike Rack — MUSE",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4838,7 +4864,7 @@
   {
     "id": "BIKEF13",
     "code": "BIKEF13",
-    "name": "Bike Rack \u2014 Macquarie Theatre",
+    "name": "Bike Rack — Macquarie Theatre",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4868,7 +4894,7 @@
   {
     "id": "BIKEF14",
     "code": "BIKEF14",
-    "name": "Bike Rack \u2014 Library",
+    "name": "Bike Rack — Library",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4898,7 +4924,7 @@
   {
     "id": "BIKEF15",
     "code": "BIKEF15",
-    "name": "Bike Rack \u2014 Central Avenue",
+    "name": "Bike Rack — Central Avenue",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4928,7 +4954,7 @@
   {
     "id": "BIKEF16",
     "code": "BIKEF16",
-    "name": "Bike Rack \u2014 Wally's Walk",
+    "name": "Bike Rack — Wally's Walk",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4958,7 +4984,7 @@
   {
     "id": "BIKEF17",
     "code": "BIKEF17",
-    "name": "Bike Rack \u2014 IELTS Centre",
+    "name": "Bike Rack — IELTS Centre",
     "description": "",
     "address": null,
     "category": "transport",
@@ -4988,7 +5014,7 @@
   {
     "id": "BIKEF18",
     "code": "BIKEF18",
-    "name": "Bike Rack \u2014 Mason Theatre",
+    "name": "Bike Rack — Mason Theatre",
     "description": "",
     "address": null,
     "category": "transport",
@@ -5018,7 +5044,7 @@
   {
     "id": "BIKEF19",
     "code": "BIKEF19",
-    "name": "Bike Rack \u2014 Mason Theatre",
+    "name": "Bike Rack — Mason Theatre",
     "description": "",
     "address": null,
     "category": "transport",
@@ -5048,7 +5074,7 @@
   {
     "id": "BIKEF20",
     "code": "BIKEF20",
-    "name": "Bike Rack \u2014 Eastern Road",
+    "name": "Bike Rack — Eastern Road",
     "description": "",
     "address": null,
     "category": "transport",
@@ -5078,7 +5104,7 @@
   {
     "id": "BIKEF21",
     "code": "BIKEF21",
-    "name": "Bike Rack \u2014 P East 2",
+    "name": "Bike Rack — P East 2",
     "description": "",
     "address": null,
     "category": "transport",
@@ -5108,7 +5134,7 @@
   {
     "id": "BIKEF22",
     "code": "BIKEF22",
-    "name": "Bike Rack \u2014 Sport & Aquatic Centre",
+    "name": "Bike Rack — Sport & Aquatic Centre",
     "description": "",
     "address": null,
     "category": "transport",
@@ -5138,7 +5164,7 @@
   {
     "id": "BIKEF23",
     "code": "BIKEF23",
-    "name": "Bike Rack \u2014 MGSM Parking",
+    "name": "Bike Rack — MGSM Parking",
     "description": "",
     "address": null,
     "category": "transport",
@@ -5168,7 +5194,7 @@
   {
     "id": "BIKEF24",
     "code": "BIKEF24",
-    "name": "Bike Rack \u2014 Culloden Road",
+    "name": "Bike Rack — Culloden Road",
     "description": "",
     "address": null,
     "category": "transport",
@@ -5198,7 +5224,7 @@
   {
     "id": "BIKEF25",
     "code": "BIKEF25",
-    "name": "Bike Rack \u2014 Macquarie University Stn",
+    "name": "Bike Rack — Macquarie University Stn",
     "description": "",
     "address": null,
     "category": "transport",
@@ -5348,7 +5374,7 @@
   {
     "id": "SMOKE1",
     "code": "SMOKE1",
-    "name": "Smoking Area \u2014 Library / Central Court",
+    "name": "Smoking Area — Library / Central Court",
     "description": "Designated outdoor smoking area.",
     "address": null,
     "category": "smoking",
@@ -5375,7 +5401,7 @@
   {
     "id": "SMOKE2",
     "code": "SMOKE2",
-    "name": "Smoking Area \u2014 West Road",
+    "name": "Smoking Area — West Road",
     "description": "Designated outdoor smoking area.",
     "address": null,
     "category": "smoking",
@@ -5402,7 +5428,7 @@
   {
     "id": "SMOKE3",
     "code": "SMOKE3",
-    "name": "Smoking Area \u2014 MUSE / Wally's Walk",
+    "name": "Smoking Area — MUSE / Wally's Walk",
     "description": "Designated outdoor smoking area.",
     "address": null,
     "category": "smoking",
@@ -5429,7 +5455,7 @@
   {
     "id": "SMOKE4",
     "code": "SMOKE4",
-    "name": "Smoking Area \u2014 Sport & Aquatic Centre",
+    "name": "Smoking Area — Sport & Aquatic Centre",
     "description": "Designated outdoor smoking area.",
     "address": null,
     "category": "smoking",
@@ -5456,7 +5482,7 @@
   {
     "id": "SMOKE5",
     "code": "SMOKE5",
-    "name": "Smoking Area \u2014 University Avenue",
+    "name": "Smoking Area — University Avenue",
     "description": "Designated outdoor smoking area.",
     "address": null,
     "category": "smoking",
@@ -5483,7 +5509,7 @@
   {
     "id": "SMOKE6",
     "code": "SMOKE6",
-    "name": "Smoking Area \u2014 Eastern / P East 1",
+    "name": "Smoking Area — Eastern / P East 1",
     "description": "Designated outdoor smoking area.",
     "address": null,
     "category": "smoking",

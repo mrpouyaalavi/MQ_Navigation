@@ -99,7 +99,29 @@ import 'package:mq_navigation/features/map/domain/entities/building.dart';
 ///        names (e.g. "Macquarie University Hospital (3 Technology
 ///        Place)") so the address context shows directly in the row.
 ///        175 → 163 buildings.
-const _cacheKey = 'building_registry.v8';
+///   v9 — PDF source-of-truth alignment pass. All 20 fixes from the May 2026
+///        Location Guide audit: (1) FIELDS address corrected to "Corner
+///        Talavera Road & Culloden Roads" (was incorrectly showing student
+///        accommodation address); (2) 4LR duplicate deleted — aliases/tokens
+///        absorbed into canonical SEC entry; (3) 10HA gains facultyGroup=arts
+///        and gridRef=R6 (hosts MMCCS / Dept of Media); (4–7) All four
+///        childcare centres (BANK, GUMNUT, MIAMIA, WARATAH) now correctly
+///        carry studentServicesGroups=["support"], with Banksia, Gumnut, and
+///        Waratah also enriched with aliases and searchTokens; (8) LIB gains
+///        studentServicesGroups=["academic"]; (9) GALLERY enriched as the
+///        canonical Art Gallery entry, Art Gallery alias/token removed from
+///        19ER; (10) 6WW gains campusHubGroups=["museums"] for the Herbarium;
+///        (11) SPORT gains campusHubGroups=["museums"] for Sporting Hall of
+///        Fame; (12) LOTUS: spurious facultyGroup=science_engineering removed;
+///        (13) 18WW gains studentServicesGroups="security" (First Aid Room);
+///        (14) 8SCO gains studentServicesGroups="admin"; (15) PRICE fully
+///        enriched (aliases, searchTokens, campusHubGroups=["student_life"]);
+///        (16) CCMQ: address→"10 Gymnasium Road", gridRef=J12; (17) 1CC:
+///        gridRef corrected K19→K18; (18) METS: studentServicesGroups=
+///        ["academic"]; (19) INCUB: studentServicesGroups=["careers"],
+///        campusHubGroups=["student_life"]; (20) 1EXR spurious stub deleted.
+///        163 → 161 buildings.
+const _cacheKey = 'building_registry.v9';
 const _assetPath = 'assets/data/buildings.json';
 
 /// Data source for the campus building registry.
