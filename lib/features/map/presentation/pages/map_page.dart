@@ -113,11 +113,18 @@ class _MapPageState extends ConsumerState<MapPage> {
               mapState.selectedBuilding == null &&
               mapState.searchResults.length > 1;
 
-          // Faculty drill-down: special-case "faculty" category so the
-          // first level is the four [FacultyGroup] cards, the second
-          // level is the buildings filtered by the selected group.
-          final isFacultyCategory =
-              mapState.searchQuery.trim().toLowerCase() == 'faculty';
+          // ── Two-level drill-down state for the three grouped chips ──
+          // For each of Faculty / Student Services / Campus Hub, the
+          // top level shows the group cards and the sub level shows
+          // the buildings filtered by the selected group. The same
+          // pattern is repeated three times because each chip has its
+          // own filter predicate against the Building entity:
+          //   * facultyGroup            (singular)
+          //   * studentServicesGroups   (list — 18WW spans 4 groups)
+          //   * campusHubGroups         (list)
+          final normalizedQuery = mapState.searchQuery.trim().toLowerCase();
+
+          final isFacultyCategory = normalizedQuery == 'faculty';
           final facultyTopLevel =
               isFacultyCategory && mapState.selectedFacultyGroup == null;
           final facultySubLevel =
@@ -130,13 +137,54 @@ class _MapPageState extends ConsumerState<MapPage> {
                     .toList()
               : const <Building>[];
 
-          // When the faculty drill-down is at the second level, narrow
-          // the on-map markers to only the chosen group. Without this,
-          // tapping "Arts" in the panel would still show all 18 faculty
-          // markers — defeating the purpose of the drill-down.
-          final List<Building> rendererSearchResults = facultySubLevel
-              ? facultyBuildings
-              : mapState.searchResults;
+          final isStudentServicesCategory =
+              normalizedQuery == 'student services';
+          final studentServicesTopLevel = isStudentServicesCategory &&
+              mapState.selectedStudentServicesGroup == null;
+          final studentServicesSubLevel = isStudentServicesCategory &&
+              mapState.selectedStudentServicesGroup != null;
+          final studentServicesBuildings = studentServicesSubLevel
+              ? mapState.searchResults
+                    .where(
+                      (b) => b.studentServicesGroups
+                          .contains(mapState.selectedStudentServicesGroup),
+                    )
+                    .toList()
+              : const <Building>[];
+
+          final isCampusHubCategory = normalizedQuery == 'campus hub';
+          final campusHubTopLevel = isCampusHubCategory &&
+              mapState.selectedCampusHubGroup == null;
+          final campusHubSubLevel = isCampusHubCategory &&
+              mapState.selectedCampusHubGroup != null;
+          final campusHubBuildings = campusHubSubLevel
+              ? mapState.searchResults
+                    .where(
+                      (b) => b.campusHubGroups
+                          .contains(mapState.selectedCampusHubGroup),
+                    )
+                    .toList()
+              : const <Building>[];
+
+          // While the user is at the *top* of any drill-down (browsing
+          // the group cards), suppress on-map markers — otherwise tapping
+          // "Campus Hub" would dump 70 pins onto the map at once. Pins
+          // reappear at the second level once the user picks a group,
+          // and they're filtered to just that group's buildings.
+          final List<Building> rendererSearchResults;
+          if (facultySubLevel) {
+            rendererSearchResults = facultyBuildings;
+          } else if (studentServicesSubLevel) {
+            rendererSearchResults = studentServicesBuildings;
+          } else if (campusHubSubLevel) {
+            rendererSearchResults = campusHubBuildings;
+          } else if (facultyTopLevel ||
+              studentServicesTopLevel ||
+              campusHubTopLevel) {
+            rendererSearchResults = const <Building>[];
+          } else {
+            rendererSearchResults = mapState.searchResults;
+          }
 
           final mapView = switch (mapState.renderer) {
             MapRendererType.campus => CampusMapView(
@@ -187,8 +235,23 @@ class _MapPageState extends ConsumerState<MapPage> {
                         : controller.openAppSettings,
                   ),
             footer: facultyTopLevel
-                ? _FacultyGroupPanel(
-                    buildings: mapState.searchResults,
+                ? _BrowseGroupPanel<FacultyGroup>(
+                    title: l10n.home_faculty,
+                    leadingIcon: Icons.school,
+                    groups: FacultyGroup.values,
+                    countByGroup: {
+                      for (final g in FacultyGroup.values)
+                        g: mapState.searchResults
+                            .where(
+                              (b) =>
+                                  b.facultyGroup == g &&
+                                  b.latitude != null &&
+                                  b.longitude != null,
+                            )
+                            .length,
+                    },
+                    labelOf: (g) => g.label,
+                    descriptionOf: (g) => g.description,
                     onSelectGroup: controller.selectFacultyGroup,
                     onClear: controller.clearCategoryBrowse,
                   )
@@ -197,9 +260,68 @@ class _MapPageState extends ConsumerState<MapPage> {
                     buildings: facultyBuildings,
                     searchQuery: mapState.selectedFacultyGroup!.label,
                     onSelectBuilding: controller.selectBuilding,
-                    // Back chevron returns to the four-group top level.
-                    // X exits Faculty browsing entirely.
                     onBack: () => controller.selectFacultyGroup(null),
+                    onClear: controller.clearCategoryBrowse,
+                  )
+                : studentServicesTopLevel
+                ? _BrowseGroupPanel<StudentServicesGroup>(
+                    title: l10n.home_studentServices,
+                    leadingIcon: Icons.support_agent,
+                    groups: StudentServicesGroup.values,
+                    countByGroup: {
+                      for (final g in StudentServicesGroup.values)
+                        g: mapState.searchResults
+                            .where(
+                              (b) =>
+                                  b.studentServicesGroups.contains(g) &&
+                                  b.latitude != null &&
+                                  b.longitude != null,
+                            )
+                            .length,
+                    },
+                    labelOf: (g) => g.label,
+                    descriptionOf: (g) => g.description,
+                    onSelectGroup: controller.selectStudentServicesGroup,
+                    onClear: controller.clearCategoryBrowse,
+                  )
+                : studentServicesSubLevel
+                ? _CategoryBuildingList(
+                    buildings: studentServicesBuildings,
+                    searchQuery:
+                        mapState.selectedStudentServicesGroup!.label,
+                    onSelectBuilding: controller.selectBuilding,
+                    onBack: () =>
+                        controller.selectStudentServicesGroup(null),
+                    onClear: controller.clearCategoryBrowse,
+                  )
+                : campusHubTopLevel
+                ? _BrowseGroupPanel<CampusHubGroup>(
+                    title: l10n.home_campusHub,
+                    leadingIcon: Icons.account_balance,
+                    groups: CampusHubGroup.values,
+                    countByGroup: {
+                      for (final g in CampusHubGroup.values)
+                        g: mapState.searchResults
+                            .where(
+                              (b) =>
+                                  b.campusHubGroups.contains(g) &&
+                                  b.latitude != null &&
+                                  b.longitude != null,
+                            )
+                            .length,
+                    },
+                    labelOf: (g) => g.label,
+                    descriptionOf: (g) => g.description,
+                    onSelectGroup: controller.selectCampusHubGroup,
+                    onClear: controller.clearCategoryBrowse,
+                  )
+                : campusHubSubLevel
+                ? _CategoryBuildingList(
+                    buildings: campusHubBuildings,
+                    searchQuery: mapState.selectedCampusHubGroup!.label,
+                    onSelectBuilding: controller.selectBuilding,
+                    onBack: () =>
+                        controller.selectCampusHubGroup(null),
                     onClear: controller.clearCategoryBrowse,
                   )
                 : isCategoryBrowse
@@ -601,48 +723,53 @@ class _CategoryBuildingList extends StatelessWidget {
   }
 }
 
-/// Top level of the **Faculty** category drill-down. Renders the
-/// four [FacultyGroup] cards as the entry point so students see a
-/// structured "pick your faculty" choice rather than a flat list of
-/// 18 buildings. Tapping a group narrows the map markers and the
-/// list panel to just that faculty's buildings.
+/// Top level of any of the three category drill-downs (Faculty,
+/// Student Services, Campus Hub). Renders one card per sub-group with
+/// per-group counts so the user picks a group first, then drills in
+/// to the actual buildings.
+///
+/// Generic over the sub-group enum (`TGroup`) so we share one widget
+/// across all three sections rather than duplicating the same glass
+/// chrome three times. The caller supplies:
+///   * `groups` — ordered enum values to show as cards
+///   * `countByGroup` — pre-computed building counts (drives the
+///     subtitle's "· N" badge)
+///   * `labelOf` / `descriptionOf` — readable strings per group
+///   * `onSelectGroup` — called when the user taps a card
+///   * `onClear` — closes the entire category browse (X button)
+///   * `title` — header copy for the section
+///   * `leadingIcon` — the icon stamped on every card (school /
+///     support_agent / account_balance for the three sections)
 ///
 /// Visual style intentionally mirrors [_CategoryBuildingList] (glass
 /// + handle bar + close X) so the transition between top and second
 /// levels feels like one continuous panel, not two different sheets.
-class _FacultyGroupPanel extends StatelessWidget {
-  const _FacultyGroupPanel({
-    required this.buildings,
+class _BrowseGroupPanel<TGroup> extends StatelessWidget {
+  const _BrowseGroupPanel({
+    required this.title,
+    required this.groups,
+    required this.countByGroup,
+    required this.labelOf,
+    required this.descriptionOf,
     required this.onSelectGroup,
     required this.onClear,
+    required this.leadingIcon,
   });
 
-  /// All faculty-tagged buildings — used to compute the per-group
-  /// counts shown on each card so empty groups (if any) are visible
-  /// and students can gauge what they're drilling into.
-  final List<Building> buildings;
-  final ValueChanged<FacultyGroup> onSelectGroup;
+  final String title;
+  final List<TGroup> groups;
+  final Map<TGroup, int> countByGroup;
+  final String Function(TGroup) labelOf;
+  final String Function(TGroup) descriptionOf;
+  final ValueChanged<TGroup> onSelectGroup;
   final VoidCallback onClear;
+  final IconData leadingIcon;
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
     final l10n = AppLocalizations.of(context)!;
-
-    // Pre-compute per-group counts. Buildings without coordinates
-    // are excluded so the count matches what the user can actually
-    // tap to on the map.
-    final countsByGroup = <FacultyGroup, int>{
-      for (final group in FacultyGroup.values)
-        group: buildings
-            .where(
-              (b) =>
-                  b.facultyGroup == group &&
-                  b.latitude != null &&
-                  b.longitude != null,
-            )
-            .length,
-    };
+    final countsByGroup = countByGroup;
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
@@ -699,7 +826,7 @@ class _FacultyGroupPanel extends StatelessWidget {
                 ),
               ),
 
-              // Header: "Faculty" + close X
+              // Header: section title + close X
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(
                   MqSpacing.space4,
@@ -711,7 +838,7 @@ class _FacultyGroupPanel extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        l10n.home_faculty,
+                        title,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               fontWeight: FontWeight.w600,
@@ -736,7 +863,7 @@ class _FacultyGroupPanel extends StatelessWidget {
                 ),
               ),
 
-              // Four faculty group rows
+              // One row per sub-group
               Flexible(
                 child: ListView.separated(
                   padding: const EdgeInsetsDirectional.fromSTEB(
@@ -745,20 +872,20 @@ class _FacultyGroupPanel extends StatelessWidget {
                     MqSpacing.space2,
                     MqSpacing.space3,
                   ),
-                  itemCount: FacultyGroup.values.length,
+                  itemCount: groups.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 0),
                   itemBuilder: (context, index) {
-                    final group = FacultyGroup.values[index];
+                    final group = groups[index];
                     final count = countsByGroup[group] ?? 0;
                     return ListTile(
                       dense: false,
-                      leading: const Icon(
-                        Icons.school,
+                      leading: Icon(
+                        leadingIcon,
                         color: MqColors.vividRed,
                         size: 22,
                       ),
                       title: Text(
-                        group.label,
+                        labelOf(group),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: isDark
@@ -767,7 +894,7 @@ class _FacultyGroupPanel extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        '${group.description}  ·  $count',
+                        '${descriptionOf(group)}  ·  $count',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: isDark
                               ? Colors.white.withValues(alpha: 0.5)

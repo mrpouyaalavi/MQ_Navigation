@@ -741,9 +741,18 @@ class _QuickAccessItem {
   final String searchQuery;
 }
 
-/// Prominent section header. Larger than a Material label so it actually
-/// reads as a section title at a glance — the prior `labelMedium` size
-/// was lost against the campus background photo.
+/// Prominent section header. Sized + coloured to anchor each section
+/// over the photo background.
+///
+/// Design notes:
+///   * **Black, not red.** The prior red-on-photo tint sat in the same
+///     hue family as the warm campus image and lost contrast. Pure
+///     black/white maximises legibility on every photo crop.
+///   * **20pt, weight 800**: a real titleLarge-grade hit, so the eye
+///     reads "Quick Access" before any of the tiles below.
+///   * **Subtle white halo** on light mode, deep black halo on dark
+///     mode: gives the glyphs a bit of separation from a busy photo
+///     without looking like a hard outline.
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({required this.title});
 
@@ -759,16 +768,27 @@ class _SectionHeader extends StatelessWidget {
       ),
       child: Text(
         title.toUpperCase(),
-        style: context.textTheme.titleMedium?.copyWith(
+        style: context.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.w800,
-          letterSpacing: 1.6,
-          fontSize: 15,
-          color: dark ? MqColors.vividRed : MqColors.red,
+          letterSpacing: 1.4,
+          fontSize: 20,
+          height: 1.1,
+          color: dark ? Colors.white : Colors.black,
           shadows: [
+            // Soft halo for legibility over the campus photo.
             Shadow(
-              blurRadius: 12,
-              color: Colors.black.withValues(alpha: dark ? 0.30 : 0.18),
+              blurRadius: 14,
+              color: dark
+                  ? Colors.black.withValues(alpha: 0.55)
+                  : Colors.white.withValues(alpha: 0.55),
               offset: const Offset(0, 1),
+            ),
+            Shadow(
+              blurRadius: 4,
+              color: dark
+                  ? Colors.black.withValues(alpha: 0.4)
+                  : Colors.white.withValues(alpha: 0.45),
+              offset: Offset.zero,
             ),
           ],
         ),
@@ -808,13 +828,26 @@ class _BentoHeroCard extends StatelessWidget {
         borderRadius: MqSpacing.radiusXl,
         child: Container(
           decoration: BoxDecoration(
+            // Slightly stronger surface alpha than v7 so the card
+            // reads cleanly over high-contrast photo crops, paired
+            // with a soft drop shadow for a more premium elevation.
             color: isDark
-                ? MqColors.charcoal850
-                : Colors.white.withValues(alpha: 0.88),
+                ? MqColors.charcoal850.withValues(alpha: 0.94)
+                : Colors.white.withValues(alpha: 0.94),
             borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
             border: Border.all(
-              color: isDark ? Colors.white.withAlpha(13) : MqColors.sand200,
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.08)
+                  : Colors.black.withValues(alpha: 0.06),
+              width: 0.6,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.30 : 0.10),
+                blurRadius: 18,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
           child: Column(
@@ -880,14 +913,24 @@ class _TertiaryQuickRow extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       color: isDark
-                          ? MqColors.charcoal850
-                          : Colors.white.withValues(alpha: 0.88),
+                          ? MqColors.charcoal850.withValues(alpha: 0.94)
+                          : Colors.white.withValues(alpha: 0.94),
                       borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
                       border: Border.all(
                         color: isDark
-                            ? Colors.white.withAlpha(13)
-                            : MqColors.sand200,
+                            ? Colors.white.withValues(alpha: 0.08)
+                            : Colors.black.withValues(alpha: 0.06),
+                        width: 0.6,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(
+                            alpha: isDark ? 0.25 : 0.08,
+                          ),
+                          blurRadius: 14,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     padding: const EdgeInsetsDirectional.symmetric(
                       horizontal: MqSpacing.space3,

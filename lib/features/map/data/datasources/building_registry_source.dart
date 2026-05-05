@@ -53,7 +53,53 @@ import 'package:mq_navigation/features/map/domain/entities/building.dart';
 ///        Campus Hub bucket — they're primarily Faculty/Research
 ///        buildings, not student-life destinations. 11WW labelled as
 ///        Tutorial Rooms; LOTUS labelled as T1 Lecture Theatre.
-const _cacheKey = 'building_registry.v5';
+///   v6 — PDF/Maps source-of-truth audit (Aug 2025 Location Guide +
+///        public Maps page). Recategorised every campus parking lot
+///        (6 general + 2 hospital) into `parking` so they all surface
+///        under the Parking chip with consistent enum + tag. Promoted
+///        accommodation parents (DLC, RMC, VILLAS, Central Courtyard,
+///        Morling), all sport facilities (FIELDS, BBALL, Ron Reilly,
+///        10GR), and study spaces (MUSE, 4RPD) into Campus Hub via the
+///        `campus hub` tag — Campus Hub now correctly covers
+///        accommodation + sport + study per the brief. Surfaced
+///        Security & Information at 4LR under Student Services and
+///        enriched SEC with help-point search tokens. Pulled in 60+
+///        PDF aliases (Service Connect first-aid room, Tech Bar, MMI,
+///        Pharmacy, IELTS/PTE, MQ Academy, Future Students, Speech &
+///        Hearing, Mindspot, MMCCS, Herbarium, Lachlan Macquarie
+///        Room, Sporting Hall of Fame, etc.) onto the existing parent
+///        buildings rather than spawning new markers. Removed five
+///        duplicate/excluded entries: EAST2 (= PEAST2), EAST3
+///        (= PEAST3), 75TR (= 75TAL), BIKEHUB and BIKEHUBE (Bike
+///        Facilities excluded by product). 145 → 140 buildings.
+///   v7 — Two-level browse drill-down for Student Services and Campus
+///        Hub (mirrors the existing Faculty pattern). Adds two new
+///        list fields per building — `studentServicesGroups` and
+///        `campusHubGroups` — driving the new sub-group cards. Re-adds
+///        Bike Facilities (25 racks + 2 hubs + 2 repair = 29 entries)
+///        and Smoking Areas (6 entries) per the revised brief — both
+///        placed under Campus Hub as their own sub-groups so they're
+///        browsable but stay out of the main map clutter unless the
+///        user has actively drilled in. 140 → 175 buildings.
+///   v8 — Final demo polish + verification audit. Folded twelve
+///        long-standing duplicate pairs into their canonical
+///        student-friendly entries (8HA→INCUB, 11GR→LIGHT, 5GR→OBS,
+///        10GR→SPORT, 21WW→MQTH, 8LR→BANK, 3SR→METS, 19ERTHECHA→19ER,
+///        2TP→CLINIC, MACQUARIEU→HOSP, CHAP→10HA,
+///        LAKESIDEHO→LACH). Each merge transferred aliases, search
+///        tokens, and tags to the kept entry, so search by the old
+///        ID still resolves. Stripped misleading "130 Herring Road"
+///        and "136 Herring Road" addresses from 130HR
+///        (Central Courtyard) and 136HR (Morling) — those addresses
+///        belong to DLC and RMC respectively, which already exist as
+///        their own entries. Removed NEXTSCHOOL from the
+///        Accessibility & Inclusion group because it's a partner
+///        K-12 D/deaf school, not an MQ student service. Relabeled
+///        eleven canonical entries with student-friendly compound
+///        names (e.g. "Macquarie University Hospital (3 Technology
+///        Place)") so the address context shows directly in the row.
+///        175 → 163 buildings.
+const _cacheKey = 'building_registry.v8';
 const _assetPath = 'assets/data/buildings.json';
 
 /// Data source for the campus building registry.

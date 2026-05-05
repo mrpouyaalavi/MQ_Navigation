@@ -25,6 +25,8 @@ class Building {
     this.campusX,
     this.campusY,
     this.facultyGroup,
+    this.studentServicesGroups = const [],
+    this.campusHubGroups = const [],
   });
 
   final String id;
@@ -56,6 +58,25 @@ class Building {
   /// it can still be tagged `faculty` for legacy search tokens, but
   /// it won't appear under any specific drill-down branch.
   final FacultyGroup? facultyGroup;
+
+  /// Which **Student Services** sub-groups this building belongs to,
+  /// if any. Drives the two-level drill-down on the Student Services
+  /// chip — the top level shows the seven [StudentServicesGroup]
+  /// cards, the second level shows buildings whose
+  /// `studentServicesGroups` contains the selected group.
+  ///
+  /// **A list, not a single value**, because one building (notably
+  /// 18 Wally's Walk / Service Connect) genuinely hosts services
+  /// across multiple sub-groups (Admin + IT + Academic + Careers).
+  /// Faculty stays singular because every faculty building has one
+  /// home faculty.
+  final List<StudentServicesGroup> studentServicesGroups;
+
+  /// Which **Campus Hub** sub-groups this building belongs to. Same
+  /// list-based design as [studentServicesGroups] — for example
+  /// `1CC` (1 Central Courtyard) is both a Student Life hub and
+  /// hosts the Graduation Venue.
+  final List<CampusHubGroup> campusHubGroups;
 
   factory Building.fromJson(Map<String, dynamic> json) {
     final location = json['location'] as Map<String, dynamic>?;
@@ -99,7 +120,28 @@ class Building {
           (campusLocation?['y'] as num?)?.toDouble() ??
           (json['campusY'] as num?)?.toDouble(),
       facultyGroup: FacultyGroup.fromJson(json['facultyGroup'] as String?),
+      studentServicesGroups: _parseGroupList<StudentServicesGroup>(
+        json['studentServicesGroups'],
+        StudentServicesGroup.fromJson,
+      ),
+      campusHubGroups: _parseGroupList<CampusHubGroup>(
+        json['campusHubGroups'],
+        CampusHubGroup.fromJson,
+      ),
     );
+  }
+
+  static List<T> _parseGroupList<T>(
+    Object? raw,
+    T? Function(String?) parser,
+  ) {
+    if (raw is! List) return const [];
+    final out = <T>[];
+    for (final item in raw) {
+      final parsed = parser(item is String ? item : null);
+      if (parsed != null) out.add(parsed);
+    }
+    return out;
   }
 
   Map<String, dynamic> toJson() => {
@@ -130,6 +172,8 @@ class Building {
         ? {'x': campusX, 'y': campusY}
         : null,
     'facultyGroup': facultyGroup?.id,
+    'studentServicesGroups': studentServicesGroups.map((g) => g.id).toList(),
+    'campusHubGroups': campusHubGroups.map((g) => g.id).toList(),
   };
 
   /// Best coordinate for routing: entrance if available, otherwise building center.
@@ -247,6 +291,163 @@ enum FacultyGroup {
   static FacultyGroup? fromJson(String? value) {
     if (value == null || value.isEmpty) return null;
     for (final group in FacultyGroup.values) {
+      if (group.id == value) return group;
+    }
+    return null;
+  }
+}
+
+/// Sub-groups inside the **Student Services** browse drill-down.
+/// Top-level Student Services chip first shows these groups, second
+/// level shows buildings whose [Building.studentServicesGroups]
+/// contains the selected group. The order below is the canonical
+/// display order on the first-level list.
+///
+/// The string [id] is the on-disk JSON identifier in
+/// `assets/data/buildings.json` — **never rename** without bumping
+/// the registry cache key in [`BuildingRegistrySource`].
+enum StudentServicesGroup {
+  support(
+    id: 'support',
+    label: 'Support & Wellbeing',
+    description: 'Counselling, welfare, chaplaincy, hearing hub',
+    icon: '\u{1F49A}',
+  ),
+  admin(
+    id: 'admin',
+    label: 'Administration & Enquiries',
+    description: 'Service Connect, Chancellery, enrolment, fees',
+    icon: '\u{1F4CB}',
+  ),
+  academic(
+    id: 'academic',
+    label: 'Academic Help & Learning Support',
+    description: 'Learning Connect, Writing & Numeracy',
+    icon: '\u{1F4DA}',
+  ),
+  it(
+    id: 'it',
+    label: 'IT & Technology Help',
+    description: 'IT Service Desk, Tech Bar',
+    icon: '\u{1F5A5}',
+  ),
+  security(
+    id: 'security',
+    label: 'Security & Emergency',
+    description: '24/7 security, help points, first aid',
+    icon: '\u{1F6E1}',
+  ),
+  careers(
+    id: 'careers',
+    label: 'Careers & Employability',
+    description: 'Career and Employment Service',
+    icon: '\u{1F4BC}',
+  ),
+  inclusion(
+    id: 'inclusion',
+    label: 'Accessibility & Inclusion',
+    description: 'Walanga Muru, Macquarie International, accessibility',
+    icon: '\u{1F30F}',
+  );
+
+  const StudentServicesGroup({
+    required this.id,
+    required this.label,
+    required this.description,
+    required this.icon,
+  });
+
+  final String id;
+  final String label;
+  final String description;
+  final String icon;
+
+  static StudentServicesGroup? fromJson(String? value) {
+    if (value == null || value.isEmpty) return null;
+    for (final group in StudentServicesGroup.values) {
+      if (group.id == value) return group;
+    }
+    return null;
+  }
+}
+
+/// Sub-groups inside the **Campus Hub** browse drill-down. Same
+/// structural contract as [StudentServicesGroup] / [FacultyGroup].
+/// The order here is the canonical display order — accommodation
+/// + sport + study lead because that's what students browse for
+/// most often, and bike + smoking trail because they're niche but
+/// product-required for completeness.
+enum CampusHubGroup {
+  accommodation(
+    id: 'accommodation',
+    label: 'Accommodation',
+    description: 'On-campus residential colleges & student housing',
+    icon: '\u{1F3E0}',
+  ),
+  sport(
+    id: 'sport',
+    label: 'Sport Facilities',
+    description: 'Sport & Aquatic Centre, fields, courts, pavilion',
+    icon: '\u{26BD}',
+  ),
+  study(
+    id: 'study',
+    label: 'Study Spaces',
+    description: 'Library, MUSE, 4 Research Park Drive',
+    icon: '\u{1F4D6}',
+  ),
+  museums(
+    id: 'museums',
+    label: 'Museums & Galleries',
+    description: 'History Museum, Art Gallery, Biology Discovery',
+    icon: '\u{1F5BC}',
+  ),
+  studentLife(
+    id: 'student_life',
+    label: 'Student Life & Social',
+    description: 'The Hub, theatres, social courtyards',
+    icon: '\u{1F389}',
+  ),
+  childcare(
+    id: 'childcare',
+    label: 'Childcare & Family Support',
+    description: 'Banksia, Gumnut, Mia Mia, Waratah cottages',
+    icon: '\u{1F476}',
+  ),
+  health(
+    id: 'health',
+    label: 'Everyday Campus Health',
+    description: 'GP & Physio, Hospital, Pharmacy, Woolcock',
+    icon: '\u{1FA7A}',
+  ),
+  bike(
+    id: 'bike',
+    label: 'Bike Facilities',
+    description: 'Bike racks, hubs, repair stations',
+    icon: '\u{1F6B2}',
+  ),
+  smoking(
+    id: 'smoking',
+    label: 'Smoking Areas',
+    description: 'Designated outdoor smoking zones',
+    icon: '\u{1F6AC}',
+  );
+
+  const CampusHubGroup({
+    required this.id,
+    required this.label,
+    required this.description,
+    required this.icon,
+  });
+
+  final String id;
+  final String label;
+  final String description;
+  final String icon;
+
+  static CampusHubGroup? fromJson(String? value) {
+    if (value == null || value.isEmpty) return null;
+    for (final group in CampusHubGroup.values) {
       if (group.id == value) return group;
     }
     return null;

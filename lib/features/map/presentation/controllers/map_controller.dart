@@ -42,6 +42,8 @@ class MapState {
     this.activeOverlayIds = const {},
     this.error,
     this.selectedFacultyGroup,
+    this.selectedStudentServicesGroup,
+    this.selectedCampusHubGroup,
   });
 
   final MapRendererType renderer;
@@ -72,6 +74,16 @@ class MapState {
   /// render.
   final FacultyGroup? selectedFacultyGroup;
 
+  /// Drives the **Student Services** drill-down. Same contract as
+  /// [selectedFacultyGroup] — `null` shows the seven group cards,
+  /// non-null narrows panel + markers to buildings whose
+  /// `studentServicesGroups` contains the selected group. Always
+  /// `null` outside the Student Services category.
+  final StudentServicesGroup? selectedStudentServicesGroup;
+
+  /// Drives the **Campus Hub** drill-down. Same contract.
+  final CampusHubGroup? selectedCampusHubGroup;
+
   MapState copyWith({
     MapRendererType? renderer,
     List<Building>? buildings,
@@ -94,6 +106,10 @@ class MapState {
     bool clearError = false,
     FacultyGroup? selectedFacultyGroup,
     bool clearSelectedFacultyGroup = false,
+    StudentServicesGroup? selectedStudentServicesGroup,
+    bool clearSelectedStudentServicesGroup = false,
+    CampusHubGroup? selectedCampusHubGroup,
+    bool clearSelectedCampusHubGroup = false,
   }) {
     return MapState(
       renderer: renderer ?? this.renderer,
@@ -119,6 +135,12 @@ class MapState {
       selectedFacultyGroup: clearSelectedFacultyGroup
           ? null
           : selectedFacultyGroup ?? this.selectedFacultyGroup,
+      selectedStudentServicesGroup: clearSelectedStudentServicesGroup
+          ? null
+          : selectedStudentServicesGroup ?? this.selectedStudentServicesGroup,
+      selectedCampusHubGroup: clearSelectedCampusHubGroup
+          ? null
+          : selectedCampusHubGroup ?? this.selectedCampusHubGroup,
     );
   }
 
@@ -142,7 +164,9 @@ class MapState {
         other.locationCenterRequestToken == locationCenterRequestToken &&
         setEquals(other.activeOverlayIds, activeOverlayIds) &&
         other.error == error &&
-        other.selectedFacultyGroup == selectedFacultyGroup;
+        other.selectedFacultyGroup == selectedFacultyGroup &&
+        other.selectedStudentServicesGroup == selectedStudentServicesGroup &&
+        other.selectedCampusHubGroup == selectedCampusHubGroup;
   }
 
   @override
@@ -162,7 +186,9 @@ class MapState {
         locationCenterRequestToken.hashCode ^
         activeOverlayIds.hashCode ^
         error.hashCode ^
-        selectedFacultyGroup.hashCode;
+        selectedFacultyGroup.hashCode ^
+        selectedStudentServicesGroup.hashCode ^
+        selectedCampusHubGroup.hashCode;
   }
 }
 
@@ -318,10 +344,13 @@ class MapController extends AsyncNotifier<MapState> {
         isNavigating: selectionChanged ? false : current.isNavigating,
         isLoadingRoute: selectionChanged ? false : current.isLoadingRoute,
         clearError: true,
-        // Any query change resets the faculty drill-down so that
-        // (re-)entering the Faculty category lands on the 4-group
-        // top level rather than a stale Arts/Business/MHHS/FSE list.
+        // Any query change resets all three drill-downs so that
+        // (re-)entering Faculty / Student Services / Campus Hub
+        // always lands on its top-level group cards rather than a
+        // stale sub-level filter from the previous browse session.
         clearSelectedFacultyGroup: true,
+        clearSelectedStudentServicesGroup: true,
+        clearSelectedCampusHubGroup: true,
       ),
     );
   }
@@ -344,6 +373,56 @@ class MapController extends AsyncNotifier<MapState> {
       current.copyWith(
         selectedFacultyGroup: group,
         clearSelectedFacultyGroup: group == null,
+        clearSelectedBuilding: true,
+        clearRoute: true,
+        isNavigating: false,
+        hasArrived: false,
+        isLoadingRoute: false,
+        clearError: true,
+      ),
+    );
+  }
+
+  /// Sets / clears the active **Student Services** sub-group.
+  ///
+  /// Same shape as [selectFacultyGroup]: only fires when the active
+  /// query is "student services" so we don't stash dead state when
+  /// the user is on a different chip.
+  void selectStudentServicesGroup(StudentServicesGroup? group) {
+    final current = state.value;
+    if (current == null) {
+      return;
+    }
+    if (current.searchQuery.trim().toLowerCase() != 'student services') {
+      return;
+    }
+    state = AsyncData(
+      current.copyWith(
+        selectedStudentServicesGroup: group,
+        clearSelectedStudentServicesGroup: group == null,
+        clearSelectedBuilding: true,
+        clearRoute: true,
+        isNavigating: false,
+        hasArrived: false,
+        isLoadingRoute: false,
+        clearError: true,
+      ),
+    );
+  }
+
+  /// Sets / clears the active **Campus Hub** sub-group.
+  void selectCampusHubGroup(CampusHubGroup? group) {
+    final current = state.value;
+    if (current == null) {
+      return;
+    }
+    if (current.searchQuery.trim().toLowerCase() != 'campus hub') {
+      return;
+    }
+    state = AsyncData(
+      current.copyWith(
+        selectedCampusHubGroup: group,
+        clearSelectedCampusHubGroup: group == null,
         clearSelectedBuilding: true,
         clearRoute: true,
         isNavigating: false,
@@ -657,6 +736,8 @@ class MapController extends AsyncNotifier<MapState> {
         isLoadingRoute: false,
         clearError: true,
         clearSelectedFacultyGroup: true,
+        clearSelectedStudentServicesGroup: true,
+        clearSelectedCampusHubGroup: true,
       ),
     );
   }
@@ -715,6 +796,8 @@ class MapController extends AsyncNotifier<MapState> {
         isLoadingRoute: false,
         clearError: true,
         clearSelectedFacultyGroup: true,
+        clearSelectedStudentServicesGroup: true,
+        clearSelectedCampusHubGroup: true,
       ),
     );
   }

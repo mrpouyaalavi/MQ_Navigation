@@ -99,21 +99,52 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         data: (preferences) {
           return Stack(
             children: [
-              // Red glow gradient — dark mode only.
-              if (dark)
+              // Branded surface treatment in both modes.
+              //
+              // Dark: keeps the existing red top-glow for atmosphere.
+              // Light: adds the same brand-language treatment but
+              //   softer alpha and a complementary warm-sand wash
+              //   beneath, so the screen no longer reads as a flat
+              //   off-white "default Material" surface — it now
+              //   feels designed and consistent with Home, while
+              //   staying highly readable.
+              PositionedDirectional(
+                top: -80,
+                start: 0,
+                end: 0,
+                height: 380,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        center: const Alignment(0, -1.2),
+                        radius: 1.1,
+                        colors: [
+                          MqColors.red.withValues(
+                            alpha: dark ? 0.15 : 0.08,
+                          ),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                    child: const SizedBox.expand(),
+                  ),
+                ),
+              ),
+              if (!dark)
                 PositionedDirectional(
-                  top: -80,
-                  start: 0,
-                  end: 0,
+                  bottom: -120,
+                  start: -80,
+                  end: -80,
                   height: 360,
                   child: IgnorePointer(
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: RadialGradient(
-                          center: const Alignment(0, -1.2),
-                          radius: 1.1,
+                          center: const Alignment(0, 0.8),
+                          radius: 1.4,
                           colors: [
-                            MqColors.red.withAlpha(38),
+                            MqColors.sand200.withValues(alpha: 0.6),
                             Colors.transparent,
                           ],
                         ),
@@ -1246,9 +1277,14 @@ class KineticHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title.toUpperCase(),
-      style: context.textTheme.labelMedium?.copyWith(
+      // Up one type-scale step from labelMedium so each section
+      // anchors visually rather than reading as a caption above the
+      // card. Tracking softened slightly so longer headers (e.g.
+      // "MAP PREFERENCES & EXPERIENCE") still fit comfortably.
+      style: context.textTheme.titleSmall?.copyWith(
         fontWeight: FontWeight.w800,
-        letterSpacing: 1.2,
+        letterSpacing: 1.0,
+        fontSize: 13,
         color: MqColors.red,
       ),
     );
@@ -1447,8 +1483,21 @@ class _SettingsCard extends StatelessWidget {
         color: dark ? MqColors.charcoal850 : Colors.white,
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
-          color: dark ? Colors.white.withAlpha(13) : MqColors.sand200,
+          color: dark
+              ? Colors.white.withValues(alpha: 0.06)
+              : Colors.black.withValues(alpha: 0.05),
+          width: 0.6,
         ),
+        boxShadow: [
+          // Subtle elevation lifts the card off the new branded
+          // background, giving Settings the same "premium surface"
+          // language as the Home Bento cards.
+          BoxShadow(
+            color: Colors.black.withValues(alpha: dark ? 0.30 : 0.05),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
@@ -1460,7 +1509,14 @@ class _SettingsCard extends StatelessWidget {
                 Divider(
                   height: 1,
                   thickness: 1,
-                  color: dark ? Colors.white.withAlpha(13) : MqColors.sand200,
+                  // Hairline divider, indented past the icon column
+                  // so it reads as a row separator rather than a
+                  // hard table line. Eight-pixel-ish indent matches
+                  // the icon's left edge.
+                  indent: MqSpacing.space12,
+                  color: dark
+                      ? Colors.white.withValues(alpha: 0.06)
+                      : MqColors.sand200.withValues(alpha: 0.6),
                 ),
             ],
           ],
@@ -1501,18 +1557,37 @@ class _TapRow extends StatelessWidget {
         child: ColoredBox(
           color: dark ? MqColors.charcoal850 : Colors.white,
           child: Padding(
-            padding: const EdgeInsetsDirectional.symmetric(
-              horizontal: MqSpacing.space4,
-              vertical: MqSpacing.space4,
+            // Slightly taller rows give each option room to breathe
+            // without wasting vertical space — feels more like a
+            // designed list, less like a dense Material default.
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              MqSpacing.space5,
+              MqSpacing.space4,
+              MqSpacing.space4,
+              MqSpacing.space4,
             ),
             child: Row(
               children: [
-                Icon(
-                  icon,
-                  size: 22,
-                  color: dark ? MqColors.slate500 : MqColors.red,
+                // Icon framed in a soft brand-tinted square so it
+                // reads as an "icon button slot", not a stray glyph.
+                // Lighter touch in dark mode to avoid heaviness.
+                Container(
+                  width: 32,
+                  height: 32,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: dark
+                        ? Colors.white.withValues(alpha: 0.06)
+                        : MqColors.red.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(MqSpacing.radiusSm),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 18,
+                    color: dark ? MqColors.slate500 : MqColors.red,
+                  ),
                 ),
-                const SizedBox(width: MqSpacing.space4),
+                const SizedBox(width: MqSpacing.space3),
                 Expanded(
                   // Label gets `flex: 3` and value gets `flex: 2` so the
                   // value reliably has room to breathe even for short
@@ -1523,7 +1598,7 @@ class _TapRow extends StatelessWidget {
                   child: Text(
                     label,
                     style: context.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       color: dark
                           ? MqColors.contentPrimaryDark
                           : MqColors.contentPrimary,
@@ -1540,9 +1615,11 @@ class _TapRow extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: context.textTheme.bodyMedium?.copyWith(
+                        // Stronger contrast for the value in dark mode
+                        // — slate500 was muddy against charcoal.
                         color: dark
-                            ? MqColors.slate500
-                            : MqColors.contentPrimary,
+                            ? Colors.white.withValues(alpha: 0.72)
+                            : MqColors.contentSecondary,
                       ),
                     ),
                   ),
@@ -1551,7 +1628,9 @@ class _TapRow extends StatelessWidget {
                 Icon(
                   Icons.chevron_right_rounded,
                   size: 20,
-                  color: dark ? MqColors.slate500 : MqColors.red,
+                  color: dark
+                      ? Colors.white.withValues(alpha: 0.32)
+                      : MqColors.contentTertiary,
                 ),
               ],
             ),
@@ -1593,23 +1672,38 @@ class _ToggleRow extends StatelessWidget {
         child: ColoredBox(
           color: dark ? MqColors.charcoal850 : Colors.white,
           child: Padding(
-            padding: const EdgeInsetsDirectional.symmetric(
-              horizontal: MqSpacing.space4,
-              vertical: MqSpacing.space4,
+            padding: const EdgeInsetsDirectional.fromSTEB(
+              MqSpacing.space5,
+              MqSpacing.space4,
+              MqSpacing.space4,
+              MqSpacing.space4,
             ),
             child: Row(
               children: [
-                Icon(
-                  icon,
-                  size: 22,
-                  color: dark ? MqColors.slate500 : MqColors.red,
+                // Same icon-tile treatment as `_TapRow` so toggles
+                // and tap rows feel like one consistent row family.
+                Container(
+                  width: 32,
+                  height: 32,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: dark
+                        ? Colors.white.withValues(alpha: 0.06)
+                        : MqColors.red.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(MqSpacing.radiusSm),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 18,
+                    color: dark ? MqColors.slate500 : MqColors.red,
+                  ),
                 ),
-                const SizedBox(width: MqSpacing.space4),
+                const SizedBox(width: MqSpacing.space3),
                 Expanded(
                   child: Text(
                     label,
                     style: context.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       color: dark
                           ? MqColors.contentPrimaryDark
                           : MqColors.contentPrimary,
