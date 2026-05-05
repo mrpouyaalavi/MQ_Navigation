@@ -125,7 +125,8 @@
       "academic",
       "study",
       "resources",
-      "campus hub"
+      "campus hub",
+      "student services"
     ],
     "searchTokens": [
       "after-hours security",
@@ -757,7 +758,8 @@
     "tags": [
       "venue",
       "teaching",
-      "events"
+      "events",
+      "campus hub"
     ],
     "searchTokens": [
       "lotus theatre",
@@ -872,7 +874,8 @@
     "tags": [
       "venue",
       "performance",
-      "arts"
+      "arts",
+      "campus hub"
     ],
     "searchTokens": [
       "11GR"
@@ -1060,7 +1063,8 @@
     ],
     "tags": [
       "health",
-      "research"
+      "research",
+      "campus hub"
     ],
     "searchTokens": [
       "woolcock institute",
@@ -1190,7 +1194,8 @@
     "tags": [
       "food",
       "social",
-      "events"
+      "events",
+      "campus hub"
     ],
     "searchTokens": [
       "ubar",
@@ -1621,7 +1626,8 @@
     "tags": [
       "services",
       "childcare",
-      "student services"
+      "student services",
+      "campus hub"
     ],
     "searchTokens": [
       "8LR",
@@ -1661,7 +1667,8 @@
     "tags": [
       "services",
       "childcare",
-      "student services"
+      "student services",
+      "campus hub"
     ],
     "searchTokens": [
       "gumnut cottage",
@@ -1741,7 +1748,8 @@
     "tags": [
       "services",
       "childcare",
-      "student services"
+      "student services",
+      "campus hub"
     ],
     "searchTokens": [
       "waratah",
@@ -2033,7 +2041,7 @@
     "entranceLongitude": null,
     "googlePlaceId": null,
     "campusX": 2929,
-    "campusY": 2062,
+    "campusY": 1302,
     "aliases": [
       "MQ Art Gallery",
       "Macquarie Art Gallery"

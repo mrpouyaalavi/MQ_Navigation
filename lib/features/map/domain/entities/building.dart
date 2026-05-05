@@ -310,7 +310,7 @@ enum StudentServicesGroup {
   support(
     id: 'support',
     label: 'Support & Wellbeing',
-    description: 'Counselling, welfare, chaplaincy, hearing hub',
+    description: 'Counselling, welfare, chaplaincy, childcare, hearing hub',
     icon: '\u{1F49A}',
   ),
   admin(
