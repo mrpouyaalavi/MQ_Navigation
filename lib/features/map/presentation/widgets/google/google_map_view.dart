@@ -211,11 +211,14 @@ class _GoogleMapViewState extends State<GoogleMapView> {
         _controller = controller;
         _syncCameraToState();
       },
-      // **All native Google Maps chrome disabled** so the only floating
-      // controls visible to the user are our own custom red location
-      // button and glass layers button (rendered by `MapShell`). Without
-      // this, Google's default toolbar / compass / indoor floor picker
-      // can appear under our buttons and clutter the bottom-right.
+      // Keep Google web's native camera control on the right edge but away
+      // from MapShell's bottom-right locate button. Google's bottom positions
+      // only account for Google-owned chrome, not Flutter overlay widgets.
+      webCameraControlPosition: WebCameraControlPosition.rightCenter,
+      // **Most native Google Maps chrome disabled** so the only bottom-corner
+      // action visible beside web camera control is our custom red location
+      // button (rendered by `MapShell`). Without this, Google's toolbar /
+      // compass / indoor floor picker can appear under our buttons.
       mapToolbarEnabled: false,
       zoomControlsEnabled: false,
       compassEnabled: false,
@@ -370,8 +373,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
       return;
     }
 
-    final update = CameraUpdate.newLatLng(
+    final update = CameraUpdate.newLatLngZoom(
       LatLng(location.latitude, location.longitude),
+      _locateZoom,
     );
     if (animate) {
       unawaited(_controller!.animateCamera(update));
@@ -423,10 +427,10 @@ class _GoogleMapViewState extends State<GoogleMapView> {
 
   Color _colorFor(TravelMode travelMode) {
     return switch (travelMode) {
-      TravelMode.walk => const Color(0xFF4285F4),
-      TravelMode.drive => const Color(0xFF6C757D),
-      TravelMode.bike => const Color(0xFF2E8B57),
-      TravelMode.transit => const Color(0xFFF57C00),
+      TravelMode.walk => MqColors.mapRouteActive,
+      TravelMode.drive => MqColors.charcoal600,
+      TravelMode.bike => MqColors.success,
+      TravelMode.transit => MqColors.warning,
     };
   }
 

@@ -205,7 +205,7 @@ class _DesktopMapFallbackViewState
                         Icons.location_on,
                         size: 36,
                         color: widget.selectedBuilding?.id == building.id
-                            ? Colors.red
+                            ? MqColors.red
                             : MqColors.info,
                         shadows: const [
                           Shadow(
@@ -229,7 +229,7 @@ class _DesktopMapFallbackViewState
                   child: const Icon(
                     Icons.circle,
                     size: 16,
-                    color: Colors.green,
+                    color: MqColors.success,
                     shadows: [
                       Shadow(
                         blurRadius: 4,
@@ -296,7 +296,7 @@ class _DesktopMapFallbackViewState
                 .map((p) => latlong.LatLng(p.latitude, p.longitude))
                 .toList(),
             strokeWidth: 5,
-            color: const Color(0xFF94a3b8),
+            color: MqColors.slate400,
           ),
         );
       }
@@ -398,10 +398,10 @@ class _DesktopMapFallbackViewState
 
   Color _colorFor(TravelMode travelMode) {
     return switch (travelMode) {
-      TravelMode.walk => const Color(0xFF4285F4),
-      TravelMode.drive => const Color(0xFF6C757D),
-      TravelMode.bike => const Color(0xFF2E8B57),
-      TravelMode.transit => const Color(0xFFF57C00),
+      TravelMode.walk => MqColors.mapRouteActive,
+      TravelMode.drive => MqColors.charcoal600,
+      TravelMode.bike => MqColors.success,
+      TravelMode.transit => MqColors.warning,
     };
   }
 

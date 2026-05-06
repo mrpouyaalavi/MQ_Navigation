@@ -3142,3 +3142,10 @@ Addressed the failing iOS CI build by synchronizing deployment targets and updat
 
 **Follow-ups:**
 - None
+
+### Raouf: 2026-05-06 (AEST) — Google map camera control overlap fix + audit
+**Scope:** Google map renderer UI chrome and production-readiness audit.
+**Summary:** Moved Google Maps web camera controls above the custom find-my-location button by setting the web camera control to the right-center position; Google bottom positions only account for Google-owned chrome, so right-center avoids collision with Flutter overlay buttons reliably. Hardened the current-location camera sync path to use explicit locate zoom instead of a lat/lng-only camera update, keeping behavior consistent with the locate button. During the audit, replaced remaining Google/desktop route marker and polyline hardcoded colors with MQ semantic tokens.
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`.
+**Verification:** `/opt/homebrew/share/flutter/bin/cache/dart-sdk/bin/dart format ...` passed; `/opt/homebrew/share/flutter/bin/cache/dart-sdk/bin/dart analyze lib/features/map test/features/map` passed with no issues; `git diff --check` passed. Flutter test runner was blocked by sandbox-denied writes to `/opt/homebrew/share/flutter/bin/cache` (`engine.stamp`/`lockfile`); plain `dart test test/features/map` was attempted but is not valid for Flutter tests because `dart:ui` is unavailable outside the Flutter test runner.
+**Follow-ups:** Run `flutter test test/features/map` or `./scripts/check.sh --quick` outside the restricted sandbox to re-confirm the full Flutter test suite.
