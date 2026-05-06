@@ -222,6 +222,13 @@ lib/
 **Verification:** `dart format lib/features/map/` (pass); `flutter analyze lib/features/map/` (no issues).
 **Follow-ups:** None.
 
+### Raouf: 2026-05-06 (AEST) — Project health check and cleanup
+**Scope:** Repository maintenance and CI/CD validation.
+**Summary:** Executed `scripts/check.sh` to validate project health. Resolved formatting issues across the codebase by running `dart format .`. Cleaned up the `scratch/` directory by removing temporary migration scripts that were causing static analysis warnings (e.g., unused imports, avoid_print). All checks, including static analysis, 182 tests, and debug build, are now passing.
+**Files Changed:** `scratch/replace_charcoals.dart`, `scratch/replace_colors.dart`, `scratch/replace_colors2.dart`, `scratch/replace_colors3.dart`, `scratch/replace_colors_global.dart` (all deleted)
+**Verification:** `scripts/check.sh` passed successfully.
+**Follow-ups:** None.
+
 ### Raouf: 2026-05-06 (AEST) — Settings page dark mode color consistency fix
 **Scope:** Settings page visual contrast and consistency in dark mode.
 **Summary:** Audited and resolved invisible components on the Settings page caused by the recent color unification, where components with a `charcoal800` background were rendered invisible against the `charcoal800` scaffold. Elevated the `_SettingsCard`, `_TapRow`, and `_ToggleRow` backgrounds to `MqColors.charcoal700` for proper contrast. Replaced the card's `charcoal800` dark-mode shadow with a `Colors.black` shadow to restore actual depth. Fixed the checkmark icon in `_OpenDaySection` from `charcoal800` to `MqColors.brightRed`.

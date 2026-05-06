@@ -228,10 +228,7 @@ class _GlassIconButton extends StatelessWidget {
             ),
           ),
           child: IconButton(
-            icon: Icon(
-              icon,
-              color: isDark ? Colors.white : MqColors.black87,
-            ),
+            icon: Icon(icon, color: isDark ? Colors.white : MqColors.black87),
             tooltip: tooltip,
             onPressed: onPressed,
           ),
