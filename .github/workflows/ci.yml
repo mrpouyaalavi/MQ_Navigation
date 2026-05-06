@@ -188,24 +188,36 @@ jobs:
     needs: analyze-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      # MSBuild's FileTracker binary has no longPathAware manifest, so the
-      # LongPathsEnabled registry key alone does NOT help it.  The only
-      # reliable fix is to keep the repo on a short absolute path so that
-      # every tlog / include path stays well inside 260 chars.
-      # C:\p  →  tlog path ≈ 169 chars  (default GITHUB_WORKSPACE ≈ 270 chars)
-      - name: Enable Windows long paths (belt-and-suspenders)
+      # Two separate MAX_PATH failures require two separate fixes:
+      #
+      # 1. FTK1011 — FileTracker.exe has NO longPathAware PE manifest, so the
+      #    LongPathsEnabled registry key is ignored by it.  We inject a
+      #    Directory.Build.props at the repo root that sets TrackFileAccess=false;
+      #    MSBuild auto-discovers this file by walking up from each .vcxproj,
+      #    preventing tlog creation entirely (safe in CI – no incremental builds).
+      #
+      # 2. C1083 — cl.exe (MSVC 2022, 64-bit) IS longPathAware.  Enabling
+      #    LongPathsEnabled in the registry lets it open the 265-char header
+      #    path through the .plugin_symlinks junction.
+      - name: Enable Windows long paths + disable MSBuild FileTracker
         shell: powershell
         run: |
+          # Fix C1083: allow cl.exe to open paths > 260 chars
           Set-ItemProperty `
             -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' `
             -Name 'LongPathsEnabled' -Value 1 -Force
           git config --system core.longpaths true
 
       - uses: actions/checkout@v4
-        with:
-          # Check out to a short absolute path so all downstream build
-          # artefact paths (tlog, include headers via symlink) stay < 260 chars.
-          path: 'C:\p'
+
+      - name: Inject Directory.Build.props to disable FileTracker
+        shell: powershell
+        run: |
+          # Fix FTK1011: FileTracker.exe cannot create tlog files whose paths
+          # exceed 260 chars.  TrackFileAccess=false skips tlog creation for
+          # every MSBuild project under this directory tree.
+          Set-Content -Path Directory.Build.props `
+            -Value '<Project><PropertyGroup><TrackFileAccess>false</TrackFileAccess></PropertyGroup></Project>'
 
       - uses: subosito/flutter-action@v2
         with:
@@ -213,11 +225,9 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        working-directory: 'C:\p'
         run: flutter pub get
 
       - name: Build Windows (release)
-        working-directory: 'C:\p'
         run: |
           flutter build windows --release `
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} `
@@ -229,4 +239,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-release
-          path: 'C:\p\build\windows\x64\runner\Release\'
+          path: build\windows\x64\runner\Release\
