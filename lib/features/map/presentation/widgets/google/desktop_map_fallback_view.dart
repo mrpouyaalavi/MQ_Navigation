@@ -58,6 +58,8 @@ class _DesktopMapFallbackViewState
   // same point when no GPS fix is available.
   static const _campusCenter = latlong.LatLng(-33.77388, 151.11275);
   static const _initialZoom = 15.5;
+  static const double _mapMinZoom = 10;
+  static const double _mapMaxZoom = 22;
   // Mirrors GoogleMapView so all renderers behave identically.
   static const double _locateZoom = 17;
   static const double _navigationFollowZoom = 18;
@@ -171,8 +173,8 @@ class _DesktopMapFallbackViewState
       options: MapOptions(
         initialCenter: _campusCenter,
         initialZoom: _initialZoom,
-        minZoom: 10,
-        maxZoom: 19,
+        minZoom: _mapMinZoom,
+        maxZoom: _mapMaxZoom,
         onMapReady: _syncCameraToState,
       ),
       children: [
@@ -353,10 +355,14 @@ class _DesktopMapFallbackViewState
 
   void _moveToLatLng(latlong.LatLng point) {
     try {
-      _controller.move(point, _controller.camera.zoom);
+      _controller.move(point, _clampZoom(_controller.camera.zoom));
     } on StateError {
-      _controller.move(point, _initialZoom);
+      _controller.move(point, _clampZoom(_initialZoom));
     }
+  }
+
+  double _clampZoom(double zoom) {
+    return zoom.clamp(_mapMinZoom, _mapMaxZoom);
   }
 
   void _fitRouteBounds() {

@@ -1,3 +1,66 @@
+### Raouf: 2026-05-07 (AEST) — Removed Google renderer zoom restrictions; kept campus-only cap
+**Scope:** Map zoom policy alignment by renderer.
+**Summary:** Rolled back zoom-in limits from Google map paths so Google/native mode stays free, while preserving zoom restrictions only in campus map mode as requested.
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched Google + campus map files (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Zoom cap increased one level in strictness
+**Scope:** Map zoom tuning adjustment after relaxation pass.
+**Summary:** Tightened zoom caps by one step to balance usability and raster quality: campus max changed from `-1.2` to `-2.2`, and Google + desktop fallback max zoom changed from `18` to `17`.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched files (no issues).
+**Follow-ups:** If needed, fine-tune in half steps (e.g., `17.5` or `-1.7`) after runtime testing.
+
+### Raouf: 2026-05-07 (AEST) — Zoom cap relaxed by ~2 levels after strictness feedback
+**Scope:** Map zoom usability tuning.
+**Summary:** Relaxed the previously strict max-zoom caps to restore practical close-up control while keeping limits in place. Updated campus hard max from `-3.2` to `-1.2`, and raised Google + desktop fallback max zoom from `16` to `18`.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched files (no issues).
+**Follow-ups:** If still slightly tight, next step is campus `-0.8` and Google/fallback `18.5`.
+
+### Raouf: 2026-05-07 (AEST) — Maximum zoom-in restriction applied across all map renderers
+**Scope:** Campus + Google + desktop fallback zoom hardening.
+**Summary:** Applied strongest practical zoom-in caps to all renderers and aligned all programmatic camera paths (locate, navigation follow, building focus) to those caps so users cannot over-zoom. Campus hard max is now `-3.2`, Google max is `16`, and desktop fallback max is `14.5`.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched files (no issues).
+**Follow-ups:** If you want nearly fixed-scale behavior, set campus max to `-3.4` and desktop/Google max to `14`.
+
+### Raouf: 2026-05-07 (AEST) — Fixed ineffective desktop map zoom cap (invalid range + clamp hardening)
+**Scope:** Desktop/OSM fallback zoom restriction enforcement.
+**Summary:** Resolved ineffective zoom limit caused by invalid range (`minZoom: 10`, `maxZoom: 8`). Set valid hard bounds (`10..16`), reduced locate/navigation/focus zoom targets to stay within cap, and clamped programmatic camera moves so zoom cannot bypass limits.
+**Files Changed:** `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`; `flutter analyze lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart` (no issues).
+**Follow-ups:** If runtime still feels too zoomed-in at cap, lower `_mapMaxZoom` to `15.5`.
+
+### Raouf: 2026-05-07 (AEST) — Campus zoom cap now enforced in programmatic camera moves
+**Scope:** Campus map zoom-limit enforcement hardening.
+**Summary:** Added central zoom clamp logic for campus map camera moves so max zoom cannot be bypassed by code paths (e.g., selected-building focus). This ensures the zoom-in restriction is enforced consistently, not only via gesture bounds.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/widgets/campus/campus_map_view.dart`; `flutter analyze lib/features/map/presentation/widgets/campus/campus_map_view.dart` (no issues).
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Added explicit zoom-in cap on Google renderers
+**Scope:** Map zoom-in restriction parity across non-campus renderers.
+**Summary:** Added a hard zoom-in ceiling for native Google Maps (`MinMaxZoomPreference(..., 18)`) and lowered desktop OSM fallback max zoom to `18` so users cannot zoom in excessively and degrade map readability.
+**Files Changed:** `lib/features/map/presentation/widgets/google/google_map_view.dart`, `lib/features/map/presentation/widgets/google/desktop_map_fallback_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze` on touched Google renderer files (no issues).
+**Follow-ups:** If needed, tune cap to `17.5` after device-level validation.
+
+### Raouf: 2026-05-07 (AEST) — Campus map zoom restriction tightened + default zoom-out
+**Scope:** Campus map raster clarity and initial framing.
+**Summary:** Tightened campus renderer maximum zoom to prevent quality degradation when zooming in and adjusted initial load zoom to start more zoomed out so the map no longer opens too close by default.
+**Files Changed:** `lib/features/map/presentation/widgets/campus/campus_map_view.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/widgets/campus/campus_map_view.dart`; `flutter analyze lib/features/map/presentation/widgets/campus/campus_map_view.dart` (no issues).
+**Follow-ups:** Fine-tune max zoom one step up/down after device-level visual review if needed.
+
+### Raouf: 2026-05-07 (AEST) — Building search popup dark-mode text forced to white
+**Scope:** Map building-search bottom sheet dark-mode readability.
+**Summary:** Updated building search popup styling so dark-mode input text, hint/icon, building list title/subtitle, and place suggestion titles render as pure white (instead of alabaster-like defaults) for stronger contrast consistency.
+**Files Changed:** `lib/features/map/presentation/widgets/building_search_sheet.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/map/presentation/widgets/building_search_sheet.dart`; `flutter analyze lib/features/map/presentation/widgets/building_search_sheet.dart` (no issues).
+**Follow-ups:** If needed, apply same pure-white rule to additional map popups/sheets.
+
 ### Raouf: 2026-05-07 (AEST) — Map follow-up audit: service/accent labels corrected to red
 **Scope:** Map dark/light accent parity follow-up.
 **Summary:** Performed an additional map color audit and fixed remaining accent mismatches where text was still rendering dark/black: route-panel category badge now stays red in dark mode, and overlay `Clear all` action text/icon now stays red across themes.

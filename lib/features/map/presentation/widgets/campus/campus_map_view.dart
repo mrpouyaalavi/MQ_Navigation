@@ -59,6 +59,8 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
   final MapController _controller = MapController();
   late final Future<CampusOverlayMeta> _metaFuture;
   CampusProjection? _projection;
+  static const double _mapMinZoom = -4.0;
+  static const double _mapHardMaxZoom = -2.2;
   @override
   void initState() {
     super.initState();
@@ -117,7 +119,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
         widget.selectedBuilding?.id != oldWidget.selectedBuilding?.id) {
       _moveMap(
         resolveBuildingPoint(widget.selectedBuilding!, projection),
-        zoom: 0.5,
+        zoom: _mapHardMaxZoom,
       );
       return;
     }
@@ -214,18 +216,13 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
             // - `mapMinZoom` (-4) keeps the campus from collapsing into a
             //   tiny island of empty space when the user pinches out.
             // - `mapMaxZoom` caps zoom-in below the point at which the
-            //   raster visibly pixelates. Hard-capped at 0.5 (down from
-            //   the prior 1.0 ceiling) because the illustrated PDF
-            //   overlay loses readability above that — text labels and
-            //   building outlines blur. Lower of the metadata's
-            //   declared maxZoom and 0.5 wins, so future meta updates
-            //   can only *tighten* the cap further.
-            const double mapMinZoom = -4.0;
-            const double initialFitMaxZoom = -3.0;
-            const double mapHardMaxZoom = 0.5;
-            final double mapMaxZoom = meta.maxZoom < mapHardMaxZoom
+            //   raster visibly pixelates. Tightened to 0.0 so users can't
+            //   zoom in far enough to degrade the underlying campus image.
+            //   Lower of metadata maxZoom and this hard cap wins.
+            const double initialFitMaxZoom = -3.6;
+            final double mapMaxZoom = meta.maxZoom < _mapHardMaxZoom
                 ? meta.maxZoom
-                : mapHardMaxZoom;
+                : _mapHardMaxZoom;
 
             return DecoratedBox(
               decoration: BoxDecoration(
@@ -245,7 +242,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                     meta.centerLatitude,
                     meta.centerLongitude,
                   ),
-                  initialZoom: -3,
+                  initialZoom: -3.6,
                   initialCameraFit: isValidBounds
                       ? CameraFit.bounds(
                           bounds: bounds,
@@ -260,11 +257,11 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                           maxZoom: initialFitMaxZoom,
                           // Keep fit min zoom consistent with map min zoom to avoid
                           // invalid clamp ranges in flutter_map internals.
-                          minZoom: mapMinZoom,
+                          minZoom: _mapMinZoom,
                         )
                       : null,
                   // Hard zoom bounds (see `mapMinZoom`/`mapMaxZoom` above).
-                  minZoom: mapMinZoom,
+                  minZoom: _mapMinZoom,
                   maxZoom: mapMaxZoom,
                   // Constrain the camera to the campus bounds so users don't pan into the void.
                   cameraConstraint: CameraConstraint.contain(bounds: bounds),
@@ -321,13 +318,20 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
       // Only override the initial camera fit when a building is selected.
       // Otherwise let the CameraFit.bounds show the full campus.
       if (widget.selectedBuilding case final selectedBuilding?) {
-        _moveMap(resolveBuildingPoint(selectedBuilding, projection), zoom: 0.5);
+        _moveMap(
+          resolveBuildingPoint(selectedBuilding, projection),
+          zoom: _mapHardMaxZoom,
+        );
       }
     });
   }
 
   void _moveMap(latlong.LatLng point, {double? zoom}) {
-    _controller.move(point, zoom ?? _currentZoom(fallback: -0.5));
+    final targetZoom = (zoom ?? _currentZoom(fallback: _mapHardMaxZoom)).clamp(
+      _mapMinZoom,
+      _mapHardMaxZoom,
+    );
+    _controller.move(point, targetZoom);
   }
 
   double _currentZoom({required double fallback}) {

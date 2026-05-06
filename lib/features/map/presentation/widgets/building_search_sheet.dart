@@ -170,6 +170,7 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
       snapSizes: const <double>[0.15, 0.5, 0.9],
       builder: (context, scrollController) {
         return Material(
+          color: isDark ? MqColors.charcoal800 : null,
           borderRadius: const BorderRadius.vertical(
             top: Radius.circular(MqSpacing.space6),
           ),
@@ -182,9 +183,19 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
                 focusNode: _searchFocusNode,
                 autofocus: true,
                 textInputAction: TextInputAction.search,
+                style: TextStyle(
+                  color: isDark ? Colors.white : MqColors.contentPrimary,
+                ),
+                cursorColor: isDark ? Colors.white : MqColors.red,
                 decoration: InputDecoration(
                   hintText: l10n.searchBuildingsPlaceholder,
-                  prefixIcon: const Icon(Icons.search),
+                  hintStyle: TextStyle(
+                    color: isDark ? Colors.white : MqColors.contentTertiary,
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: isDark ? Colors.white : MqColors.contentTertiary,
+                  ),
                 ),
                 onChanged: _onSearchChanged,
                 onSubmitted: (_) => _searchFocusNode.unfocus(),
@@ -192,8 +203,18 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
               const SizedBox(height: MqSpacing.space4),
               ...results.map(
                 (building) => ListTile(
-                  title: Text(building.name),
-                  subtitle: Text(building.code),
+                  title: Text(
+                    building.name,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : MqColors.contentPrimary,
+                    ),
+                  ),
+                  subtitle: Text(
+                    building.code,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : MqColors.contentSecondary,
+                    ),
+                  ),
                   onTap: () {
                     final haptics =
                         ref
@@ -268,6 +289,11 @@ class _BuildingSearchSheetState extends ConsumerState<BuildingSearchSheet> {
                       ),
                       title: Text(
                         suggestion.description,
+                        style: TextStyle(
+                          color: isDark
+                              ? Colors.white
+                              : MqColors.contentPrimary,
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
