@@ -188,33 +188,31 @@ jobs:
     needs: analyze-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      # Three MAX_PATH issues, three fixes applied together:
+      # The runner double-nests the long repo name giving a 104-char prefix.
+      # Deep plugin-include and MSBuild tlog paths exceed MAX_PATH even with
+      # LongPathsEnabled because several tools (FileTracker.exe, cl.exe 32-bit)
+      # have no longPathAware manifest.
       #
-      # FTK1011 — FileTracker.exe has NO longPathAware manifest; ignores the
-      #   registry key.  Directory.Build.props sets TrackFileAccess=false so
-      #   MSBuild never invokes FileTracker (safe in CI – no incremental builds).
-      #
-      # C1083 — cl.exe (32-bit in MSVC 2022) cannot open the 265-char include
-      #   path through the .plugin_symlinks junction even with LongPathsEnabled.
-      #   'subst X: <workspace>' maps the repo to a 1-char drive; CMake then
-      #   generates all paths as X:\... (≤163 chars), well within MAX_PATH.
-      #
-      # git — core.longpaths true lets git handle long-named files.
-      - name: Enable long paths and git longpaths
+      # Solution: robocopy the source to C:\b (3-char prefix) so every
+      # generated path is well under 260 chars with no junction/subst
+      # complications.  flutter assemble also works cleanly because it finds
+      # pubspec.yaml immediately in C:\b without resolving virtual drives.
+      - name: Configure git long paths
         shell: powershell
-        run: |
-          Set-ItemProperty `
-            -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' `
-            -Name 'LongPathsEnabled' -Value 1 -Force
-          git config --system core.longpaths true
+        run: git config --system core.longpaths true
 
       - uses: actions/checkout@v4
 
-      - name: Create X:\ alias + disable MSBuild FileTracker
+      - name: Copy source to short path C:\b
         shell: powershell
         run: |
-          subst X: "$env:GITHUB_WORKSPACE"
-          Set-Content -Path "$env:GITHUB_WORKSPACE\Directory.Build.props" `
+          robocopy "$env:GITHUB_WORKSPACE" C:\b /E /NFL /NDL /NJH /NJS /NP
+          # robocopy uses bit-masked exit codes; 0-7 all mean success.
+          if ($LASTEXITCODE -gt 7) { exit $LASTEXITCODE }
+          # Disable MSBuild FileTracker (FTK1011 fix): FileTracker.exe has no
+          # longPathAware manifest and ignores LongPathsEnabled.  Setting
+          # TrackFileAccess=false prevents tlog creation entirely (safe in CI).
+          Set-Content -Path C:\b\Directory.Build.props `
             -Value '<Project><PropertyGroup><TrackFileAccess>false</TrackFileAccess></PropertyGroup></Project>'
 
       - uses: subosito/flutter-action@v2
@@ -223,12 +221,12 @@ jobs:
           cache: true
 
       - name: Install dependencies
-        working-directory: 'X:\'
+        working-directory: 'C:\b'
         shell: powershell
         run: flutter pub get
 
       - name: Build Windows (release)
-        working-directory: 'X:\'
+        working-directory: 'C:\b'
         shell: powershell
         run: |
           flutter build windows --release `
@@ -241,4 +239,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-release
-          path: 'X:\build\windows\x64\runner\Release\'
+          path: 'C:\b\build\windows\x64\runner\Release\'
