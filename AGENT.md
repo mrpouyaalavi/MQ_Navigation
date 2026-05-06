@@ -49,6 +49,13 @@ lib/
 - All keys loaded via `--dart-define-from-file=.env` — never hardcoded in source
 - Use `scripts/run.sh` to launch with native key injection for Maps SDKs
 
+### Raouf: 2026-05-07 (AEST) — Home light-mode background clarity + bottom-nav text theme parity
+**Scope:** Home visual clarity and bottom navigation typography by theme.
+**Summary:** Updated Home light-mode background overlay strength to match dark-mode image clarity and enforced bottom navigation label text colors to black (light mode) and white (dark mode) for consistent theme behavior.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/app/router/app_shell.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format` on touched files; `flutter analyze lib/features/home/presentation/pages/home_page.dart lib/app/router/app_shell.dart` (no issues).
+**Follow-ups:** None.
+
 ### Raouf: 2026-05-07 (AEST) — Start Exploring CTA kept white in light mode
 **Scope:** Home CTA contrast consistency.
 **Summary:** Updated Home `Start Exploring` button foreground color to remain white in both themes so it stays readable and visually consistent on the pure red CTA background.

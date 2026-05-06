@@ -435,11 +435,7 @@ class _CampusBackground extends StatelessWidget {
             filterQuality: FilterQuality.high,
             errorBuilder: (_, _, _) => const ColoredBox(color: Colors.white),
           ),
-          Container(
-            color: isDark
-                ? Colors.white.withValues(alpha: 0.08)
-                : Colors.white.withValues(alpha: 0.50),
-          ),
+          Container(color: Colors.white.withValues(alpha: 0.08)),
         ],
       ),
     );

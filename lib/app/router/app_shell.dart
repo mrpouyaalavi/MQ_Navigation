@@ -11,10 +11,15 @@ class AppShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final navLabelColor = isDark ? Colors.white : Colors.black;
 
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
+        labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
+          return TextStyle(color: navLabelColor);
+        }),
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: (index) {
           // Navigate to the chosen branch. If the user taps the active tab,
