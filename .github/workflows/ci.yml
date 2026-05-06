@@ -208,7 +208,11 @@ jobs:
         run: |
           robocopy "$env:GITHUB_WORKSPACE" C:\b /E /NFL /NDL /NJH /NJS /NP
           # robocopy uses bit-masked exit codes; 0-7 all mean success.
-          if ($LASTEXITCODE -gt 7) { exit $LASTEXITCODE }
+          if ($LASTEXITCODE -gt 7) { throw "robocopy failed ($LASTEXITCODE)" }
+          # GitHub Actions PowerShell shell appends `exit $LASTEXITCODE` after
+          # the script, so we must reset it to 0 or the step fails even on
+          # robocopy success (exit 1 = "files copied", which is normal).
+          $global:LASTEXITCODE = 0
           # Disable MSBuild FileTracker (FTK1011 fix): FileTracker.exe has no
           # longPathAware manifest and ignores LongPathsEnabled.  Setting
           # TrackFileAccess=false prevents tlog creation entirely (safe in CI).
