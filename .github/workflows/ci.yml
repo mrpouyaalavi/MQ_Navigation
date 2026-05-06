@@ -10,6 +10,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Opt into Node.js 24 for all actions now, before the June 2 2026 forced cutover.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   analyze-and-test:
     name: Analyze & Test
@@ -184,10 +188,12 @@ jobs:
     needs: analyze-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      # The repo name is long and the runner double-nests it, pushing MSBuild
-      # tlog paths and plugin symlink headers over Windows' 260-char MAX_PATH.
-      # Enable long-path support at both the OS and Git layers before checkout.
-      - name: Enable Windows long paths
+      # MSBuild's FileTracker binary has no longPathAware manifest, so the
+      # LongPathsEnabled registry key alone does NOT help it.  The only
+      # reliable fix is to keep the repo on a short absolute path so that
+      # every tlog / include path stays well inside 260 chars.
+      # C:\p  →  tlog path ≈ 169 chars  (default GITHUB_WORKSPACE ≈ 270 chars)
+      - name: Enable Windows long paths (belt-and-suspenders)
         shell: powershell
         run: |
           Set-ItemProperty `
@@ -196,6 +202,10 @@ jobs:
           git config --system core.longpaths true
 
       - uses: actions/checkout@v4
+        with:
+          # Check out to a short absolute path so all downstream build
+          # artefact paths (tlog, include headers via symlink) stay < 260 chars.
+          path: 'C:\p'
 
       - uses: subosito/flutter-action@v2
         with:
@@ -203,9 +213,11 @@ jobs:
           cache: true
 
       - name: Install dependencies
+        working-directory: 'C:\p'
         run: flutter pub get
 
       - name: Build Windows (release)
+        working-directory: 'C:\p'
         run: |
           flutter build windows --release `
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} `
@@ -217,4 +229,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-release
-          path: build\windows\x64\runner\Release\
+          path: 'C:\p\build\windows\x64\runner\Release\'
