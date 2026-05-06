@@ -188,21 +188,21 @@ jobs:
     needs: analyze-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      # Two separate MAX_PATH failures require two separate fixes:
+      # Three MAX_PATH issues, three fixes applied together:
       #
-      # 1. FTK1011 — FileTracker.exe has NO longPathAware PE manifest, so the
-      #    LongPathsEnabled registry key is ignored by it.  We inject a
-      #    Directory.Build.props at the repo root that sets TrackFileAccess=false;
-      #    MSBuild auto-discovers this file by walking up from each .vcxproj,
-      #    preventing tlog creation entirely (safe in CI – no incremental builds).
+      # FTK1011 — FileTracker.exe has NO longPathAware manifest; ignores the
+      #   registry key.  Directory.Build.props sets TrackFileAccess=false so
+      #   MSBuild never invokes FileTracker (safe in CI – no incremental builds).
       #
-      # 2. C1083 — cl.exe (MSVC 2022, 64-bit) IS longPathAware.  Enabling
-      #    LongPathsEnabled in the registry lets it open the 265-char header
-      #    path through the .plugin_symlinks junction.
-      - name: Enable Windows long paths + disable MSBuild FileTracker
+      # C1083 — cl.exe (32-bit in MSVC 2022) cannot open the 265-char include
+      #   path through the .plugin_symlinks junction even with LongPathsEnabled.
+      #   'subst X: <workspace>' maps the repo to a 1-char drive; CMake then
+      #   generates all paths as X:\... (≤163 chars), well within MAX_PATH.
+      #
+      # git — core.longpaths true lets git handle long-named files.
+      - name: Enable long paths and git longpaths
         shell: powershell
         run: |
-          # Fix C1083: allow cl.exe to open paths > 260 chars
           Set-ItemProperty `
             -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem' `
             -Name 'LongPathsEnabled' -Value 1 -Force
@@ -210,13 +210,11 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - name: Inject Directory.Build.props to disable FileTracker
+      - name: Create X:\ alias + disable MSBuild FileTracker
         shell: powershell
         run: |
-          # Fix FTK1011: FileTracker.exe cannot create tlog files whose paths
-          # exceed 260 chars.  TrackFileAccess=false skips tlog creation for
-          # every MSBuild project under this directory tree.
-          Set-Content -Path Directory.Build.props `
+          subst X: "$env:GITHUB_WORKSPACE"
+          Set-Content -Path "$env:GITHUB_WORKSPACE\Directory.Build.props" `
             -Value '<Project><PropertyGroup><TrackFileAccess>false</TrackFileAccess></PropertyGroup></Project>'
 
       - uses: subosito/flutter-action@v2
@@ -225,9 +223,13 @@ jobs:
           cache: true
 
       - name: Install dependencies
+        working-directory: 'X:\'
+        shell: powershell
         run: flutter pub get
 
       - name: Build Windows (release)
+        working-directory: 'X:\'
+        shell: powershell
         run: |
           flutter build windows --release `
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} `
@@ -239,4 +241,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-release
-          path: build\windows\x64\runner\Release\
+          path: 'X:\build\windows\x64\runner\Release\'
