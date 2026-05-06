@@ -80,7 +80,7 @@ class _OnboardingCard extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: dark ? MqColors.charcoal800 : MqColors.red,
+                color: MqColors.red,
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -100,7 +100,7 @@ class _OnboardingCard extends StatelessWidget {
                     style: context.textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.2,
-                      color: dark ? MqColors.charcoal800 : MqColors.red,
+                      color: MqColors.red,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -127,10 +127,7 @@ class _OnboardingCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: dark ? MqColors.charcoal800 : MqColors.red,
-            ),
+            Icon(Icons.chevron_right_rounded, color: MqColors.brightRed),
           ],
         ),
       ),
@@ -178,16 +175,14 @@ class _PreviewCard extends StatelessWidget {
                   style: context.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w800,
                     letterSpacing: 1.2,
-                    color: dark ? MqColors.charcoal800 : MqColors.red,
+                    color: MqColors.red,
                   ),
                 ),
                 const Spacer(),
                 Icon(
                   Icons.chevron_right_rounded,
                   size: 18,
-                  color: dark
-                      ? Colors.white.withValues(alpha: 0.55)
-                      : MqColors.charcoal600,
+                  color: MqColors.brightRed,
                 ),
               ],
             ),

@@ -1583,11 +1583,7 @@ class _TapRow extends StatelessWidget {
                         : MqColors.red.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(MqSpacing.radiusSm),
                   ),
-                  child: Icon(
-                    icon,
-                    size: 18,
-                    color: dark ? MqColors.slate500 : MqColors.red,
-                  ),
+                  child: Icon(icon, size: 18, color: MqColors.brightRed),
                 ),
                 const SizedBox(width: MqSpacing.space3),
                 Expanded(
@@ -1694,11 +1690,7 @@ class _ToggleRow extends StatelessWidget {
                         : MqColors.red.withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(MqSpacing.radiusSm),
                   ),
-                  child: Icon(
-                    icon,
-                    size: 18,
-                    color: dark ? MqColors.slate500 : MqColors.red,
-                  ),
+                  child: Icon(icon, size: 18, color: MqColors.brightRed),
                 ),
                 const SizedBox(width: MqSpacing.space3),
                 Expanded(
@@ -1757,11 +1749,7 @@ class _InfoRow extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              icon,
-              size: 22,
-              color: dark ? MqColors.slate500 : MqColors.red,
-            ),
+            Icon(icon, size: 22, color: MqColors.brightRed),
             const SizedBox(width: MqSpacing.space4),
             Expanded(
               child: Column(

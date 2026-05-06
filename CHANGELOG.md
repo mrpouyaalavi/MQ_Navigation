@@ -1,3 +1,10 @@
+### Raouf: 2026-05-07 (AEST) — Settings + Open Day icons to bright red
+**Scope:** Settings and Open Day page icon color consistency.
+**Summary:** Changed all icons in the Settings page to use `MqColors.brightRed` for full bright red consistency. Also made the Open Day home card (study interest selection) use red icons in both light and dark mode, matching the Metro accent.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `lib/features/open_day/presentation/widgets/open_day_home_card.dart`
+**Verification:** `dart format` → pass; `flutter analyze lib/features/settings lib/features/open_day` → 0 issues.
+**Follow-ups:** None.
+
 ### Raouf: 2026-05-06 (AEST) — Improved check.sh robustness
 **Scope:** Developer tooling and CI/CD reliability.
 **Summary:** Resolved a failure in `scripts/check.sh` where tests and localization generation would fail if the script was executed from within the `scripts/` directory. Added logic to the script to automatically resolve the project root directory relative to its own location and `cd` there before executing any Flutter commands.
