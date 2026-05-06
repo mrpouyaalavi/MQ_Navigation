@@ -155,12 +155,8 @@ class _MetroCountdownCard extends StatelessWidget {
         : Colors.white.withValues(alpha: 0.88);
     final border = dark ? Colors.white.withAlpha(13) : MqColors.sand200;
     const accent = MqColors.brightRed;
-    final titleColor = dark
-        ? MqColors.contentPrimaryDark
-        : MqColors.contentPrimary;
-    final subtitleColor = dark
-        ? MqColors.contentSecondaryDark
-        : MqColors.contentSecondary;
+    const titleColor = Colors.white;
+    const subtitleColor = Colors.white;
 
     final modeIcon = switch (commuteMode) {
       'metro' => Icons.directions_subway,
@@ -177,7 +173,7 @@ class _MetroCountdownCard extends StatelessWidget {
 
     Widget content;
     if (!_isConfigured) {
-      content = _EmptyState(
+      content = const _EmptyState(
         accent: accent,
         subtitleColor: subtitleColor,
         titleColor: titleColor,
@@ -193,8 +189,8 @@ class _MetroCountdownCard extends StatelessWidget {
           subtitleColor: subtitleColor,
           titleColor: titleColor,
         ),
-        loading: () => _LoadingBody(subtitleColor: subtitleColor),
-        error: (_, _) => _ErrorBody(subtitleColor: subtitleColor),
+        loading: () => const _LoadingBody(subtitleColor: subtitleColor),
+        error: (_, _) => const _ErrorBody(subtitleColor: subtitleColor),
       );
     }
 
@@ -212,7 +208,7 @@ class _MetroCountdownCard extends StatelessWidget {
           Container(
             width: 44,
             height: 44,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: MqColors.red,
               shape: BoxShape.circle,
             ),
@@ -437,13 +433,12 @@ class _CampusBackground extends StatelessWidget {
             asset,
             fit: BoxFit.cover,
             filterQuality: FilterQuality.high,
-            errorBuilder: (_, _, _) =>
-                const ColoredBox(color: MqColors.alabaster),
+            errorBuilder: (_, _, _) => const ColoredBox(color: Colors.white),
           ),
           Container(
             color: isDark
-                ? MqColors.charcoal800.withValues(alpha: 0.42)
-                : MqColors.alabaster.withValues(alpha: 0.50),
+                ? Colors.white.withValues(alpha: 0.08)
+                : Colors.white.withValues(alpha: 0.50),
           ),
         ],
       ),
@@ -469,12 +464,8 @@ class _HeroSection extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
 
-    final titleColor = dark
-        ? MqColors.contentPrimaryDark
-        : MqColors.contentPrimary;
-    final subtitleColor = dark
-        ? MqColors.contentPrimaryDark.withValues(alpha: 0.92)
-        : MqColors.contentPrimary.withValues(alpha: 0.92);
+    const titleColor = Colors.white;
+    const subtitleColor = Colors.white;
     const ctaColor = MqColors.red;
     final heroTextShadow = [
       Shadow(
@@ -870,9 +861,7 @@ class _BentoHeroCard extends StatelessWidget {
                 style: context.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
                   height: 1.1,
-                  color: isDark
-                      ? MqColors.contentPrimaryDark
-                      : MqColors.contentPrimary,
+                  color: Colors.white,
                 ),
               ),
             ],
@@ -954,9 +943,7 @@ class _TertiaryQuickRow extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: context.textTheme.labelMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: isDark
-                                ? MqColors.contentPrimaryDark
-                                : MqColors.contentPrimary,
+                            color: Colors.white,
                           ),
                         ),
                       ],

@@ -1,3 +1,17 @@
+### Raouf: 2026-05-07 (AEST) — Home page alabaster-like text forced to #fff
+**Scope:** Home page text contrast consistency.
+**Summary:** Updated home page subtitle text color tokens from translucent white to pure white so all intended white/alabaster-like text now renders as exact `#fff` on Home.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart`.
+**Follow-ups:** None.
+
+### Raouf: 2026-05-07 (AEST) — Home page text to white for contrast
+**Scope:** Home page text color.
+**Summary:** Changed home page Metro card text colors to white (Colors.white for title, Colors.white70 for subtitle in dark mode) for better readability.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`
+**Verification:** `./scripts/check.sh` → 6/6 passed.
+**Follow-ups:** None.
+
 ### Raouf: 2026-05-07 (AEST) — Metro + Settings icons with red circle + white icon
 **Scope:** Metro card and Settings icons styling.
 **Summary:** Changed Metro card icon to solid red circle with white icon. Changed Settings icons to use solid red circle with white icon in all row types (_TapRow, _ToggleRow, _InfoRow).

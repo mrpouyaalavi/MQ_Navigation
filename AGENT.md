@@ -49,6 +49,13 @@ lib/
 - All keys loaded via `--dart-define-from-file=.env` — never hardcoded in source
 - Use `scripts/run.sh` to launch with native key injection for Maps SDKs
 
+### Raouf: 2026-05-07 (AEST) — Home page alabaster-like text forced to #fff
+**Scope:** Home page text contrast consistency.
+**Summary:** Updated Home page subtitle text styling from translucent white to pure white so all intended white/alabaster-like text now renders as exact `#fff` for stronger readability consistency.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart`.
+**Follow-ups:** None.
+
 ### Raouf: 2026-04-22 (AEST) — Environment setup
 **Scope:** `.env` creation.
 **Summary:** Created a `.env` file from `.env.example` template with placeholders for Supabase and Google Maps credentials. This enables usage of `scripts/run.sh` and proper environment configuration.
