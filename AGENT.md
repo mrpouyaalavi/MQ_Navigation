@@ -49,6 +49,20 @@ lib/
 - All keys loaded via `--dart-define-from-file=.env` — never hardcoded in source
 - Use `scripts/run.sh` to launch with native key injection for Maps SDKs
 
+### Raouf: 2026-05-07 (AEST) — Blink slowed further + stronger Home background blur
+**Scope:** Home text emphasis and background contrast.
+**Summary:** Increased blink duration to a much slower pulse and raised Home background blur in both theme modes to improve blinking text visibility against the photo backdrop.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Optionally split blur levels by theme if additional tuning is needed.
+
+### Raouf: 2026-05-07 (AEST) — Slower blink + low-level background blur in both themes
+**Scope:** Home motion tuning and background readability.
+**Summary:** Adjusted Home blinking text to a slower pulse and added subtle blur to the background image in both theme modes to keep text readable while preserving image detail.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Optionally fine-tune blur sigma and blink duration based on visual feedback.
+
 ### Raouf: 2026-05-07 (AEST) — Blinking effect added to Home hero + quick-access texts
 **Scope:** Home heading text animation behavior.
 **Summary:** Implemented a reusable `_BlinkingText` widget and applied it to the Home hero title/subtitle plus `QUICK ACCESS`, with a continuous fade pulse for stronger visual emphasis over the background image.

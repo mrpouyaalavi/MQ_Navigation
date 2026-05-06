@@ -1,3 +1,17 @@
+### Raouf: 2026-05-07 (AEST) — Blink slowed further + stronger Home background blur
+**Scope:** Home text emphasis and background contrast.
+**Summary:** Further slowed blinking speed and increased Home background blur intensity in both modes so blinking headline text stands out more clearly against the image.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** If required, set separate blur strengths per mode for finer control.
+
+### Raouf: 2026-05-07 (AEST) — Slower blink + low-level background blur in both themes
+**Scope:** Home motion tuning and background readability.
+**Summary:** Slowed Home text blinking to a gentler pace and added a subtle image blur layer to the Home background in both light and dark mode for smoother readability without heavy visual softness.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/home/presentation/pages/home_page.dart`; `flutter analyze lib/features/home/presentation/pages/home_page.dart` (no issues).
+**Follow-ups:** Tune blur/blink further if you want stronger/softer effect.
+
 ### Raouf: 2026-05-07 (AEST) — Blinking effect added to Home hero + quick-access texts
 **Scope:** Home heading text animation behavior.
 **Summary:** Added a reusable blinking text animation and applied it to `Welcome to MQ Navigation`, `Find your way around campus quickly and easily.`, and `QUICK ACCESS` so those key headings now pulse between lower and full opacity.

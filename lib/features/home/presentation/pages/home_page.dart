@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -429,11 +431,14 @@ class _CampusBackground extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            asset,
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.high,
-            errorBuilder: (_, _, _) => const ColoredBox(color: Colors.white),
+          ImageFiltered(
+            imageFilter: ui.ImageFilter.blur(sigmaX: 4.8, sigmaY: 4.8),
+            child: Image.asset(
+              asset,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
+              errorBuilder: (_, _, _) => const ColoredBox(color: Colors.white),
+            ),
           ),
           Container(color: Colors.white.withValues(alpha: 0.08)),
         ],
@@ -855,7 +860,7 @@ class _BlinkingTextState extends State<_BlinkingText>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 900),
+      duration: const Duration(milliseconds: 3500),
       vsync: this,
     )..repeat(reverse: true);
     _opacity = Tween<double>(
