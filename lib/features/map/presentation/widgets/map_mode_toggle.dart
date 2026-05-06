@@ -30,13 +30,13 @@ class MapModeToggle extends StatelessWidget {
           padding: const EdgeInsets.all(MqSpacing.space1),
           decoration: BoxDecoration(
             color: isDark
-                ? MqColors.charcoal850.withValues(alpha: 0.85)
+                ? MqColors.charcoal800.withValues(alpha: 0.85)
                 : Colors.white.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
             border: Border.all(
               color: isDark
                   ? Colors.white.withValues(alpha: 0.05)
-                  : MqColors.black.withValues(alpha: 0.08),
+                  : MqColors.charcoal800.withValues(alpha: 0.08),
             ),
           ),
           child: Row(
@@ -93,7 +93,7 @@ class _PillSegment extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: isSelected
-                ? (isDark ? MqColors.black : MqColors.red)
+                ? (isDark ? MqColors.charcoal800 : MqColors.red)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
           ),
@@ -104,7 +104,7 @@ class _PillSegment extends StatelessWidget {
                   ? Colors.white
                   : isDark
                   ? Colors.white.withValues(alpha: 0.5)
-                  : MqColors.black.withValues(alpha: 0.5),
+                  : MqColors.charcoal800.withValues(alpha: 0.5),
               fontSize: 14,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
             ),

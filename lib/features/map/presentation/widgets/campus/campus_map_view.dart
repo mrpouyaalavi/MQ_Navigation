@@ -233,7 +233,7 @@ class _CampusMapViewState extends ConsumerState<CampusMapView> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: Theme.of(context).brightness == Brightness.dark
-                      ? const [MqColors.charcoal950, MqColors.charcoal850]
+                      ? const [MqColors.charcoal800, MqColors.charcoal800]
                       : const [MqColors.sand100, MqColors.alabaster],
                 ),
               ),

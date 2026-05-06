@@ -67,7 +67,7 @@ class _OnboardingCard extends StatelessWidget {
         padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
         decoration: BoxDecoration(
           color: dark
-              ? MqColors.charcoal850
+              ? MqColors.charcoal800
               : Colors.white.withValues(alpha: 0.92),
           borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
           border: Border.all(
@@ -80,7 +80,7 @@ class _OnboardingCard extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: dark ? MqColors.black : MqColors.red,
+                color: dark ? MqColors.charcoal800 : MqColors.red,
                 shape: BoxShape.circle,
               ),
               child: const Icon(
@@ -100,7 +100,7 @@ class _OnboardingCard extends StatelessWidget {
                     style: context.textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.2,
-                      color: dark ? MqColors.black : MqColors.red,
+                      color: dark ? MqColors.charcoal800 : MqColors.red,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -129,7 +129,7 @@ class _OnboardingCard extends StatelessWidget {
             ),
             Icon(
               Icons.chevron_right_rounded,
-              color: dark ? MqColors.black : MqColors.red,
+              color: dark ? MqColors.charcoal800 : MqColors.red,
             ),
           ],
         ),
@@ -161,7 +161,7 @@ class _PreviewCard extends StatelessWidget {
         padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
         decoration: BoxDecoration(
           color: dark
-              ? MqColors.charcoal850
+              ? MqColors.charcoal800
               : Colors.white.withValues(alpha: 0.92),
           borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
           border: Border.all(
@@ -178,7 +178,7 @@ class _PreviewCard extends StatelessWidget {
                   style: context.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w800,
                     letterSpacing: 1.2,
-                    color: dark ? MqColors.black : MqColors.red,
+                    color: dark ? MqColors.charcoal800 : MqColors.red,
                   ),
                 ),
                 const Spacer(),

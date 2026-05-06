@@ -442,7 +442,7 @@ class _CampusBackground extends StatelessWidget {
           ),
           Container(
             color: isDark
-                ? MqColors.charcoal950.withValues(alpha: 0.42)
+                ? MqColors.charcoal800.withValues(alpha: 0.42)
                 : MqColors.alabaster.withValues(alpha: 0.50),
           ),
         ],
@@ -479,7 +479,7 @@ class _HeroSection extends StatelessWidget {
     final heroTextShadow = [
       Shadow(
         blurRadius: 16,
-        color: MqColors.black.withValues(alpha: dark ? 0.36 : 0.24),
+        color: MqColors.charcoal800.withValues(alpha: dark ? 0.36 : 0.24),
         offset: const Offset(0, 2),
       ),
     ];
@@ -773,20 +773,20 @@ class _SectionHeader extends StatelessWidget {
           letterSpacing: 1.4,
           fontSize: 20,
           height: 1.1,
-          color: dark ? Colors.white : MqColors.black,
+          color: dark ? Colors.white : MqColors.charcoal800,
           shadows: [
             // Soft halo for legibility over the campus photo.
             Shadow(
               blurRadius: 14,
               color: dark
-                  ? MqColors.black.withValues(alpha: 0.55)
+                  ? MqColors.charcoal800.withValues(alpha: 0.55)
                   : Colors.white.withValues(alpha: 0.55),
               offset: const Offset(0, 1),
             ),
             Shadow(
               blurRadius: 4,
               color: dark
-                  ? MqColors.black.withValues(alpha: 0.4)
+                  ? MqColors.charcoal800.withValues(alpha: 0.4)
                   : Colors.white.withValues(alpha: 0.45),
               offset: Offset.zero,
             ),
@@ -838,12 +838,14 @@ class _BentoHeroCard extends StatelessWidget {
             border: Border.all(
               color: isDark
                   ? Colors.white.withValues(alpha: 0.08)
-                  : MqColors.black.withValues(alpha: 0.06),
+                  : MqColors.charcoal800.withValues(alpha: 0.06),
               width: 0.6,
             ),
             boxShadow: [
               BoxShadow(
-                color: MqColors.black.withValues(alpha: isDark ? 0.30 : 0.10),
+                color: MqColors.charcoal800.withValues(
+                  alpha: isDark ? 0.30 : 0.10,
+                ),
                 blurRadius: 18,
                 offset: const Offset(0, 6),
               ),
@@ -919,12 +921,12 @@ class _TertiaryQuickRow extends StatelessWidget {
                       border: Border.all(
                         color: isDark
                             ? Colors.white.withValues(alpha: 0.08)
-                            : MqColors.black.withValues(alpha: 0.06),
+                            : MqColors.charcoal800.withValues(alpha: 0.06),
                         width: 0.6,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: MqColors.black.withValues(
+                          color: MqColors.charcoal800.withValues(
                             alpha: isDark ? 0.25 : 0.08,
                           ),
                           blurRadius: 14,

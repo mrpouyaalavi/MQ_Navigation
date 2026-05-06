@@ -102,7 +102,7 @@ class EventActionsSheet extends ConsumerWidget {
                 child: ListTile(
                   leading: Icon(
                     Icons.location_on_rounded,
-                    color: dark ? MqColors.black : MqColors.red,
+                    color: dark ? MqColors.charcoal800 : MqColors.red,
                   ),
                   title: Text(
                     'View in Campus Map',

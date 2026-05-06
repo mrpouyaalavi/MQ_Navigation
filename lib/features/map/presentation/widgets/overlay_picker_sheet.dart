@@ -70,7 +70,9 @@ class OverlayPickerSheet extends ConsumerWidget {
                       icon: const Icon(Icons.layers_clear_outlined, size: 18),
                       label: Text(l10n.clearAll),
                       style: TextButton.styleFrom(
-                        foregroundColor: isDark ? MqColors.black : MqColors.red,
+                        foregroundColor: isDark
+                            ? MqColors.charcoal800
+                            : MqColors.red,
                         minimumSize: const Size(
                           MqSpacing.minTapTarget,
                           MqSpacing.minTapTarget,

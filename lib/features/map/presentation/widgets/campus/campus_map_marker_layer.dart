@@ -85,10 +85,10 @@ class CampusBuildingMarker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = isSelected ? MqColors.red : Colors.white;
-    final foregroundColor = isSelected ? Colors.white : MqColors.charcoal900;
+    final foregroundColor = isSelected ? Colors.white : MqColors.charcoal800;
     final borderColor = isSelected
         ? MqColors.red
-        : MqColors.charcoal900.withValues(alpha: 0.12);
+        : MqColors.charcoal800.withValues(alpha: 0.12);
 
     return Semantics(
       button: true,
@@ -109,7 +109,7 @@ class CampusBuildingMarker extends StatelessWidget {
                 border: Border.all(color: borderColor),
                 boxShadow: [
                   BoxShadow(
-                    color: MqColors.charcoal900.withValues(alpha: 0.14),
+                    color: MqColors.charcoal800.withValues(alpha: 0.14),
                     blurRadius: 12,
                     offset: const Offset(0, 6),
                   ),

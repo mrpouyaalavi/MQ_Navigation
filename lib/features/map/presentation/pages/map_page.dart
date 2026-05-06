@@ -56,7 +56,7 @@ class _MapPageState extends ConsumerState<MapPage> {
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: Theme.of(context).brightness == Brightness.dark
-          ? MqColors.charcoal850
+          ? MqColors.charcoal800
           : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -456,7 +456,7 @@ class _MapErrorBanner extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: MqColors.black.withValues(alpha: 0.1),
+            color: MqColors.charcoal800.withValues(alpha: 0.1),
             blurRadius: 16,
             offset: const Offset(0, 10),
           ),
@@ -569,7 +569,7 @@ class _CategoryBuildingList extends StatelessWidget {
           constraints: const BoxConstraints(maxHeight: 240),
           decoration: BoxDecoration(
             color: isDark
-                ? MqColors.charcoal850.withValues(alpha: 0.88)
+                ? MqColors.charcoal800.withValues(alpha: 0.88)
                 : Colors.white.withValues(alpha: 0.85),
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(MqSpacing.radiusXl),
@@ -578,11 +578,11 @@ class _CategoryBuildingList extends StatelessWidget {
             border: Border.all(
               color: isDark
                   ? Colors.white.withValues(alpha: 0.05)
-                  : MqColors.black.withValues(alpha: 0.08),
+                  : MqColors.charcoal800.withValues(alpha: 0.08),
             ),
             boxShadow: [
               BoxShadow(
-                color: MqColors.black.withValues(alpha: 0.15),
+                color: MqColors.charcoal800.withValues(alpha: 0.15),
                 blurRadius: 24,
                 offset: const Offset(0, -4),
               ),
@@ -676,7 +676,7 @@ class _CategoryBuildingList extends StatelessWidget {
                       dense: true,
                       leading: Icon(
                         Icons.location_on,
-                        color: isDark ? MqColors.black : MqColors.red,
+                        color: isDark ? MqColors.charcoal800 : MqColors.red,
                         size: 20,
                       ),
                       title: Text(
@@ -786,7 +786,7 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
           constraints: const BoxConstraints(maxHeight: 360),
           decoration: BoxDecoration(
             color: isDark
-                ? MqColors.charcoal850.withValues(alpha: 0.88)
+                ? MqColors.charcoal800.withValues(alpha: 0.88)
                 : Colors.white.withValues(alpha: 0.85),
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(MqSpacing.radiusXl),
@@ -795,11 +795,11 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
             border: Border.all(
               color: isDark
                   ? Colors.white.withValues(alpha: 0.05)
-                  : MqColors.black.withValues(alpha: 0.08),
+                  : MqColors.charcoal800.withValues(alpha: 0.08),
             ),
             boxShadow: [
               BoxShadow(
-                color: MqColors.black.withValues(alpha: 0.15),
+                color: MqColors.charcoal800.withValues(alpha: 0.15),
                 blurRadius: 24,
                 offset: const Offset(0, -4),
               ),
@@ -882,7 +882,7 @@ class _BrowseGroupPanel<TGroup> extends StatelessWidget {
                       dense: false,
                       leading: Icon(
                         leadingIcon,
-                        color: isDark ? MqColors.black : MqColors.red,
+                        color: isDark ? MqColors.charcoal800 : MqColors.red,
                         size: 22,
                       ),
                       title: Text(
@@ -1010,9 +1010,9 @@ class _CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeBg = isDark ? MqColors.black : MqColors.red;
+    final activeBg = isDark ? MqColors.charcoal800 : MqColors.red;
     final inactiveBg = isDark
-        ? MqColors.charcoal850.withValues(alpha: 0.85)
+        ? MqColors.charcoal800.withValues(alpha: 0.85)
         : Colors.white.withValues(alpha: 0.9);
     const activeFg = Colors.white;
     final inactiveFg = isDark ? Colors.white : MqColors.contentPrimary;
@@ -1030,7 +1030,7 @@ class _CategoryChip extends StatelessWidget {
                   ? activeBg
                   : (isDark
                         ? Colors.white.withValues(alpha: 0.05)
-                        : MqColors.black.withValues(alpha: 0.08)),
+                        : MqColors.charcoal800.withValues(alpha: 0.08)),
             ),
           ),
           child: InkWell(

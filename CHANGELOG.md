@@ -1,3 +1,10 @@
+### Raouf: 2026-05-06 (AEST) — Unify dark mode black colours to #383a36
+**Scope:** Dark mode black colour standardisation.
+**Summary:** Replaced all occurrences of dark mode black surface colours (`MqColors.black`, `MqColors.charcoal850`, `MqColors.charcoal900`, `MqColors.charcoal950`) with the unified brand colour `#383a36` (`MqColors.charcoal800`). This ensures complete colour standardisation across dark mode features like Map panels, Onboarding sheets, Open Day cards, and Home overlays. Restored specific transparency suffixes (like `black87` and `black12`) that were initially impacted.
+**Files Changed:** `lib/features/home/presentation/pages/home_page.dart`, `lib/features/home/presentation/pages/onboarding_page.dart`, `lib/features/map/presentation/pages/map_page.dart`, `lib/features/open_day/presentation/widgets/open_day_home_card.dart`, and other files within `lib/features`.
+**Verification:** `flutter analyze lib` (0 issues), `flutter test` (all 182 tests passed).
+**Follow-ups:** None.
+
 ### Raouf: 2026-05-06 (AEST) — Settings page light mode fix
 **Scope:** Settings page light mode styling correction.
 **Summary:** Reverted the Settings page background and card colors in light mode from fixed charcoal/dark to white (`MqColors.alabaster` and `Colors.white`) to match the rest of the application (like `HomePage`). Text and icon colors inside settings cards (`contentPrimaryDark`, etc.) were also updated to dynamically switch to `contentPrimary` in light mode for proper contrast and readability.

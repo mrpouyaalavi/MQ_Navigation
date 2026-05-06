@@ -193,7 +193,7 @@ class _AreaSection extends StatelessWidget {
             style: context.textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w800,
               letterSpacing: 1.4,
-              color: dark ? MqColors.black : MqColors.red,
+              color: dark ? MqColors.charcoal800 : MqColors.red,
             ),
           ),
         ),
@@ -211,7 +211,7 @@ class _AreaSection extends StatelessWidget {
                       ? FontWeight.w700
                       : FontWeight.w500,
                   color: b.id == selectedId
-                      ? (dark ? MqColors.black : MqColors.red)
+                      ? (dark ? MqColors.charcoal800 : MqColors.red)
                       : (dark
                             ? MqColors.contentPrimaryDark
                             : MqColors.contentPrimary),
@@ -220,7 +220,7 @@ class _AreaSection extends StatelessWidget {
               trailing: b.id == selectedId
                   ? Icon(
                       Icons.check_rounded,
-                      color: dark ? MqColors.black : MqColors.red,
+                      color: dark ? MqColors.charcoal800 : MqColors.red,
                       size: 20,
                     )
                   : null,

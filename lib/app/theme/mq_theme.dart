@@ -161,7 +161,7 @@ abstract final class MqTheme {
         scrolledUnderElevation: 1,
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: MqColors.charcoal900,
+        backgroundColor: MqColors.charcoal800,
         indicatorColor: MqColors.brightRed.withAlpha(30),
         elevation: 3,
         labelTextStyle: const WidgetStatePropertyAll(

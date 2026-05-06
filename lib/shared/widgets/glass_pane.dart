@@ -30,13 +30,13 @@ class GlassPane extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: isDark
-                ? MqColors.charcoal850.withValues(alpha: 0.85)
+                ? MqColors.charcoal800.withValues(alpha: 0.85)
                 : Colors.white.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
               color: isDark
                   ? Colors.white.withValues(alpha: 0.05)
-                  : MqColors.black.withValues(alpha: 0.08),
+                  : MqColors.charcoal800.withValues(alpha: 0.08),
             ),
           ),
           child: child,

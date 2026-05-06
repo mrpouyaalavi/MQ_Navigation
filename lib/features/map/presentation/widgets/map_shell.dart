@@ -91,7 +91,7 @@ class MapShell extends StatelessWidget {
                             Icons.search,
                             color: isDark
                                 ? Colors.white.withValues(alpha: 0.5)
-                                : MqColors.black.withValues(alpha: 0.4),
+                                : MqColors.charcoal800.withValues(alpha: 0.4),
                             size: 20,
                           ),
                           const SizedBox(width: MqSpacing.space3),
@@ -101,7 +101,9 @@ class MapShell extends StatelessWidget {
                               style: TextStyle(
                                 color: isDark
                                     ? Colors.white.withValues(alpha: 0.5)
-                                    : MqColors.black.withValues(alpha: 0.4),
+                                    : MqColors.charcoal800.withValues(
+                                        alpha: 0.4,
+                                      ),
                                 fontSize: 14,
                               ),
                             ),
@@ -216,17 +218,20 @@ class _GlassIconButton extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
         child: Material(
           color: isDark
-              ? MqColors.charcoal850.withValues(alpha: 0.85)
+              ? MqColors.charcoal800.withValues(alpha: 0.85)
               : Colors.white.withValues(alpha: 0.8),
           shape: CircleBorder(
             side: BorderSide(
               color: isDark
                   ? Colors.white.withValues(alpha: 0.05)
-                  : MqColors.black.withValues(alpha: 0.08),
+                  : MqColors.charcoal800.withValues(alpha: 0.08),
             ),
           ),
           child: IconButton(
-            icon: Icon(icon, color: isDark ? Colors.white : MqColors.black87),
+            icon: Icon(
+              icon,
+              color: isDark ? Colors.white : MqColors.black87,
+            ),
             tooltip: tooltip,
             onPressed: onPressed,
           ),
@@ -251,10 +256,10 @@ class _BrandCircleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
-      color: isDark ? MqColors.black : MqColors.red,
+      color: isDark ? MqColors.charcoal800 : MqColors.red,
       shape: const CircleBorder(),
       elevation: 6,
-      shadowColor: (isDark ? MqColors.black : MqColors.red).withValues(
+      shadowColor: (isDark ? MqColors.charcoal800 : MqColors.red).withValues(
         alpha: 0.4,
       ),
       child: IconButton(

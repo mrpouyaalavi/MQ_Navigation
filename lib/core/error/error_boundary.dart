@@ -38,7 +38,7 @@ class _ErrorFallback extends StatelessWidget {
     return Directionality(
       textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
       child: ColoredBox(
-        color: isDark ? MqColors.charcoal950 : MqColors.sand100,
+        color: isDark ? MqColors.charcoal800 : MqColors.sand100,
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 420),
@@ -63,7 +63,7 @@ class _ErrorFallback extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 24, // headlineLarge scale
                           fontWeight: FontWeight.w700,
-                          color: isDark ? Colors.white : MqColors.charcoal950,
+                          color: isDark ? Colors.white : MqColors.charcoal800,
                         ),
                       ),
                       const SizedBox(height: MqSpacing.space3),

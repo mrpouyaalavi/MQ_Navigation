@@ -91,19 +91,19 @@ class _RoutePanelState extends State<RoutePanel> {
         child: Container(
           decoration: BoxDecoration(
             color: isDark
-                ? MqColors.charcoal850.withValues(alpha: 0.88)
+                ? MqColors.charcoal800.withValues(alpha: 0.88)
                 : Colors.white.withValues(alpha: 0.88),
             borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
             border: Border(
               top: BorderSide(
                 color: isDark
                     ? Colors.white.withValues(alpha: 0.15)
-                    : MqColors.black.withValues(alpha: 0.05),
+                    : MqColors.charcoal800.withValues(alpha: 0.05),
               ),
             ),
             boxShadow: [
               BoxShadow(
-                color: MqColors.black.withValues(alpha: 0.2),
+                color: MqColors.charcoal800.withValues(alpha: 0.2),
                 blurRadius: 24,
                 offset: const Offset(0, -4),
               ),
@@ -188,7 +188,9 @@ class _RoutePanelState extends State<RoutePanel> {
                                   ),
                                   decoration: BoxDecoration(
                                     color:
-                                        (isDark ? MqColors.black : MqColors.red)
+                                        (isDark
+                                                ? MqColors.charcoal800
+                                                : MqColors.red)
                                             .withValues(alpha: 0.15),
                                     borderRadius: BorderRadius.circular(
                                       MqSpacing.radiusFull,
@@ -203,7 +205,7 @@ class _RoutePanelState extends State<RoutePanel> {
                                         ?.copyWith(
                                           fontWeight: FontWeight.w700,
                                           color: isDark
-                                              ? MqColors.black
+                                              ? MqColors.charcoal800
                                               : MqColors.red,
                                           letterSpacing: 1.2,
                                         ),
@@ -476,21 +478,19 @@ class _TravelModePills extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? (isDark ? MqColors.black : MqColors.red).withValues(
-                            alpha: 0.15,
-                          )
+                        ? (isDark ? MqColors.charcoal800 : MqColors.red)
+                              .withValues(alpha: 0.15)
                         : isDark
                         ? Colors.white.withValues(alpha: 0.06)
-                        : MqColors.black.withValues(alpha: 0.04),
+                        : MqColors.charcoal800.withValues(alpha: 0.04),
                     borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
                     border: Border.all(
                       color: isSelected
-                          ? (isDark ? MqColors.black : MqColors.red).withValues(
-                              alpha: 0.4,
-                            )
+                          ? (isDark ? MqColors.charcoal800 : MqColors.red)
+                                .withValues(alpha: 0.4)
                           : isDark
                           ? Colors.white.withValues(alpha: 0.08)
-                          : MqColors.black.withValues(alpha: 0.08),
+                          : MqColors.charcoal800.withValues(alpha: 0.08),
                     ),
                   ),
                   child: Row(
@@ -500,7 +500,7 @@ class _TravelModePills extends StatelessWidget {
                         _iconFor(mode),
                         size: MqSpacing.iconSm,
                         color: isSelected
-                            ? (isDark ? MqColors.black : MqColors.red)
+                            ? (isDark ? MqColors.charcoal800 : MqColors.red)
                             : isDark
                             ? Colors.white.withValues(alpha: 0.5)
                             : MqColors.contentTertiary,
@@ -514,7 +514,7 @@ class _TravelModePills extends StatelessWidget {
                               ? FontWeight.w600
                               : FontWeight.w500,
                           color: isSelected
-                              ? (isDark ? MqColors.black : MqColors.red)
+                              ? (isDark ? MqColors.charcoal800 : MqColors.red)
                               : isDark
                               ? Colors.white.withValues(alpha: 0.6)
                               : MqColors.contentSecondary,
@@ -785,11 +785,13 @@ class _BrandActionButton extends StatelessWidget {
       label: label,
       child: Material(
         color: effectiveOnPressed == null
-            ? (isDark ? MqColors.black : MqColors.red).withValues(alpha: 0.5)
-            : (isDark ? MqColors.black : MqColors.red),
+            ? (isDark ? MqColors.charcoal800 : MqColors.red).withValues(
+                alpha: 0.5,
+              )
+            : (isDark ? MqColors.charcoal800 : MqColors.red),
         borderRadius: BorderRadius.circular(MqSpacing.radiusLg),
         elevation: effectiveOnPressed == null ? 0 : 4,
-        shadowColor: (isDark ? MqColors.black : MqColors.red).withValues(
+        shadowColor: (isDark ? MqColors.charcoal800 : MqColors.red).withValues(
           alpha: 0.3,
         ),
         child: InkWell(
@@ -980,7 +982,7 @@ class _ArrivalCard extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: MqColors.black.withValues(alpha: 0.15),
+                color: MqColors.charcoal800.withValues(alpha: 0.15),
                 blurRadius: 24,
                 offset: const Offset(0, -4),
               ),

@@ -441,7 +441,7 @@ class _OsmFallbackBadge extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
       color: isDark
-          ? MqColors.charcoal850.withValues(alpha: 0.85)
+          ? MqColors.charcoal800.withValues(alpha: 0.85)
           : Colors.white.withValues(alpha: 0.92),
       borderRadius: BorderRadius.circular(MqSpacing.radiusFull),
       elevation: 2,

@@ -1448,7 +1448,7 @@ class _OpenDaySection extends ConsumerWidget {
                 trailing: m == current
                     ? Icon(
                         Icons.check_rounded,
-                        color: dark ? MqColors.black : MqColors.red,
+                        color: dark ? MqColors.charcoal800 : MqColors.red,
                         size: 20,
                       )
                     : null,
@@ -1485,7 +1485,7 @@ class _SettingsCard extends StatelessWidget {
         border: Border.all(
           color: dark
               ? Colors.white.withValues(alpha: 0.06)
-              : MqColors.black.withValues(alpha: 0.05),
+              : MqColors.charcoal800.withValues(alpha: 0.05),
           width: 0.6,
         ),
         boxShadow: [
@@ -1493,7 +1493,7 @@ class _SettingsCard extends StatelessWidget {
           // background, giving Settings the same "premium surface"
           // language as the Home Bento cards.
           BoxShadow(
-            color: MqColors.black.withValues(alpha: dark ? 0.30 : 0.05),
+            color: MqColors.charcoal800.withValues(alpha: dark ? 0.30 : 0.05),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),

@@ -27,7 +27,7 @@ class OpenDayPage extends ConsumerWidget {
     final events = ref.watch(relevantOpenDayEventsProvider);
 
     return Scaffold(
-      backgroundColor: dark ? MqColors.charcoal850 : MqColors.alabaster,
+      backgroundColor: dark ? MqColors.charcoal800 : MqColors.alabaster,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -148,11 +148,13 @@ class _StudyInterestHeader extends ConsumerWidget {
     return Container(
       padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
       decoration: BoxDecoration(
-        color: dark ? MqColors.black.withAlpha(20) : MqColors.red.withAlpha(14),
+        color: dark
+            ? MqColors.charcoal800.withAlpha(20)
+            : MqColors.red.withAlpha(14),
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
           color: dark
-              ? MqColors.black.withAlpha(70)
+              ? MqColors.charcoal800.withAlpha(70)
               : MqColors.red.withAlpha(40),
         ),
       ),
@@ -164,7 +166,7 @@ class _StudyInterestHeader extends ConsumerWidget {
             style: context.textTheme.labelSmall?.copyWith(
               fontWeight: FontWeight.w800,
               letterSpacing: 1.4,
-              color: dark ? MqColors.black : MqColors.red,
+              color: dark ? MqColors.charcoal800 : MqColors.red,
             ),
           ),
           const SizedBox(height: MqSpacing.space1),
@@ -196,7 +198,7 @@ class _StudyInterestHeader extends ConsumerWidget {
             child: TextButton.icon(
               onPressed: () => BachelorPickerSheet.show(context),
               style: TextButton.styleFrom(
-                foregroundColor: dark ? MqColors.black : MqColors.red,
+                foregroundColor: dark ? MqColors.charcoal800 : MqColors.red,
                 padding: const EdgeInsetsDirectional.symmetric(
                   horizontal: MqSpacing.space3,
                   vertical: MqSpacing.space1,
@@ -231,7 +233,7 @@ class _TimeBlockHeader extends StatelessWidget {
         style: context.textTheme.labelMedium?.copyWith(
           fontWeight: FontWeight.w800,
           letterSpacing: 1.2,
-          color: dark ? MqColors.black : MqColors.red,
+          color: dark ? MqColors.charcoal800 : MqColors.red,
         ),
       ),
     );
@@ -253,7 +255,7 @@ class _EventTile extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: dark ? MqColors.charcoal850 : Colors.white,
+        color: dark ? MqColors.charcoal800 : Colors.white,
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
           color: dark ? Colors.white.withAlpha(13) : MqColors.sand200,
@@ -315,7 +317,7 @@ class _EventTile extends StatelessWidget {
                 child: Icon(
                   Icons.directions_rounded,
                   size: 24,
-                  color: dark ? MqColors.black : MqColors.red,
+                  color: dark ? MqColors.charcoal800 : MqColors.red,
                 ),
               ),
             ),
