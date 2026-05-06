@@ -1,3 +1,10 @@
+### Raouf: 2026-05-06 (AEST) — Settings page light mode fix
+**Scope:** Settings page light mode styling correction.
+**Summary:** Reverted the Settings page background and card colors in light mode from fixed charcoal/dark to white (`MqColors.alabaster` and `Colors.white`) to match the rest of the application (like `HomePage`). Text and icon colors inside settings cards (`contentPrimaryDark`, etc.) were also updated to dynamically switch to `contentPrimary` in light mode for proper contrast and readability.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`
+**Verification:** `flutter analyze lib/features/settings` (0 issues), `flutter test test/features/settings` (passed).
+**Follow-ups:** None.
+
 ### Raouf: 2026-05-06 (AEST) — Unified Settings page color to #383a36
 **Scope:** Brand color consistency across all Settings surfaces.
 **Summary:** Completely unified the Settings page by setting its scaffold background and all internal card/row surfaces to the brand black hex code `#383a36` (MqColors.charcoal800) regardless of the system theme mode. To maintain accessibility on this permanent dark surface, all text, icons, and interactive elements were forced to their high-contrast dark-mode color tokens (alabaster, white, and slate). This ensures the Settings experience is 100% brand-compliant and visually distinct.
