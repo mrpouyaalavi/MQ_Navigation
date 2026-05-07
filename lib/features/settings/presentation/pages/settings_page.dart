@@ -18,6 +18,18 @@ import 'package:mq_navigation/shared/widgets/mq_bottom_sheet.dart';
 import 'package:mq_navigation/shared/widgets/mq_input.dart';
 import 'package:mq_navigation/shared/widgets/mq_tactile_button.dart';
 
+/// Dark-mode foreground on Settings (replaces [MqColors.contentPrimaryDark] / alabaster).
+ThemeData _settingsDarkReadableTheme(BuildContext context) {
+  final base = Theme.of(context);
+  return base.copyWith(
+    colorScheme: base.colorScheme.copyWith(onSurface: Colors.white),
+    textTheme: base.textTheme.apply(
+      bodyColor: Colors.white,
+      displayColor: Colors.white,
+    ),
+  );
+}
+
 /// Main settings screen for managing app-wide preferences.
 ///
 /// Reacts to changes in [SettingsController]. Uses custom styled widgets
@@ -64,23 +76,29 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           ? '—'
           : Uri.tryParse(supabaseUrl)?.host ?? supabaseUrl;
 
+      final sheetDark = context.isDarkMode;
       showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
-        builder: (context) => MqBottomSheet(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '🛠️ ${l10n.devDiagnostics}',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: MqSpacing.space2),
-              Text('${l10n.buildVersion}: $appVersion'),
-              Text('${l10n.renderer}: $rendererLabel'),
-              Text('${l10n.edgeProxy}: $edgeProxyHost'),
-            ],
+        builder: (sheetContext) => Theme(
+          data: sheetDark
+              ? _settingsDarkReadableTheme(context)
+              : Theme.of(sheetContext),
+          child: MqBottomSheet(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '🛠️ ${l10n.devDiagnostics}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: MqSpacing.space2),
+                Text('${l10n.buildVersion}: $appVersion'),
+                Text('${l10n.renderer}: $rendererLabel'),
+                Text('${l10n.edgeProxy}: $edgeProxyHost'),
+              ],
+            ),
           ),
         ),
       );
@@ -93,34 +111,54 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final settingsState = ref.watch(settingsControllerProvider);
     final dark = context.isDarkMode;
 
-    return Scaffold(
-      backgroundColor: dark ? MqColors.charcoal800 : MqColors.alabaster,
-      body: settingsState.when(
-        data: (preferences) {
-          return Stack(
-            children: [
-              // Branded surface treatment in both modes.
-              //
-              // Dark: keeps the existing red top-glow for atmosphere.
-              // Light: adds the same brand-language treatment but
-              //   softer alpha and a complementary warm-sand wash
-              //   beneath, so the screen no longer reads as a flat
-              //   off-white "default Material" surface — it now
-              //   feels designed and consistent with Home, while
-              //   staying highly readable.
+    final body = settingsState.when(
+      data: (preferences) {
+        return Stack(
+          children: [
+            // Branded surface treatment in both modes.
+            //
+            // Dark: keeps the existing red top-glow for atmosphere.
+            // Light: adds the same brand-language treatment but
+            //   softer alpha and a complementary warm-sand wash
+            //   beneath, so the screen no longer reads as a flat
+            //   off-white "default Material" surface — it now
+            //   feels designed and consistent with Home, while
+            //   staying highly readable.
+            PositionedDirectional(
+              top: -80,
+              start: 0,
+              end: 0,
+              height: 380,
+              child: IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      center: const Alignment(0, -1.2),
+                      radius: 1.1,
+                      colors: [
+                        MqColors.red.withValues(alpha: dark ? 0.15 : 0.08),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                  child: const SizedBox.expand(),
+                ),
+              ),
+            ),
+            if (!dark)
               PositionedDirectional(
-                top: -80,
-                start: 0,
-                end: 0,
-                height: 380,
+                bottom: -120,
+                start: -80,
+                end: -80,
+                height: 360,
                 child: IgnorePointer(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: RadialGradient(
-                        center: const Alignment(0, -1.2),
-                        radius: 1.1,
+                        center: const Alignment(0, 0.8),
+                        radius: 1.4,
                         colors: [
-                          MqColors.red.withValues(alpha: dark ? 0.15 : 0.08),
+                          MqColors.sand200.withValues(alpha: 0.6),
                           Colors.transparent,
                         ],
                       ),
@@ -129,525 +167,505 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   ),
                 ),
               ),
-              if (!dark)
-                PositionedDirectional(
-                  bottom: -120,
-                  start: -80,
-                  end: -80,
-                  height: 360,
-                  child: IgnorePointer(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: RadialGradient(
-                          center: const Alignment(0, 0.8),
-                          radius: 1.4,
-                          colors: [
-                            MqColors.sand200.withValues(alpha: 0.6),
-                            Colors.transparent,
-                          ],
-                        ),
-                      ),
-                      child: const SizedBox.expand(),
-                    ),
-                  ),
+            SafeArea(
+              child: ListView(
+                padding: const EdgeInsetsDirectional.fromSTEB(
+                  MqSpacing.space5,
+                  MqSpacing.space6,
+                  MqSpacing.space5,
+                  MqSpacing.space12,
                 ),
-              SafeArea(
-                child: ListView(
-                  padding: const EdgeInsetsDirectional.fromSTEB(
-                    MqSpacing.space5,
-                    MqSpacing.space6,
-                    MqSpacing.space5,
-                    MqSpacing.space12,
-                  ),
-                  children: [
-                    // ── Page title ──────────────────────────────
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(
-                        start: MqSpacing.space1,
-                        bottom: MqSpacing.space6,
-                      ),
-                      child: TweenAnimationBuilder<double>(
-                        tween: Tween(begin: 0.0, end: 1.0),
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeOutBack,
-                        builder: (context, value, child) {
-                          return Opacity(
-                            opacity: value.clamp(0.0, 1.0),
-                            child: Transform.translate(
-                              offset: Offset(0, 15 * (1 - value)),
-                              child: child,
-                            ),
-                          );
-                        },
-                        child: Text(
-                          l10n.settings.toUpperCase(),
-                          style: context.textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.2,
-                            color: MqColors.brightRed,
+                children: [
+                  // ── Page title ──────────────────────────────
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      start: MqSpacing.space1,
+                      bottom: MqSpacing.space6,
+                    ),
+                    child: TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeOutBack,
+                      builder: (context, value, child) {
+                        return Opacity(
+                          opacity: value.clamp(0.0, 1.0),
+                          child: Transform.translate(
+                            offset: Offset(0, 15 * (1 - value)),
+                            child: child,
                           ),
+                        );
+                      },
+                      child: Text(
+                        l10n.settings.toUpperCase(),
+                        style: context.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.2,
+                          color: MqColors.brightRed,
                         ),
                       ),
                     ),
+                  ),
 
-                    // ── General section ─────────────────────────
-                    _SectionHeader(title: l10n.settings_general),
-                    _SettingsCard(
-                      children: [
-                        _TapRow(
-                          icon: Icons.dark_mode_outlined,
-                          label: l10n.appearance,
-                          value: switch (preferences.themeMode) {
+                  // ── General section ─────────────────────────
+                  _SectionHeader(title: l10n.settings_general),
+                  _SettingsCard(
+                    children: [
+                      _TapRow(
+                        icon: Icons.dark_mode_outlined,
+                        label: l10n.appearance,
+                        value: switch (preferences.themeMode) {
+                          ThemeMode.system => l10n.system,
+                          ThemeMode.light => l10n.light,
+                          ThemeMode.dark => l10n.dark,
+                        },
+                        semanticLabel: l10n.appearance,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onTap: () => _showPicker<ThemeMode>(
+                          context: context,
+                          title: l10n.appearance,
+                          current: preferences.themeMode,
+                          items: ThemeMode.values,
+                          labelOf: (v) => switch (v) {
                             ThemeMode.system => l10n.system,
                             ThemeMode.light => l10n.light,
                             ThemeMode.dark => l10n.dark,
                           },
-                          semanticLabel: l10n.appearance,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onTap: () => _showPicker<ThemeMode>(
-                            context: context,
-                            title: l10n.appearance,
-                            current: preferences.themeMode,
-                            items: ThemeMode.values,
-                            labelOf: (v) => switch (v) {
-                              ThemeMode.system => l10n.system,
-                              ThemeMode.light => l10n.light,
-                              ThemeMode.dark => l10n.dark,
-                            },
-                            onSelect: (v) => ref
-                                .read(settingsControllerProvider.notifier)
-                                .updateThemeMode(v),
-                          ),
+                          onSelect: (v) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateThemeMode(v),
                         ),
-                        _TapRow(
-                          icon: Icons.language_outlined,
-                          label: l10n.language,
-                          value: _languageLabel(preferences.localeCode, l10n),
-                          semanticLabel: l10n.language,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onTap: () => _showPicker<String?>(
-                            context: context,
-                            title: l10n.language,
-                            current: preferences.localeCode,
-                            items: _localeCodes,
-                            labelOf: (v) => _languageLabel(v, l10n),
-                            onSelect: (v) => ref
-                                .read(settingsControllerProvider.notifier)
-                                .updateLocaleCode(v),
-                          ),
+                      ),
+                      _TapRow(
+                        icon: Icons.language_outlined,
+                        label: l10n.language,
+                        value: _languageLabel(preferences.localeCode, l10n),
+                        semanticLabel: l10n.language,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onTap: () => _showPicker<String?>(
+                          context: context,
+                          title: l10n.language,
+                          current: preferences.localeCode,
+                          items: _localeCodes,
+                          labelOf: (v) => _languageLabel(v, l10n),
+                          onSelect: (v) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateLocaleCode(v),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: MqSpacing.space6),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: MqSpacing.space6),
 
-                    // ── Map Preferences section ───────────────────
-                    _SectionHeader(
-                      title: l10n.settings_experience,
-                    ), // Using experience for map prefs
-                    _SettingsCard(
-                      children: [
-                        _TapRow(
-                          icon: Icons.map_outlined,
-                          label: l10n.defaultRenderer,
-                          value:
-                              preferences.defaultRenderer ==
-                                  MapRendererType.campus
+                  // ── Map Preferences section ───────────────────
+                  _SectionHeader(
+                    title: l10n.settings_experience,
+                  ), // Using experience for map prefs
+                  _SettingsCard(
+                    children: [
+                      _TapRow(
+                        icon: Icons.map_outlined,
+                        label: l10n.defaultRenderer,
+                        value:
+                            preferences.defaultRenderer ==
+                                MapRendererType.campus
+                            ? l10n.campusRenderer
+                            : l10n.googleRenderer,
+                        semanticLabel: l10n.defaultRenderer,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onTap: () => _showPicker<MapRendererType>(
+                          context: context,
+                          title: l10n.defaultRenderer,
+                          current: preferences.defaultRenderer,
+                          items: MapRendererType.values,
+                          labelOf: (v) => v == MapRendererType.campus
                               ? l10n.campusRenderer
                               : l10n.googleRenderer,
-                          semanticLabel: l10n.defaultRenderer,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onTap: () => _showPicker<MapRendererType>(
-                            context: context,
-                            title: l10n.defaultRenderer,
-                            current: preferences.defaultRenderer,
-                            items: MapRendererType.values,
-                            labelOf: (v) => v == MapRendererType.campus
-                                ? l10n.campusRenderer
-                                : l10n.googleRenderer,
-                            onSelect: (v) => ref
-                                .read(settingsControllerProvider.notifier)
-                                .updateDefaultRenderer(v),
-                          ),
+                          onSelect: (v) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateDefaultRenderer(v),
                         ),
-                        _TapRow(
-                          icon: Icons.directions_walk_outlined,
-                          label: l10n.defaultTravelMode,
-                          value: switch (preferences.defaultTravelMode) {
+                      ),
+                      _TapRow(
+                        icon: Icons.directions_walk_outlined,
+                        label: l10n.defaultTravelMode,
+                        value: switch (preferences.defaultTravelMode) {
+                          TravelMode.walk => l10n.walk,
+                          TravelMode.drive => l10n.drive,
+                          TravelMode.bike => l10n.bike,
+                          TravelMode.transit => l10n.transit,
+                        },
+                        semanticLabel: l10n.defaultTravelMode,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onTap: () => _showPicker<TravelMode>(
+                          context: context,
+                          title: l10n.defaultTravelMode,
+                          current: preferences.defaultTravelMode,
+                          items: TravelMode.values,
+                          labelOf: (v) => switch (v) {
                             TravelMode.walk => l10n.walk,
                             TravelMode.drive => l10n.drive,
                             TravelMode.bike => l10n.bike,
                             TravelMode.transit => l10n.transit,
                           },
-                          semanticLabel: l10n.defaultTravelMode,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onTap: () => _showPicker<TravelMode>(
-                            context: context,
-                            title: l10n.defaultTravelMode,
-                            current: preferences.defaultTravelMode,
-                            items: TravelMode.values,
-                            labelOf: (v) => switch (v) {
-                              TravelMode.walk => l10n.walk,
-                              TravelMode.drive => l10n.drive,
-                              TravelMode.bike => l10n.bike,
-                              TravelMode.transit => l10n.transit,
-                            },
-                            onSelect: (v) => ref
-                                .read(settingsControllerProvider.notifier)
-                                .updateDefaultTravelMode(v),
-                          ),
+                          onSelect: (v) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateDefaultTravelMode(v),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: MqSpacing.space6),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: MqSpacing.space6),
 
-                    // ── Commute Preferences section ───────────────
-                    //
-                    // Placed high on the page because these preferences
-                    // are the ones that most directly change what the
-                    // user sees on the Home screen (Metro Countdown).
-                    _SectionHeader(title: l10n.commutePreferences),
-                    _CommutePreviewTile(
-                      direction: preferences.favoriteDirection,
-                      mode: preferences.commuteMode,
-                      route: preferences.favoriteRoute,
-                      stopId: preferences.favoriteStopId,
-                      stopName: preferences.favoriteStopName,
-                      l10n: l10n,
-                    ),
-                    _SettingsCard(
-                      children: [
-                        _TapRow(
-                          icon: Icons.commute_outlined,
-                          label: l10n.mainTransport,
-                          value: switch (preferences.commuteMode) {
+                  // ── Commute Preferences section ───────────────
+                  //
+                  // Placed high on the page because these preferences
+                  // are the ones that most directly change what the
+                  // user sees on the Home screen (Metro Countdown).
+                  _SectionHeader(title: l10n.commutePreferences),
+                  _CommutePreviewTile(
+                    direction: preferences.favoriteDirection,
+                    mode: preferences.commuteMode,
+                    route: preferences.favoriteRoute,
+                    stopId: preferences.favoriteStopId,
+                    stopName: preferences.favoriteStopName,
+                    l10n: l10n,
+                  ),
+                  _SettingsCard(
+                    children: [
+                      _TapRow(
+                        icon: Icons.commute_outlined,
+                        label: l10n.mainTransport,
+                        value: switch (preferences.commuteMode) {
+                          'metro' => l10n.commuteModeMetro,
+                          'bus' => l10n.commuteModeBus,
+                          'train' => l10n.commuteModeTrain,
+                          _ => l10n.commuteModeNotSet,
+                        },
+                        semanticLabel: l10n.mainTransport,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onTap: () => _showPicker<String>(
+                          context: context,
+                          title: l10n.mainTransport,
+                          current: preferences.commuteMode,
+                          items: const ['none', 'metro', 'bus', 'train'],
+                          labelOf: (v) => switch (v) {
                             'metro' => l10n.commuteModeMetro,
                             'bus' => l10n.commuteModeBus,
                             'train' => l10n.commuteModeTrain,
                             _ => l10n.commuteModeNotSet,
                           },
-                          semanticLabel: l10n.mainTransport,
+                          onSelect: (v) => ref
+                              .read(settingsControllerProvider.notifier)
+                              .updateCommutePreferences(commuteMode: v),
+                        ),
+                      ),
+                      if (preferences.commuteMode == 'metro')
+                        _TapRow(
+                          icon: Icons.route_outlined,
+                          label: l10n.favoriteMetroLineLabel,
+                          value: _metroLineLabel(
+                            preferences.favoriteRoute,
+                            l10n,
+                          ),
+                          semanticLabel: l10n.favoriteMetroLineLabel,
                           hapticsEnabled: preferences.hapticsEnabled,
                           onTap: () => _showPicker<String>(
                             context: context,
-                            title: l10n.mainTransport,
-                            current: preferences.commuteMode,
-                            items: const ['none', 'metro', 'bus', 'train'],
-                            labelOf: (v) => switch (v) {
-                              'metro' => l10n.commuteModeMetro,
-                              'bus' => l10n.commuteModeBus,
-                              'train' => l10n.commuteModeTrain,
-                              _ => l10n.commuteModeNotSet,
-                            },
+                            title: l10n.favoriteMetroLineTitle,
+                            current: _normalizedMetroLineValue(
+                              preferences.favoriteRoute,
+                            ),
+                            items: _metroLineValues,
+                            labelOf: (v) => _metroLineLabel(v, l10n),
                             onSelect: (v) => ref
                                 .read(settingsControllerProvider.notifier)
-                                .updateCommutePreferences(commuteMode: v),
+                                .updateCommutePreferences(favoriteRoute: v),
+                          ),
+                        )
+                      else if (preferences.commuteMode != 'none')
+                        _TapRow(
+                          icon: Icons.route_outlined,
+                          label: l10n.favoriteRouteLine,
+                          value: preferences.favoriteRoute.trim().isEmpty
+                              ? l10n.setRoutePrompt
+                              : preferences.favoriteRoute,
+                          semanticLabel: l10n.favoriteRouteLine,
+                          hapticsEnabled: preferences.hapticsEnabled,
+                          onTap: () => _showRouteInputDialog(
+                            context: context,
+                            currentRoute: preferences.favoriteRoute,
+                            ref: ref,
                           ),
                         ),
-                        if (preferences.commuteMode == 'metro')
-                          _TapRow(
-                            icon: Icons.route_outlined,
-                            label: l10n.favoriteMetroLineLabel,
-                            value: _metroLineLabel(
-                              preferences.favoriteRoute,
-                              l10n,
-                            ),
-                            semanticLabel: l10n.favoriteMetroLineLabel,
-                            hapticsEnabled: preferences.hapticsEnabled,
-                            onTap: () => _showPicker<String>(
-                              context: context,
-                              title: l10n.favoriteMetroLineTitle,
-                              current: _normalizedMetroLineValue(
-                                preferences.favoriteRoute,
-                              ),
-                              items: _metroLineValues,
-                              labelOf: (v) => _metroLineLabel(v, l10n),
-                              onSelect: (v) => ref
-                                  .read(settingsControllerProvider.notifier)
-                                  .updateCommutePreferences(favoriteRoute: v),
-                            ),
-                          )
-                        else if (preferences.commuteMode != 'none')
-                          _TapRow(
-                            icon: Icons.route_outlined,
-                            label: l10n.favoriteRouteLine,
-                            value: preferences.favoriteRoute.trim().isEmpty
-                                ? l10n.setRoutePrompt
-                                : preferences.favoriteRoute,
-                            semanticLabel: l10n.favoriteRouteLine,
-                            hapticsEnabled: preferences.hapticsEnabled,
-                            onTap: () => _showRouteInputDialog(
-                              context: context,
-                              currentRoute: preferences.favoriteRoute,
-                              ref: ref,
-                            ),
+                      if (preferences.commuteMode == 'metro')
+                        _TapRow(
+                          icon: Icons.alt_route_rounded,
+                          label: l10n.favoriteDirectionLabel,
+                          value: _metroDirectionLabel(
+                            preferences.favoriteDirection,
+                            l10n,
                           ),
-                        if (preferences.commuteMode == 'metro')
-                          _TapRow(
-                            icon: Icons.alt_route_rounded,
-                            label: l10n.favoriteDirectionLabel,
-                            value: _metroDirectionLabel(
+                          semanticLabel: l10n.favoriteDirectionLabel,
+                          hapticsEnabled: preferences.hapticsEnabled,
+                          onTap: () => _showPicker<String>(
+                            context: context,
+                            title: l10n.favoriteDirectionTitle,
+                            current: _normalizedMetroDirectionValue(
                               preferences.favoriteDirection,
-                              l10n,
                             ),
-                            semanticLabel: l10n.favoriteDirectionLabel,
-                            hapticsEnabled: preferences.hapticsEnabled,
-                            onTap: () => _showPicker<String>(
-                              context: context,
-                              title: l10n.favoriteDirectionTitle,
-                              current: _normalizedMetroDirectionValue(
-                                preferences.favoriteDirection,
-                              ),
-                              items: _metroDirectionValues,
-                              labelOf: (v) => _metroDirectionLabel(v, l10n),
-                              onSelect: (v) => ref
-                                  .read(settingsControllerProvider.notifier)
-                                  .updateCommutePreferences(
-                                    favoriteDirection: v,
-                                  ),
-                            ),
-                          ),
-                        if (preferences.commuteMode != 'none')
-                          _TapRow(
-                            icon: Icons.pin_drop_outlined,
-                            label: l10n.favoriteStopIdLabel,
-                            value: _preferredStopLabel(preferences, l10n),
-                            semanticLabel: l10n.favoriteStopIdLabel,
-                            hapticsEnabled: preferences.hapticsEnabled,
-                            onTap: () => _showStopSearchDialog(
-                              context: context,
-                              mode: preferences.commuteMode,
-                              ref: ref,
-                            ),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: MqSpacing.space6),
-
-                    // ── Open Day section ──────────────────────────
-                    //
-                    // Three minimal rows: change study interest, toggle
-                    // local event reminders, and choose the reminder
-                    // lead time. The bachelor selection itself drives
-                    // both the Home preview card and the local
-                    // notification schedule (see OpenDayReminderScheduler).
-                    _SectionHeader(title: l10n.openDay_section),
-                    _OpenDaySection(preferences: preferences),
-                    const SizedBox(height: MqSpacing.space6),
-
-                    // ── Accessibility & Data section ────────────
-                    _SectionHeader(title: l10n.accessibility),
-                    _SettingsCard(
-                      children: [
-                        _ToggleRow(
-                          icon: Icons.download_for_offline_outlined,
-                          label: l10n.offlineCampusMaps,
-                          value: preferences.offlineCampusMapsEnabled,
-                          semanticLabel: l10n.offlineCampusMaps,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onChanged: (v) => ref
-                              .read(settingsControllerProvider.notifier)
-                              .updateOfflineCampusMapsEnabled(v),
-                        ),
-                        if (preferences.offlineCampusMapsEnabled)
-                          _TapRow(
-                            icon: Icons.cloud_download_outlined,
-                            label: l10n.offlineCampusMapsDownload,
-                            value: '',
-                            semanticLabel: l10n.offlineCampusMapsDownload,
-                            hapticsEnabled: preferences.hapticsEnabled,
-                            onTap: () async {
-                              if (!context.mounted) {
-                                return;
-                              }
-                              context.showSnackBar(
-                                l10n.offlineCampusMapsDownloading,
-                              );
-                              await ref
-                                  .read(offlineMapsServiceProvider)
-                                  .downloadCampusTiles();
-                              if (context.mounted) {
-                                context.showSnackBar(
-                                  l10n.offlineCampusMapsReady,
-                                );
-                              }
-                            },
-                          ),
-                        _ToggleRow(
-                          icon: Icons.motion_photos_off_outlined,
-                          label: l10n.reducedMotion,
-                          value: preferences.reducedMotion,
-                          semanticLabel: l10n.reducedMotion,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onChanged: (v) => ref
-                              .read(settingsControllerProvider.notifier)
-                              .updateReducedMotion(v),
-                        ),
-                        _ToggleRow(
-                          icon: Icons.vibration_outlined,
-                          label: l10n.haptics,
-                          value: preferences.hapticsEnabled,
-                          semanticLabel: l10n.haptics,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onChanged: (v) => ref
-                              .read(settingsControllerProvider.notifier)
-                              .updateHapticsEnabled(v),
-                        ),
-                        _ToggleRow(
-                          icon: Icons.contrast_outlined,
-                          label: l10n.highContrastMap,
-                          value: preferences.highContrastMap,
-                          semanticLabel: l10n.highContrastMap,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onChanged: (v) => ref
-                              .read(settingsControllerProvider.notifier)
-                              .updateHighContrastMap(v),
-                        ),
-                        _ToggleRow(
-                          icon: Icons.data_usage_outlined,
-                          label: l10n.lowDataMode,
-                          value: preferences.lowDataMode,
-                          semanticLabel: l10n.lowDataMode,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onChanged: (v) => ref
-                              .read(settingsControllerProvider.notifier)
-                              .updateLowDataMode(v),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: MqSpacing.space6),
-
-                    // ── Notifications section ───────────────────
-                    _SectionHeader(title: l10n.notifications),
-                    _SettingsCard(
-                      children: [
-                        _ToggleRow(
-                          icon: Icons.notifications_outlined,
-                          label: l10n.notifications,
-                          value: preferences.notificationsEnabled,
-                          semanticLabel: l10n.notifications,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onChanged: (v) async {
-                            final msg = await ref
+                            items: _metroDirectionValues,
+                            labelOf: (v) => _metroDirectionLabel(v, l10n),
+                            onSelect: (v) => ref
                                 .read(settingsControllerProvider.notifier)
-                                .updateNotificationsEnabled(v);
-                            if (msg != null && context.mounted) {
-                              context.showSnackBar(msg, isError: true);
+                                .updateCommutePreferences(favoriteDirection: v),
+                          ),
+                        ),
+                      if (preferences.commuteMode != 'none')
+                        _TapRow(
+                          icon: Icons.pin_drop_outlined,
+                          label: l10n.favoriteStopIdLabel,
+                          value: _preferredStopLabel(preferences, l10n),
+                          semanticLabel: l10n.favoriteStopIdLabel,
+                          hapticsEnabled: preferences.hapticsEnabled,
+                          onTap: () => _showStopSearchDialog(
+                            context: context,
+                            mode: preferences.commuteMode,
+                            ref: ref,
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: MqSpacing.space6),
+
+                  // ── Open Day section ──────────────────────────
+                  //
+                  // Three minimal rows: change study interest, toggle
+                  // local event reminders, and choose the reminder
+                  // lead time. The bachelor selection itself drives
+                  // both the Home preview card and the local
+                  // notification schedule (see OpenDayReminderScheduler).
+                  _SectionHeader(title: l10n.openDay_section),
+                  _OpenDaySection(preferences: preferences),
+                  const SizedBox(height: MqSpacing.space6),
+
+                  // ── Accessibility & Data section ────────────
+                  _SectionHeader(title: l10n.accessibility),
+                  _SettingsCard(
+                    children: [
+                      _ToggleRow(
+                        icon: Icons.download_for_offline_outlined,
+                        label: l10n.offlineCampusMaps,
+                        value: preferences.offlineCampusMapsEnabled,
+                        semanticLabel: l10n.offlineCampusMaps,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onChanged: (v) => ref
+                            .read(settingsControllerProvider.notifier)
+                            .updateOfflineCampusMapsEnabled(v),
+                      ),
+                      if (preferences.offlineCampusMapsEnabled)
+                        _TapRow(
+                          icon: Icons.cloud_download_outlined,
+                          label: l10n.offlineCampusMapsDownload,
+                          value: '',
+                          semanticLabel: l10n.offlineCampusMapsDownload,
+                          hapticsEnabled: preferences.hapticsEnabled,
+                          onTap: () async {
+                            if (!context.mounted) {
+                              return;
+                            }
+                            context.showSnackBar(
+                              l10n.offlineCampusMapsDownloading,
+                            );
+                            await ref
+                                .read(offlineMapsServiceProvider)
+                                .downloadCampusTiles();
+                            if (context.mounted) {
+                              context.showSnackBar(l10n.offlineCampusMapsReady);
                             }
                           },
                         ),
-                        _ToggleRow(
-                          icon: Icons.bedtime_outlined,
-                          label: l10n.quietHours,
-                          value: preferences.quietHoursEnabled,
-                          semanticLabel: l10n.quietHours,
-                          hapticsEnabled: preferences.hapticsEnabled,
-                          onChanged: (v) => ref
+                      _ToggleRow(
+                        icon: Icons.motion_photos_off_outlined,
+                        label: l10n.reducedMotion,
+                        value: preferences.reducedMotion,
+                        semanticLabel: l10n.reducedMotion,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onChanged: (v) => ref
+                            .read(settingsControllerProvider.notifier)
+                            .updateReducedMotion(v),
+                      ),
+                      _ToggleRow(
+                        icon: Icons.vibration_outlined,
+                        label: l10n.haptics,
+                        value: preferences.hapticsEnabled,
+                        semanticLabel: l10n.haptics,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onChanged: (v) => ref
+                            .read(settingsControllerProvider.notifier)
+                            .updateHapticsEnabled(v),
+                      ),
+                      _ToggleRow(
+                        icon: Icons.contrast_outlined,
+                        label: l10n.highContrastMap,
+                        value: preferences.highContrastMap,
+                        semanticLabel: l10n.highContrastMap,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onChanged: (v) => ref
+                            .read(settingsControllerProvider.notifier)
+                            .updateHighContrastMap(v),
+                      ),
+                      _ToggleRow(
+                        icon: Icons.data_usage_outlined,
+                        label: l10n.lowDataMode,
+                        value: preferences.lowDataMode,
+                        semanticLabel: l10n.lowDataMode,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onChanged: (v) => ref
+                            .read(settingsControllerProvider.notifier)
+                            .updateLowDataMode(v),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: MqSpacing.space6),
+
+                  // ── Notifications section ───────────────────
+                  _SectionHeader(title: l10n.notifications),
+                  _SettingsCard(
+                    children: [
+                      _ToggleRow(
+                        icon: Icons.notifications_outlined,
+                        label: l10n.notifications,
+                        value: preferences.notificationsEnabled,
+                        semanticLabel: l10n.notifications,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onChanged: (v) async {
+                          final msg = await ref
                               .read(settingsControllerProvider.notifier)
-                              .updateQuietHoursEnabled(v),
-                        ),
-                        if (preferences.quietHoursEnabled) ...[
-                          _TapRow(
-                            icon: Icons.access_time_outlined,
-                            label: l10n.quietHoursStart,
-                            value: preferences.quietHoursStart,
-                            hapticsEnabled: preferences.hapticsEnabled,
-                            onTap: () => _selectTime(
-                              context,
-                              preferences.quietHoursStart,
-                              (time) => ref
-                                  .read(settingsControllerProvider.notifier)
-                                  .updateQuietHoursStart(time),
-                            ),
-                          ),
-                          _TapRow(
-                            icon: Icons.access_time_filled_outlined,
-                            label: l10n.quietHoursEnd,
-                            value: preferences.quietHoursEnd,
-                            hapticsEnabled: preferences.hapticsEnabled,
-                            onTap: () => _selectTime(
-                              context,
-                              preferences.quietHoursEnd,
-                              (time) => ref
-                                  .read(settingsControllerProvider.notifier)
-                                  .updateQuietHoursEnd(time),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                    const SizedBox(height: MqSpacing.space6),
-
-                    // ── About section ────────────────────────────
-                    _SectionHeader(title: l10n.about),
-                    _SettingsCard(
-                      children: [
-                        GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: _handleVersionTap,
-                          child: _AboutAppRow(
-                            appName: l10n.appName,
-                            desc: l10n.aboutDesc,
+                              .updateNotificationsEnabled(v);
+                          if (msg != null && context.mounted) {
+                            context.showSnackBar(msg, isError: true);
+                          }
+                        },
+                      ),
+                      _ToggleRow(
+                        icon: Icons.bedtime_outlined,
+                        label: l10n.quietHours,
+                        value: preferences.quietHoursEnabled,
+                        semanticLabel: l10n.quietHours,
+                        hapticsEnabled: preferences.hapticsEnabled,
+                        onChanged: (v) => ref
+                            .read(settingsControllerProvider.notifier)
+                            .updateQuietHoursEnabled(v),
+                      ),
+                      if (preferences.quietHoursEnabled) ...[
+                        _TapRow(
+                          icon: Icons.access_time_outlined,
+                          label: l10n.quietHoursStart,
+                          value: preferences.quietHoursStart,
+                          hapticsEnabled: preferences.hapticsEnabled,
+                          onTap: () => _selectTime(
+                            context,
+                            preferences.quietHoursStart,
+                            (time) => ref
+                                .read(settingsControllerProvider.notifier)
+                                .updateQuietHoursStart(time),
                           ),
                         ),
-                        _InfoRow(
-                          icon: Icons.code_outlined,
-                          label: l10n.version,
-                          subtitle: '1.0.0',
-                        ),
-                        _InfoRow(
-                          icon: Icons.people_outline,
-                          label: l10n.about_theTeam,
-                          subtitle: l10n.about_theTeam_desc,
+                        _TapRow(
+                          icon: Icons.access_time_filled_outlined,
+                          label: l10n.quietHoursEnd,
+                          value: preferences.quietHoursEnd,
+                          hapticsEnabled: preferences.hapticsEnabled,
+                          onTap: () => _selectTime(
+                            context,
+                            preferences.quietHoursEnd,
+                            (time) => ref
+                                .read(settingsControllerProvider.notifier)
+                                .updateQuietHoursEnd(time),
+                          ),
                         ),
                       ],
-                    ),
-                    const SizedBox(height: MqSpacing.space6),
+                    ],
+                  ),
+                  const SizedBox(height: MqSpacing.space6),
 
-                    // ── Danger Zone section ──────────────────────
-                    //
-                    // Trailing position is deliberate — destructive
-                    // actions should not appear above About/read-only
-                    // content where they could be triggered absent-
-                    // mindedly while skimming the page.
-                    _SectionHeader(title: l10n.dangerZone),
-                    _DangerZoneCard(
-                      hapticsEnabled: preferences.hapticsEnabled,
-                      onTap: () => _confirmWipe(context, ref, l10n),
-                      subtitle: l10n.wipeDataConfirm,
-                      title: l10n.wipeData,
-                    ),
-                  ],
-                ),
+                  // ── About section ────────────────────────────
+                  _SectionHeader(title: l10n.about),
+                  _SettingsCard(
+                    children: [
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: _handleVersionTap,
+                        child: _AboutAppRow(
+                          appName: l10n.appName,
+                          desc: l10n.aboutDesc,
+                        ),
+                      ),
+                      _InfoRow(
+                        icon: Icons.code_outlined,
+                        label: l10n.version,
+                        subtitle: '1.0.0',
+                      ),
+                      _InfoRow(
+                        icon: Icons.people_outline,
+                        label: l10n.about_theTeam,
+                        subtitle: l10n.about_theTeam_desc,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: MqSpacing.space6),
+
+                  // ── Danger Zone section ──────────────────────
+                  //
+                  // Trailing position is deliberate — destructive
+                  // actions should not appear above About/read-only
+                  // content where they could be triggered absent-
+                  // mindedly while skimming the page.
+                  _SectionHeader(title: l10n.dangerZone),
+                  _DangerZoneCard(
+                    hapticsEnabled: preferences.hapticsEnabled,
+                    onTap: () => _confirmWipe(context, ref, l10n),
+                    subtitle: l10n.wipeDataConfirm,
+                    title: l10n.wipeData,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+      error: (error, stackTrace) => Center(
+        child: Padding(
+          padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.error_outline_rounded,
+                size: 48,
+                color: MqColors.slate500,
+              ),
+              const SizedBox(height: MqSpacing.space4),
+              Text(l10n.settingsError, textAlign: TextAlign.center),
+              const SizedBox(height: MqSpacing.space4),
+              FilledButton.icon(
+                onPressed: () => ref.invalidate(settingsControllerProvider),
+                icon: const Icon(Icons.refresh_rounded),
+                label: Text(l10n.loading.replaceAll('...', '')),
               ),
             ],
-          );
-        },
-        error: (error, stackTrace) => Center(
-          child: Padding(
-            padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.error_outline_rounded,
-                  size: 48,
-                  color: MqColors.slate500,
-                ),
-                const SizedBox(height: MqSpacing.space4),
-                Text(l10n.settingsError, textAlign: TextAlign.center),
-                const SizedBox(height: MqSpacing.space4),
-                FilledButton.icon(
-                  onPressed: () => ref.invalidate(settingsControllerProvider),
-                  icon: const Icon(Icons.refresh_rounded),
-                  label: Text(l10n.loading.replaceAll('...', '')),
-                ),
-              ],
-            ),
           ),
         ),
-        loading: () =>
-            const Center(child: CircularProgressIndicator(color: MqColors.red)),
       ),
+      loading: () =>
+          const Center(child: CircularProgressIndicator(color: MqColors.red)),
+    );
+
+    return Scaffold(
+      backgroundColor: dark ? MqColors.charcoal800 : MqColors.alabaster,
+      body: dark
+          ? Theme(data: _settingsDarkReadableTheme(context), child: body)
+          : body,
     );
   }
 
@@ -838,7 +856,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (ctx) {
-        return MqBottomSheet(
+        final sheet = MqBottomSheet(
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxHeight: MediaQuery.sizeOf(context).height * 0.6,
@@ -854,9 +872,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     title,
                     style: context.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: dark
-                          ? MqColors.contentPrimaryDark
-                          : MqColors.contentPrimary,
+                      color: dark ? Colors.white : MqColors.contentPrimary,
                     ),
                   ),
                 ),
@@ -880,7 +896,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                               color: isSelected
                                   ? MqColors.red
                                   : dark
-                                  ? MqColors.contentPrimaryDark
+                                  ? Colors.white
                                   : MqColors.contentPrimary,
                             ),
                           ),
@@ -901,6 +917,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
           ),
         );
+        return dark
+            ? Theme(data: _settingsDarkReadableTheme(context), child: sheet)
+            : sheet;
       },
     );
 
@@ -1068,7 +1087,7 @@ class _StopSearchSheetState extends ConsumerState<_StopSearchSheet> {
             .clamp(220.0, mediaQuery.size.height * 0.72)
             .toDouble();
 
-    return AnimatedPadding(
+    final sheet = AnimatedPadding(
       duration: const Duration(milliseconds: 180),
       curve: Curves.easeOutCubic,
       padding: EdgeInsetsDirectional.only(bottom: mediaQuery.viewInsets.bottom),
@@ -1080,9 +1099,7 @@ class _StopSearchSheetState extends ConsumerState<_StopSearchSheet> {
               Text(
                 l10n.favoriteStopIdTitle,
                 style: context.textTheme.titleMedium?.copyWith(
-                  color: dark
-                      ? MqColors.contentPrimaryDark
-                      : MqColors.contentPrimary,
+                  color: dark ? Colors.white : MqColors.contentPrimary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -1137,7 +1154,7 @@ class _StopSearchSheetState extends ConsumerState<_StopSearchSheet> {
                                     style: context.textTheme.titleSmall
                                         ?.copyWith(
                                           color: dark
-                                              ? MqColors.contentPrimaryDark
+                                              ? Colors.white
                                               : MqColors.contentPrimary,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -1199,6 +1216,9 @@ class _StopSearchSheetState extends ConsumerState<_StopSearchSheet> {
         ),
       ),
     );
+    return dark
+        ? Theme(data: _settingsDarkReadableTheme(context), child: sheet)
+        : sheet;
   }
 
   static IconData _stopIcon(String mode) {
@@ -1218,12 +1238,15 @@ class _StopSearchMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dark = context.isDarkMode;
     return Center(
       child: Text(
         text,
         textAlign: TextAlign.center,
         style: context.textTheme.bodyMedium?.copyWith(
-          color: MqColors.contentSecondary,
+          color: dark
+              ? Colors.white.withValues(alpha: 0.72)
+              : MqColors.contentSecondary,
         ),
       ),
     );
@@ -1420,43 +1443,46 @@ class _OpenDaySection extends ConsumerWidget {
     final picked = await showModalBottomSheet<int>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (_) => MqBottomSheet(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(
-                MqSpacing.space2,
-                0,
-                MqSpacing.space2,
-                MqSpacing.space2,
-              ),
-              child: Text(
-                l10n.openDay_remindMeBefore,
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: dark
-                      ? MqColors.contentPrimaryDark
-                      : MqColors.contentPrimary,
+      builder: (_) {
+        final sheet = MqBottomSheet(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(
+                  MqSpacing.space2,
+                  0,
+                  MqSpacing.space2,
+                  MqSpacing.space2,
+                ),
+                child: Text(
+                  l10n.openDay_remindMeBefore,
+                  style: context.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: dark ? Colors.white : MqColors.contentPrimary,
+                  ),
                 ),
               ),
-            ),
-            for (final m in options)
-              ListTile(
-                title: Text(l10n.openDay_minutesOption(m)),
-                trailing: m == current
-                    ? Icon(
-                        Icons.check_rounded,
-                        color: dark ? MqColors.brightRed : MqColors.red,
-                        size: 20,
-                      )
-                    : null,
-                onTap: () => Navigator.pop(context, m),
-              ),
-          ],
-        ),
-      ),
+              for (final m in options)
+                ListTile(
+                  title: Text(l10n.openDay_minutesOption(m)),
+                  trailing: m == current
+                      ? Icon(
+                          Icons.check_rounded,
+                          color: dark ? MqColors.brightRed : MqColors.red,
+                          size: 20,
+                        )
+                      : null,
+                  onTap: () => Navigator.pop(context, m),
+                ),
+            ],
+          ),
+        );
+        return dark
+            ? Theme(data: _settingsDarkReadableTheme(context), child: sheet)
+            : sheet;
+      },
     );
 
     if (picked != null) {
@@ -1595,9 +1621,7 @@ class _TapRow extends StatelessWidget {
                     label,
                     style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: dark
-                          ? MqColors.contentPrimaryDark
-                          : MqColors.contentPrimary,
+                      color: dark ? Colors.white : MqColors.contentPrimary,
                     ),
                   ),
                 ),
@@ -1694,9 +1718,7 @@ class _ToggleRow extends StatelessWidget {
                     label,
                     style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: dark
-                          ? MqColors.contentPrimaryDark
-                          : MqColors.contentPrimary,
+                      color: dark ? Colors.white : MqColors.contentPrimary,
                     ),
                   ),
                 ),
@@ -1764,16 +1786,16 @@ class _InfoRow extends StatelessWidget {
                     label,
                     style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w500,
-                      color: dark
-                          ? MqColors.contentPrimaryDark
-                          : MqColors.contentPrimary,
+                      color: dark ? Colors.white : MqColors.contentPrimary,
                     ),
                   ),
                   const SizedBox(height: MqSpacing.space1),
                   Text(
                     subtitle,
                     style: context.textTheme.bodySmall?.copyWith(
-                      color: MqColors.slate500,
+                      color: dark
+                          ? Colors.white.withValues(alpha: 0.72)
+                          : MqColors.slate500,
                     ),
                   ),
                 ],
@@ -1884,9 +1906,7 @@ class _CommutePreviewTile extends StatelessWidget {
                   modeLabel,
                   style: context.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: dark
-                        ? MqColors.contentPrimaryDark
-                        : MqColors.contentPrimary,
+                    color: dark ? Colors.white : MqColors.contentPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -1899,7 +1919,9 @@ class _CommutePreviewTile extends StatelessWidget {
                         ? (dark
                               ? Colors.white.withAlpha(200)
                               : MqColors.contentSecondary)
-                        : (dark ? MqColors.slate500 : MqColors.charcoal600),
+                        : (dark
+                              ? Colors.white.withValues(alpha: 0.55)
+                              : MqColors.charcoal600),
                     fontStyle: configured ? FontStyle.normal : FontStyle.italic,
                   ),
                 ),
@@ -1969,16 +1991,16 @@ class _AboutAppRow extends StatelessWidget {
                     appName,
                     style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: dark
-                          ? MqColors.contentPrimaryDark
-                          : MqColors.contentPrimary,
+                      color: dark ? Colors.white : MqColors.contentPrimary,
                     ),
                   ),
                   const SizedBox(height: MqSpacing.space1),
                   Text(
                     desc,
                     style: context.textTheme.bodySmall?.copyWith(
-                      color: MqColors.slate500,
+                      color: dark
+                          ? Colors.white.withValues(alpha: 0.72)
+                          : MqColors.slate500,
                     ),
                   ),
                 ],

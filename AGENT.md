@@ -49,6 +49,13 @@ lib/
 - All keys loaded via `--dart-define-from-file=.env` — never hardcoded in source
 - Use `scripts/run.sh` to launch with native key injection for Maps SDKs
 
+### Raouf: 2026-05-07 (AEST) — Settings dark mode: primary labels pure white
+**Scope:** Settings presentation / dark theme readability.
+**Summary:** Added `_settingsDarkReadableTheme` (white `textTheme` body/display + `colorScheme.onSurface`) and wrapped the Settings scaffold body plus modal sheets (diagnostics easter egg, `_showPicker`, `_StopSearchSheet`, Open Day lead-time picker) so inherited Material/`ListTile` text reads pure white instead of alabaster-mapped `contentPrimaryDark`. Replaced explicit dark primary branches with `Colors.white`; tuned dark subtitles (`_InfoRow`, `_AboutAppRow`, `_StopSearchMessage`, commute preview placeholder) to translucent white for clearer hierarchy on charcoal surfaces.
+**Files Changed:** `lib/features/settings/presentation/pages/settings_page.dart`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `dart format lib/features/settings/presentation/pages/settings_page.dart`; `flutter analyze lib/features/settings/presentation/pages/settings_page.dart` (no issues).
+**Follow-ups:** If wipe/other dialogs still look tinted off-white under Material defaults outside Settings subtree, wrap those routes similarly.
+
 ### Raouf: 2026-05-07 (AEST) — Dropped google_maps_cluster_manager (symbol clash breaks flutter test)
 **Scope:** Google renderer dependencies / `scripts/check.sh`.
 **Summary:** Removed `google_maps_cluster_manager` — its imports collide with `google_maps_flutter_platform_interface` types (`Cluster`, `ClusterManager`), causing compilation failure when tests compile transitive map code. Building pins are back to a plain `Set<Marker>` from `_buildingMarkers()` while retaining contrast polylines, route-fit padding, traffic/map-type toggles, destination marker, and navigation bearing.
