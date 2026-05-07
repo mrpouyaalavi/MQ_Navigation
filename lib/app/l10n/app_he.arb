@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "מפת קמפוס בשתי מצבים",
+  "googleMapTrafficLayer": "תנועה",
+  "onboardingPrivacyBody": "בלי חשבונות, בלי מעקב. המיקום והלוח זמנים נשארים כולם במכשיר שלכם.",
+  "googleMapTypeHybrid": "משולב",
+  "onboardingTransitBody": "עקבו אחר יציאות מטרו סידני, רכבות ואוטובוסים בזמן אמת ממסך הבית.",
+  "onboardingStart": "התחילו לחקור",
+  "onboardingSkip": "דלג",
+  "googleMapChooseMapType": "סוג מפה",
+  "onboardingTransitTitle": "נסיעות בשידור חי",
+  "googleMapClusterSemanticLabel": "{count} מיקומים",
+  "onboardingMapBody": "ניווטו ב-MQ עם מפות גוגל מהעולם האמיתי או תצוגת הקמפוס המאוירת המפורטת שלנו.",
+  "googleMapTypeSatellite": "לוויין",
+  "googleMapTypeTerrain": "שטח",
+  "onboardingPrivacyTitle": "פרטיות קודם",
+  "onboardingNext": "הבא",
+  "googleMapTypeNormal": "ברירת מחדל",
+  "onboardingOpenDayBody": "גלו אירועי קמפוס, עקבו אחר לוח זמנים וקבלו התראות ליום הפתוח.",
+  "onboardingOpenDayTitle": "מוכנים ליום הפתוח",
+  "onboardingTransitDataAttribution": "זמני יציאה בזמן אמת משתמשים בנתונים פתוחים מ-Transport for NSW (TfNSW)."
 }

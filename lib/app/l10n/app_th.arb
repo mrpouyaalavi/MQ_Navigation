@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "แผนที่วิทยาเขตสองโหมด",
+  "googleMapTrafficLayer": "จราจร",
+  "onboardingPrivacyBody": "ไม่มีบัญชี ไม่มีการติดตาม ตำแหน่งและตารางเวลาอยู่บนอุปกรณ์ของคุณเท่านั้น",
+  "googleMapTypeHybrid": "ผสม",
+  "onboardingTransitBody": "ติดตามเวลาออกของรถไฟใต้ดินซิดนีย์ รถไฟ และรถโดยสารแบบเรียลไทม์จากหน้าจอหลัก",
+  "onboardingStart": "เริ่มสำรวจ",
+  "onboardingSkip": "ข้าม",
+  "googleMapChooseMapType": "ประเภทแผนที่",
+  "onboardingTransitTitle": "การเดินทางสด",
+  "googleMapClusterSemanticLabel": "{count} แห่ง",
+  "onboardingMapBody": "นำทาง MQ ด้วย Google แผนที่โลกจริง หรือมุมมองวิทยาเขตแบบภาพประกอบโดยละเอียดของเรา",
+  "googleMapTypeSatellite": "ดาวเทียม",
+  "googleMapTypeTerrain": "ภูมิประเทศ",
+  "onboardingPrivacyTitle": "ความเป็นส่วนตัวมาก่อน",
+  "onboardingNext": "ถัดไป",
+  "googleMapTypeNormal": "ค่าเริ่มต้น",
+  "onboardingOpenDayBody": "ค้นพบกิจกรรมในวิทยาเขต ติดตามตาราง และรับการแจ้งเตือนสำหรับวันเปิดบ้าน",
+  "onboardingOpenDayTitle": "พร้อมสำหรับวันเปิดบ้าน",
+  "onboardingTransitDataAttribution": "เวลาออกแบบเรียลไทม์ใช้ข้อมูลเปิดจาก Transport for NSW (TfNSW)"
 }

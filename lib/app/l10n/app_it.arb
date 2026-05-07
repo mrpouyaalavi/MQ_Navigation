@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Mappa del campus a doppia modalità",
+  "googleMapTrafficLayer": "Traffico",
+  "onboardingPrivacyBody": "Nessun account, nessun tracciamento. Posizione e orari restano solo sul tuo dispositivo.",
+  "googleMapTypeHybrid": "Ibrida",
+  "onboardingTransitBody": "Segui in tempo reale le partenze della metro di Sydney, treni e autobus dalla schermata principale.",
+  "onboardingStart": "Inizia a esplorare",
+  "onboardingSkip": "Salta",
+  "googleMapChooseMapType": "Tipo di mappa",
+  "onboardingTransitTitle": "Spostamenti in diretta",
+  "googleMapClusterSemanticLabel": "{count} luoghi",
+  "onboardingMapBody": "Naviga MQ con Google Maps reale o la nostra vista illustrata dettagliata del campus.",
+  "googleMapTypeSatellite": "Satellite",
+  "googleMapTypeTerrain": "Terreno",
+  "onboardingPrivacyTitle": "Privacy al primo posto",
+  "onboardingNext": "Avanti",
+  "googleMapTypeNormal": "Predefinito",
+  "onboardingOpenDayBody": "Scopri gli eventi del campus, segui il programma e ricevi notifiche per l’Open Day.",
+  "onboardingOpenDayTitle": "Pronto per l’Open Day",
+  "onboardingTransitDataAttribution": "Le partenze in tempo reale usano dati aperti di Transport for NSW (TfNSW)."
 }

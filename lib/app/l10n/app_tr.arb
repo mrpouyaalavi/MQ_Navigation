@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "İki modlu kampüs haritası",
+  "googleMapTrafficLayer": "Trafik",
+  "onboardingPrivacyBody": "Hesap yok, izleme yok. Konum ve tarifeniz tamamen cihazınızda kalır.",
+  "googleMapTypeHybrid": "Hibrit",
+  "onboardingTransitBody": "Ana ekrandan Sydney Metro, tren ve otobüs kalkışlarını gerçek zamanlı takip edin.",
+  "onboardingStart": "Keşfetmeye başla",
+  "onboardingSkip": "Atla",
+  "googleMapChooseMapType": "Harita türü",
+  "onboardingTransitTitle": "Canlı günlük yolculuk",
+  "googleMapClusterSemanticLabel": "{count} konum",
+  "onboardingMapBody": "Gerçek dünya Google Haritalar veya ayrıntılı görsel kampüs görünümümüzle MQ’da gezinin.",
+  "googleMapTypeSatellite": "Uydu",
+  "googleMapTypeTerrain": "Arazi",
+  "onboardingPrivacyTitle": "Önce gizlilik",
+  "onboardingNext": "İleri",
+  "googleMapTypeNormal": "Varsayılan",
+  "onboardingOpenDayBody": "Kampüs etkinliklerini keşfedin, programı takip edin ve açık gün bildirimleri alın.",
+  "onboardingOpenDayTitle": "Açık gün için hazır",
+  "onboardingTransitDataAttribution": "Gerçek zamanlı kalkışlar, Transport for NSW (TfNSW) açık verilerini kullanır."
 }

@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Campuskaart met twee weergaven",
+  "googleMapTrafficLayer": "Verkeer",
+  "onboardingPrivacyBody": "Geen accounts, geen tracking. Locatie en dienstregeling blijven volledig op je apparaat.",
+  "googleMapTypeHybrid": "Hybride",
+  "onboardingTransitBody": "Volg vertrekken van Sydney Metro, treinen en bussen in realtime vanaf het startscherm.",
+  "onboardingStart": "Begin met ontdekken",
+  "onboardingSkip": "Overslaan",
+  "googleMapChooseMapType": "Kaarttype",
+  "onboardingTransitTitle": "Live woon-werkverkeer",
+  "googleMapClusterSemanticLabel": "{count} locaties",
+  "onboardingMapBody": "Navigeer op MQ met echte Google Maps of ons gedetailleerde geïllustreerde campusbeeld.",
+  "googleMapTypeSatellite": "Satelliet",
+  "googleMapTypeTerrain": "Terrein",
+  "onboardingPrivacyTitle": "Privacy eerst",
+  "onboardingNext": "Volgende",
+  "googleMapTypeNormal": "Standaard",
+  "onboardingOpenDayBody": "Ontdek campusactiviteiten, volg het schema en ontvang meldingen voor de open dag.",
+  "onboardingOpenDayTitle": "Klaar voor open dag",
+  "onboardingTransitDataAttribution": "Realtime vertrekken gebruiken open data van Transport for NSW (TfNSW)."
 }

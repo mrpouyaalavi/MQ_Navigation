@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Peta kampus dwi mod",
+  "googleMapTrafficLayer": "Trafik",
+  "onboardingPrivacyBody": "Tiada akaun, tiada penjejakan. Lokasi dan jadual kekal sepenuhnya pada peranti anda.",
+  "googleMapTypeHybrid": "Hibrid",
+  "onboardingTransitBody": "Jejak masa berlepas Sydney Metro, kereta api dan bas secara masa nyata dari skrin utama.",
+  "onboardingStart": "Mula teroka",
+  "onboardingSkip": "Langkau",
+  "googleMapChooseMapType": "Jenis peta",
+  "onboardingTransitTitle": "Komuter langsung",
+  "googleMapClusterSemanticLabel": "{count} lokasi",
+  "onboardingMapBody": "Navigasi MQ dengan Google Maps dunia nyata atau pandangan kampus berilustrasi terperinci kami.",
+  "googleMapTypeSatellite": "Satelit",
+  "googleMapTypeTerrain": "Medan",
+  "onboardingPrivacyTitle": "Privasi dahulu",
+  "onboardingNext": "Seterusnya",
+  "googleMapTypeNormal": "Lalai",
+  "onboardingOpenDayBody": "Temui acara kampus, ikut jadual, dan terima pemberitahuan untuk Hari Terbuka.",
+  "onboardingOpenDayTitle": "Sedia untuk Hari Terbuka",
+  "onboardingTransitDataAttribution": "Berlepas masa nyata menggunakan data terbuka daripada Transport for NSW (TfNSW)."
 }

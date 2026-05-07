@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Bản đồ khuôn viên hai chế độ",
+  "googleMapTrafficLayer": "Giao thông",
+  "onboardingPrivacyBody": "Không tài khoản, không theo dõi. Vị trí và lịch trình chỉ nằm trên thiết bị của bạn.",
+  "googleMapTypeHybrid": "Kết hợp",
+  "onboardingTransitBody": "Theo dõi giờ khởi hành của Sydney Metro, tàu và xe buýt theo thời gian thực từ màn hình chính.",
+  "onboardingStart": "Bắt đầu khám phá",
+  "onboardingSkip": "Bỏ qua",
+  "googleMapChooseMapType": "Loại bản đồ",
+  "onboardingTransitTitle": "Đi lại trực tiếp",
+  "googleMapClusterSemanticLabel": "{count} địa điểm",
+  "onboardingMapBody": "Điều hướng MQ bằng Google Maps thực hoặc khung cảnh minh họa chi tiết của khuôn viên.",
+  "googleMapTypeSatellite": "Vệ tinh",
+  "googleMapTypeTerrain": "Địa hình",
+  "onboardingPrivacyTitle": "Riêng tư là trên hết",
+  "onboardingNext": "Tiếp theo",
+  "googleMapTypeNormal": "Mặc định",
+  "onboardingOpenDayBody": "Khám phá sự kiện khuôn viên, theo dõi lịch và nhận thông báo cho Ngày hội mở cửa.",
+  "onboardingOpenDayTitle": "Sẵn sàng cho Ngày hội mở cửa",
+  "onboardingTransitDataAttribution": "Giờ khởi hành theo thời gian thực dùng dữ liệu mở từ Transport for NSW (TfNSW)."
 }

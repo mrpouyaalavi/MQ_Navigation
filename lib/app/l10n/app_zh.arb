@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "双模式校园地图",
+  "googleMapTrafficLayer": "路况",
+  "onboardingPrivacyBody": "无需账号，不做追踪。您的位置与时刻表完全保存在设备上。",
+  "googleMapTypeHybrid": "混合",
+  "onboardingTransitBody": "在主屏幕实时查看悉尼地铁、火车与巴士发车信息。",
+  "onboardingStart": "开始探索",
+  "onboardingSkip": "跳过",
+  "googleMapChooseMapType": "地图类型",
+  "onboardingTransitTitle": "实时通勤",
+  "googleMapClusterSemanticLabel": "{count} 个地点",
+  "onboardingMapBody": "使用真实世界的谷歌地图或我们细致的校园插画视图，在麦考瑞校园内导航。",
+  "googleMapTypeSatellite": "卫星",
+  "googleMapTypeTerrain": "地形",
+  "onboardingPrivacyTitle": "隐私至上",
+  "onboardingNext": "下一步",
+  "googleMapTypeNormal": "默认",
+  "onboardingOpenDayBody": "发现校园活动、跟进日程，并接收开放日提醒。",
+  "onboardingOpenDayTitle": "开放日就绪",
+  "onboardingTransitDataAttribution": "实时发车信息使用新南威尔士州交通局（Transport for NSW，TfNSW）的开放数据。"
 }

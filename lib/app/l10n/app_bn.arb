@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "দ্বৈত মোডের ক্যাম্পাস মানচিত্র",
+  "googleMapTrafficLayer": "ট্রাফিক",
+  "onboardingPrivacyBody": "কোনো অ্যাকাউন্ট নয়, কোনো ট্র্যাকিং নয়। আপনার অবস্থান ও সময়সূচী সম্পূর্ণভাবে আপনার ডিভাইসেই থাকে।",
+  "googleMapTypeHybrid": "হাইব্রিড",
+  "onboardingTransitBody": "হোম স্ক্রিন থেকে সিডনি মেট্রো, ট্রেন ও বাসের রিয়েল-টাইম ছাড়ার সময় ট্র্যাক করুন।",
+  "onboardingStart": "অন্বেষণ শুরু করুন",
+  "onboardingSkip": "এড়িয়ে যান",
+  "googleMapChooseMapType": "মানচিত্রের ধরন",
+  "onboardingTransitTitle": "লাইভ কমিউট",
+  "googleMapClusterSemanticLabel": "{count}টি অবস্থান",
+  "onboardingMapBody": "বাস্তব বিশ্বের Google Maps অথবা আমাদের বিস্তারিত চিত্রায়িত ক্যাম্পাস ভিউ দিয়ে MQ নেভিগেট করুন।",
+  "googleMapTypeSatellite": "স্যাটেলাইট",
+  "googleMapTypeTerrain": "ভূখণ্ড",
+  "onboardingPrivacyTitle": "গোপনীয়তা আগে",
+  "onboardingNext": "পরবর্তী",
+  "googleMapTypeNormal": "ডিফল্ট",
+  "onboardingOpenDayBody": "ক্যাম্পাস ইভেন্ট আবিষ্কার করুন, সময়সূচী ট্র্যাক করুন এবং ওপেন ডের জন্য বিজ্ঞপ্তি পান।",
+  "onboardingOpenDayTitle": "ওপেন ডে প্রস্তুত",
+  "onboardingTransitDataAttribution": "রিয়েল-টাইম ছাড়ার তথ্য নিউ সাউথ ওয়েলস পরিবহন কর্তৃপক্ষের (Transport for NSW, TfNSW) উন্মুক্ত ডেটা ব্যবহার করে।"
 }

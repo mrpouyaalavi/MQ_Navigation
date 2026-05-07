@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "دو موڈ والا کیمپس نقشہ",
+  "googleMapTrafficLayer": "ٹریفک",
+  "onboardingPrivacyBody": "کوئی اکاؤنٹ نہیں، کوئی ٹریکنگ نہیں۔ آپ کا مقام اور شیڈول مکمل طور پر آپ کے آلہ پر رہتا ہے۔",
+  "googleMapTypeHybrid": "ہائبرڈ",
+  "onboardingTransitBody": "ہوم اسکرین سے سڈنی میٹرو، ٹرینوں اور بسوں کی روانگیوں کو حقیقی وقت میں ٹریک کریں۔",
+  "onboardingStart": "دریافت شروع کریں",
+  "onboardingSkip": "چھوڑیں",
+  "googleMapChooseMapType": "نقشے کی قسم",
+  "onboardingTransitTitle": "لائیو سفر",
+  "googleMapClusterSemanticLabel": "{count} مقامات",
+  "onboardingMapBody": "حقیقی دنیا کے Google Maps یا ہمارے تفصیلی مصور کیمپس منظر کے ساتھ MQ میں نیویگیٹ کریں۔",
+  "googleMapTypeSatellite": "سیٹلائٹ",
+  "googleMapTypeTerrain": "زمینی ڈھال",
+  "onboardingPrivacyTitle": "رازداری پہلے",
+  "onboardingNext": "اگلا",
+  "googleMapTypeNormal": "ڈیفالٹ",
+  "onboardingOpenDayBody": "کیمپس ایونٹس دریافت کریں، شیڈول ٹریک کریں، اور اوپن ڈے کے لیے اطلاعات حاصل کریں۔",
+  "onboardingOpenDayTitle": "اوپن ڈے کے لیے تیار",
+  "onboardingTransitDataAttribution": "حقیقی وقت کی روانگیاں Transport for NSW (TfNSW) کے کھلے ڈیٹا کو استعمال کرتی ہیں۔"
 }

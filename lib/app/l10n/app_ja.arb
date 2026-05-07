@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "キャンパスマップ（2つのモード）",
+  "googleMapTrafficLayer": "交通情報",
+  "onboardingPrivacyBody": "アカウント不要、追跡なし。位置情報と時刻表はすべて端末内に留まります。",
+  "googleMapTypeHybrid": "ハイブリッド",
+  "onboardingTransitBody": "ホーム画面から、シドニー・メトロ、電車、バスのリアルタイム発車情報を確認できます。",
+  "onboardingStart": "さあ始める",
+  "onboardingSkip": "スキップ",
+  "googleMapChooseMapType": "地図の種類",
+  "onboardingTransitTitle": "ライブ通勤情報",
+  "googleMapClusterSemanticLabel": "{count} か所",
+  "onboardingMapBody": "実世界のGoogleマップ、または詳細なキャンパス俯瞰イラストでMQキャンパスをナビゲートできます。",
+  "googleMapTypeSatellite": "衛星",
+  "googleMapTypeTerrain": "地形",
+  "onboardingPrivacyTitle": "プライバシー優先",
+  "onboardingNext": "次へ",
+  "googleMapTypeNormal": "デフォルト",
+  "onboardingOpenDayBody": "キャンパスイベントを探し、スケジュールを追跡し、オープンデイの通知を受け取れます。",
+  "onboardingOpenDayTitle": "オープンデイ対応",
+  "onboardingTransitDataAttribution": "リアルタイムの発車情報は Transport for NSW（TfNSW）のオープンデータを利用しています。"
 }

@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "두 가지 모드 캠퍼스 지도",
+  "googleMapTrafficLayer": "교통정보",
+  "onboardingPrivacyBody": "계정 없음, 추적 없음. 위치와 시간표는 기기 안에만 보관됩니다.",
+  "googleMapTypeHybrid": "하이브리드",
+  "onboardingTransitBody": "홈 화면에서 시드니 메트로, 기차, 버스의 실시간 출발 정보를 확인하세요.",
+  "onboardingStart": "탐색 시작",
+  "onboardingSkip": "건너뛰기",
+  "googleMapChooseMapType": "지도 유형",
+  "onboardingTransitTitle": "실시간 통근",
+  "googleMapClusterSemanticLabel": "{count}곳",
+  "onboardingMapBody": "실제 Google 지도 또는 세밀한 캠퍼스 일러스트 뷰로 MQ를 안내합니다.",
+  "googleMapTypeSatellite": "위성",
+  "googleMapTypeTerrain": "지형",
+  "onboardingPrivacyTitle": "프라이버시 우선",
+  "onboardingNext": "다음",
+  "googleMapTypeNormal": "기본",
+  "onboardingOpenDayBody": "캠퍼스 행사를 찾고 일정을 따라가며 오픈 데이 알림을 받으세요.",
+  "onboardingOpenDayTitle": "오픈 데이 준비",
+  "onboardingTransitDataAttribution": "실시간 출발 정보는 Transport for NSW(TfNSW)의 공개 데이터를 사용합니다."
 }

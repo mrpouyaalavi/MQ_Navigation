@@ -1,3 +1,31 @@
+### Raouf: 2026-05-07 (AEST) — TfNSW open-data attribution on onboarding commute slide
+**Scope:** Onboarding UI + ARBs (`onboardingTransitDataAttribution`).
+**Summary:** Added l10n key **`onboardingTransitDataAttribution`** crediting **Transport for NSW (TfNSW)** open data beneath **`onboardingTransitBody`** so operator wording stays accurate while retaining mandatory attribution. Extended **`_OnboardingSlideData`** with optional **`footnote`**, styled as **`bodySmall`** with **`MqColors.contentSecondary`** / **`contentSecondaryDark`**. Synced EN template plus **34** translated ARBs and `scripts/onboarding_google_map_arb_translations.json` via **`scripts/sync_tfnsw_attribution_arb.py`** ([TfNSW / NSW transport cluster context](https://transport.nsw.gov.au/transport-for-nsw-information-guide)).
+**Files Changed:** `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locales), `lib/app/l10n/generated/*`, `lib/features/home/presentation/pages/onboarding_page.dart`, `scripts/onboarding_google_map_arb_translations.json`, `scripts/sync_tfnsw_attribution_arb.py`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `python3 scripts/sync_tfnsw_attribution_arb.py`; `dart format lib/features/home/presentation/pages/onboarding_page.dart`; `flutter gen-l10n`; `flutter analyze lib/features/home/presentation/pages/onboarding_page.dart lib/app/l10n` (no issues).
+**Follow-ups:** None unless legal asks exact wording (“includes” vs “uses”) or placement (Settings footer).
+
+### Raouf: 2026-05-07 (AEST) — ARB meaning pass (TfNSW vs Sydney Metro, dual-mode map title, SI satellite)
+**Scope:** `app_en.arb` + `scripts/onboarding_google_map_arb_translations.json` + 34 locale ARBs / onboarding copy.
+**Summary:** Web-checked wording: **Transport for NSW** coordinates NSW transport while **Sydney Metro** is the metro-rail operator ([Transport for NSW information guide](https://transport.nsw.gov.au/transport-for-nsw-information-guide)). Replaced **“TfNSW Metro and Bus”** with **Sydney Metro, trains, and buses** in English and all translations. Renamed **“Dual Campus Map”** → **“Dual-mode campus map”** so locales convey **two map modes** (Google vs illustrated), not a duplicate map. Left **Hybrid/Terrain** menu labels short (Google defines hybrid as satellite + labels and terrain as physical relief — [Map types](https://developers.google.com/maps/documentation/javascript/maptypes)); Sinhala **satellite** label set to **චන්ද්‍රිකා**. **Open Day** matches Macquarie branding ([Open Day](https://mq.edu.au/study/events/open-day)); strings unchanged there.
+**Files Changed:** `lib/app/l10n/app_en.arb`, `lib/app/l10n/app_*.arb` (34 locales), `scripts/onboarding_google_map_arb_translations.json`, `scripts/patch_arb_meaning_from_research.py`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `python3 scripts/patch_arb_meaning_from_research.py`; `python3 scripts/apply_onboarding_google_map_arb_translations.py`; `flutter gen-l10n`; `flutter analyze lib/app/l10n` (no issues).
+**Follow-ups:** If legal/comms wants explicit **Transport for NSW** attribution in UI, add a separate short footnote string without reverting to “TfNSW Metro”.
+
+### Raouf: 2026-05-07 (AEST) — Localised onboarding + Google map ARB strings (34 locales)
+**Scope:** Flutter i18n (`lib/app/l10n`) / onboarding & map chrome copy.
+**Summary:** Replaced English placeholders for the **18** onboarding and Google-map-control keys with **locale-specific translations** across **34** non-English ARBs. Added `scripts/onboarding_google_map_arb_translations.json` (UTF-8 source strings) and `scripts/apply_onboarding_google_map_arb_translations.py` to merge patches deterministically. Preserved ICU `{count}` in `googleMapClusterSemanticLabel`; kept **TfNSW** as a proper-name acronym where cited.
+**Files Changed:** `lib/app/l10n/app_*.arb` (34 locale files), `scripts/onboarding_google_map_arb_translations.json`, `scripts/apply_onboarding_google_map_arb_translations.py`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** `python3 -m json.tool scripts/onboarding_google_map_arb_translations.json`; `python3 scripts/apply_onboarding_google_map_arb_translations.py`; `flutter gen-l10n`; `flutter analyze lib/app/l10n` (no issues); `.dart_tool/untranslated.json` remains `{}`.
+**Follow-ups:** Native-speaker review for low-resource scripts (e.g. si, ne, ta, bn); confirm `app_zh.arb` targets Simplified Chinese only if you add Traditional later.
+
+### Raouf: 2026-05-07 (AEST) — ARB parity: non-English locales synced to English key count
+**Scope:** Flutter i18n (`lib/app/l10n`).
+**Summary:** Every `app_*.arb` locale except `app_en.arb` was missing **18** message keys (onboarding map/transit/privacy/Open Day copy, onboarding chrome buttons, and Google map traffic/type/cluster semantic strings). Merged those entries into all **34** translated ARBs using **English strings as placeholders** so message-key sets match the template (`app_en.arb`). Ran `flutter gen-l10n`; `.dart_tool/untranslated.json` is now empty.
+**Files Changed:** `lib/app/l10n/app_*.arb` (34 locale files), `.dart_tool/untranslated.json`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Python parity assertion (`message_keys(loc) == message_keys(en)`); `flutter gen-l10n`; `flutter analyze lib/app/l10n` (no issues).
+**Follow-ups:** Superseded by the follow-up Raouf entry that applies full locale translations for those keys.
+
 ### Raouf: 2026-05-07 (AEST) — Settings dark mode: primary labels pure white
 **Scope:** Settings presentation / dark theme readability.
 **Summary:** Added `_settingsDarkReadableTheme` (white `textTheme` body/display + `colorScheme.onSurface`) and wrapped the Settings scaffold body plus modal sheets (diagnostics easter egg, `_showPicker`, `_StopSearchSheet`, Open Day lead-time picker) so inherited Material/`ListTile` text reads pure white instead of alabaster-mapped `contentPrimaryDark`. Replaced explicit dark primary branches with `Colors.white`; tuned dark subtitles (`_InfoRow`, `_AboutAppRow`, `_StopSearchMessage`, commute preview placeholder) to translucent white for clearer hierarchy on charcoal surfaces.

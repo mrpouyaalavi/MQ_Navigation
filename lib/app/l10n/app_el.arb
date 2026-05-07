@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Χάρτης πανεπιστημιούπολης σε διπλή λειτουργία",
+  "googleMapTrafficLayer": "Κίνηση",
+  "onboardingPrivacyBody": "Χωρίς λογαριασμούς, χωρίς παρακολούθηση. Η τοποθεσία και το πρόγραμμα μένουν εξολοκλήρου στη συσκευή σας.",
+  "googleMapTypeHybrid": "Υβριδικός",
+  "onboardingTransitBody": "Παρακολουθήστε σε πραγματικό χρόνο τις αναχωρήσεις του Sydney Metro, τρένων και λεωφορείων από την αρχική οθόνη.",
+  "onboardingStart": "Ξεκινήστε την εξερεύνηση",
+  "onboardingSkip": "Παράλειψη",
+  "googleMapChooseMapType": "Τύπος χάρτη",
+  "onboardingTransitTitle": "Ζωντανή μετακίνηση",
+  "googleMapClusterSemanticLabel": "{count} τοποθεσίες",
+  "onboardingMapBody": "Πλοηγηθείτε στο MQ με τους πραγματικούς χάρτες Google ή την λεπτομερή εικονογραφημένη άποψη του campus.",
+  "googleMapTypeSatellite": "Δορυφόρος",
+  "googleMapTypeTerrain": "Ανάγλυφο",
+  "onboardingPrivacyTitle": "Απόρρητο πρώτα",
+  "onboardingNext": "Επόμενο",
+  "googleMapTypeNormal": "Προεπιλογή",
+  "onboardingOpenDayBody": "Ανακαλύψτε εκδηλώσεις στο campus, παρακολουθήστε το πρόγραμμα και λάβετε ειδοποιήσεις για την Ημέρα Ανοιχτών Θυρών.",
+  "onboardingOpenDayTitle": "Έτοιμοι για την Ημέρα Ανοιχτών Θυρών",
+  "onboardingTransitDataAttribution": "Οι αναχωρήσεις σε πραγματικό χρόνο χρησιμοποιούν ανοιχτά δεδομένα από το Transport for NSW (TfNSW)."
 }

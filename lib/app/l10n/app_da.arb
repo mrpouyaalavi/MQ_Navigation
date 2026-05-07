@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Campuskort med to tilstande",
+  "googleMapTrafficLayer": "Trafik",
+  "onboardingPrivacyBody": "Ingen konti, ingen sporing. Din placering og din køreplan forbliver på din enhed.",
+  "googleMapTypeHybrid": "Hybrid",
+  "onboardingTransitBody": "Følg Sydney Metro, tog og busser i realtid fra startskærmen.",
+  "onboardingStart": "Begynd at udforske",
+  "onboardingSkip": "Spring over",
+  "googleMapChooseMapType": "Korttype",
+  "onboardingTransitTitle": "Live pendling",
+  "googleMapClusterSemanticLabel": "{count} steder",
+  "onboardingMapBody": "Naviger MQ med rigtige Google Maps eller vores detaljerede illustration af campus.",
+  "googleMapTypeSatellite": "Satellit",
+  "googleMapTypeTerrain": "Terræn",
+  "onboardingPrivacyTitle": "Privatliv først",
+  "onboardingNext": "Næste",
+  "googleMapTypeNormal": "Standard",
+  "onboardingOpenDayBody": "Opdag campus-events, følg programmet og få beskeder til åbent hus.",
+  "onboardingOpenDayTitle": "Klar til åbent hus",
+  "onboardingTransitDataAttribution": "Afgang i realtid bruger åbne data fra Transport for NSW (TfNSW)."
 }

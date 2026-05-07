@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Hartă campus în două moduri",
+  "googleMapTrafficLayer": "Trafic",
+  "onboardingPrivacyBody": "Fără conturi, fără urmărire. Locația și orarul rămân doar pe dispozitivul dvs.",
+  "googleMapTypeHybrid": "Hibrid",
+  "onboardingTransitBody": "Urmăriți în timp real plecările pentru Sydney Metro, trenuri și autobuze de pe ecranul principal.",
+  "onboardingStart": "Începeți explorarea",
+  "onboardingSkip": "Sari peste",
+  "googleMapChooseMapType": "Tip hartă",
+  "onboardingTransitTitle": "Naveta în direct",
+  "googleMapClusterSemanticLabel": "{count} locații",
+  "onboardingMapBody": "Navigați în MQ cu Google Maps din lumea reală sau cu vederea ilustrată detaliată a campusului.",
+  "googleMapTypeSatellite": "Satelit",
+  "googleMapTypeTerrain": "Relief",
+  "onboardingPrivacyTitle": "Confidențialitatea pe primul loc",
+  "onboardingNext": "Înainte",
+  "googleMapTypeNormal": "Implicit",
+  "onboardingOpenDayBody": "Descoperiți evenimentele campusului, urmăriți programul și primiți notificări pentru ziua porților deschise.",
+  "onboardingOpenDayTitle": "Pregătit pentru ziua porților deschise",
+  "onboardingTransitDataAttribution": "Plecările în timp real folosesc date deschise de la Transport for NSW (TfNSW)."
 }

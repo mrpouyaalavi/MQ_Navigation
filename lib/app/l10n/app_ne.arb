@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "दुई मोडको क्याम्पस नक्सा",
+  "googleMapTrafficLayer": "ट्राफिक",
+  "onboardingPrivacyBody": "खाता छैन, ट्र्याकिङ छैन। तपाईंको स्थान र समय तालिका पूर्ण रूपमा तपाईंको उपकरणमा रहन्छ।",
+  "googleMapTypeHybrid": "संकर",
+  "onboardingTransitBody": "गृह स्क्रिनबाट सिड्नी मेट्रो, रेल र बसका प्रस्थान समय वास्तविक समयमा ट्र्याक गर्नुहोस्।",
+  "onboardingStart": "अन्वेषण सुरु गर्नुहोस्",
+  "onboardingSkip": "छोड्नुहोस्",
+  "googleMapChooseMapType": "नक्साको प्रकार",
+  "onboardingTransitTitle": "प्रत्यक्ष यात्रा",
+  "googleMapClusterSemanticLabel": "{count} स्थानहरू",
+  "onboardingMapBody": "वास्तविक संसारको Google Maps वा हाम्रो विस्तृत चित्रित क्याम्पस दृश्यसँग MQ नेभिगेट गर्नुहोस्।",
+  "googleMapTypeSatellite": "उपग्रह",
+  "googleMapTypeTerrain": "भूभाग",
+  "onboardingPrivacyTitle": "गोपनीयता पहिलो",
+  "onboardingNext": "अर्को",
+  "googleMapTypeNormal": "पूर्वनिर्धारित",
+  "onboardingOpenDayBody": "क्याम्पस कार्यक्रमहरू पत्ता लगाउनुहोस्, तालिका ट्र्याक गर्नुहोस् र खुला दिनका लागि सूचना पाउनुहोस्।",
+  "onboardingOpenDayTitle": "खुला दिनका लागि तयार",
+  "onboardingTransitDataAttribution": "वास्तविक-समय प्रस्थानहरूले Transport for NSW (TfNSW) को खुला डाटा प्रयोग गर्छन्।"
 }

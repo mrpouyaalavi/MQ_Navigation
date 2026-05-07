@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "ද්වි-මාදිලි කැම්පස් සිතියම",
+  "googleMapTrafficLayer": "රථවාහනය",
+  "onboardingPrivacyBody": "ගිණුම් නැත, ලුහුබැඳීම් නැත. ඔබේ ස්ථානය සහ කාලසටහන සම්පූර්ණයෙන්ම ඔබේ උපාංගයේ පමණයි.",
+  "googleMapTypeHybrid": "මිශ්‍ර",
+  "onboardingTransitBody": "මුල් තිරයෙන් සිඩ්නි මෙට්‍රෝ, දුම්රිය සහ බස් රථ පිටත්වීම් සජීවීව ලුහුබැඳෙන්න.",
+  "onboardingStart": "ගවේෂණය අරඹන්න",
+  "onboardingSkip": "මඟ හරින්න",
+  "googleMapChooseMapType": "සිතියම් වර්ගය",
+  "onboardingTransitTitle": "සජීවී ගමන්",
+  "googleMapClusterSemanticLabel": "ස්ථාන {count}",
+  "onboardingMapBody": "සැබළ ලෝකයේ Google සිතියම් හෝ අපගේ විස්තරාත්මක කැම්පස් දර්ශනය සමඟ MQ හි සංචරණය කරන්න.",
+  "googleMapTypeSatellite": "චන්ද්‍රිකා",
+  "googleMapTypeTerrain": "භූ ලක්ෂණ",
+  "onboardingPrivacyTitle": "පෞද්ගලිකත්වය ප්‍රථමයෙන්",
+  "onboardingNext": "ඊළඟ",
+  "googleMapTypeNormal": "පෙරනිමිය",
+  "onboardingOpenDayBody": "කැම්පස් සිදුවීම් සොයා ගෙන කාලසටහන ලුහුබැඳ විවෘත දවසට දැනුම්දීම් ලබා ගන්න.",
+  "onboardingOpenDayTitle": "විවෘත දවසට සූදානම්",
+  "onboardingTransitDataAttribution": "සජීවී පිටත්වීම් Transport for NSW (TfNSW) හි විවෘත දත්ත භාවිතා කරයි."
 }

@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Kampusztérkép két módban",
+  "googleMapTrafficLayer": "Forgalom",
+  "onboardingPrivacyBody": "Nincs fiók, nincs követés. A tartózkodási hely és menetrend teljesen az eszközén marad.",
+  "googleMapTypeHybrid": "Hibrid",
+  "onboardingTransitBody": "Kövesse élőben a Sydney Metro, a vonatok és a buszok indulását a kezdőképernyőről.",
+  "onboardingStart": "Felfedezés indítása",
+  "onboardingSkip": "Kihagyás",
+  "googleMapChooseMapType": "Térképtípus",
+  "onboardingTransitTitle": "Élő ingázás",
+  "googleMapClusterSemanticLabel": "{count} hely",
+  "onboardingMapBody": "Navigáljon az MQ-n valós Google Térképpel vagy részletes illusztrált campusnézetünkkel.",
+  "googleMapTypeSatellite": "Műhold",
+  "googleMapTypeTerrain": "Domborzat",
+  "onboardingPrivacyTitle": "Adatvédelem először",
+  "onboardingNext": "Tovább",
+  "googleMapTypeNormal": "Alapértelmezett",
+  "onboardingOpenDayBody": "Fedezze fel a campus eseményeit, kövesse az ütemtervet és kapjon értesítéseket a nyílt napra.",
+  "onboardingOpenDayTitle": "Kész a nyílt napra",
+  "onboardingTransitDataAttribution": "Az élő indulások a Transport for NSW (TfNSW) nyílt adatait használják."
 }

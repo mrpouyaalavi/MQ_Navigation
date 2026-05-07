@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "இரட்டை முறை வளாக வரைபடம்",
+  "googleMapTrafficLayer": "போக்குவரத்து",
+  "onboardingPrivacyBody": "கணக்குகள் இல்லை, கண்காணிப்பு இல்லை உங்கள் இருப்பிடமும் அட்டவணையும் முழுவதும் உங்கள் சாதனத்திலேயே இருக்கும்.",
+  "googleMapTypeHybrid": "கலப்பின",
+  "onboardingTransitBody": "முகப்புத் திரையில் சிட்னி மெட்ரோ, இரயில்கள் மற்றும் பேருந்துகளின் நிகழ்நேர புறப்பாடுகளைக் கண்காணிக்கவும்.",
+  "onboardingStart": "ஆராயத் தொடங்கு",
+  "onboardingSkip": "தவிர்",
+  "googleMapChooseMapType": "வரைபட வகை",
+  "onboardingTransitTitle": "நேரடி பயணம்",
+  "googleMapClusterSemanticLabel": "{count} இடங்கள்",
+  "onboardingMapBody": "உண்மை உலக Google வரைபடங்கள் அல்லது எங்கள் விரிவான வரைகலை வளாகக் காட்சியுடன் MQ இல் வழிசெலுத்துங்கள்.",
+  "googleMapTypeSatellite": "செயற்கைக்கோள்",
+  "googleMapTypeTerrain": "நிலவடிவம்",
+  "onboardingPrivacyTitle": "தனியுரிமை முதலில்",
+  "onboardingNext": "அடுத்து",
+  "googleMapTypeNormal": "இயல்புநிலை",
+  "onboardingOpenDayBody": "வளாக நிகழ்வுகளைக் கண்டறிந்து அட்டவணையைப் பின்பற்றி திறந்த நாளுக்கு அறிவிப்புகளைப் பெறுங்கள்.",
+  "onboardingOpenDayTitle": "திறந்த நாளுக்குத் தயார்",
+  "onboardingTransitDataAttribution": "நிகழ்நேர புறப்பாடுகள் Transport for NSW (TfNSW) இன் திறந்த தரவைப் பயன்படுத்துகின்றன."
 }

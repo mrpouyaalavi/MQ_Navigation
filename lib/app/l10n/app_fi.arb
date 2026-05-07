@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Kahden tilan kampuskartta",
+  "googleMapTrafficLayer": "Liikenne",
+  "onboardingPrivacyBody": "Ei tilejä, ei seurantaa. Sijaintisi ja aikataulusi pysyvät täysin laitteellasi.",
+  "googleMapTypeHybrid": "Hybridi",
+  "onboardingTransitBody": "Seuraa Sydney Metron, junien ja bussien lähtöjä reaaliajassa kotinäytöltä.",
+  "onboardingStart": "Aloita tutkiminen",
+  "onboardingSkip": "Ohita",
+  "googleMapChooseMapType": "Kartan tyyppi",
+  "onboardingTransitTitle": "Live-työmatka",
+  "googleMapClusterSemanticLabel": "{count} sijaintia",
+  "onboardingMapBody": "Navigoi MQ:ssa Google Maps -kartalla tai yksityiskohtaisella kuvitetulla kampuskartanäkymällä.",
+  "googleMapTypeSatellite": "Satelliitti",
+  "googleMapTypeTerrain": "Maasto",
+  "onboardingPrivacyTitle": "Yksityisyys ensin",
+  "onboardingNext": "Seuraava",
+  "googleMapTypeNormal": "Oletus",
+  "onboardingOpenDayBody": "Tutustu tapahtumiin, seuraa aikataulua ja saa ilmoituksia avoimista ovista.",
+  "onboardingOpenDayTitle": "Avoimet ovet -valmis",
+  "onboardingTransitDataAttribution": "Reaaliaikaiset lähdöt hyödyntävät Transport for NSW:n (TfNSW) avointa dataa."
 }

@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "خريطة الحرم الجامعي ثنائية الوضع",
+  "googleMapTrafficLayer": "حركة المرور",
+  "onboardingPrivacyBody": "لا حسابات ولا تتبع. يبقى موقعك وجدول مواعيدك بالكامل على جهازك.",
+  "googleMapTypeHybrid": "مختلط",
+  "onboardingTransitBody": "تابع مغادرات مترو سيدني والقطارات والحافلات في الوقت الفعلي من الشاشة الرئيسية.",
+  "onboardingStart": "ابدأ الاستكشاف",
+  "onboardingSkip": "تخطّي",
+  "googleMapChooseMapType": "نوع الخريطة",
+  "onboardingTransitTitle": "التنقل المباشر",
+  "googleMapClusterSemanticLabel": "{count} موقعًا",
+  "onboardingMapBody": "تصفّح حرم ماكواري مع خرائط Google الواقعية أو منظر الحرم التوضيحي التفصيلي.",
+  "googleMapTypeSatellite": "قمر صناعي",
+  "googleMapTypeTerrain": "تضاريس",
+  "onboardingPrivacyTitle": "الخصوصية أولاً",
+  "onboardingNext": "التالي",
+  "googleMapTypeNormal": "افتراضي",
+  "onboardingOpenDayBody": "اكتشف فعاليات الحرم، تابع الجدول، وتلقَّ تنبيهات ليوم الانفتاح.",
+  "onboardingOpenDayTitle": "جاهز ليوم الانفتاح",
+  "onboardingTransitDataAttribution": "تستخدم مواعيد المغادرة الفورية بيانات مفتوحة من هيئة النقل في نيو ساوث ويلز (TfNSW)."
 }

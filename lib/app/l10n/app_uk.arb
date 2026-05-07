@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "Карта кампусу у двох режимах",
+  "googleMapTrafficLayer": "Рух",
+  "onboardingPrivacyBody": "Без облікових записів і стеження. Локація та розклад залишаються лише на вашому пристрої.",
+  "googleMapTypeHybrid": "Гібрид",
+  "onboardingTransitBody": "Відстежуйте відправлення Sydney Metro, потягів і автобусів у реальному часі з головного екрана.",
+  "onboardingStart": "Почати дослідження",
+  "onboardingSkip": "Пропустити",
+  "googleMapChooseMapType": "Тип карти",
+  "onboardingTransitTitle": "Дорога в реальному часі",
+  "googleMapClusterSemanticLabel": "{count} місць",
+  "onboardingMapBody": "Навігація MQ реальними Google Maps або нашим детальним ілюстрованим виглядом кампусу.",
+  "googleMapTypeSatellite": "Супутник",
+  "googleMapTypeTerrain": "Рельєф",
+  "onboardingPrivacyTitle": "Приватність понад усе",
+  "onboardingNext": "Далі",
+  "googleMapTypeNormal": "За замовчуванням",
+  "onboardingOpenDayBody": "Дізнавайтеся про події кампусу, стежте за розкладом і отримуйте сповіщення про День відкритих дверей.",
+  "onboardingOpenDayTitle": "Готовність до Дня відкритих дверей",
+  "onboardingTransitDataAttribution": "Відправлення в реальному часі використовують відкриті дані Transport for NSW (TfNSW)."
 }

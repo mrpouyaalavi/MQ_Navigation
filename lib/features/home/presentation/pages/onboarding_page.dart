@@ -13,12 +13,14 @@ class _OnboardingSlideData {
   final IconData icon;
   final String title;
   final String body;
+  final String? footnote;
   final bool isOpenDay;
 
   const _OnboardingSlideData({
     required this.icon,
     required this.title,
     required this.body,
+    this.footnote,
     this.isOpenDay = false,
   });
 }
@@ -87,6 +89,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         icon: Icons.train_rounded,
         title: l10n.onboardingTransitTitle,
         body: l10n.onboardingTransitBody,
+        footnote: l10n.onboardingTransitDataAttribution,
       ),
       _OnboardingSlideData(
         icon: Icons.explore_rounded,
@@ -329,6 +332,21 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     ),
                   ),
                 ),
+                if (slide.footnote != null) ...[
+                  const SizedBox(height: MqSpacing.space4),
+                  Semantics(
+                    label: slide.footnote,
+                    child: Text(
+                      slide.footnote!,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: isDark
+                            ? MqColors.contentSecondaryDark
+                            : MqColors.contentSecondary,
+                        height: 1.45,
+                      ),
+                    ),
+                  ),
+                ],
                 if (slide.isOpenDay) ...[
                   const SizedBox(height: MqSpacing.space6),
                   MqTactileButton(

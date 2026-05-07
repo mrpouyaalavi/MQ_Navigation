@@ -2171,13 +2171,17 @@
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
-  "onboardingMapTitle": "Dual Campus Map",
+  "onboardingMapTitle": "Dual-mode campus map",
   "@onboardingMapTitle": {
-    "description": "Title for the map onboarding slide"
+    "description": "Title for map onboarding: Google Maps vs illustrated campus mode (two modes)"
   },
   "onboardingMapBody": "Navigate MQ with real-world Google Maps or our detailed illustrated campus view.",
   "onboardingTransitTitle": "Live Commute",
-  "onboardingTransitBody": "Track real-time TfNSW Metro and Bus departures directly from the home screen.",
+  "onboardingTransitBody": "Track Sydney Metro, trains, and buses in real time from your home screen.",
+  "onboardingTransitDataAttribution": "Real-time departures use open data from Transport for NSW (TfNSW).",
+  "@onboardingTransitDataAttribution": {
+    "description": "Footnote on commute onboarding slide crediting TfNSW open data"
+  },
   "onboardingPrivacyTitle": "Privacy First",
   "onboardingPrivacyBody": "No accounts, no tracking. Your location and timetable stay entirely on your device.",
   "onboardingOpenDayTitle": "Open Day Ready",

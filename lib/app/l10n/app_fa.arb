@@ -2158,17 +2158,40 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
   "diagnosticsRendererGoogle": "Google Maps",
   "mapCategoryLibrary": "Library",
-  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google"
+  "mapOsmFallbackBadge": "OpenStreetMap fallback · add a Maps API key to use Google",
+  "onboardingMapTitle": "نقشهٔ پردیس با دو حالت",
+  "googleMapTrafficLayer": "ترافیک",
+  "onboardingPrivacyBody": "بدون حساب و بدون ردیابی. موقعیت و برنامهٔ زمانی شما کاملاً روی دستگاهتان می‌ماند.",
+  "googleMapTypeHybrid": "ترکیبی",
+  "onboardingTransitBody": "زمان حرکت مترو سیدنی، قطارها و اتوبوس‌ها را به‌صورت بلادرنگ از صفحهٔ خانه دنبال کنید.",
+  "onboardingStart": "شروع کشف",
+  "onboardingSkip": "رد شدن",
+  "googleMapChooseMapType": "نوع نقشه",
+  "onboardingTransitTitle": "رفت‌وآمد زنده",
+  "googleMapClusterSemanticLabel": "{count} مکان",
+  "onboardingMapBody": "در دانشگاه ماکواری با نقشهٔ واقعی گوگل یا نمای مصور جزئی از پردیس حرکت کنید.",
+  "googleMapTypeSatellite": "ماهواره‌ای",
+  "googleMapTypeTerrain": "زمین‌نما",
+  "onboardingPrivacyTitle": "حریم خصوصی در اولویت",
+  "onboardingNext": "بعدی",
+  "googleMapTypeNormal": "پیش‌فرض",
+  "onboardingOpenDayBody": "رویدادهای پردیس را کشف کنید، برنامه را دنبال کنید و برای روز باز اعلان بگیرید.",
+  "onboardingOpenDayTitle": "آمادهٔ روز باز",
+  "onboardingTransitDataAttribution": "زمان‌های حرکت بلادرنگ از دادهٔ باز Transport for NSW (TfNSW) استفاده می‌کند."
 }
