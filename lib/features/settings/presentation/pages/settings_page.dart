@@ -115,50 +115,61 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       data: (preferences) {
         return Stack(
           children: [
-            // Branded surface treatment in both modes.
+            // ── Branded surface treatment ──────────────────────────────
             //
-            // Dark: keeps the existing red top-glow for atmosphere.
-            // Light: adds the same brand-language treatment but
-            //   softer alpha and a complementary warm-sand wash
-            //   beneath, so the screen no longer reads as a flat
-            //   off-white "default Material" surface — it now
-            //   feels designed and consistent with Home, while
-            //   staying highly readable.
-            PositionedDirectional(
-              top: -80,
-              start: 0,
-              end: 0,
-              height: 380,
-              child: IgnorePointer(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      center: const Alignment(0, -1.2),
-                      radius: 1.1,
-                      colors: [
-                        MqColors.red.withValues(alpha: dark ? 0.15 : 0.08),
-                        Colors.transparent,
-                      ],
-                    ),
-                  ),
-                  child: const SizedBox.expand(),
-                ),
-              ),
-            ),
-            if (!dark)
+            // **Light mode (revised):** starts from a near-white base
+            //   (the Scaffold below uses `Colors.white` in light mode)
+            //   so the screen no longer reads as muddy beige. We then
+            //   layer two very subtle decorative washes:
+            //
+            //   1. A soft red corner glow in the top-right (Macquarie
+            //      brand accent, ~5% alpha — present, not loud).
+            //   2. A whisper-thin warm cream wash at the bottom (~12%
+            //      alpha of `sand100`, the lighter of the two sands)
+            //      to anchor the page without re-introducing the
+            //      muddy effect the previous `sand200@60%` produced.
+            //
+            // **Dark mode:** unchanged red top-glow for atmosphere.
+            //
+            // The result reads as clean + branded rather than dirty +
+            // shadowy, and content is more readable against it.
+            if (dark)
               PositionedDirectional(
-                bottom: -120,
-                start: -80,
-                end: -80,
+                top: -80,
+                start: 0,
+                end: 0,
+                height: 380,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        center: const Alignment(0, -1.2),
+                        radius: 1.1,
+                        colors: [
+                          MqColors.red.withValues(alpha: 0.15),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                    child: const SizedBox.expand(),
+                  ),
+                ),
+              )
+            else ...[
+              // Top-right red corner glow — branded but minimal.
+              PositionedDirectional(
+                top: -140,
+                end: -100,
+                width: 360,
                 height: 360,
                 child: IgnorePointer(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: RadialGradient(
-                        center: const Alignment(0, 0.8),
-                        radius: 1.4,
+                        center: Alignment.center,
+                        radius: 0.7,
                         colors: [
-                          MqColors.sand200.withValues(alpha: 0.6),
+                          MqColors.red.withValues(alpha: 0.05),
                           Colors.transparent,
                         ],
                       ),
@@ -167,6 +178,29 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   ),
                 ),
               ),
+              // Bottom-left cream whisper — anchors the page softly.
+              PositionedDirectional(
+                bottom: -160,
+                start: -120,
+                width: 420,
+                height: 380,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        center: Alignment.center,
+                        radius: 0.8,
+                        colors: [
+                          MqColors.sand100.withValues(alpha: 0.45),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                    child: const SizedBox.expand(),
+                  ),
+                ),
+              ),
+            ],
             SafeArea(
               child: ListView(
                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -662,7 +696,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
 
     return Scaffold(
-      backgroundColor: dark ? MqColors.charcoal800 : MqColors.alabaster,
+      // Light mode now starts from clean white instead of `alabaster`
+      // (#EDEADE — a beige). Combined with the toned-down decorative
+      // washes above, this is what lifts the screen out of the muddy
+      // feel the user was seeing. Dark mode retains charcoal800.
+      backgroundColor: dark ? MqColors.charcoal800 : Colors.white,
       body: dark
           ? Theme(data: _settingsDarkReadableTheme(context), child: body)
           : body,
@@ -1872,10 +1910,15 @@ class _CommutePreviewTile extends StatelessWidget {
       margin: const EdgeInsetsDirectional.only(bottom: MqSpacing.space3),
       padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
       decoration: BoxDecoration(
-        color: dark ? MqColors.red.withAlpha(20) : MqColors.red.withAlpha(14),
+        // Bumped from 14 → 22 in light mode so the tile reads as a clear
+        // call-out against the new pure-white Settings background. (The
+        // old value relied on the muddy beige page wash to define the
+        // tile edge.) Border alpha bumped in lockstep so the tile feels
+        // intentional and bordered, not floating.
+        color: dark ? MqColors.red.withAlpha(20) : MqColors.red.withAlpha(22),
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
-          color: dark ? MqColors.red.withAlpha(70) : MqColors.red.withAlpha(40),
+          color: dark ? MqColors.red.withAlpha(70) : MqColors.red.withAlpha(55),
         ),
       ),
       child: Row(
@@ -1889,9 +1932,12 @@ class _CommutePreviewTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(22),
               boxShadow: [
                 BoxShadow(
-                  color: MqColors.red.withAlpha(60),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+                  // Tightened shadow so the icon's red glow no longer
+                  // bleeds across the tile and creates the muddy
+                  // red→grey gradient artefact in the screenshot.
+                  color: MqColors.red.withAlpha(45),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
                 ),
               ],
             ),

@@ -18,9 +18,18 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 /// Central GoRouter configuration for the app.
 /// Uses a stateful shell so each bottom-tab branch keeps its own
 /// navigation stack instead of resetting when the user switches tabs.
+///
+/// **Why we use `.select()` instead of `ref.watch(settingsControllerProvider)`:**
+/// The redirect callback only depends on two pieces of settings state —
+/// the loading flag and `hasCompletedOnboarding`. If we watched the entire
+/// settings AsyncValue, *every* preference change (theme, locale, bachelor,
+/// commute mode, …) would invalidate this provider. That recreates the
+/// whole `GoRouter`, which in turn makes Flutter rebuild the active
+/// MaterialPage and replay its entry transition — i.e. a full-screen
+/// slide on every preference toggle. Scoping the dependency with
+/// `.select()` keeps preference changes silent at the router level so
+/// only true navigation triggers transitions.
 final appRouterProvider = Provider<GoRouter>((ref) {
-  final settingsAsync = ref.watch(settingsControllerProvider);
-
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/home',
@@ -32,6 +41,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       if (isOnboardingRoute) {
         return null;
       }
+
+      // Read latest settings inside the redirect — this does NOT subscribe
+      // the provider to settings changes; it only reads the current value.
+      final settingsAsync = ref.read(settingsControllerProvider);
 
       // If settings haven't loaded yet, don't redirect - let them load first
       if (settingsAsync.isLoading) {
@@ -45,6 +58,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       }
       return null;
     },
+    // Re-run the redirect whenever the onboarding-completion bit flips.
+    // This is the only piece of settings state the redirect cares about,
+    // so we listen to *just* that bit. Other preference changes (theme,
+    // locale, bachelor, …) no longer trigger router rebuilds.
+    refreshListenable: _OnboardingFlagListenable(ref),
     routes: [
       // Syllabus Sync integration entry point.
       //
@@ -142,3 +160,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+/// Tiny [Listenable] adapter that fires `notifyListeners()` only when the
+/// `hasCompletedOnboarding` bit changes. Used as `GoRouter.refreshListenable`
+/// so the router re-evaluates its redirect on onboarding completion without
+/// being torn down and rebuilt (which is what previously caused a full
+/// page-slide animation on every unrelated settings change).
+class _OnboardingFlagListenable extends ChangeNotifier {
+  _OnboardingFlagListenable(Ref ref) {
+    _sub = ref.listen<bool>(
+      settingsControllerProvider.select(
+        (s) => s.value?.hasCompletedOnboarding ?? false,
+      ),
+      (_, _) => notifyListeners(),
+      fireImmediately: false,
+    );
+    ref.onDispose(() => _sub?.close());
+  }
+
+  ProviderSubscription<bool>? _sub;
+}
