@@ -70,9 +70,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   /// onboarding because the persisted flag never made it past the
   /// in-memory optimistic update.
   Future<void> _finishOnboarding() async {
-    await ref
-        .read(settingsControllerProvider.notifier)
-        .completeOnboarding();
+    await ref.read(settingsControllerProvider.notifier).completeOnboarding();
     if (!mounted) return;
     context.goNamed(RouteNames.home);
   }
