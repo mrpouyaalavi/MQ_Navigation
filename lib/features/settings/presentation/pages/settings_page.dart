@@ -155,8 +155,21 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   ),
                 ),
               )
-            else ...[
-              // Top-right red corner glow — branded but minimal.
+            else
+              // Top-right red corner glow — the ONLY branded treatment
+              // in light mode. Anchored off-screen at top-right so it
+              // reads as a soft accent, not a visible blob. Alpha is
+              // intentionally low (5%) so the page reads as fundamentally
+              // white with a whisper of Macquarie red.
+              //
+              // **Previously this Stack also had a bottom-left
+              // `sand100@45%` radial wash.** Because that wash was
+              // anchored to the Scaffold (not the ListView), it stayed
+              // glued to the lower-left of the screen while the user
+              // scrolled — reading as a persistent grey shadow panel
+              // rather than a one-time design accent. Removed entirely
+              // so the lower half of the page is now pure clean white,
+              // top to bottom, regardless of scroll position.
               PositionedDirectional(
                 top: -140,
                 end: -100,
@@ -178,29 +191,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   ),
                 ),
               ),
-              // Bottom-left cream whisper — anchors the page softly.
-              PositionedDirectional(
-                bottom: -160,
-                start: -120,
-                width: 420,
-                height: 380,
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        center: Alignment.center,
-                        radius: 0.8,
-                        colors: [
-                          MqColors.sand100.withValues(alpha: 0.45),
-                          Colors.transparent,
-                        ],
-                      ),
-                    ),
-                    child: const SizedBox.expand(),
-                  ),
-                ),
-              ),
-            ],
             SafeArea(
               child: ListView(
                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -1332,8 +1322,21 @@ class KineticHeader extends StatelessWidget {
 
   final String title;
 
+  // Dark-mode header colour. The plain `MqColors.red` (#C8102E-ish) sits
+  // at ~3.5:1 contrast against `charcoal800` — under WCAG AA's 4.5:1
+  // requirement and noticeably dim on screen. Lerp'ing 30% toward white
+  // gives a pink-red (~#D9505F) that lifts to ~6:1 while keeping the
+  // Macquarie red identity unmistakably present. Light mode keeps the
+  // pure brand red, which has strong contrast against white anyway.
+  static final Color _darkHeaderColor = Color.lerp(
+    MqColors.red,
+    Colors.white,
+    0.30,
+  )!;
+
   @override
   Widget build(BuildContext context) {
+    final dark = context.isDarkMode;
     return Text(
       title.toUpperCase(),
       // Up one type-scale step from labelMedium so each section
@@ -1344,7 +1347,7 @@ class KineticHeader extends StatelessWidget {
         fontWeight: FontWeight.w800,
         letterSpacing: 1.0,
         fontSize: 13,
-        color: MqColors.red,
+        color: dark ? _darkHeaderColor : MqColors.red,
       ),
     );
   }
@@ -1924,15 +1927,21 @@ class _CommutePreviewTile extends StatelessWidget {
       margin: const EdgeInsetsDirectional.only(bottom: MqSpacing.space3),
       padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
       decoration: BoxDecoration(
-        // Bumped from 14 → 22 in light mode so the tile reads as a clear
-        // call-out against the new pure-white Settings background. (The
-        // old value relied on the muddy beige page wash to define the
-        // tile edge.) Border alpha bumped in lockstep so the tile feels
-        // intentional and bordered, not floating.
-        color: dark ? MqColors.red.withAlpha(20) : MqColors.red.withAlpha(22),
+        // **Light mode:** 22/55 alphas — clear call-out on white.
+        //
+        // **Dark mode:** previously 20/70 — far too weak. `red @ 8% alpha`
+        // is below the perceptual threshold against `charcoal800`, so the
+        // card faded into the background. Bumped to **48/130** so the
+        // tile clearly reads as a highlighted state — confident, not
+        // neon. The border is also now strong enough to define the
+        // tile's edge without a separate divider.
+        color: dark ? MqColors.red.withAlpha(48) : MqColors.red.withAlpha(22),
         borderRadius: BorderRadius.circular(MqSpacing.radiusXl),
         border: Border.all(
-          color: dark ? MqColors.red.withAlpha(70) : MqColors.red.withAlpha(55),
+          color: dark
+              ? MqColors.red.withAlpha(130)
+              : MqColors.red.withAlpha(55),
+          width: dark ? 1.0 : 1.0,
         ),
       ),
       child: Row(
@@ -1975,12 +1984,16 @@ class _CommutePreviewTile extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: context.textTheme.bodySmall?.copyWith(
+                    // Dark mode: bumped from white@55%/alpha-200 to
+                    // white@75%/85% so the "Set route…" prompt and any
+                    // configured detail read clearly against the now-
+                    // stronger red tile background.
                     color: configured
                         ? (dark
-                              ? Colors.white.withAlpha(200)
+                              ? Colors.white.withValues(alpha: 0.85)
                               : MqColors.contentSecondary)
                         : (dark
-                              ? Colors.white.withValues(alpha: 0.55)
+                              ? Colors.white.withValues(alpha: 0.75)
                               : MqColors.charcoal600),
                     fontStyle: configured ? FontStyle.normal : FontStyle.italic,
                   ),
@@ -1994,7 +2007,13 @@ class _CommutePreviewTile extends StatelessWidget {
                     letterSpacing: 0.8,
                     fontWeight: FontWeight.w700,
                     fontSize: 10,
-                    color: MqColors.red,
+                    // Dark mode caption: lerp red 30% toward white so
+                    // "DRIVES YOUR HOME SCREEN METRO COUNTDOWN" lifts
+                    // off the now-richer red tile background. Same
+                    // technique as the section headers, kept consistent.
+                    color: dark
+                        ? Color.lerp(MqColors.red, Colors.white, 0.30)
+                        : MqColors.red,
                   ),
                 ),
               ],
