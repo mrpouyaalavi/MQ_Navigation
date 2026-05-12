@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Varsayılan",
   "onboardingOpenDayBody": "Kampüs etkinliklerini keşfedin, programı takip edin ve açık gün bildirimleri alın.",
   "onboardingOpenDayTitle": "Açık gün için hazır",
-  "onboardingTransitDataAttribution": "Gerçek zamanlı kalkışlar, Transport for NSW (TfNSW) açık verilerini kullanır."
+  "onboardingTransitDataAttribution": "Gerçek zamanlı kalkışlar, Transport for NSW (TfNSW) açık verilerini kullanır.",
+  "openDay_changeInterest": "Değiştir",
+  "openDay_chooseBachelorFilter": "Programı filtrelemek için bir lisans seçin. Bu cihazda kalır.",
+  "openDay_chooseInterest": "İlgi alanı seç",
+  "openDay_directionsTo": "{venue} konumuna yol tarifi",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Ne okumak istiyorsunuz?",
+  "openDay_loadError": "Open Day verileri yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+  "openDay_noEventsForSelection": "Henüz çalışma ilginizle eşleşen etkinlik yok.",
+  "openDay_noEventsNoneSelected": "İlgili etkinlikleri görmek için ilgi alanınızı seçin.",
+  "openDay_noSessionsYet": "Henüz eşleşen bilgi oturumu yok — tam programı görmek için dokunun.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Gününüzü kişiselleştirmek için bir lisans seçin.",
+  "openDay_pickInterest": "İlgi alanınızı seçin",
+  "openDay_showingMatchedSessions": "Çalışma ilginizle eşleşen bilgi oturumları gösteriliyor.",
+  "openDay_studyInterestSaved": "Çalışma ilgisi kaydedildi",
+  "openDay_selectStudyInterest": "Çalışma ilgisi seç",
+  "openDay_viewInCampusMap": "Kampüs haritasında görüntüle",
+  "openDay_viewInCampusMapSemantic": "{venue} konumunu kampüs haritasında görüntüle",
+  "openDay_openInsideMqNav": "MQ Navigation içinde aç",
+  "openDay_navigateWithGoogle": "Google Maps ile gezin",
+  "openDay_navigateWithGoogleSemantic": "MQ Navigation'da Google Maps ile {venue} konumuna git",
+  "openDay_openGoogleMapsInsideNav": "MQ Navigation içinde Google Maps aç",
+  "openDay_noMappableVenue": "Bu etkinlik için henüz haritada gösterilebilir bir mekan yok.",
+  "openDay_pickerSubtitle": "Bir lisans programı seçin — cihazınızda kalır ve Open Day etkinliklerinizi kişiselleştirir.",
+  "openDay_clearSelection": "Seçimi temizle",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Tanıtımı atla",
+  "onboardingPageIndicator": "{current}. sayfa / {total}",
+  "onboardingGoToSlide": "{index}. slayta git",
+  "onboardingStartSemantic": "Uygulamayı kullanmaya başla",
+  "onboardingNextSemantic": "Sonraki slayta geç",
+  "onboardingSlideIconLabel": "{title} simgesi",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

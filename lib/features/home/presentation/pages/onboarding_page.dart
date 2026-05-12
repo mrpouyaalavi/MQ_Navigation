@@ -153,7 +153,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Semantics(
-                        label: 'Skip onboarding',
+                        label: l10n.onboardingSkipSemantic,
                         button: true,
                         child: TextButton(
                           onPressed: _onSkip,
@@ -199,12 +199,14 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Semantics(
-                            label:
-                                'Page ${_currentIndex + 1} of ${slides.length}',
+                            label: l10n.onboardingPageIndicator(
+                              _currentIndex + 1,
+                              slides.length,
+                            ),
                             child: Row(
                               children: List.generate(slides.length, (index) {
                                 return Semantics(
-                                  label: 'Go to slide ${index + 1}',
+                                  label: l10n.onboardingGoToSlide(index + 1),
                                   button: true,
                                   child: GestureDetector(
                                     onTap: () => _goToPage(index),
@@ -235,8 +237,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                           ),
                           Semantics(
                             label: _currentIndex == slides.length - 1
-                                ? 'Start using the app'
-                                : 'Go to next slide',
+                                ? l10n.onboardingStartSemantic
+                                : l10n.onboardingNextSemantic,
                             button: true,
                             child: MqTactileButton(
                               onTap: () => _onNext(slides.length),
@@ -281,6 +283,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     required bool isDark,
     required String? selectedBachelorId,
   }) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
       child: Column(
@@ -288,7 +291,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Semantics(
-            label: '${slide.title} icon',
+            label: l10n.onboardingSlideIconLabel(slide.title),
             child: Container(
               padding: const EdgeInsetsDirectional.all(MqSpacing.space8),
               decoration: BoxDecoration(
@@ -399,8 +402,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                           const SizedBox(width: MqSpacing.space2),
                           Text(
                             selectedBachelorId != null
-                                ? 'Study interest saved'
-                                : 'Select study interest',
+                                ? l10n.openDay_studyInterestSaved
+                                : l10n.openDay_selectStudyInterest,
                             style: TextStyle(
                               color: isDark ? Colors.white : MqColors.black87,
                               fontWeight: FontWeight.w600,

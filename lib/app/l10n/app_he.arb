@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "ברירת מחדל",
   "onboardingOpenDayBody": "גלו אירועי קמפוס, עקבו אחר לוח זמנים וקבלו התראות ליום הפתוח.",
   "onboardingOpenDayTitle": "מוכנים ליום הפתוח",
-  "onboardingTransitDataAttribution": "זמני יציאה בזמן אמת משתמשים בנתונים פתוחים מ-Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "זמני יציאה בזמן אמת משתמשים בנתונים פתוחים מ-Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "שנה",
+  "openDay_chooseBachelorFilter": "בחר תואר ראשון לסינון הלוח. נשמר במכשיר זה.",
+  "openDay_chooseInterest": "בחר עניין",
+  "openDay_directionsTo": "הנחיות לנסיעה אל {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "מה מעניין אותך ללמוד?",
+  "openDay_loadError": "לא ניתן לטעון נתוני Open Day. נסה שוב מאוחר יותר.",
+  "openDay_noEventsForSelection": "עדיין אין אירועים התואמים את תחום העניין הלימודי שלך.",
+  "openDay_noEventsNoneSelected": "בחר מה שמעניין אותך כדי לראות אירועים רלוונטיים.",
+  "openDay_noSessionsYet": "עדיין אין מפגשי מידע תואמים — הקש לצפייה בלוח הזמנים המלא.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "בחר תואר ראשון להתאמה אישית של יומך.",
+  "openDay_pickInterest": "בחר מה שמעניין אותך",
+  "openDay_showingMatchedSessions": "מציג מפגשי מידע התואמים את תחום העניין הלימודי שלך.",
+  "openDay_studyInterestSaved": "תחום העניין הלימודי נשמר",
+  "openDay_selectStudyInterest": "בחר תחום עניין לימודי",
+  "openDay_viewInCampusMap": "הצג במפת הקמפוס",
+  "openDay_viewInCampusMapSemantic": "הצג את {venue} במפת הקמפוס",
+  "openDay_openInsideMqNav": "פתח ב-MQ Navigation",
+  "openDay_navigateWithGoogle": "נווט עם Google Maps",
+  "openDay_navigateWithGoogleSemantic": "נווט אל {venue} עם Google Maps ב-MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "פתח Google Maps ב-MQ Navigation",
+  "openDay_noMappableVenue": "עדיין אין מיקום במפה לאירוע זה.",
+  "openDay_pickerSubtitle": "בחר תוכנית לתואר ראשון — נשמר במכשיר שלך ומתאים אישית את אירועי ה-Open Day שלך.",
+  "openDay_clearSelection": "נקה את הבחירה שלי",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "דלג על ההקדמה",
+  "onboardingPageIndicator": "עמוד {current} מתוך {total}",
+  "onboardingGoToSlide": "עבור לשקופית {index}",
+  "onboardingStartSemantic": "התחל להשתמש באפליקציה",
+  "onboardingNextSemantic": "עבור לשקופית הבאה",
+  "onboardingSlideIconLabel": "סמל {title}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

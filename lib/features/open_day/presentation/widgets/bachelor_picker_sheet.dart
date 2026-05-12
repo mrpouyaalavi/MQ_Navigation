@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
 import 'package:mq_navigation/features/open_day/data/open_day_providers.dart';
@@ -29,6 +30,7 @@ class BachelorPickerSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
     final dataAsync = ref.watch(openDayDataProvider);
     final selectedId = ref
@@ -53,7 +55,7 @@ class BachelorPickerSheet extends ConsumerWidget {
                 MqSpacing.space2,
               ),
               child: Text(
-                'What are you interested in studying?',
+                l10n.openDay_interestedInStudying,
                 style: context.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: dark ? Colors.white : MqColors.contentPrimary,
@@ -68,7 +70,7 @@ class BachelorPickerSheet extends ConsumerWidget {
                 MqSpacing.space4,
               ),
               child: Text(
-                'Pick a bachelor program — this stays on your device and personalises your Open Day events.',
+                l10n.openDay_pickerSubtitle,
                 style: context.textTheme.bodySmall?.copyWith(
                   color: dark
                       ? Colors.white.withValues(alpha: 0.72)
@@ -87,7 +89,7 @@ class BachelorPickerSheet extends ConsumerWidget {
                 error: (_, _) => Padding(
                   padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
                   child: Text(
-                    'Couldn\'t load Open Day data. Please try again later.',
+                    l10n.openDay_loadError,
                     style: context.textTheme.bodyMedium,
                   ),
                 ),
@@ -102,7 +104,7 @@ class BachelorPickerSheet extends ConsumerWidget {
                 ),
                 child: TextButton.icon(
                   icon: const Icon(Icons.close_rounded),
-                  label: const Text('Clear my selection'),
+                  label: Text(l10n.openDay_clearSelection),
                   style: TextButton.styleFrom(
                     foregroundColor: dark
                         ? Colors.white.withValues(alpha: 0.85)

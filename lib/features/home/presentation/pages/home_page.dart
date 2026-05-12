@@ -674,7 +674,7 @@ class _MqShieldLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: 'Macquarie University',
+      label: AppLocalizations.of(context)!.macquarieUniversity,
       image: true,
       child: SizedBox(
         width: size,

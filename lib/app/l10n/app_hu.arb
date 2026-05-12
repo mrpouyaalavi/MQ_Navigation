@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Alapértelmezett",
   "onboardingOpenDayBody": "Fedezze fel a campus eseményeit, kövesse az ütemtervet és kapjon értesítéseket a nyílt napra.",
   "onboardingOpenDayTitle": "Kész a nyílt napra",
-  "onboardingTransitDataAttribution": "Az élő indulások a Transport for NSW (TfNSW) nyílt adatait használják."
+  "onboardingTransitDataAttribution": "Az élő indulások a Transport for NSW (TfNSW) nyílt adatait használják.",
+  "openDay_changeInterest": "Módosítás",
+  "openDay_chooseBachelorFilter": "Válasszon alapszakot a program szűréséhez. Az eszközön marad.",
+  "openDay_chooseInterest": "Érdeklődés kiválasztása",
+  "openDay_directionsTo": "Útvonal ide: {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Mi érdekli tanulmányozni?",
+  "openDay_loadError": "Az Open Day adatai nem tölthetők be. Kérjük, próbálja meg később.",
+  "openDay_noEventsForSelection": "Még nincs a tanulmányi érdeklődésének megfelelő esemény.",
+  "openDay_noEventsNoneSelected": "Válassza ki érdeklődését a releváns eseményekhez.",
+  "openDay_noSessionsYet": "Még nincs egyező infosesszió — koppintson a teljes program megtekintéséhez.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Válasszon alapszakot a napja testreszabásához.",
+  "openDay_pickInterest": "Válassza ki érdeklődését",
+  "openDay_showingMatchedSessions": "A tanulmányi érdeklődésének megfelelő infosessziók megjelenítése.",
+  "openDay_studyInterestSaved": "Tanulmányi érdeklődés mentve",
+  "openDay_selectStudyInterest": "Tanulmányi érdeklődés kiválasztása",
+  "openDay_viewInCampusMap": "Megtekintés a campustérképen",
+  "openDay_viewInCampusMapSemantic": "{venue} megtekintése a campustérképen",
+  "openDay_openInsideMqNav": "Megnyitás az MQ Navigationben",
+  "openDay_navigateWithGoogle": "Navigálás a Google Térképpel",
+  "openDay_navigateWithGoogleSemantic": "Navigálás ide: {venue} a Google Térképpel az MQ Navigationben",
+  "openDay_openGoogleMapsInsideNav": "Google Térkép megnyitása az MQ Navigationben",
+  "openDay_noMappableVenue": "Ehhez az eseményhez még nincs térképen jelölhető helyszín.",
+  "openDay_pickerSubtitle": "Válasszon alapszakot — az eszközén marad, és személyre szabja az Open Day eseményeit.",
+  "openDay_clearSelection": "Kiválasztás törlése",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Bemutató kihagyása",
+  "onboardingPageIndicator": "{current}. oldal / {total}",
+  "onboardingGoToSlide": "Ugrás a(z) {index}. diára",
+  "onboardingStartSemantic": "Az alkalmazás használatának megkezdése",
+  "onboardingNextSemantic": "Következő diára ugrás",
+  "onboardingSlideIconLabel": "{title} ikon",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Standard",
   "onboardingOpenDayBody": "Oppdag campusarrangementer, følg programmet og få varsler for åpen dag.",
   "onboardingOpenDayTitle": "Klar for åpen dag",
-  "onboardingTransitDataAttribution": "Sanntidsavganger bruker åpne data fra Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Sanntidsavganger bruker åpne data fra Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Endre",
+  "openDay_chooseBachelorFilter": "Velg en bachelor for å filtrere programmet. Lagres på enheten.",
+  "openDay_chooseInterest": "Velg interesse",
+  "openDay_directionsTo": "Veibeskrivelse til {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Hva er du interessert i å studere?",
+  "openDay_loadError": "Kunne ikke laste Open Day-data. Prøv igjen senere.",
+  "openDay_noEventsForSelection": "Ingen arrangementer matcher studieinteressen din ennå.",
+  "openDay_noEventsNoneSelected": "Velg din interesse for å se relevante arrangementer.",
+  "openDay_noSessionsYet": "Ingen matchende infosesjoner ennå — trykk for å se hele programmet.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Velg en bachelor for å tilpasse dagen din.",
+  "openDay_pickInterest": "Velg din interesse",
+  "openDay_showingMatchedSessions": "Viser infosesjoner som matcher studieinteressen din.",
+  "openDay_studyInterestSaved": "Studieinteresse lagret",
+  "openDay_selectStudyInterest": "Velg studieinteresse",
+  "openDay_viewInCampusMap": "Vis på campuskartet",
+  "openDay_viewInCampusMapSemantic": "Vis {venue} på campuskartet",
+  "openDay_openInsideMqNav": "Åpne i MQ Navigation",
+  "openDay_navigateWithGoogle": "Naviger med Google Maps",
+  "openDay_navigateWithGoogleSemantic": "Naviger til {venue} med Google Maps i MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Åpne Google Maps i MQ Navigation",
+  "openDay_noMappableVenue": "Ingen kartlagt lokasjon for dette arrangementet ennå.",
+  "openDay_pickerSubtitle": "Velg et bachelorprogram — lagres på enheten og tilpasser Open Day-arrangementene dine.",
+  "openDay_clearSelection": "Fjern mitt valg",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Hopp over introduksjonen",
+  "onboardingPageIndicator": "Side {current} av {total}",
+  "onboardingGoToSlide": "Gå til lysbildet {index}",
+  "onboardingStartSemantic": "Begynn å bruke appen",
+  "onboardingNextSemantic": "Gå til neste lysbilde",
+  "onboardingSlideIconLabel": "{title} ikon",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

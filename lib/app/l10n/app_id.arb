@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Default",
   "onboardingOpenDayBody": "Temukan acara kampus, ikuti jadwal, dan dapatkan notifikasi untuk Open Day.",
   "onboardingOpenDayTitle": "Siap untuk Open Day",
-  "onboardingTransitDataAttribution": "Keberangkatan real time memakai data terbuka dari Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Keberangkatan real time memakai data terbuka dari Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Ubah",
+  "openDay_chooseBachelorFilter": "Pilih sarjana untuk memfilter jadwal. Tersimpan di perangkat ini.",
+  "openDay_chooseInterest": "Pilih minat",
+  "openDay_directionsTo": "Petunjuk ke {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Apa yang ingin Anda pelajari?",
+  "openDay_loadError": "Tidak dapat memuat data Open Day. Silakan coba lagi nanti.",
+  "openDay_noEventsForSelection": "Belum ada acara yang cocok dengan minat studi Anda.",
+  "openDay_noEventsNoneSelected": "Pilih minat Anda untuk melihat acara yang relevan.",
+  "openDay_noSessionsYet": "Belum ada sesi info yang cocok — ketuk untuk melihat jadwal lengkap.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Pilih sarjana untuk mempersonalisasi hari Anda.",
+  "openDay_pickInterest": "Pilih minat Anda",
+  "openDay_showingMatchedSessions": "Menampilkan sesi info yang cocok dengan minat studi Anda.",
+  "openDay_studyInterestSaved": "Minat studi tersimpan",
+  "openDay_selectStudyInterest": "Pilih minat studi",
+  "openDay_viewInCampusMap": "Lihat di Peta Kampus",
+  "openDay_viewInCampusMapSemantic": "Lihat {venue} di Peta Kampus",
+  "openDay_openInsideMqNav": "Buka di MQ Navigation",
+  "openDay_navigateWithGoogle": "Navigasi dengan Google Maps",
+  "openDay_navigateWithGoogleSemantic": "Navigasi ke {venue} dengan Google Maps di MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Buka Google Maps di MQ Navigation",
+  "openDay_noMappableVenue": "Belum ada lokasi yang dapat dipetakan untuk acara ini.",
+  "openDay_pickerSubtitle": "Pilih program sarjana — tersimpan di perangkat Anda dan mempersonalisasi acara Open Day.",
+  "openDay_clearSelection": "Hapus pilihan saya",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Lewati pengantar",
+  "onboardingPageIndicator": "Halaman {current} dari {total}",
+  "onboardingGoToSlide": "Pergi ke slide {index}",
+  "onboardingStartSemantic": "Mulai menggunakan aplikasi",
+  "onboardingNextSemantic": "Slide berikutnya",
+  "onboardingSlideIconLabel": "Ikon {title}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

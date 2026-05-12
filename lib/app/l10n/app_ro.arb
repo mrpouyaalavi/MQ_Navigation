@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Implicit",
   "onboardingOpenDayBody": "Descoperiți evenimentele campusului, urmăriți programul și primiți notificări pentru ziua porților deschise.",
   "onboardingOpenDayTitle": "Pregătit pentru ziua porților deschise",
-  "onboardingTransitDataAttribution": "Plecările în timp real folosesc date deschise de la Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Plecările în timp real folosesc date deschise de la Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Modifică",
+  "openDay_chooseBachelorFilter": "Alegeți o licență pentru a filtra programul. Rămâne pe acest dispozitiv.",
+  "openDay_chooseInterest": "Alegeți interesul",
+  "openDay_directionsTo": "Indicații spre {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Ce vă interesează să studiați?",
+  "openDay_loadError": "Nu s-au putut încărca datele Open Day. Încercați din nou mai târziu.",
+  "openDay_noEventsForSelection": "Niciun eveniment nu corespunde interesului dvs. de studiu încă.",
+  "openDay_noEventsNoneSelected": "Alegeți ce vă interesează pentru a vedea evenimentele relevante.",
+  "openDay_noSessionsYet": "Nicio sesiune informativă potrivită încă — atingeți pentru a vedea programul complet.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Alegeți o licență pentru a personaliza ziua.",
+  "openDay_pickInterest": "Alegeți ce vă interesează",
+  "openDay_showingMatchedSessions": "Se afișează sesiunile informative care corespund interesului dvs. de studiu.",
+  "openDay_studyInterestSaved": "Interes de studiu salvat",
+  "openDay_selectStudyInterest": "Selectați interesul de studiu",
+  "openDay_viewInCampusMap": "Vizualizați pe harta campusului",
+  "openDay_viewInCampusMapSemantic": "Vizualizați {venue} pe harta campusului",
+  "openDay_openInsideMqNav": "Deschideți în MQ Navigation",
+  "openDay_navigateWithGoogle": "Navigați cu Google Maps",
+  "openDay_navigateWithGoogleSemantic": "Navigați la {venue} cu Google Maps în MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Deschideți Google Maps în MQ Navigation",
+  "openDay_noMappableVenue": "Niciun loc cartografiat pentru acest eveniment încă.",
+  "openDay_pickerSubtitle": "Alegeți un program de licență — rămâne pe dispozitivul dvs. și personalizează evenimentele Open Day.",
+  "openDay_clearSelection": "Șterge selecția mea",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Omiteți introducerea",
+  "onboardingPageIndicator": "Pagina {current} din {total}",
+  "onboardingGoToSlide": "Mergeți la diapozitivul {index}",
+  "onboardingStartSemantic": "Începeți să folosiți aplicația",
+  "onboardingNextSemantic": "Mergeți la diapozitivul următor",
+  "onboardingSlideIconLabel": "Pictogramă {title}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

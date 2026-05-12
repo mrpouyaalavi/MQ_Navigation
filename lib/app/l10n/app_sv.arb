@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Standard",
   "onboardingOpenDayBody": "Upptäck campus-evenemang, följ schemat och få aviseringar om öppet hus.",
   "onboardingOpenDayTitle": "Redo för öppet hus",
-  "onboardingTransitDataAttribution": "Avgångar i realtid använder öppna data från Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Avgångar i realtid använder öppna data från Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Ändra",
+  "openDay_chooseBachelorFilter": "Välj en kandidatexamen för att filtrera programmet. Sparas på enheten.",
+  "openDay_chooseInterest": "Välj intresse",
+  "openDay_directionsTo": "Vägbeskrivning till {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Vad är du intresserad av att studera?",
+  "openDay_loadError": "Det gick inte att ladda Open Day-data. Försök igen senare.",
+  "openDay_noEventsForSelection": "Inga evenemang matchar ditt studieintresse ännu.",
+  "openDay_noEventsNoneSelected": "Välj ditt intresse för att se relevanta evenemang.",
+  "openDay_noSessionsYet": "Inga matchande infosessioner ännu — tryck för att se hela programmet.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Välj en kandidatexamen för att anpassa din dag.",
+  "openDay_pickInterest": "Välj ditt intresse",
+  "openDay_showingMatchedSessions": "Visar infosessioner som matchar ditt studieintresse.",
+  "openDay_studyInterestSaved": "Studieintresse sparat",
+  "openDay_selectStudyInterest": "Välj studieintresse",
+  "openDay_viewInCampusMap": "Visa på campuskartan",
+  "openDay_viewInCampusMapSemantic": "Visa {venue} på campuskartan",
+  "openDay_openInsideMqNav": "Öppna i MQ Navigation",
+  "openDay_navigateWithGoogle": "Navigera med Google Maps",
+  "openDay_navigateWithGoogleSemantic": "Navigera till {venue} med Google Maps i MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Öppna Google Maps i MQ Navigation",
+  "openDay_noMappableVenue": "Ingen kartlagd plats för det här evenemanget ännu.",
+  "openDay_pickerSubtitle": "Välj ett kandidatprogram — sparas på enheten och anpassar dina Open Day-evenemang.",
+  "openDay_clearSelection": "Rensa mitt val",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Hoppa över introduktionen",
+  "onboardingPageIndicator": "Sida {current} av {total}",
+  "onboardingGoToSlide": "Gå till bild {index}",
+  "onboardingStartSemantic": "Börja använda appen",
+  "onboardingNextSemantic": "Gå till nästa bild",
+  "onboardingSlideIconLabel": "{title} ikon",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

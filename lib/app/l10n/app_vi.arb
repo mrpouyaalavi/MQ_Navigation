@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Mặc định",
   "onboardingOpenDayBody": "Khám phá sự kiện khuôn viên, theo dõi lịch và nhận thông báo cho Ngày hội mở cửa.",
   "onboardingOpenDayTitle": "Sẵn sàng cho Ngày hội mở cửa",
-  "onboardingTransitDataAttribution": "Giờ khởi hành theo thời gian thực dùng dữ liệu mở từ Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Giờ khởi hành theo thời gian thực dùng dữ liệu mở từ Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Thay đổi",
+  "openDay_chooseBachelorFilter": "Chọn ngành học để lọc lịch. Lưu trên thiết bị này.",
+  "openDay_chooseInterest": "Chọn sở thích",
+  "openDay_directionsTo": "Đường đến {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Bạn quan tâm đến ngành học nào?",
+  "openDay_loadError": "Không thể tải dữ liệu Open Day. Vui lòng thử lại sau.",
+  "openDay_noEventsForSelection": "Chưa có sự kiện nào phù hợp với sở thích học tập của bạn.",
+  "openDay_noEventsNoneSelected": "Chọn sở thích để xem các sự kiện liên quan.",
+  "openDay_noSessionsYet": "Chưa có buổi thông tin phù hợp — nhấn để xem toàn bộ lịch.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Chọn ngành để cá nhân hóa ngày của bạn.",
+  "openDay_pickInterest": "Chọn sở thích của bạn",
+  "openDay_showingMatchedSessions": "Hiển thị các buổi thông tin phù hợp với sở thích học tập.",
+  "openDay_studyInterestSaved": "Sở thích học tập đã lưu",
+  "openDay_selectStudyInterest": "Chọn sở thích học tập",
+  "openDay_viewInCampusMap": "Xem trên bản đồ khuôn viên",
+  "openDay_viewInCampusMapSemantic": "Xem {venue} trên bản đồ khuôn viên",
+  "openDay_openInsideMqNav": "Mở trong MQ Navigation",
+  "openDay_navigateWithGoogle": "Điều hướng bằng Google Maps",
+  "openDay_navigateWithGoogleSemantic": "Điều hướng đến {venue} bằng Google Maps trong MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Mở Google Maps trong MQ Navigation",
+  "openDay_noMappableVenue": "Sự kiện này chưa có địa điểm trên bản đồ.",
+  "openDay_pickerSubtitle": "Chọn chương trình cử nhân — lưu trên thiết bị và cá nhân hóa sự kiện Open Day.",
+  "openDay_clearSelection": "Xóa lựa chọn",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Bỏ qua giới thiệu",
+  "onboardingPageIndicator": "Trang {current} trong {total}",
+  "onboardingGoToSlide": "Đến trang chiếu {index}",
+  "onboardingStartSemantic": "Bắt đầu sử dụng ứng dụng",
+  "onboardingNextSemantic": "Trang chiếu tiếp theo",
+  "onboardingSlideIconLabel": "Biểu tượng {title}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

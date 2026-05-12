@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "ค่าเริ่มต้น",
   "onboardingOpenDayBody": "ค้นพบกิจกรรมในวิทยาเขต ติดตามตาราง และรับการแจ้งเตือนสำหรับวันเปิดบ้าน",
   "onboardingOpenDayTitle": "พร้อมสำหรับวันเปิดบ้าน",
-  "onboardingTransitDataAttribution": "เวลาออกแบบเรียลไทม์ใช้ข้อมูลเปิดจาก Transport for NSW (TfNSW)"
+  "onboardingTransitDataAttribution": "เวลาออกแบบเรียลไทม์ใช้ข้อมูลเปิดจาก Transport for NSW (TfNSW)",
+  "openDay_changeInterest": "เปลี่ยน",
+  "openDay_chooseBachelorFilter": "เลือกสาขาปริญญาตรีเพื่อกรองตาราง บันทึกไว้ในอุปกรณ์นี้",
+  "openDay_chooseInterest": "เลือกความสนใจ",
+  "openDay_directionsTo": "เส้นทางไปยัง {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "คุณสนใจเรียนอะไร?",
+  "openDay_loadError": "ไม่สามารถโหลดข้อมูล Open Day ได้ กรุณาลองอีกครั้งในภายหลัง",
+  "openDay_noEventsForSelection": "ยังไม่มีกิจกรรมที่ตรงกับความสนใจด้านการศึกษาของคุณ",
+  "openDay_noEventsNoneSelected": "เลือกความสนใจของคุณเพื่อดูกิจกรรมที่เกี่ยวข้อง",
+  "openDay_noSessionsYet": "ยังไม่มีเซสชันข้อมูลที่ตรงกัน — แตะเพื่อดูตารางทั้งหมด",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "เลือกสาขาปริญญาตรีเพื่อปรับแต่งวันของคุณ",
+  "openDay_pickInterest": "เลือกความสนใจของคุณ",
+  "openDay_showingMatchedSessions": "กำลังแสดงเซสชันข้อมูลที่ตรงกับความสนใจด้านการศึกษาของคุณ",
+  "openDay_studyInterestSaved": "บันทึกความสนใจด้านการศึกษาแล้ว",
+  "openDay_selectStudyInterest": "เลือกความสนใจด้านการศึกษา",
+  "openDay_viewInCampusMap": "ดูในแผนที่วิทยาเขต",
+  "openDay_viewInCampusMapSemantic": "ดู {venue} ในแผนที่วิทยาเขต",
+  "openDay_openInsideMqNav": "เปิดใน MQ Navigation",
+  "openDay_navigateWithGoogle": "นำทางด้วย Google Maps",
+  "openDay_navigateWithGoogleSemantic": "นำทางไปยัง {venue} ด้วย Google Maps ใน MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "เปิด Google Maps ใน MQ Navigation",
+  "openDay_noMappableVenue": "ยังไม่มีสถานที่ที่แสดงในแผนที่สำหรับกิจกรรมนี้",
+  "openDay_pickerSubtitle": "เลือกโปรแกรมปริญญาตรี — บันทึกไว้ในอุปกรณ์ของคุณและปรับแต่งกิจกรรม Open Day",
+  "openDay_clearSelection": "ล้างการเลือกของฉัน",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "ข้ามการแนะนำ",
+  "onboardingPageIndicator": "หน้า {current} จาก {total}",
+  "onboardingGoToSlide": "ไปที่สไลด์ {index}",
+  "onboardingStartSemantic": "เริ่มใช้งานแอป",
+  "onboardingNextSemantic": "ไปที่สไลด์ถัดไป",
+  "onboardingSlideIconLabel": "ไอคอน {title}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

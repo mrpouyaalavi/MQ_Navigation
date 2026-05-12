@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "默认",
   "onboardingOpenDayBody": "发现校园活动、跟进日程，并接收开放日提醒。",
   "onboardingOpenDayTitle": "开放日就绪",
-  "onboardingTransitDataAttribution": "实时发车信息使用新南威尔士州交通局（Transport for NSW，TfNSW）的开放数据。"
+  "onboardingTransitDataAttribution": "实时发车信息使用新南威尔士州交通局（Transport for NSW，TfNSW）的开放数据。",
+  "openDay_changeInterest": "更改",
+  "openDay_chooseBachelorFilter": "选择本科专业以过滤日程。保存在此设备上。",
+  "openDay_chooseInterest": "选择兴趣",
+  "openDay_directionsTo": "前往{venue}的路线",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "您对学习什么感兴趣？",
+  "openDay_loadError": "无法加载开放日数据。请稍后重试。",
+  "openDay_noEventsForSelection": "暂无与您学习兴趣匹配的活动。",
+  "openDay_noEventsNoneSelected": "选择您的兴趣以查看相关活动。",
+  "openDay_noSessionsYet": "暂无匹配的信息会话——点击查看完整日程。",
+  "openDay_pageTitle": "开放日",
+  "openDay_pickBachelorCta": "选择本科专业以个性化您的一天。",
+  "openDay_pickInterest": "选择您的兴趣",
+  "openDay_showingMatchedSessions": "显示与您学习兴趣匹配的信息会话。",
+  "openDay_studyInterestSaved": "学习兴趣已保存",
+  "openDay_selectStudyInterest": "选择学习兴趣",
+  "openDay_viewInCampusMap": "在校园地图中查看",
+  "openDay_viewInCampusMapSemantic": "在校园地图中查看{venue}",
+  "openDay_openInsideMqNav": "在MQ Navigation中打开",
+  "openDay_navigateWithGoogle": "使用Google地图导航",
+  "openDay_navigateWithGoogleSemantic": "在MQ Navigation中使用Google地图导航至{venue}",
+  "openDay_openGoogleMapsInsideNav": "在MQ Navigation中打开Google地图",
+  "openDay_noMappableVenue": "此活动暂无可显示的地点。",
+  "openDay_pickerSubtitle": "选择本科专业——保存在您的设备上，并个性化您的开放日活动。",
+  "openDay_clearSelection": "清除我的选择",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "跳过引导",
+  "onboardingPageIndicator": "第{current}页，共{total}页",
+  "onboardingGoToSlide": "转到第{index}张幻灯片",
+  "onboardingStartSemantic": "开始使用应用",
+  "onboardingNextSemantic": "转到下一张幻灯片",
+  "onboardingSlideIconLabel": "{title}图标",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

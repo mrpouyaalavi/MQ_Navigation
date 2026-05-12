@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Výchozí",
   "onboardingOpenDayBody": "Objevujte akce na kampusu, sledujte harmonogram a dostávejte oznámení k dnu otevřených dveří.",
   "onboardingOpenDayTitle": "Připraveno na den otevřených dveří",
-  "onboardingTransitDataAttribution": "Odjezdy v reálném čase využívají otevřená data organizace Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Odjezdy v reálném čase využívají otevřená data organizace Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Změnit",
+  "openDay_chooseBachelorFilter": "Vyberte bakalářský obor pro filtrování programu. Zůstane v tomto zařízení.",
+  "openDay_chooseInterest": "Vybrat zájem",
+  "openDay_directionsTo": "Trasa do {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Co vás zajímá studovat?",
+  "openDay_loadError": "Data Open Day se nepodařilo načíst. Zkuste to prosím znovu.",
+  "openDay_noEventsForSelection": "Zatím žádné akce neodpovídají vašemu studijnímu zájmu.",
+  "openDay_noEventsNoneSelected": "Vyberte svůj zájem a zobrazte relevantní akce.",
+  "openDay_noSessionsYet": "Zatím žádné odpovídající infosessioner — klepnutím zobrazte celý program.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Vyberte bakalářský obor a přizpůsobte si svůj den.",
+  "openDay_pickInterest": "Vyberte svůj zájem",
+  "openDay_showingMatchedSessions": "Zobrazují se infosessioner odpovídající vašemu studijnímu zájmu.",
+  "openDay_studyInterestSaved": "Studijní zájem uložen",
+  "openDay_selectStudyInterest": "Vybrat studijní zájem",
+  "openDay_viewInCampusMap": "Zobrazit na mapě kampusu",
+  "openDay_viewInCampusMapSemantic": "Zobrazit {venue} na mapě kampusu",
+  "openDay_openInsideMqNav": "Otevřít v MQ Navigation",
+  "openDay_navigateWithGoogle": "Navigovat pomocí Google Maps",
+  "openDay_navigateWithGoogleSemantic": "Navigovat do {venue} přes Google Maps v MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Otevřít Google Maps v MQ Navigation",
+  "openDay_noMappableVenue": "Pro tuto akci zatím není k dispozici žádné mapovatelné místo.",
+  "openDay_pickerSubtitle": "Vyberte bakalářský program — zůstane v zařízení a přizpůsobí vaše akce Open Day.",
+  "openDay_clearSelection": "Zrušit výběr",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Přeskočit úvod",
+  "onboardingPageIndicator": "Stránka {current} z {total}",
+  "onboardingGoToSlide": "Přejít na snímek {index}",
+  "onboardingStartSemantic": "Začít používat aplikaci",
+  "onboardingNextSemantic": "Přejít na další snímek",
+  "onboardingSlideIconLabel": "Ikona {title}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

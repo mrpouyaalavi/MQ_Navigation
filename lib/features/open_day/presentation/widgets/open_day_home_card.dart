@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
@@ -51,6 +52,7 @@ class _OnboardingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
     final dateText = OpenDayTime.formatShortDate(openDayDate);
 
@@ -96,7 +98,7 @@ class _OnboardingCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'OPEN DAY · $dateText'.toUpperCase(),
+                    l10n.openDay_headerWithDate(dateText).toUpperCase(),
                     style: context.textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.2,
@@ -105,7 +107,7 @@ class _OnboardingCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'What are you interested in studying?',
+                    l10n.openDay_interestedInStudying,
                     style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: dark ? Colors.white : MqColors.contentPrimary,
@@ -113,7 +115,7 @@ class _OnboardingCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Pick a bachelor to personalise your day.',
+                    l10n.openDay_pickBachelorCta,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: context.textTheme.bodySmall?.copyWith(
@@ -146,6 +148,7 @@ class _PreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
     final dateText = OpenDayTime.formatShortDate(openDayDate);
 
@@ -169,7 +172,7 @@ class _PreviewCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'OPEN DAY · $dateText',
+                  l10n.openDay_headerWithDate(dateText),
                   style: context.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w800,
                     letterSpacing: 1.2,
@@ -198,7 +201,7 @@ class _PreviewCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsetsDirectional.only(top: 4),
                 child: Text(
-                  'No info sessions matched yet — tap to view the full schedule.',
+                  l10n.openDay_noSessionsYet,
                   style: context.textTheme.bodySmall?.copyWith(
                     color: dark
                         ? Colors.white.withValues(alpha: 0.72)

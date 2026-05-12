@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "පෙරනිමිය",
   "onboardingOpenDayBody": "කැම්පස් සිදුවීම් සොයා ගෙන කාලසටහන ලුහුබැඳ විවෘත දවසට දැනුම්දීම් ලබා ගන්න.",
   "onboardingOpenDayTitle": "විවෘත දවසට සූදානම්",
-  "onboardingTransitDataAttribution": "සජීවී පිටත්වීම් Transport for NSW (TfNSW) හි විවෘත දත්ත භාවිතා කරයි."
+  "onboardingTransitDataAttribution": "සජීවී පිටත්වීම් Transport for NSW (TfNSW) හි විවෘත දත්ත භාවිතා කරයි.",
+  "openDay_changeInterest": "වෙනස් කරන්න",
+  "openDay_chooseBachelorFilter": "කාලසටහන පෙරීමට ශාස්ත්‍රවේදී (Bachelor) මාලාවක් තෝරන්න. මෙම උපාංගයේ සුරැකෙයි.",
+  "openDay_chooseInterest": "කැමැත්ත තෝරන්න",
+  "openDay_directionsTo": "{venue} වෙත දිශාවන්",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "ඔබ කුමක් ඉගෙනීමට කැමතිද?",
+  "openDay_loadError": "Open Day දත්ත පූරණය කළ නොහැකි විය. කරුණාකර පසුව නැවත උත්සාහ කරන්න.",
+  "openDay_noEventsForSelection": "ඔබේ අධ්‍යයන කැමැත්ත සමඟ ගැළපෙන සිදුවීම් තවම නොමැත.",
+  "openDay_noEventsNoneSelected": "අදාළ සිදුවීම් බැලීමට ඔබේ කැමැත්ත තෝරන්න.",
+  "openDay_noSessionsYet": "ගැළපෙන තොරතුරු සැසි තවම නොමැත — සම්පූර්ණ කාලසටහන බැලීමට තාප් කරන්න.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "ඔබේ දිනය පෞද්ගලීකරණය කිරීමට ශාස්ත්‍රවේදී මාලාවක් තෝරන්න.",
+  "openDay_pickInterest": "ඔබේ කැමැත්ත තෝරන්න",
+  "openDay_showingMatchedSessions": "ඔබේ අධ්‍යයන කැමැත්ත සමඟ ගැළපෙන තොරතුරු සැසි පෙන්වෙයි.",
+  "openDay_studyInterestSaved": "අධ්‍යයන කැමැත්ත සුරැකිණි",
+  "openDay_selectStudyInterest": "අධ්‍යයන කැමැත්ත තෝරන්න",
+  "openDay_viewInCampusMap": "කැම්පස් සිතියමේ බලන්න",
+  "openDay_viewInCampusMapSemantic": "කැම්පස් සිතියමේ {venue} බලන්න",
+  "openDay_openInsideMqNav": "MQ Navigation හිදී විවෘත කරන්න",
+  "openDay_navigateWithGoogle": "Google Maps සමඟ ගමන් කරන්න",
+  "openDay_navigateWithGoogleSemantic": "MQ Navigation හි Google Maps සමඟ {venue} වෙත ගමන් කරන්න",
+  "openDay_openGoogleMapsInsideNav": "MQ Navigation හිදී Google Maps විවෘත කරන්න",
+  "openDay_noMappableVenue": "මෙම සිදුවීමට තවම සිතියමේ ස්ථානයක් නොමැත.",
+  "openDay_pickerSubtitle": "ශාස්ත්‍රවේදී කාර්යක්‍රමයක් තෝරන්න — ඔබේ උපාංගයේ රැඳෙයි, Open Day සිදුවීම් පෞද්ගලීකරණය කරයි.",
+  "openDay_clearSelection": "මගේ තේරීම ඉවත් කරන්න",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "හඳුන්වාදීම මඟ හරින්න",
+  "onboardingPageIndicator": "පිටුව {current} / {total}",
+  "onboardingGoToSlide": "ස්ලයිඩ් {index} ට යන්න",
+  "onboardingStartSemantic": "යෙදුම භාවිතා කිරීම ආරම්භ කරන්න",
+  "onboardingNextSemantic": "ඊළඟ ස්ලයිඩ් ට යන්න",
+  "onboardingSlideIconLabel": "{title} නිරූපකය",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

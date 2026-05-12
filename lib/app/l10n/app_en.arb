@@ -2153,6 +2153,72 @@
   "openDay_studyInterest": "Study interest",
   "openDay_studyInterestNotSet": "Not set",
   "openDay_studyInterestSemantic": "Open Day study interest",
+  "openDay_studyInterestSaved": "Study interest saved",
+  "@openDay_studyInterestSaved": {
+    "description": "Text on the study-interest button when a bachelor has already been selected."
+  },
+  "openDay_selectStudyInterest": "Select study interest",
+  "@openDay_selectStudyInterest": {
+    "description": "Text on the study-interest button when no bachelor has been selected yet."
+  },
+  "openDay_viewInCampusMap": "View in Campus Map",
+  "@openDay_viewInCampusMap": {
+    "description": "ListTile title for the 'open venue in campus map' action."
+  },
+  "openDay_viewInCampusMapSemantic": "View {venue} in Campus Map",
+  "@openDay_viewInCampusMapSemantic": {
+    "description": "Accessibility label for the campus-map action tile.",
+    "placeholders": {
+      "venue": {
+        "type": "String",
+        "description": "Name of the event venue."
+      }
+    }
+  },
+  "openDay_openInsideMqNav": "Open inside MQ Navigation",
+  "@openDay_openInsideMqNav": {
+    "description": "ListTile subtitle explaining the campus-map action opens within MQ Navigation."
+  },
+  "openDay_navigateWithGoogle": "Navigate with Google Maps",
+  "@openDay_navigateWithGoogle": {
+    "description": "ListTile title for the Google-Maps navigation action."
+  },
+  "openDay_navigateWithGoogleSemantic": "Navigate to {venue} with Google Maps in MQ Navigation",
+  "@openDay_navigateWithGoogleSemantic": {
+    "description": "Accessibility label for the Google-Maps navigation tile.",
+    "placeholders": {
+      "venue": {
+        "type": "String",
+        "description": "Name of the event venue."
+      }
+    }
+  },
+  "openDay_openGoogleMapsInsideNav": "Open Google Maps inside MQ Navigation",
+  "@openDay_openGoogleMapsInsideNav": {
+    "description": "ListTile subtitle for the Google-Maps navigation action."
+  },
+  "openDay_noMappableVenue": "No mappable venue for this event yet.",
+  "@openDay_noMappableVenue": {
+    "description": "Shown in the event actions sheet when the event has no geocoded venue."
+  },
+  "openDay_pickerSubtitle": "Pick a bachelor program — this stays on your device and personalises your Open Day events.",
+  "@openDay_pickerSubtitle": {
+    "description": "Subtitle in the bachelor-picker bottom sheet."
+  },
+  "openDay_clearSelection": "Clear my selection",
+  "@openDay_clearSelection": {
+    "description": "Label on the button that removes the selected bachelor."
+  },
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "@openDay_headerWithDate": {
+    "description": "Eyebrow label on the Open Day home card that includes the formatted date.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "description": "Formatted Open Day date string, e.g. 'Sat 14 Sep'."
+      }
+    }
+  },
   "openDay_eventReminders": "Event reminders",
   "openDay_eventRemindersSemantic": "Open Day event reminders",
   "openDay_remindMeBefore": "Remind me before",
@@ -2160,13 +2226,17 @@
   "openDay_minutesValue": "{minutes} min",
   "@openDay_minutesValue": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "openDay_minutesOption": "{minutes} minutes",
   "@openDay_minutesOption": {
     "placeholders": {
-      "minutes": { "type": "int" }
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "diagnosticsRendererCampus": "Campus (illustrated)",
@@ -2179,6 +2249,52 @@
   "onboardingTransitTitle": "Live Commute",
   "onboardingTransitBody": "Track Sydney Metro, trains, and buses in real time from your home screen.",
   "onboardingTransitDataAttribution": "Real-time departures use open data from Transport for NSW (TfNSW).",
+  "onboardingSkipSemantic": "Skip onboarding",
+  "@onboardingSkipSemantic": {
+    "description": "Accessibility label for the Skip button on the onboarding screen."
+  },
+  "onboardingPageIndicator": "Page {current} of {total}",
+  "@onboardingPageIndicator": {
+    "description": "Accessibility label for the page-indicator dots row.",
+    "placeholders": {
+      "current": {
+        "type": "int",
+        "description": "Current page number (1-based)."
+      },
+      "total": {
+        "type": "int",
+        "description": "Total number of onboarding pages."
+      }
+    }
+  },
+  "onboardingGoToSlide": "Go to slide {index}",
+  "@onboardingGoToSlide": {
+    "description": "Accessibility label for each dot in the page indicator.",
+    "placeholders": {
+      "index": {
+        "type": "int",
+        "description": "1-based slide number."
+      }
+    }
+  },
+  "onboardingStartSemantic": "Start using the app",
+  "@onboardingStartSemantic": {
+    "description": "Accessibility label for the Next/Start button on the last onboarding slide."
+  },
+  "onboardingNextSemantic": "Go to next slide",
+  "@onboardingNextSemantic": {
+    "description": "Accessibility label for the Next button on non-last onboarding slides."
+  },
+  "onboardingSlideIconLabel": "{title} icon",
+  "@onboardingSlideIconLabel": {
+    "description": "Accessibility label for the feature icon on each onboarding slide.",
+    "placeholders": {
+      "title": {
+        "type": "String",
+        "description": "The slide title used as context for the icon label."
+      }
+    }
+  },
   "@onboardingTransitDataAttribution": {
     "description": "Footnote on commute onboarding slide crediting TfNSW open data"
   },
@@ -2202,5 +2318,26 @@
         "type": "int"
       }
     }
-  }
+  },
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "What are you interested in studying?",
+  "openDay_pickBachelorCta": "Pick a bachelor to personalise your day.",
+  "openDay_noSessionsYet": "No info sessions matched yet — tap to view the full schedule.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_loadError": "Couldn't load Open Day data. Please try again later.",
+  "openDay_pickInterest": "Pick what you're interested in",
+  "openDay_chooseBachelorFilter": "Choose a bachelor to filter the schedule. Stays on this device.",
+  "openDay_showingMatchedSessions": "Showing info sessions matched to your study interest.",
+  "openDay_chooseInterest": "Choose interest",
+  "openDay_changeInterest": "Change",
+  "openDay_directionsTo": "Directions to {venue}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "openDay_noEventsForSelection": "No events matched to your study interest yet.",
+  "openDay_noEventsNoneSelected": "Pick what you're interested in to see relevant events."
 }

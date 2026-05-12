@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "पूर्वनिर्धारित",
   "onboardingOpenDayBody": "क्याम्पस कार्यक्रमहरू पत्ता लगाउनुहोस्, तालिका ट्र्याक गर्नुहोस् र खुला दिनका लागि सूचना पाउनुहोस्।",
   "onboardingOpenDayTitle": "खुला दिनका लागि तयार",
-  "onboardingTransitDataAttribution": "वास्तविक-समय प्रस्थानहरूले Transport for NSW (TfNSW) को खुला डाटा प्रयोग गर्छन्।"
+  "onboardingTransitDataAttribution": "वास्तविक-समय प्रस्थानहरूले Transport for NSW (TfNSW) को खुला डाटा प्रयोग गर्छन्।",
+  "openDay_changeInterest": "परिवर्तन गर्नुहोस्",
+  "openDay_chooseBachelorFilter": "तालिका फिल्टर गर्न स्नातक छान्नुहोस्। यस यन्त्रमा बाँकी रहन्छ।",
+  "openDay_chooseInterest": "रुचि छान्नुहोस्",
+  "openDay_directionsTo": "{venue} को निर्देशन",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "तपाईं के पढ्न चाहनुहुन्छ?",
+  "openDay_loadError": "Open Day डेटा लोड गर्न सकिएन। कृपया पछि पुनः प्रयास गर्नुहोस्।",
+  "openDay_noEventsForSelection": "अहिलेसम्म तपाईंको अध्ययन रुचिसँग मेल खाने कुनै कार्यक्रम छैन।",
+  "openDay_noEventsNoneSelected": "सम्बन्धित कार्यक्रमहरू हेर्न आफ्नो रुचि छान्नुहोस्।",
+  "openDay_noSessionsYet": "अहिलेसम्म मेल खाने जानकारी सत्र छैन — पूर्ण तालिका हेर्न ट्याप गर्नुहोस्।",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "आफ्नो दिन व्यक्तिगत बनाउन स्नातक छान्नुहोस्।",
+  "openDay_pickInterest": "आफ्नो रुचि छान्नुहोस्",
+  "openDay_showingMatchedSessions": "तपाईंको अध्ययन रुचिसँग मेल खाने जानकारी सत्रहरू देखाइँदैछ।",
+  "openDay_studyInterestSaved": "अध्ययन रुचि सुरक्षित भयो",
+  "openDay_selectStudyInterest": "अध्ययन रुचि छान्नुहोस्",
+  "openDay_viewInCampusMap": "क्याम्पस नक्सामा हेर्नुहोस्",
+  "openDay_viewInCampusMapSemantic": "क्याम्पस नक्सामा {venue} हेर्नुहोस्",
+  "openDay_openInsideMqNav": "MQ Navigation मा खोल्नुहोस्",
+  "openDay_navigateWithGoogle": "Google Maps सँग नेभिगेट गर्नुहोस्",
+  "openDay_navigateWithGoogleSemantic": "MQ Navigation मा Google Maps सँग {venue} मा नेभिगेट गर्नुहोस्",
+  "openDay_openGoogleMapsInsideNav": "MQ Navigation मा Google Maps खोल्नुहोस्",
+  "openDay_noMappableVenue": "यस कार्यक्रमको लागि अहिलेसम्म कुनै नक्सायोग्य स्थान छैन।",
+  "openDay_pickerSubtitle": "स्नातक कार्यक्रम छान्नुहोस् — तपाईंको यन्त्रमा बाँकी रहन्छ र Open Day कार्यक्रमहरू व्यक्तिगत बनाउँछ।",
+  "openDay_clearSelection": "मेरो चयन हटाउनुहोस्",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "परिचय छोड्नुहोस्",
+  "onboardingPageIndicator": "पृष्ठ {current} / {total}",
+  "onboardingGoToSlide": "स्लाइड {index} मा जानुहोस्",
+  "onboardingStartSemantic": "एप प्रयोग सुरु गर्नुहोस्",
+  "onboardingNextSemantic": "अर्को स्लाइडमा जानुहोस्",
+  "onboardingSlideIconLabel": "{title} आइकन",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

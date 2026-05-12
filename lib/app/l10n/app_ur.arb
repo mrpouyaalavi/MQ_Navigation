@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "ڈیفالٹ",
   "onboardingOpenDayBody": "کیمپس ایونٹس دریافت کریں، شیڈول ٹریک کریں، اور اوپن ڈے کے لیے اطلاعات حاصل کریں۔",
   "onboardingOpenDayTitle": "اوپن ڈے کے لیے تیار",
-  "onboardingTransitDataAttribution": "حقیقی وقت کی روانگیاں Transport for NSW (TfNSW) کے کھلے ڈیٹا کو استعمال کرتی ہیں۔"
+  "onboardingTransitDataAttribution": "حقیقی وقت کی روانگیاں Transport for NSW (TfNSW) کے کھلے ڈیٹا کو استعمال کرتی ہیں۔",
+  "openDay_changeInterest": "تبدیل کریں",
+  "openDay_chooseBachelorFilter": "شیڈول فلٹر کرنے کے لیے بیچلر منتخب کریں۔ اس ڈیوائس پر محفوظ رہتا ہے۔",
+  "openDay_chooseInterest": "دلچسپی منتخب کریں",
+  "openDay_directionsTo": "{venue} کی طرف راستہ",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "آپ کیا پڑھنا چاہتے ہیں؟",
+  "openDay_loadError": "Open Day ڈیٹا لوڈ نہیں ہو سکا۔ براہ کرم بعد میں دوبارہ کوشش کریں۔",
+  "openDay_noEventsForSelection": "ابھی تک کوئی پروگرام آپ کی تعلیمی دلچسپی سے میل نہیں کھاتا۔",
+  "openDay_noEventsNoneSelected": "متعلقہ پروگرام دیکھنے کے لیے اپنی دلچسپی منتخب کریں۔",
+  "openDay_noSessionsYet": "ابھی کوئی ملنے والا معلوماتی سیشن نہیں — پورا شیڈول دیکھنے کے لیے ٹیپ کریں۔",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "اپنا دن ذاتی بنانے کے لیے بیچلر منتخب کریں۔",
+  "openDay_pickInterest": "اپنی دلچسپی منتخب کریں",
+  "openDay_showingMatchedSessions": "آپ کی تعلیمی دلچسپی سے ملتے معلوماتی سیشن دکھائے جا رہے ہیں۔",
+  "openDay_studyInterestSaved": "تعلیمی دلچسپی محفوظ ہو گئی",
+  "openDay_selectStudyInterest": "تعلیمی دلچسپی منتخب کریں",
+  "openDay_viewInCampusMap": "کیمپس میپ میں دیکھیں",
+  "openDay_viewInCampusMapSemantic": "کیمپس میپ میں {venue} دیکھیں",
+  "openDay_openInsideMqNav": "MQ Navigation میں کھولیں",
+  "openDay_navigateWithGoogle": "Google Maps سے نیویگیٹ کریں",
+  "openDay_navigateWithGoogleSemantic": "MQ Navigation میں Google Maps سے {venue} تک نیویگیٹ کریں",
+  "openDay_openGoogleMapsInsideNav": "MQ Navigation میں Google Maps کھولیں",
+  "openDay_noMappableVenue": "اس پروگرام کے لیے ابھی کوئی نقشے پر دکھانے کا مقام نہیں۔",
+  "openDay_pickerSubtitle": "بیچلر پروگرام منتخب کریں — آپ کے ڈیوائس پر رہتا ہے اور Open Day پروگراموں کو ذاتی بناتا ہے۔",
+  "openDay_clearSelection": "میرا انتخاب صاف کریں",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "تعارف چھوڑیں",
+  "onboardingPageIndicator": "صفحہ {current} از {total}",
+  "onboardingGoToSlide": "سلائیڈ {index} پر جائیں",
+  "onboardingStartSemantic": "ایپ استعمال شروع کریں",
+  "onboardingNextSemantic": "اگلی سلائیڈ پر جائیں",
+  "onboardingSlideIconLabel": "{title} آئیکن",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

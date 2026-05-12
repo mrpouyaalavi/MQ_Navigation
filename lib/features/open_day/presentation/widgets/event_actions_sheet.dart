@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
@@ -46,6 +47,7 @@ class EventActionsSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
     final buildingsAsync = ref.watch(buildingRegistryProvider);
     final building = _resolveBuilding(buildingsAsync.value, event.buildingCode);
@@ -96,19 +98,19 @@ class EventActionsSheet extends ConsumerWidget {
             if (hasResolvedBuilding) ...[
               Semantics(
                 button: true,
-                label: 'View ${event.venueName} in Campus Map',
+                label: l10n.openDay_viewInCampusMapSemantic(event.venueName),
                 child: ListTile(
                   leading: Icon(
                     Icons.location_on_rounded,
                     color: dark ? MqColors.charcoal800 : MqColors.red,
                   ),
                   title: Text(
-                    'View in Campus Map',
+                    l10n.openDay_viewInCampusMap,
                     style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  subtitle: const Text('Open inside MQ Navigation'),
+                  subtitle: Text(l10n.openDay_openInsideMqNav),
                   onTap: () => _routeToMap(
                     context,
                     ref,
@@ -118,8 +120,9 @@ class EventActionsSheet extends ConsumerWidget {
               ),
               Semantics(
                 button: true,
-                label:
-                    'Navigate to ${event.venueName} with Google Maps in MQ Navigation',
+                label: l10n.openDay_navigateWithGoogleSemantic(
+                  event.venueName,
+                ),
                 child: ListTile(
                   leading: Icon(
                     Icons.navigation_rounded,
@@ -128,12 +131,12 @@ class EventActionsSheet extends ConsumerWidget {
                         : MqColors.contentPrimary,
                   ),
                   title: Text(
-                    'Navigate with Google Maps',
+                    l10n.openDay_navigateWithGoogle,
                     style: context.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  subtitle: const Text('Open Google Maps inside MQ Navigation'),
+                  subtitle: Text(l10n.openDay_openGoogleMapsInsideNav),
                   onTap: () => _routeToMap(
                     context,
                     ref,
@@ -142,9 +145,9 @@ class EventActionsSheet extends ConsumerWidget {
                 ),
               ),
             ] else
-              const Padding(
-                padding: EdgeInsetsDirectional.all(MqSpacing.space4),
-                child: Text('No mappable venue for this event yet.'),
+              Padding(
+                padding: const EdgeInsetsDirectional.all(MqSpacing.space4),
+                child: Text(l10n.openDay_noMappableVenue),
               ),
           ],
         ),

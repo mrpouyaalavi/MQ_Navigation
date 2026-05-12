@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "پیش‌فرض",
   "onboardingOpenDayBody": "رویدادهای پردیس را کشف کنید، برنامه را دنبال کنید و برای روز باز اعلان بگیرید.",
   "onboardingOpenDayTitle": "آمادهٔ روز باز",
-  "onboardingTransitDataAttribution": "زمان‌های حرکت بلادرنگ از دادهٔ باز Transport for NSW (TfNSW) استفاده می‌کند."
+  "onboardingTransitDataAttribution": "زمان‌های حرکت بلادرنگ از دادهٔ باز Transport for NSW (TfNSW) استفاده می‌کند.",
+  "openDay_changeInterest": "تغییر",
+  "openDay_chooseBachelorFilter": "یک مقطع کارشناسی انتخاب کنید تا برنامه فیلتر شود. در این دستگاه ذخیره می‌ماند.",
+  "openDay_chooseInterest": "انتخاب علاقه",
+  "openDay_directionsTo": "مسیریابی به {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "به یادگیری چه چیزی علاقه دارید؟",
+  "openDay_loadError": "بارگذاری اطلاعات Open Day امکان‌پذیر نبود. لطفاً بعداً دوباره امتحان کنید.",
+  "openDay_noEventsForSelection": "هنوز رویدادی مطابق با علاقه تحصیلی شما یافت نشد.",
+  "openDay_noEventsNoneSelected": "علاقه خود را انتخاب کنید تا رویدادهای مرتبط را ببینید.",
+  "openDay_noSessionsYet": "هنوز جلسه اطلاعاتی مطابق وجود ندارد — برای دیدن برنامه کامل ضربه بزنید.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "یک رشته کارشناسی انتخاب کنید تا روز خود را شخصی‌سازی کنید.",
+  "openDay_pickInterest": "علاقه خود را انتخاب کنید",
+  "openDay_showingMatchedSessions": "جلسات اطلاعاتی مطابق با علاقه تحصیلی شما نمایش داده می‌شود.",
+  "openDay_studyInterestSaved": "علاقه تحصیلی ذخیره شد",
+  "openDay_selectStudyInterest": "انتخاب علاقه تحصیلی",
+  "openDay_viewInCampusMap": "مشاهده در نقشه پردیس",
+  "openDay_viewInCampusMapSemantic": "مشاهده {venue} در نقشه پردیس",
+  "openDay_openInsideMqNav": "باز کردن در MQ Navigation",
+  "openDay_navigateWithGoogle": "مسیریابی با Google Maps",
+  "openDay_navigateWithGoogleSemantic": "مسیریابی به {venue} با Google Maps در MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "باز کردن Google Maps در MQ Navigation",
+  "openDay_noMappableVenue": "هنوز مکانی قابل نمایش در نقشه برای این رویداد وجود ندارد.",
+  "openDay_pickerSubtitle": "یک برنامه کارشناسی انتخاب کنید — در دستگاه شما می‌ماند و رویدادهای Open Day را شخصی‌سازی می‌کند.",
+  "openDay_clearSelection": "پاک کردن انتخابم",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "رد شدن از معرفی",
+  "onboardingPageIndicator": "صفحه {current} از {total}",
+  "onboardingGoToSlide": "رفتن به اسلاید {index}",
+  "onboardingStartSemantic": "شروع استفاده از برنامه",
+  "onboardingNextSemantic": "رفتن به اسلاید بعدی",
+  "onboardingSlideIconLabel": "نماد {title}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

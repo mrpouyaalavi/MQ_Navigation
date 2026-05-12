@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Standaard",
   "onboardingOpenDayBody": "Ontdek campusactiviteiten, volg het schema en ontvang meldingen voor de open dag.",
   "onboardingOpenDayTitle": "Klaar voor open dag",
-  "onboardingTransitDataAttribution": "Realtime vertrekken gebruiken open data van Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Realtime vertrekken gebruiken open data van Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Wijzigen",
+  "openDay_chooseBachelorFilter": "Kies een bachelor om het programma te filteren. Blijft op dit apparaat.",
+  "openDay_chooseInterest": "Interesse kiezen",
+  "openDay_directionsTo": "Route naar {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Wat wil je graag studeren?",
+  "openDay_loadError": "Kan Open Day gegevens niet laden. Probeer het later opnieuw.",
+  "openDay_noEventsForSelection": "Nog geen evenementen die overeenkomen met je studieinteresse.",
+  "openDay_noEventsNoneSelected": "Kies je interesse om relevante evenementen te zien.",
+  "openDay_noSessionsYet": "Nog geen bijpassende infosessies — tik om het volledige programma te zien.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Kies een bachelor om je dag te personaliseren.",
+  "openDay_pickInterest": "Kies je interesse",
+  "openDay_showingMatchedSessions": "Infosessies passend bij je studieinteresse worden weergegeven.",
+  "openDay_studyInterestSaved": "Studieinteresse opgeslagen",
+  "openDay_selectStudyInterest": "Studieinteresse selecteren",
+  "openDay_viewInCampusMap": "Bekijken op campuskaart",
+  "openDay_viewInCampusMapSemantic": "{venue} bekijken op campuskaart",
+  "openDay_openInsideMqNav": "Openen in MQ Navigation",
+  "openDay_navigateWithGoogle": "Navigeren met Google Maps",
+  "openDay_navigateWithGoogleSemantic": "Navigeren naar {venue} met Google Maps in MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Google Maps openen in MQ Navigation",
+  "openDay_noMappableVenue": "Nog geen cartografeerbare locatie voor dit evenement.",
+  "openDay_pickerSubtitle": "Kies een bachelorprogramma — blijft op je apparaat en personaliseert je Open Day evenementen.",
+  "openDay_clearSelection": "Mijn selectie wissen",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Introductie overslaan",
+  "onboardingPageIndicator": "Pagina {current} van {total}",
+  "onboardingGoToSlide": "Ga naar dia {index}",
+  "onboardingStartSemantic": "App beginnen te gebruiken",
+  "onboardingNextSemantic": "Naar de volgende dia",
+  "onboardingSlideIconLabel": "{title} pictogram",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

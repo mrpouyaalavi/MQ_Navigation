@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mq_navigation/app/l10n/generated/app_localizations.dart';
 import 'package:mq_navigation/app/router/route_names.dart';
 import 'package:mq_navigation/app/theme/mq_colors.dart';
 import 'package:mq_navigation/app/theme/mq_spacing.dart';
@@ -21,6 +22,7 @@ class OpenDayPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
     final dataAsync = ref.watch(openDayDataProvider);
     final selected = ref.watch(selectedBachelorProvider);
@@ -38,7 +40,7 @@ class OpenDayPage extends ConsumerWidget {
         // user to Home — never a dead screen.
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
-          tooltip: 'Back',
+          tooltip: l10n.back,
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -48,7 +50,7 @@ class OpenDayPage extends ConsumerWidget {
           },
         ),
         title: Text(
-          'Open Day',
+          l10n.openDay_pageTitle,
           style: context.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w800,
             letterSpacing: -0.3,
@@ -61,7 +63,7 @@ class OpenDayPage extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsetsDirectional.all(MqSpacing.space6),
             child: Text(
-              'Couldn\'t load Open Day data. Please try again later.',
+              l10n.openDay_loadError,
               textAlign: TextAlign.center,
               style: context.textTheme.bodyMedium,
             ),
@@ -142,6 +144,7 @@ class _StudyInterestHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final dark = context.isDarkMode;
     final dateText = OpenDayTime.formatLongDate(openDayDate);
 
@@ -172,7 +175,7 @@ class _StudyInterestHeader extends ConsumerWidget {
           const SizedBox(height: MqSpacing.space1),
           Text(
             selected == null
-                ? 'Pick what you\'re interested in'
+                ? l10n.openDay_pickInterest
                 : selected!.name,
             style: context.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w800,
@@ -182,8 +185,8 @@ class _StudyInterestHeader extends ConsumerWidget {
           const SizedBox(height: MqSpacing.space1),
           Text(
             selected == null
-                ? 'Choose a bachelor to filter the schedule. Stays on this device.'
-                : 'Showing info sessions matched to your study interest.',
+                ? l10n.openDay_chooseBachelorFilter
+                : l10n.openDay_showingMatchedSessions,
             style: context.textTheme.bodySmall?.copyWith(
               color: dark
                   ? Colors.white.withValues(alpha: 0.78)
@@ -203,7 +206,11 @@ class _StudyInterestHeader extends ConsumerWidget {
                 ),
               ),
               icon: const Icon(Icons.tune_rounded, size: 18),
-              label: Text(selected == null ? 'Choose interest' : 'Change'),
+              label: Text(
+                selected == null
+                    ? l10n.openDay_chooseInterest
+                    : l10n.openDay_changeInterest,
+              ),
             ),
           ),
         ],
@@ -301,7 +308,8 @@ class _EventTile extends StatelessWidget {
           // consciously choose between in-app context and external nav.
           Semantics(
             button: true,
-            label: 'Directions to ${event.venueName}',
+            label: AppLocalizations.of(context)!
+                .openDay_directionsTo(event.venueName),
             child: MqTactileButton(
               onTap: () => EventActionsSheet.show(context, event),
               borderRadius: MqSpacing.radiusXl,
@@ -346,8 +354,8 @@ class _EmptyEventsState extends StatelessWidget {
           const SizedBox(height: MqSpacing.space3),
           Text(
             hasSelection
-                ? 'No events matched to your study interest yet.'
-                : 'Pick what you\'re interested in to see relevant events.',
+                ? AppLocalizations.of(context)!.openDay_noEventsForSelection
+                : AppLocalizations.of(context)!.openDay_noEventsNoneSelected,
             textAlign: TextAlign.center,
             style: context.textTheme.bodyMedium,
           ),

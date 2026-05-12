@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "По умолчанию",
   "onboardingOpenDayBody": "Открывайте события кампуса, следите за расписанием и получайте уведомления о Дне открытых дверей.",
   "onboardingOpenDayTitle": "Готовность к Дню открытых дверей",
-  "onboardingTransitDataAttribution": "Отправления в реальном времени используют открытые данные Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Отправления в реальном времени используют открытые данные Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Изменить",
+  "openDay_chooseBachelorFilter": "Выберите направление бакалавриата для фильтрации расписания. Сохраняется на устройстве.",
+  "openDay_chooseInterest": "Выбрать интерес",
+  "openDay_directionsTo": "Маршрут до {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Что вас интересует изучать?",
+  "openDay_loadError": "Не удалось загрузить данные Open Day. Повторите попытку позже.",
+  "openDay_noEventsForSelection": "Пока нет мероприятий, соответствующих вашим учебным интересам.",
+  "openDay_noEventsNoneSelected": "Выберите интересующее вас направление, чтобы увидеть актуальные мероприятия.",
+  "openDay_noSessionsYet": "Пока нет подходящих информационных сессий — нажмите, чтобы увидеть полное расписание.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Выберите направление бакалавриата, чтобы персонализировать день.",
+  "openDay_pickInterest": "Выберите интересующее направление",
+  "openDay_showingMatchedSessions": "Показаны информационные сессии, соответствующие вашим учебным интересам.",
+  "openDay_studyInterestSaved": "Учебный интерес сохранён",
+  "openDay_selectStudyInterest": "Выбрать учебный интерес",
+  "openDay_viewInCampusMap": "Показать на карте кампуса",
+  "openDay_viewInCampusMapSemantic": "Показать {venue} на карте кампуса",
+  "openDay_openInsideMqNav": "Открыть в MQ Navigation",
+  "openDay_navigateWithGoogle": "Навигация через Google Карты",
+  "openDay_navigateWithGoogleSemantic": "Навигация до {venue} через Google Карты в MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Открыть Google Карты в MQ Navigation",
+  "openDay_noMappableVenue": "Для этого мероприятия ещё нет отображаемого места.",
+  "openDay_pickerSubtitle": "Выберите программу бакалавриата — сохраняется на устройстве и персонализирует мероприятия Open Day.",
+  "openDay_clearSelection": "Очистить выбор",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Пропустить введение",
+  "onboardingPageIndicator": "Страница {current} из {total}",
+  "onboardingGoToSlide": "Перейти к слайду {index}",
+  "onboardingStartSemantic": "Начать пользоваться приложением",
+  "onboardingNextSemantic": "Следующий слайд",
+  "onboardingSlideIconLabel": "Значок {title}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

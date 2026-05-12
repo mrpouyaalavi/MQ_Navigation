@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Προεπιλογή",
   "onboardingOpenDayBody": "Ανακαλύψτε εκδηλώσεις στο campus, παρακολουθήστε το πρόγραμμα και λάβετε ειδοποιήσεις για την Ημέρα Ανοιχτών Θυρών.",
   "onboardingOpenDayTitle": "Έτοιμοι για την Ημέρα Ανοιχτών Θυρών",
-  "onboardingTransitDataAttribution": "Οι αναχωρήσεις σε πραγματικό χρόνο χρησιμοποιούν ανοιχτά δεδομένα από το Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Οι αναχωρήσεις σε πραγματικό χρόνο χρησιμοποιούν ανοιχτά δεδομένα από το Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Αλλαγή",
+  "openDay_chooseBachelorFilter": "Επιλέξτε πτυχίο για φιλτράρισμα του προγράμματος. Παραμένει στη συσκευή.",
+  "openDay_chooseInterest": "Επιλογή ενδιαφέροντος",
+  "openDay_directionsTo": "Οδηγίες για {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Τι σας ενδιαφέρει να σπουδάσετε;",
+  "openDay_loadError": "Δεν ήταν δυνατή η φόρτωση δεδομένων Open Day. Δοκιμάστε ξανά αργότερα.",
+  "openDay_noEventsForSelection": "Δεν υπάρχουν εκδηλώσεις που αντιστοιχούν στο σπουδαστικό σας ενδιαφέρον.",
+  "openDay_noEventsNoneSelected": "Επιλέξτε το ενδιαφέρον σας για να δείτε σχετικές εκδηλώσεις.",
+  "openDay_noSessionsYet": "Δεν υπάρχουν αντίστοιχες ενημερωτικές συνεδρίες — πατήστε για το πλήρες πρόγραμμα.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Επιλέξτε πτυχίο για εξατομίκευση της ημέρας σας.",
+  "openDay_pickInterest": "Επιλέξτε το ενδιαφέρον σας",
+  "openDay_showingMatchedSessions": "Εμφάνιση ενημερωτικών συνεδριών που αντιστοιχούν στο σπουδαστικό σας ενδιαφέρον.",
+  "openDay_studyInterestSaved": "Σπουδαστικό ενδιαφέρον αποθηκεύτηκε",
+  "openDay_selectStudyInterest": "Επιλογή σπουδαστικού ενδιαφέροντος",
+  "openDay_viewInCampusMap": "Προβολή στον χάρτη campus",
+  "openDay_viewInCampusMapSemantic": "Προβολή {venue} στον χάρτη campus",
+  "openDay_openInsideMqNav": "Άνοιγμα στο MQ Navigation",
+  "openDay_navigateWithGoogle": "Πλοήγηση με Google Maps",
+  "openDay_navigateWithGoogleSemantic": "Πλοήγηση στο {venue} με Google Maps στο MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Άνοιγμα Google Maps στο MQ Navigation",
+  "openDay_noMappableVenue": "Δεν υπάρχει χαρτογραφημένη τοποθεσία για αυτή την εκδήλωση.",
+  "openDay_pickerSubtitle": "Επιλέξτε πρόγραμμα πτυχίου — παραμένει στη συσκευή και εξατομικεύει τις εκδηλώσεις Open Day.",
+  "openDay_clearSelection": "Εκκαθάριση επιλογής",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Παράλειψη εισαγωγής",
+  "onboardingPageIndicator": "Σελίδα {current} από {total}",
+  "onboardingGoToSlide": "Μετάβαση στη διαφάνεια {index}",
+  "onboardingStartSemantic": "Έναρξη χρήσης της εφαρμογής",
+  "onboardingNextSemantic": "Επόμενη διαφάνεια",
+  "onboardingSlideIconLabel": "Εικονίδιο {title}",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

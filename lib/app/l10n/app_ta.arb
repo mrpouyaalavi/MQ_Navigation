@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "இயல்புநிலை",
   "onboardingOpenDayBody": "வளாக நிகழ்வுகளைக் கண்டறிந்து அட்டவணையைப் பின்பற்றி திறந்த நாளுக்கு அறிவிப்புகளைப் பெறுங்கள்.",
   "onboardingOpenDayTitle": "திறந்த நாளுக்குத் தயார்",
-  "onboardingTransitDataAttribution": "நிகழ்நேர புறப்பாடுகள் Transport for NSW (TfNSW) இன் திறந்த தரவைப் பயன்படுத்துகின்றன."
+  "onboardingTransitDataAttribution": "நிகழ்நேர புறப்பாடுகள் Transport for NSW (TfNSW) இன் திறந்த தரவைப் பயன்படுத்துகின்றன.",
+  "openDay_changeInterest": "மாற்று",
+  "openDay_chooseBachelorFilter": "அட்டவணையை வடிகட்ட இளங்கலை தேர்ந்தெடுக்கவும். இந்த சாதனத்தில் சேமிக்கப்படுகிறது.",
+  "openDay_chooseInterest": "ஆர்வம் தேர்ந்தெடுக்கவும்",
+  "openDay_directionsTo": "{venue} செல்ல வழிகாட்டுதல்",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "நீங்கள் என்ன படிக்க ஆர்வமாக இருக்கிறீர்கள்?",
+  "openDay_loadError": "Open Day தரவை ஏற்ற முடியவில்லை. பிறகு மீண்டும் முயற்சிக்கவும்.",
+  "openDay_noEventsForSelection": "இன்னும் உங்கள் படிப்பு ஆர்வத்திற்கு பொருத்தமான நிகழ்வுகள் இல்லை.",
+  "openDay_noEventsNoneSelected": "தொடர்புடைய நிகழ்வுகளைப் பார்க்க உங்கள் ஆர்வத்தை தேர்ந்தெடுக்கவும்.",
+  "openDay_noSessionsYet": "இன்னும் பொருத்தமான தகவல் அமர்வுகள் இல்லை — முழு அட்டவணையைக் காண தட்டவும்.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "உங்கள் நாளை தனிப்பயனாக்க இளங்கலை தேர்ந்தெடுக்கவும்.",
+  "openDay_pickInterest": "உங்கள் ஆர்வத்தை தேர்ந்தெடுக்கவும்",
+  "openDay_showingMatchedSessions": "உங்கள் படிப்பு ஆர்வத்திற்கு பொருத்தமான தகவல் அமர்வுகள் காட்டப்படுகின்றன.",
+  "openDay_studyInterestSaved": "படிப்பு ஆர்வம் சேமிக்கப்பட்டது",
+  "openDay_selectStudyInterest": "படிப்பு ஆர்வத்தை தேர்ந்தெடுக்கவும்",
+  "openDay_viewInCampusMap": "வளாக வரைபடத்தில் காண்க",
+  "openDay_viewInCampusMapSemantic": "வளாக வரைபடத்தில் {venue} காண்க",
+  "openDay_openInsideMqNav": "MQ Navigation இல் திற",
+  "openDay_navigateWithGoogle": "Google Maps மூலம் வழிசெல்க",
+  "openDay_navigateWithGoogleSemantic": "MQ Navigation இல் Google Maps மூலம் {venue} வழிசெல்க",
+  "openDay_openGoogleMapsInsideNav": "MQ Navigation இல் Google Maps திற",
+  "openDay_noMappableVenue": "இந்த நிகழ்வுக்கு இன்னும் வரைபட இடம் இல்லை.",
+  "openDay_pickerSubtitle": "இளங்கலை நிரல் தேர்ந்தெடுக்கவும் — உங்கள் சாதனத்தில் இருக்கும், Open Day நிகழ்வுகளை தனிப்பயனாக்கும்.",
+  "openDay_clearSelection": "என் தேர்வை அழி",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "அறிமுகத்தை தவிர்க்கவும்",
+  "onboardingPageIndicator": "பக்கம் {current} / {total}",
+  "onboardingGoToSlide": "நழுவு {index} க்கு செல்க",
+  "onboardingStartSemantic": "பயன்பாட்டை பயன்படுத்தத் தொடங்கு",
+  "onboardingNextSemantic": "அடுத்த நழுவுக்கு செல்க",
+  "onboardingSlideIconLabel": "{title} படவுரு",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Standard",
   "onboardingOpenDayBody": "Entdecken Sie Campus-Events, verfolgen Sie den Zeitplan und erhalten Sie Hinweise zum Tag der offenen Tür.",
   "onboardingOpenDayTitle": "Bereit für den Tag der offenen Tür",
-  "onboardingTransitDataAttribution": "Abfahrten in Echtzeit nutzen Open Data von Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Abfahrten in Echtzeit nutzen Open Data von Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Ändern",
+  "openDay_chooseBachelorFilter": "Wählen Sie einen Bachelor, um den Zeitplan zu filtern. Bleibt auf diesem Gerät.",
+  "openDay_chooseInterest": "Interesse wählen",
+  "openDay_directionsTo": "Wegbeschreibung zu {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Was interessiert Sie zu studieren?",
+  "openDay_loadError": "Open Day Daten konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+  "openDay_noEventsForSelection": "Noch keine Veranstaltungen für Ihr Studieninteresse gefunden.",
+  "openDay_noEventsNoneSelected": "Wählen Sie Ihr Interesse, um relevante Veranstaltungen zu sehen.",
+  "openDay_noSessionsYet": "Noch keine passenden Infosessions — tippen, um den Gesamtplan anzuzeigen.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Wählen Sie einen Bachelor, um Ihren Tag zu personalisieren.",
+  "openDay_pickInterest": "Wählen Sie Ihr Interesse",
+  "openDay_showingMatchedSessions": "Infosessions passend zu Ihrem Studieninteresse werden angezeigt.",
+  "openDay_studyInterestSaved": "Studieninteresse gespeichert",
+  "openDay_selectStudyInterest": "Studieninteresse wählen",
+  "openDay_viewInCampusMap": "Auf dem Campus-Plan anzeigen",
+  "openDay_viewInCampusMapSemantic": "{venue} auf dem Campus-Plan anzeigen",
+  "openDay_openInsideMqNav": "In MQ Navigation öffnen",
+  "openDay_navigateWithGoogle": "Mit Google Maps navigieren",
+  "openDay_navigateWithGoogleSemantic": "Mit Google Maps in MQ Navigation zu {venue} navigieren",
+  "openDay_openGoogleMapsInsideNav": "Google Maps in MQ Navigation öffnen",
+  "openDay_noMappableVenue": "Noch kein Veranstaltungsort auf der Karte für dieses Event.",
+  "openDay_pickerSubtitle": "Wählen Sie einen Bachelorstudiengang — bleibt auf Ihrem Gerät und personalisiert Ihre Open Day Veranstaltungen.",
+  "openDay_clearSelection": "Auswahl löschen",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Einführung überspringen",
+  "onboardingPageIndicator": "Seite {current} von {total}",
+  "onboardingGoToSlide": "Zu Folie {index} wechseln",
+  "onboardingStartSemantic": "App verwenden starten",
+  "onboardingNextSemantic": "Zur nächsten Folie",
+  "onboardingSlideIconLabel": "{title} Symbol",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

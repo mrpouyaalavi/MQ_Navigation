@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Oletus",
   "onboardingOpenDayBody": "Tutustu tapahtumiin, seuraa aikataulua ja saa ilmoituksia avoimista ovista.",
   "onboardingOpenDayTitle": "Avoimet ovet -valmis",
-  "onboardingTransitDataAttribution": "Reaaliaikaiset lähdöt hyödyntävät Transport for NSW:n (TfNSW) avointa dataa."
+  "onboardingTransitDataAttribution": "Reaaliaikaiset lähdöt hyödyntävät Transport for NSW:n (TfNSW) avointa dataa.",
+  "openDay_changeInterest": "Muuta",
+  "openDay_chooseBachelorFilter": "Valitse kandidaattiohjelma ohjelman suodattamiseksi. Tallennetaan tälle laitteelle.",
+  "openDay_chooseInterest": "Valitse kiinnostus",
+  "openDay_directionsTo": "Reittiohjeet kohteeseen {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Mitä olet kiinnostunut opiskelemaan?",
+  "openDay_loadError": "Open Day -tietoja ei voitu ladata. Yritä uudelleen myöhemmin.",
+  "openDay_noEventsForSelection": "Ei tapahtumia, jotka vastaavat opiskelukiinnostustasi vielä.",
+  "openDay_noEventsNoneSelected": "Valitse kiinnostuksesi nähdäksesi asiaankuuluvat tapahtumat.",
+  "openDay_noSessionsYet": "Ei vastaavia infosessioita vielä — napauta nähdäksesi koko ohjelman.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Valitse kandidaattiohjelma muokataksesi päivääsi.",
+  "openDay_pickInterest": "Valitse kiinnostuksesi",
+  "openDay_showingMatchedSessions": "Näytetään opiskelukiinnostustasi vastaavat infosessiot.",
+  "openDay_studyInterestSaved": "Opiskelukiinnostus tallennettu",
+  "openDay_selectStudyInterest": "Valitse opiskelukiinnostus",
+  "openDay_viewInCampusMap": "Näytä kampuskartalla",
+  "openDay_viewInCampusMapSemantic": "Näytä {venue} kampuskartalla",
+  "openDay_openInsideMqNav": "Avaa MQ Navigationissa",
+  "openDay_navigateWithGoogle": "Navigoi Google Mapsilla",
+  "openDay_navigateWithGoogleSemantic": "Navigoi kohteeseen {venue} Google Mapsilla MQ Navigationissa",
+  "openDay_openGoogleMapsInsideNav": "Avaa Google Maps MQ Navigationissa",
+  "openDay_noMappableVenue": "Tälle tapahtumalle ei ole vielä kartoitettua paikkaa.",
+  "openDay_pickerSubtitle": "Valitse kandidaattiohjelma — tallentuu laitteellesi ja mukauttaa Open Day -tapahtumasi.",
+  "openDay_clearSelection": "Tyhjennä valintani",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Ohita esittely",
+  "onboardingPageIndicator": "Sivu {current} / {total}",
+  "onboardingGoToSlide": "Siirry diaan {index}",
+  "onboardingStartSemantic": "Aloita sovelluksen käyttö",
+  "onboardingNextSemantic": "Siirry seuraavaan diaan",
+  "onboardingSlideIconLabel": "{title}-kuvake",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

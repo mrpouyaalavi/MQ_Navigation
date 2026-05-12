@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "デフォルト",
   "onboardingOpenDayBody": "キャンパスイベントを探し、スケジュールを追跡し、オープンデイの通知を受け取れます。",
   "onboardingOpenDayTitle": "オープンデイ対応",
-  "onboardingTransitDataAttribution": "リアルタイムの発車情報は Transport for NSW（TfNSW）のオープンデータを利用しています。"
+  "onboardingTransitDataAttribution": "リアルタイムの発車情報は Transport for NSW（TfNSW）のオープンデータを利用しています。",
+  "openDay_changeInterest": "変更",
+  "openDay_chooseBachelorFilter": "スケジュールをフィルタリングする学部を選択してください。このデバイスに保存されます。",
+  "openDay_chooseInterest": "興味を選ぶ",
+  "openDay_directionsTo": "{venue}への経路",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "何を学びたいですか？",
+  "openDay_loadError": "Open Dayデータを読み込めませんでした。後でもう一度お試しください。",
+  "openDay_noEventsForSelection": "学習の関心に一致するイベントがまだありません。",
+  "openDay_noEventsNoneSelected": "関連するイベントを見るには興味を選択してください。",
+  "openDay_noSessionsYet": "一致する情報セッションはまだありません — タップして全スケジュールを表示。",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "学部を選択して、一日をカスタマイズしましょう。",
+  "openDay_pickInterest": "興味を選んでください",
+  "openDay_showingMatchedSessions": "学習の関心に一致する情報セッションを表示中。",
+  "openDay_studyInterestSaved": "学習の関心が保存されました",
+  "openDay_selectStudyInterest": "学習の関心を選択",
+  "openDay_viewInCampusMap": "キャンパスマップで表示",
+  "openDay_viewInCampusMapSemantic": "キャンパスマップで{venue}を表示",
+  "openDay_openInsideMqNav": "MQ Navigation内で開く",
+  "openDay_navigateWithGoogle": "Google マップでナビ",
+  "openDay_navigateWithGoogleSemantic": "MQ NavigationでGoogle マップを使って{venue}へ案内",
+  "openDay_openGoogleMapsInsideNav": "MQ Navigation内でGoogle マップを開く",
+  "openDay_noMappableVenue": "このイベントの地図表示可能な会場はまだありません。",
+  "openDay_pickerSubtitle": "学部プログラムを選択 — デバイスに保存され、Open Dayのイベントをカスタマイズします。",
+  "openDay_clearSelection": "選択を解除",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "導入をスキップ",
+  "onboardingPageIndicator": "{total}ページ中{current}ページ目",
+  "onboardingGoToSlide": "スライド{index}へ",
+  "onboardingStartSemantic": "アプリの使用を開始",
+  "onboardingNextSemantic": "次のスライドへ",
+  "onboardingSlideIconLabel": "{title}のアイコン",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -2193,5 +2193,89 @@
   "googleMapTypeNormal": "Standard",
   "onboardingOpenDayBody": "Opdag campus-events, følg programmet og få beskeder til åbent hus.",
   "onboardingOpenDayTitle": "Klar til åbent hus",
-  "onboardingTransitDataAttribution": "Afgang i realtid bruger åbne data fra Transport for NSW (TfNSW)."
+  "onboardingTransitDataAttribution": "Afgang i realtid bruger åbne data fra Transport for NSW (TfNSW).",
+  "openDay_changeInterest": "Skift",
+  "openDay_chooseBachelorFilter": "Vælg en bacheloruddannelse for at filtrere programmet. Gemmes på enheden.",
+  "openDay_chooseInterest": "Vælg interesse",
+  "openDay_directionsTo": "Rutevejledning til {venue}",
+  "openDay_headerLabel": "OPEN DAY",
+  "openDay_interestedInStudying": "Hvad er du interesseret i at studere?",
+  "openDay_loadError": "Kunne ikke indlæse Open Day-data. Prøv igen senere.",
+  "openDay_noEventsForSelection": "Ingen begivenheder matcher din studieinteresse endnu.",
+  "openDay_noEventsNoneSelected": "Vælg din interesse for at se relevante begivenheder.",
+  "openDay_noSessionsYet": "Ingen matchende infosessioner endnu — tryk for at se hele programmet.",
+  "openDay_pageTitle": "Open Day",
+  "openDay_pickBachelorCta": "Vælg en bachelor for at personalisere din dag.",
+  "openDay_pickInterest": "Vælg din interesse",
+  "openDay_showingMatchedSessions": "Viser infosessioner der matcher din studieinteresse.",
+  "openDay_studyInterestSaved": "Studieinteresse gemt",
+  "openDay_selectStudyInterest": "Vælg studieinteresse",
+  "openDay_viewInCampusMap": "Se på campuskortet",
+  "openDay_viewInCampusMapSemantic": "Se {venue} på campuskortet",
+  "openDay_openInsideMqNav": "Åbn i MQ Navigation",
+  "openDay_navigateWithGoogle": "Naviger med Google Maps",
+  "openDay_navigateWithGoogleSemantic": "Naviger til {venue} med Google Maps i MQ Navigation",
+  "openDay_openGoogleMapsInsideNav": "Åbn Google Maps i MQ Navigation",
+  "openDay_noMappableVenue": "Ingen kortlagt lokalitet for dette arrangement endnu.",
+  "openDay_pickerSubtitle": "Vælg et bachelorprogram — gemmes på enheden og tilpasser dine Open Day-begivenheder.",
+  "openDay_clearSelection": "Ryd mit valg",
+  "openDay_headerWithDate": "OPEN DAY · {date}",
+  "onboardingSkipSemantic": "Spring introduktionen over",
+  "onboardingPageIndicator": "Side {current} af {total}",
+  "onboardingGoToSlide": "Gå til lysbillede {index}",
+  "onboardingStartSemantic": "Begynd at bruge appen",
+  "onboardingNextSemantic": "Gå til næste lysbillede",
+  "onboardingSlideIconLabel": "{title} ikon",
+  "@openDay_directionsTo": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_viewInCampusMapSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_navigateWithGoogleSemantic": {
+    "placeholders": {
+      "venue": {
+        "type": "String"
+      }
+    }
+  },
+  "@openDay_headerWithDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "@onboardingPageIndicator": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingGoToSlide": {
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "@onboardingSlideIconLabel": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  }
 }
