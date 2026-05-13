@@ -1,3 +1,10 @@
+### Raouf: 2026-05-13 (AEST) — Added Compass Mode for Navigation
+**Scope:** Map Section / Navigation Features
+**Summary:** Implemented "Compass Mode", a privacy-first, on-device radar view that guides users to their selected building without complex routing lines. Integrated `flutter_compass` to provide a live-updating, rotating arrow directing towards the destination, coupled with distance remaining, walking ETA, and prominent landmark hints extracted from route instructions. Added a quick-access toggle for Compass Mode directly into the active `RoutePanel`.
+**Files Changed:** `lib/features/map/presentation/widgets/compass_mode_view.dart`, `lib/features/map/presentation/widgets/route_panel.dart`, `lib/features/map/presentation/pages/map_page.dart`, `pubspec.yaml`, `AGENT.md`, `CHANGELOG.md`
+**Verification:** Added `flutter_compass` dependency and resolved imports. `dart format` and `flutter analyze` completed with no errors.
+**Follow-ups:** The app must be fully rebuilt (stop and restart `run.sh`) to link the new `flutter_compass` native plugin binaries for iOS/Android.
+
 ### Raouf: 2026-05-13 (AEST) — Map Section UI/UX alignment for dark and light modes
 **Scope:** Map Section / UI Design Tokens
 **Summary:** Standardized the surface alpha, border styles, and drop shadows across all floating map UI panels (`_CategoryBuildingList`, `_CategoryGroupList`, `_BlockedPermissionBox`, `RoutePanel`, `_ArrivalCard`) to align seamlessly with the premium glassmorphism aesthetic established by the Home Page. The unified tokens (`surface alpha: 0.94`, translucent border `width: 0.6`, `blurRadius: 18`, `offset: (0, -6)` for bottom sheets and `offset: (0, 6)` for top floats) ensure 100% production-ready UX alignment in both light and dark modes against the live map background. Map markers were intentionally excluded to preserve physical pin casting accuracy.

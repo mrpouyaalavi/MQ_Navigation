@@ -10,6 +10,7 @@ import 'package:mq_navigation/features/map/domain/entities/building.dart';
 import 'package:mq_navigation/features/map/domain/entities/nav_instruction.dart';
 import 'package:mq_navigation/features/map/domain/entities/route_leg.dart';
 import 'package:mq_navigation/shared/extensions/context_extensions.dart';
+import 'package:mq_navigation/features/map/presentation/widgets/compass_mode_view.dart';
 
 /// Floating bottom sheet displaying routing instructions and status.
 ///
@@ -21,6 +22,7 @@ class RoutePanel extends StatefulWidget {
     super.key,
     required this.selectedBuilding,
     required this.route,
+    required this.currentLocation,
     required this.travelMode,
     required this.supportedTravelModes,
     required this.isLoading,
@@ -39,6 +41,7 @@ class RoutePanel extends StatefulWidget {
 
   final Building? selectedBuilding;
   final MapRoute? route;
+  final LocationSample? currentLocation;
   final TravelMode travelMode;
   final List<TravelMode> supportedTravelModes;
   final bool isLoading;
@@ -308,6 +311,25 @@ class _RoutePanelState extends State<RoutePanel> {
                             onPressed: widget.onOpenStreetView,
                           ),
                         ],
+                        const SizedBox(width: MqSpacing.space2),
+                        _GlassCircleAction(
+                          icon: Icons.explore,
+                          tooltip: 'Compass Mode',
+                          isDark: isDark,
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              useSafeArea: true,
+                              builder: (context) => CompassModeView(
+                                currentLocation: widget.currentLocation,
+                                selectedBuilding: widget.selectedBuilding,
+                                route: widget.route,
+                                onClose: () => Navigator.pop(context),
+                              ),
+                            );
+                          },
+                        ),
                         const SizedBox(width: MqSpacing.space2),
                         _GlassCircleAction(
                           icon: Icons.open_in_new,

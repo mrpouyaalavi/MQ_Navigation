@@ -242,6 +242,7 @@ class _MapPageState extends ConsumerState<MapPage> {
                 ? RoutePanel(
                     selectedBuilding: mapState.selectedBuilding,
                     route: mapState.route,
+                    currentLocation: mapState.currentLocation,
                     travelMode: mapState.travelMode,
                     supportedTravelModes:
                         mapState.renderer == MapRendererType.campus
